@@ -5,13 +5,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Reflection;
+using System.Xml;
 
 namespace WeChat.Common
 {
     /// <summary>
     /// Json帮助类
     /// </summary>
-    public class JsonHelper
+    public static class JsonHelper
     {
         /// <summary>
         /// 将对象序列化为JSON格式
@@ -75,7 +77,7 @@ namespace WeChat.Common
         /// <typeparam name="T">指定非错误的返回类型</typeparam>
         /// <param name="JsonData">序列化前JSON字符</param>
         /// <returns>JSON序列化后数据</returns>
-        public ReturnDataEn<T> GetJson<T>(string JsonData)
+        public static ReturnDataEn<T> GetJson<T>(string JsonData)
         {
             var result = new ReturnDataEn<T>();
             if (JsonData.IndexOf("errcode") != -1)
@@ -89,6 +91,176 @@ namespace WeChat.Common
                 result.ResponseData = JsonConvert.DeserializeObject<T>(JsonData);
             }
             return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="json"></param>
+        /// <param name="rootName"></param>
+        /// <returns></returns>
+        public static XmlDocument ParseJson(string json, string rootName)
+        {
+            return JsonConvert.DeserializeXmlNode(json, rootName);
+        }
+        /// <summary>
+        /// xml转为实体(如果xml没有entity节点，是否报错——待测试)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        public static T XmlToEntity<T>(string xml) where T : class
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(xml);
+            string jsonStr = JsonConvert.SerializeXmlNode(xmlDoc);
+            T result = DeserializeJsonToObject<T>(jsonStr);
+            return result;
+        }
+        /// <summary>
+        /// xml转为实体（待完善：1暂时只支持一层节点，2实体属性为数值类型时若数据为空转换报错）
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="json"></param>
+        /// <returns>对象实体</returns>
+        public static T XmlToEntity_my<T>(this string xml) where T : new()
+        {
+            try
+            {
+                T each = new T();
+                if (string.IsNullOrEmpty(xml))
+                {
+                    return each ;
+                }
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(xml);
+
+                PropertyInfo[] pis = each.GetType().GetProperties();
+                foreach (PropertyInfo pi in pis)
+                {
+                    XmlNode node = xmlDoc.SelectSingleNode("xml/" + pi.Name);
+                    if (node != null)
+                    {
+                        SetPropertyValue(each, pi, node.InnerText);
+                    }
+                }
+
+                    return each;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        private static void SetPropertyValue(object each, PropertyInfo pi, string value)
+        {
+            try
+            {
+               
+                if (pi.PropertyType == System.Type.GetType("System.Int32"))
+                {
+                    int i = 0;
+                    try
+                    {
+                        i = Int32.Parse(value);
+                    }
+                    catch(Exception e){
+                        
+                    }
+                    pi.SetValue(each, i);
+                }
+                else if (pi.PropertyType == System.Type.GetType("System.Int64"))
+                {
+                    Int64 i = 0;
+                    try
+                    {
+                        i = Int64.Parse(value);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    pi.SetValue(each, i);
+                }
+                else if (pi.PropertyType == System.Type.GetType("System.Decimal"))
+                {
+                    decimal i = 0;
+                    try
+                    {
+                        i = Decimal.Parse(value);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    pi.SetValue(each, i);
+                }
+                else if (pi.PropertyType == System.Type.GetType("System.Double"))
+                {
+                    double i = 0;
+                    try
+                    {
+                        i = Double.Parse(value);
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    pi.SetValue(each, i);
+                }
+                else if (pi.PropertyType == System.Type.GetType("System.DateTime"))
+                {
+                    Double i = 0;
+                    DateTime s = new DateTime(1970, 1, 1);
+                    try
+                    {
+                        i = Double.Parse(value);
+                    }
+                    catch(Exception e)
+                    {
+
+                    }
+                    s.AddSeconds(i);
+                    pi.SetValue(each, s);
+                }
+                else if (pi.PropertyType.IsEnum)
+                {
+                    pi.SetValue(each, System.Enum.Parse(pi.PropertyType, value));
+                }
+                else if (pi.PropertyType == System.Type.GetType("System.Boolean"))
+                {
+                    try
+                    {
+                        if (Int32.Parse(value) == 1)
+                        {
+                            pi.SetValue(each, true);
+                        }
+                        else
+                        {
+                            pi.SetValue(each, false);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        pi.SetValue(each, false);
+                    }
+                    
+
+                }
+                else if (pi.PropertyType == System.Type.GetType("System.DBNull"))
+                {
+                    //pi.SetValue(null);
+                }
+                else
+                {
+                    pi.SetValue(each, value);
+                }
+            }
+            catch (Exception e)
+            {
+                LogHelper.Write("XmlToEntity_my异常：" + e.Message);
+                throw;
+            }
         }
     }
 }

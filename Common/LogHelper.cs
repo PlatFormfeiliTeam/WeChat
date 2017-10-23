@@ -11,15 +11,23 @@ namespace WeChat.Common
     {
         public static void Write(string str)
         {
-            FileStream fs = new FileStream(System.Web.HttpContext.Current.Server.MapPath(".") + "\\Log\\log.txt", FileMode.Append);
-            StreamWriter sw = new StreamWriter(fs);
-            //开始写入
-            sw.WriteLine(str + "-----" + DateTime.Now.ToString() + "\r\n");
-            //清空缓冲区
-            sw.Flush();
-            //关闭流
-            sw.Close();
-            fs.Close();
+            try
+            {
+                FileStream fs = new FileStream(@"E:\gwyWeb\WeChat\Log\log.txt", FileMode.Append);
+                StreamWriter sw = new StreamWriter(fs);
+                //开始写入
+                sw.WriteLine(str + "-----" + DateTime.Now.ToString() + "\r\n");
+                //清空缓冲区
+                sw.Flush();
+                //关闭流
+                sw.Close();
+                fs.Close();
+            }
+            catch(Exception e)
+            {
+
+            }
+            
         }
     }
 }

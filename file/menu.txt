@@ -6,27 +6,27 @@
 			{
 				"type":"view",
 				"name":"报关单查询",
-				"url":"http://1w838262n7.imwork.net"
+				"url":"http://www.haiguan.info/OnLineSearch/Gateway/Gatewaystate.aspx"
 			},
 			{
 				"type":"view",
 				"name":"通关单查询",
-				"url":"http://www.soso.com/"
+				"url":"http://epassq.eciq.cn/"
 			},
 			{
 				"type":"view",
 				"name":"空运货物查询",
-				"url":"http://www.soso.com/"
+				"url":"http://query.customs.gov.cn/mnftq/MRoadTransportQuery.aspx"
 			},
 			 {
                "type":"view",
                "name":"海运货物查询",
-               "url":"http://v.qq.com/"
+               "url":"http://query.customs.gov.cn/mnftq/MRoadTransportQuery.aspx "
             },
 			{
 				"type":"view",
 				"name":"HS编码查询",
-				"key":"http://v.qq.com/"
+				"url":"http://v.qq.com/"
 			}]
       },
       {
@@ -34,18 +34,53 @@
            "sub_button":[
            {	
                "type":"view",
-               "name":"业务操作",
+               "name":"现场报关",
+               "url":"http://www.soso.com/"
+            },
+			{	
+               "type":"view",
+               "name":"报关单查询",
+               "url":"http://www.soso.com/"
+            },
+			{	
+               "type":"view",
+               "name":"现场报检",
+               "url":"http://www.soso.com/"
+            },
+			{	
+               "type":"view",
+               "name":"报检单查询",
                "url":"http://www.soso.com/"
             },
             {
                "type":"click",
-               "name":"按钮测试",
-               "key":"V1001_GOOD"
+               "name":"图文信息",
+               "key":"VIEW"
             }]
        },
       {
-           "name":"我的业务",
-            "type":"view",
-            "url":"http://www.soso.com/"
+			
+		   "name":"我的业务",
+           "sub_button":[
+           {	
+               "type":"view",
+               "name":"报关单调阅",
+               "url":"http://www.soso.com/"
+            },
+			{	
+               "type":"view",
+               "name":"订阅清单",
+               "url":"http://www.soso.com/"
+            },
+			{	
+               "type":"view",
+               "name":"详细界面",
+               "url":"http://www.soso.com/"
+            },
+            {
+               "type":"view",
+			   "name":"My业务",
+			   "url":"http://1w838262n7.imwork.net/page/tt.aspx"
+            }]
        }]
  }
