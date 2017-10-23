@@ -34,5 +34,19 @@ namespace WeChat.ModelBusi
                 return db.QuerySignle(sql);
             }
         }
+
+        public static DataTable getHsCodeInfoDetail(string id)
+        {
+            using (DBSession db = new DBSession(true))
+            {
+                string sql = @"select (SELECT name from base_declproductunit where code =  t.LEGALUNIT) as LEGALUNITNAME
+                                    ,(SELECT name from base_declproductunit where code =  t.SECONDUNIT) as SECONDUNITNAME
+                                    ,HSCODE||EXTRACODE AS HSCODEEXTRACODE 
+                                    ,t.name,t.HSCODE,t.EXTRACODE,t.LEGALUNIT,t.SECONDUNIT,t.elements,t.FAVORABLERATE
+                                from BASE_COMMODITYHS t where t.id='{0}' and t.yearid=(select id from cusdoc.base_year where kind=11 and customarea=2300 and enabled=1)";
+                sql = string.Format(sql, id);
+                return db.QuerySignle(sql);
+            }
+        }
     }
 }
