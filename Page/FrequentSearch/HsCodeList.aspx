@@ -32,6 +32,9 @@
         .bar-nav~.content{
             top:7rem;
         }
+        .search-input input{
+            padding:.5rem;
+        }
         /*.list-group .item-inner:after{
             background-color:gray;
         }*/
