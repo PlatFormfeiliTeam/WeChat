@@ -14,7 +14,7 @@
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
     <style>
          body,html{
-            font-size:14px;
+            font-size:16px;
         }
         .bar{
             height:6rem;

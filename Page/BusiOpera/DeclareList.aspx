@@ -14,33 +14,26 @@
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
     <style>
-        body,html{
-            font-size:14px;
-        }
-        page-infinite-scroll-bottom .bar{
-            height:6rem;
-        }
-        .button{
-            height:2.2em;
-            font-size:.85rem;
-        }
-        .button.button-fill{
-            line-height:2.2em;
-        }
-        .list-block{
-            margin:.3rem 0;
-        }
         .bar input[type=search]{
-            height:2rem;
+             margin:.2rem 0;
         }
-        .bar-nav~.content{
-            top:7rem;
+        .bar .button {
+            top:0;
         }
-        .search-input input{
-            padding:.5rem;
+        .bar-nav ~ .content {
+            top: 5rem;
         }
-        .bar-tab{
-            height:2.8rem;
+        #div_list .list-block{
+            font-size:14px;
+            margin:.2rem 0;
+        }
+        #div_list .list-block .item-content{
+            height:1.3rem;
+            min-height:1.3rem;
+        }
+        #div_list .list-block .item-inner{
+            height:1.3rem;
+            min-height:1.3rem;
         }
     </style>
 
@@ -52,12 +45,12 @@
             $(document).on('click', '.open-tabs-modal', function () {
                 $.modal({
                     title: '更多查询',
-                    text: '<div class="list-block">' +
+                    text: '<div class="list-block" style="margin:0;">' +
                               '<ul>' +
                                 '<li>' +
                                   '<div class="item-content">' +
                                     '<div class="item-inner">' +
-                                      '<div class="item-title label">业务类型</div>' +
+                                      //'<div class="item-title label">业务类型</div>' +
                                       '<div class="item-input"><input type="text" placeholder="选择业务类型" id="picker_busitype" readonly/></div>' +
                                     '</div>' +
                                   '</div>' +
@@ -65,7 +58,7 @@
                                 '<li>' +
                                   '<div class="item-content">' +
                                     '<div class="item-inner">' +
-                                      '<div class="item-title label">删改单</div>' +
+                                     // '<div class="item-title label">删改单</div>' +
                                       '<div class="item-input"><input type="text" placeholder="选择删改单" id="picker_modifyflag" readonly/></div>' +
                                     '</div>' +
                                   '</div>' +
@@ -73,7 +66,7 @@
                                 '<li>' +
                                   '<div class="item-content">' +
                                     '<div class="item-inner">' +
-                                      '<div class="item-title label">海关状态</div>' +
+                                     // '<div class="item-title label">海关状态</div>' +
                                       '<div class="item-input"><input type="text" placeholder="选择海关状态" id="picker_customsstatus" readonly/></div>' +
                                     '</div>' +
                                   '</div>' +
@@ -81,6 +74,12 @@
                               '</ul>' +
                             '</div>',
                     buttons: [
+                     {
+                         text: '确认',
+                         onClick: function () {
+                             //$.alert('You clicked first button!')
+                         }
+                     },
                      {
                          text: '重置',
                          onClick: function () {
@@ -201,6 +200,47 @@
                 });
             });
 
+            $("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念    
+
+                //var predeclcode = e.currentTarget.id;
+                //alert(predeclcode);
+
+                var buttons1 = [
+                    {
+                        text: '请选择',
+                        label: true
+                    },
+                    {
+                        text: '关联报关单',
+                        bold: true,
+                        color: 'danger',
+                        onClick: function () {
+                            $.alert("你选择了“关联报关单“");
+                        }
+                    },
+                    {
+                        text: '删改单维护',
+                        onClick: function () {
+                            $.alert("你选择了“删改单维护“");
+                        }
+                    },
+                    {
+                        text: '报关单调阅',
+                        onClick: function () {
+                            $.alert("你选择了“报关单调阅“");
+                        }
+                    }
+                ];
+                var buttons2 = [
+                  {
+                      text: '取消',
+                      bg: 'danger'
+                  }
+                ];
+                var groups = [buttons1, buttons2];
+                $.actions(groups);
+            });
+
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
             function loaddata(itemsPerLoad, lastIndex) {
@@ -218,7 +258,7 @@
 
                         var tb = ""; 
                         for (var i = 0; i < obj.length; i++) {
-                            tb = '<div class="list-block">'
+                            tb = '<div class="list-block" id="' + obj[i]["CODE"] + '">'
                                     + '<ul>'
                                         + '<li class="item-content">'
                                              + '<div class="item-inner row">'
@@ -264,6 +304,7 @@
                     }
                 });
             }
+
         });
 
 
@@ -305,24 +346,16 @@
             <header class="bar bar-nav">
                 <div class="search-input">                    
                     <div class="row"> 
-                        <label style="float:left; width:25%; margin-left:4%; height:2rem; padding-top:.8rem">报关单号：</label>
-                        <input style="float:left; width:70%;padding:.5rem; " type="search" id='txt_declcode' placeholder='请输入18位或9位报关单号...'/>
-                        <%--<div class="col-100"><input type="search" id='txt_hscode' placeholder='请输入18位或9位报关单号...'/></div>--%>
+                        <div class="col-100"><input type="search" id='txt_declcode' placeholder='请输入18位或9位报关单号...'/></div>
                     </div>
                     <div class="row">
-                        <div style="float:left; width:25%; margin-left:4%; height:2rem; padding-top:.8rem">申报日期：</div>
-                        <div style="float:left; width:28%;"><input type="search" id='txt_startdate' placeholder='起始日期'/></div>
-                        <div style="float:left; width:3%; height:2rem; padding-top:.8rem;margin-left:1%;margin-right:1%;">~</div>
-                        <div style="float:left; width:28%;"><input type="search" id='txt_enddate' placeholder='结束日期'/></div>                        
-                        <div style="float:left; width:9%; margin-left:1%;"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.65rem;color:gray;">&#xe6ca;</i></a></div>
-
-                        <%--<div class="col-40"><input type="search" id='txt_startdate' placeholder='申报起始日期'/></div>
-                        <div class="col-10"></div>
+                        <div class="col-40"><input type="search" id='txt_startdate' placeholder='申报起始日期'/></div>
+                        <div class="col-5">~</div>
                         <div class="col-40"><input type="search" id='txt_enddate' placeholder='申报结束日期'/></div>
-                        <div class="col-10"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>--%>
+                        <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
                     </div>                    
                 </div>                
-                <a href="#" id="search_a" class="open-preloader-title button button-fill"><span class="icon icon-search"></span>&nbsp;查询</a>   
+                <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>   
             </header>
 
             <%--工具栏 --%>
