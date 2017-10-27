@@ -51,7 +51,7 @@
                                   '<div class="item-content">' +
                                     '<div class="item-inner">' +
                                       //'<div class="item-title label">业务类型</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择业务类型" id="picker_busitype" readonly/></div>' +
+                                      '<div class="item-input"><input type="text" placeholder="选择业务类型" id="picker_busitype" value="' + $("#txt_busitype").val() + '" readonly/></div>' +
                                     '</div>' +
                                   '</div>' +
                                 '</li>' +
@@ -59,7 +59,7 @@
                                   '<div class="item-content">' +
                                     '<div class="item-inner">' +
                                      // '<div class="item-title label">删改单</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择删改单" id="picker_modifyflag" readonly/></div>' +
+                                      '<div class="item-input"><input type="text" placeholder="选择删改单" id="picker_modifyflag" value="' + $("#txt_modifyflag").val() + '" readonly/></div>' +
                                     '</div>' +
                                   '</div>' +
                                 '</li>' +
@@ -67,7 +67,7 @@
                                   '<div class="item-content">' +
                                     '<div class="item-inner">' +
                                      // '<div class="item-title label">海关状态</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择海关状态" id="picker_customsstatus" readonly/></div>' +
+                                      '<div class="item-input"><input type="text" placeholder="选择海关状态" id="picker_customsstatus" value="' + $("#txt_customsstatus").val() + '" readonly/></div>' +
                                     '</div>' +
                                   '</div>' +
                                 '</li>' +
@@ -75,15 +75,26 @@
                             '</div>',
                     buttons: [
                      {
-                         text: '确认',
+                         text: '确认', bold: true,
                          onClick: function () {
-                             //$.alert('You clicked first button!')
+                             $("#txt_busitype").val($("#picker_busitype").val());
+                             $("#txt_modifyflag").val($("#picker_modifyflag").val());
+                             $("#txt_customsstatus").val($("#picker_customsstatus").val());
+                             //select();//暂时不要用，默认点查询按钮才查询
                          }
                      },
                      {
-                         text: '重置',
+                         text: '取消', bold: true,
+                         onClick: function () { }
+                     },
+                     {
+                         text: '重置', bold: true,
                          onClick: function () {
-                             //$.alert('You clicked first button!')
+                             $("#txt_declcode").val(""); $("#txt_startdate").val(""); $("#txt_enddate").val("");
+
+                             $("#txt_busitype").val(""); $("#picker_busitype").val("")
+                             $("#txt_modifyflag").val(""); $("#picker_modifyflag").val("");
+                             $("#txt_customsstatus").val(""); $("#picker_customsstatus").val("");
                          }
                      }
                     ]
@@ -109,7 +120,7 @@
                     cols: [
                       {
                           textAlign: 'center',
-                          values: ['未改单完成', '未删单完成', '改单完成', '删单完成']
+                          values: ['正常', '删单', '改单', '改单完成']
                       }
                     ]
                 });
@@ -135,6 +146,10 @@
             var lastIndex = 0;//$('.list-block').length;//.list-container li       
 
             $(document).on('click', '.open-preloader-title', function () {
+                select();
+            });
+
+            function select() {
                 $.showPreloader('加载中...');
                 setTimeout(function () {
                     //首次查询需要置为初始值
@@ -161,7 +176,7 @@
 
                     $.hidePreloader();
                 }, 500);
-            });
+            }
 
             //无限滚动
             $(document).on("pageInit", "#page-infinite-scroll-bottom", function (e, id, page) {
@@ -243,13 +258,14 @@
 
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
-            function loaddata(itemsPerLoad, lastIndex) {
+            function loaddata(itemsPerLoad, lastIndex) {                
                 $.ajax({
                     type: "post", //要用post方式                 
                     url: "DeclareList.aspx/BindList",//方法所在页面和方法名
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: "{'declcode':'" + $("#txt_declcode").val() + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
+                        + "','busitype':'" + $("#txt_busitype").val() + "','modifyflag':'" + $("#txt_modifyflag").val() + "','customsstatus':'" + $("#txt_customsstatus").val()
                         + "','start':" + lastIndex + ",'itemsPerLoad':" + itemsPerLoad + "}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
@@ -307,7 +323,6 @@
 
         });
 
-
         function getname(key, value) {
             var str = "";
             if (key == "BUSITYPE") {
@@ -335,7 +350,7 @@
 
             return str;
         }
-        
+               
     </script>
 </head>
 <body>
@@ -354,7 +369,8 @@
                         <div class="col-40"><input type="search" id='txt_enddate' placeholder='申报结束日期'/></div>
                         <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
                     </div>                    
-                </div>                
+                </div>  
+                <input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/>  <input type="hidden" id='txt_customsstatus'/>                
                 <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>   
             </header>
 
