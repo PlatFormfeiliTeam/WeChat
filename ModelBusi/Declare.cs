@@ -76,19 +76,16 @@ namespace WeChat.ModelBusi
             }
         }
 
-//        public static DataTable getHsCodeInfoDetail(string id)
-//        {
-//            using (DBSession db = new DBSession(true))
-//            {
-//                string sql = @"select (SELECT name from base_declproductunit where code =  t.LEGALUNIT) as LEGALUNITNAME
-//                                    ,(SELECT name from base_declproductunit where code =  t.SECONDUNIT) as SECONDUNITNAME
-//                                    ,HSCODE||EXTRACODE AS HSCODEEXTRACODE 
-//                                    ,t.name,t.HSCODE,t.EXTRACODE,t.LEGALUNIT,t.SECONDUNIT,t.elements,t.FAVORABLERATE,t.VATRATE,t.EXPORTREBATRATE,t.GENERALRATE 
-//                                    ,t.CUSTOMREGULATORY,t.INSPECTIONREGULATORY   
-//                                from BASE_COMMODITYHS t where t.id='{0}' and t.yearid=(select id from cusdoc.base_year where kind=11 and customarea=2300 and enabled=1)";
-//                sql = string.Format(sql, id);
-//                return db.QuerySignle(sql);
-//            }
-//        }
+        public static int saveModifyFlag(string predelcode, int modifyflag)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "update list_declaration set modifyflag={1} where code='{0}'";
+                sql = string.Format(sql, predelcode, modifyflag);
+                //return db.ExecuteSignle(sql);
+                return 1;
+            }
+        }
+
     }
 }
