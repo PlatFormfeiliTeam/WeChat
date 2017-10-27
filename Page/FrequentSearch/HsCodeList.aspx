@@ -13,6 +13,9 @@
     <%--<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">--%>
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
     <style>
+         body,html{
+            font-size:16px;
+        }
         .bar{
             height:6rem;
         }
@@ -32,6 +35,12 @@
         .bar-nav~.content{
             top:7rem;
         }
+        .search-input input{
+            padding:.5rem;
+        }
+        /*.list-group .item-inner:after{
+            background-color:gray;
+        }*/
     </style>
     
     <script type="text/javascript">
@@ -42,7 +51,7 @@
         var lastIndex = 0;//$('.list-block').length;//.list-container li        
 
         $(function () {
-            FastClick.attach(document.body);
+            
             //----------------------------------------------------------------------------------------------------------------------------------zepo
             $(document).on('click', '.open-preloader-title', function () {
                 $.showPreloader('加载中...');
@@ -127,9 +136,17 @@
                      success: function (data) {
                          var obj = eval("(" + data.d + ")");//将字符串转为json
 
+                         var obj_FAVORABLERATE = obj[0]["FAVORABLERATE"] == null ? "" : obj[0]["FAVORABLERATE"];
+                         var obj_VATRATE = obj[0]["VATRATE"] == null ? "" : obj[0]["VATRATE"];
+                         var obj_EXPORTREBATRATE = obj[0]["EXPORTREBATRATE"] == null ? "" : obj[0]["EXPORTREBATRATE"];
+                         var obj_GENERALRATE = obj[0]["GENERALRATE"] == null ? "" : obj[0]["GENERALRATE"];
+                         var obj_CUSTOMREGULATORY = obj[0]["CUSTOMREGULATORY"] == null ? "" : obj[0]["CUSTOMREGULATORY"];
+                         var obj_INSPECTIONREGULATORY = obj[0]["INSPECTIONREGULATORY"] == null ? "" : obj[0]["INSPECTIONREGULATORY"];
+
+
                          strconHTML = '<div class="list-block contacts-block">'
                                             +'<div class="list-group">'
-                                                +'<ul>'       
+                                                + '<ul>'  // style="background-color:#DFF0D8;"     
                                                     + '<li><div class="item-content"><div class="item-inner"><div class="item-title">HS编码：' + obj[0]["HSCODEEXTRACODE"] + '</div></div></div></li>'
                                                     + '<li><div class="item-content"><div class="item-inner"><div class="item-title">商品名称：' + obj[0]["NAME"] + '</div></div></div></li>'
                                                     + '<li><div class="item-content"><div class="item-inner"><div class="item-title">计量单位：' + obj[0]["LEGALUNIT"] + '/' + obj[0]["LEGALUNITNAME"] + '</div></div></div></li>'
@@ -142,7 +159,15 @@
                                     + '</div>';
                          strconHTML += '<div class="card">'
                                             + '<div class="card-header">二，进出口税率</div>'
-                                            + '<div class="card-content"><div class="card-content-inner"></div></div>'
+                                            + '<div class="card-content"><div class="card-content-inner">最惠率：' + obj_FAVORABLERATE + '<br/>增值税率：' + obj_VATRATE + '<br/>退税率：' + obj_EXPORTREBATRATE + '<br/>普通：' + obj_GENERALRATE + '</div></div>'
+                                    + '</div>';
+                         strconHTML += '<div class="card">'
+                                            + '<div class="card-header">三，监管条件</div>'
+                                            + '<div class="card-content"><div class="card-content-inner">' + obj_CUSTOMREGULATORY + '</div></div>'
+                                    + '</div>';
+                         strconHTML += '<div class="card">'
+                                            + '<div class="card-header">四，检验检疫类别</div>'
+                                            + '<div class="card-content"><div class="card-content-inner">' + obj_INSPECTIONREGULATORY + '</div></div>'
                                     + '</div>';
  
                      },
@@ -161,8 +186,6 @@
                                      '</div>' +
                                  '</div>';               
                  $.popup(popupHTML);
-
-                 //$.popup('.popup-detail');
             });
 
             //$("#div_list").on('touchend', '.item-link', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念
@@ -239,53 +262,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Popup -->
-    <%--<div class="popup popup-detail" id="div_detail">
-        <div class="content" data-type='native'> 
-
-            <div class="list-block contacts-block" >
-                <div class="list-group">
-                    <ul>       
-                        <li><div class="item-content"><div class="item-inner"><div class="item-title">9803009000</div></div></div></li>
-                        <li><div class="item-content"><div class="item-inner"><div class="item-title">其他定制型软件</div></div></div></li>
-                        <li><div class="item-content"><div class="item-inner"><div class="item-title">计量单位：006/套</div></div></div></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">一，申报要素</div>
-                <div class="card-content">
-                  <div class="card-content-inner">
-                     1:品名;2:织造方法（针织或钩编）;3:种类（防风大衣、短大衣、斗篷等）;4:类别（男式）;5:成分含量;6:品牌;7:货号;
-                  </div>
-                </div>
-                <div class="card-footer">卡脚</div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">二，进出口税率</div>
-                <div class="card-content">
-                  <div class="card-content-inner">
-                    
-                  </div>
-                </div>
-                <div class="card-footer">卡脚</div>
-            </div>
-
-            
-
-            <div class="content-padded grid-demo">  
-                <div class="row"><div class="col-100">9803009000</div></div>                
-                <div class="row"><div class="col-100">其他定制型软件</div></div>               
-                <div class="row"><div class="col-100">计量单位：006/套</div></div>
-            </div>
-
-            <div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>     
-        </div>
-    </div>--%>
-    
+   
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
     <%--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/??sm.min.js,sm-extend.min.js' charset='utf-8'></script>--%>
 </body>
