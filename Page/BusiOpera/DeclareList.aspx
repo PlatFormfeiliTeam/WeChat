@@ -215,45 +215,85 @@
                 });
             });
 
-            $("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念    
+            $("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
 
-                //var predeclcode = e.currentTarget.id;
-                //alert(predeclcode);
+                $("#div_list .list-block ul").css('background-color', '#fff');
+                $(this).children("ul").css('background-color', '#C1DDF1');               
+            });
+
+            $("#ModifyEdit_a").click(function () {
+                var predelcode = "";
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        predelcode = $(this)[0].id;
+                    }
+                });
+                if (predelcode == "") {
+                    $.toast("请选择需要维护的记录");
+                    return;
+                }
 
                 var buttons1 = [
                     {
-                        text: '请选择',
+                        text: '<font style="font-weight:800">删改单维护，请选择</font>',
                         label: true
                     },
                     {
-                        text: '关联报关单',
-                        bold: true,
-                        color: 'danger',
+                        text: '删单', bold: true, //color: 'danger',
                         onClick: function () {
-                            $.alert("你选择了“关联报关单“");
+                            $.alert("你选择了“删单“");
                         }
                     },
                     {
-                        text: '删改单维护',
+                        text: '改单', bold: true,
                         onClick: function () {
-                            $.alert("你选择了“删改单维护“");
+                            $.alert("你选择了“改单“");
                         }
                     },
                     {
-                        text: '报关单调阅',
+                        text: '改单完成', bold: true,
                         onClick: function () {
-                            $.alert("你选择了“报关单调阅“");
+                            $.alert("你选择了“改单完成“");
                         }
-                    }
-                ];
+                    }];
                 var buttons2 = [
                   {
-                      text: '取消',
-                      bg: 'danger'
+                      text: '取消',bg: 'danger'
                   }
                 ];
                 var groups = [buttons1, buttons2];
                 $.actions(groups);
+           
+
+
+            });
+
+            $("#Ass_a").click(function () {
+                var predelcode = "";
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        predelcode = $(this)[0].id;
+                    }
+                });
+                if (predelcode == "") {
+                    $.toast("请选择需要关联的记录");
+                    return;
+                }
+
+            });
+
+            $("#FileConsult_a").click(function () {
+                var predelcode = "";
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        predelcode = $(this)[0].id;
+                    }
+                });
+                if (predelcode == "") {
+                    $.toast("请选择需要调阅的记录");
+                    return;
+                }
+
             });
 
             $.init();
@@ -376,19 +416,19 @@
 
             <%--工具栏 --%>
             <nav class="bar bar-tab">
-              <a class="tab-item external active" href="#">
-                <span class="icon icon-menu"></span>
-                <span class="tab-label">关联报关单信息</span>
-              </a>
-              <a class="tab-item external" href="#">
-                <span class="icon icon-edit"></span>
-                <span class="tab-label">删改单维护</span>
-                <%--<span class="badge">2</span>--%>
-              </a>
-              <a class="tab-item external" href="#">
-                <span class="icon icon-message"></span>
-                <span class="tab-label">报关单调阅</span>
-              </a>
+                <a class="tab-item external" href="#" id="Ass_a"><%--active--%>
+                    <span class="icon icon-menu"></span>
+                    <span class="tab-label">关联报关单信息</span>
+                </a>
+                <a class="tab-item external" href="#" id="ModifyEdit_a">
+                    <span class="icon icon-edit"></span>
+                    <span class="tab-label">删改单维护</span>
+                    <%--<span class="badge">2</span>--%>
+                </a>
+                <a class="tab-item external" href="#" id="FileConsult_a">
+                    <span class="icon icon-message"></span>
+                    <span class="tab-label">报关单调阅</span>
+                    </a>
             </nav>
 
            <%--body --%>
