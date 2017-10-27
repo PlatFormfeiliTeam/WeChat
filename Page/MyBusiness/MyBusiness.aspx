@@ -166,13 +166,14 @@
             //FastClick.attach(document.body);
             //查询
             $(document).on('click', '#button_one', function () {
+                $("#busicontent").html("");
                 $.showPreloader('加载中...');
                 lastIndex = 0;
                 $('.infinite-scroll-preloader').show();
-                //$.attachInfiniteScroll($('.infinite-scroll'));
+                $.attachInfiniteScroll($('.infinite-scroll'));
                 setTimeout(function () {
                     loadData(itemsPerLoad, lastIndex);//加载数据
-                    lastIndex = $('#busicontent list-block').length;//获取数据条数
+                    lastIndex = $('#busicontent .list-block').length;//获取数据条数
                     $.refreshScroller();//刷新滚动条
                     $('.infinite-scroll-bottom').scrollTop(0);//滚动条置顶
 
@@ -187,44 +188,46 @@
                 $.hidePreloader();
             })
 
-            //无限滚动 注册'infinite'事件处理函数
-            $(document).on('infinite', '#router1', function () {
-                // 如果正在加载，则退出
-                if (loading) return;
-                // 设置flag
-                loading = true;
-                //显示加载栏
-                $('.infinite-scroll-preloader').show();
-                // 模拟1s的加载过程
-                setTimeout(function () {
-                    // 重置加载flag
-                    loading = false;
-                    if (lastIndex >= maxItems) {
-                        // 加载完毕，则注销无限加载事件，以防不必要的加载
-                        $.detachInfiniteScroll($('.infinite-scroll'));
-                        // 删除加载提示符
-                        $('.infinite-scroll-preloader').remove();
-                        return;
-                    }
-                    // 添加新条目
-                    loadData(itemsPerLoad, lastIndex);
+            $(document).on("pageInit", "#router1", function (e, id, page) {
+                //无限滚动 注册'infinite'事件处理函数
+                $(page).on('infinite',  function () {
+                    // 如果正在加载，则退出
+                    if (loading) return;
+                    // 设置flag
+                    loading = true;
+                    //显示加载栏
+                    $('.infinite-scroll-preloader').show();
+                    // 模拟1s的加载过程
+                    setTimeout(function () {
+                        // 重置加载flag
+                        loading = false;
+                        if (lastIndex >= maxItems || lastIndex % itemsPerLoad != 0) {
+                            // 加载完毕，则注销无限加载事件，以防不必要的加载
+                            $.detachInfiniteScroll($('.infinite-scroll'));
+                            // 删除加载提示符
+                            $('.infinite-scroll-preloader').hide();
+                            return;
+                        }
+                        // 添加新条目
+                        loadData(itemsPerLoad, lastIndex);
                         
-                    if (lastIndex == $('#busicontent list-block').length) {
-                        $.detachInfiniteScroll($('.infinite-scroll'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
-                        $('.infinite-scroll-preloader').hide();
+                        if (lastIndex == $('#busicontent .list-block').length) {
+                            $.detachInfiniteScroll($('.infinite-scroll'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
+                            $('.infinite-scroll-preloader').hide();
 
-                        $.toast("已经加载到最后");
-                        return;
-                    }
-                    // 更新最后加载的序号
-                    lastIndex = $('#busicontent list-block').length;
-                    //容器发生改变,如果是js滚动，需要刷新滚动
-                    $.refreshScroller();
-                }, 1000);
-                $('.infinite-scroll-preloader').hide();
-            });
+                            $.toast("已经加载到最后");
+                            return;
+                        }
+                        // 更新最后加载的序号
+                        lastIndex = $('#busicontent .list-block').length;
+                        //容器发生改变,如果是js滚动，需要刷新滚动
+                        $.refreshScroller();
+                    }, 1000);
+                });
+            })
+            $.init();
+
         })
-
     </script>
 </head>
 <body>
@@ -259,9 +262,9 @@
             <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100" id="scroll-bottom-one">
                 <div id ="busicontent"></div>
                 <!-- 加载提示符 -->
-                <div class="infinite-scroll-preloader">
-                <div class="preloader"></div>
-          </div>
+                <div class="infinite-scroll-preloader"> 
+                    <div class="preloader"></div>
+                </div>
             </div>
         </div>
         
