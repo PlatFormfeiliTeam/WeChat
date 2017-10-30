@@ -64,15 +64,14 @@ namespace WeChat.Page.BusiOpera
         }
 
 
-        //[WebMethod]
-        //public static string BindListDetail(string id)
-        //{
-        //    IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
-        //    iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-        //    DataTable dt = HsCode.getHsCodeInfoDetail(id);
-        //    var json = JsonConvert.SerializeObject(dt, iso);
-        //    return json;
-        //}
+        [WebMethod]
+        public static string ModifySave(string predelcode, int modifyflag)
+        {
+            int i = Declare.saveModifyFlag(predelcode, modifyflag);
+            var jsonstr = "false";
+            if (i > 0) { jsonstr = "success"; }
+            return jsonstr;
+        }
 
 
     }

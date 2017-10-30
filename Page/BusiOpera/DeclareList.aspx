@@ -142,7 +142,7 @@
             //---------------------------------------------------------------------------------------------------------------------
             var loading = false;
             var itemsPerLoad = 10;// 每次加载添加多少条目                
-            var maxItems = 20;// 最多可加载的条目
+            var maxItems = 100;// 最多可加载的条目
             var lastIndex = 0;//$('.list-block').length;//.list-container li       
 
             $(document).on('click', '.open-preloader-title', function () {
@@ -221,6 +221,7 @@
                 $(this).children("ul").css('background-color', '#C1DDF1');               
             });
 
+            //删改单维护
             $("#ModifyEdit_a").click(function () {
                 var predelcode = "";
                 $("#div_list .list-block").each(function () {
@@ -241,31 +242,28 @@
                     {
                         text: '删单', bold: true, //color: 'danger',
                         onClick: function () {
-                            $.alert("你选择了“删单“");
+                            modifySave(predelcode, "删单", 1);
                         }
                     },
                     {
                         text: '改单', bold: true,
                         onClick: function () {
-                            $.alert("你选择了“改单“");
+                            modifySave(predelcode, "改单", 2);
                         }
                     },
                     {
                         text: '改单完成', bold: true,
                         onClick: function () {
-                            $.alert("你选择了“改单完成“");
+                            modifySave(predelcode, "改单完成", 3);
                         }
                     }];
                 var buttons2 = [
-                  {
-                      text: '取消',bg: 'danger'
-                  }
+                          {
+                              text: '取消',bg: 'danger'
+                          }
                 ];
                 var groups = [buttons1, buttons2];
                 $.actions(groups);
-           
-
-
             });
 
             $("#Ass_a").click(function () {
@@ -390,6 +388,37 @@
 
             return str;
         }
+
+        function modifySave(predelcode, modifystr, modifyflag) {
+
+            $.confirm('请确认是否保存为 <font color=blue>' + modifystr + '</font>?',
+                function () {//OK事件
+                    $.ajax({
+                        type: "post", //要用post方式                 
+                        url: "DeclareList.aspx/ModifySave",//方法所在页面和方法名
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: "{'predelcode':'" + predelcode + "','modifyflag':" + modifyflag+ "}",
+                        cache: false,
+                        async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                        success: function (data) {
+                            if (data.d == "success") {
+                                $.toast("保存成功");
+                            } else {
+                                $.toast("保存失败");
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                            //alert(XMLHttpRequest.status);
+                            //alert(XMLHttpRequest.readyState);
+                            //alert(textStatus);
+                            alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                        }
+                    });
+                },
+                function () { }//cancel事件
+              );
+        }
                
     </script>
 </head>
@@ -428,7 +457,7 @@
                 <a class="tab-item external" href="#" id="FileConsult_a">
                     <span class="icon icon-message"></span>
                     <span class="tab-label">报关单调阅</span>
-                    </a>
+                </a>
             </nav>
 
            <%--body --%>
