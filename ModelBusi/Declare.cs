@@ -87,5 +87,11 @@ namespace WeChat.ModelBusi
             }
         }
 
+        public static string FileConsult(string predelcode)
+        {
+            return "";
+
+        }
+
     }
 }

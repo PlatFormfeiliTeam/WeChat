@@ -216,9 +216,12 @@
             });
 
             $("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
-
-                $("#div_list .list-block ul").css('background-color', '#fff');
-                $(this).children("ul").css('background-color', '#C1DDF1');               
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    $(this).children("ul").css('background-color', '#fff');
+                } else {
+                    $("#div_list .list-block ul").css('background-color', '#fff');
+                    $(this).children("ul").css('background-color', '#C1DDF1');
+                }
             });
 
             //删改单维护
@@ -227,6 +230,7 @@
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         predelcode = $(this)[0].id;
+                        //alert($(this).children("ul").children().eq(2).children("div").children().eq(2).text());
                     }
                 });
                 if (predelcode == "") {
@@ -266,6 +270,7 @@
                 $.actions(groups);
             });
 
+            //关联报关单查询
             $("#Ass_a").click(function () {
                 var predelcode = "";
                 $("#div_list .list-block").each(function () {
@@ -280,6 +285,7 @@
 
             });
 
+            //报关单调阅
             $("#FileConsult_a").click(function () {
                 var predelcode = "";
                 $("#div_list .list-block").each(function () {
@@ -292,6 +298,38 @@
                     return;
                 }
 
+                var filesrc = "";
+                $.ajax({
+                    type: "post", //要用post方式                 
+                    url: "DeclareList.aspx/FileConsult",//方法所在页面和方法名
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'predelcode':'" + predelcode + "'}",
+                    cache: false,
+                    async: false,
+                    success: function (data) {//http://223.68.174.213:8383/file/61/2017-11-01/20171101131613646_1abd4738-2cce-4ff4-9b7d-3e04052091e6.pdf
+                        filesrc = '<embed  id="pdf" width="100%" height="80%" src="http://223.68.174.213:8383/file/61/2017-11-01/20171101131613646_1abd4738-2cce-4ff4-9b7d-3e04052091e6.pdf"></embed>';//data.d;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                        //alert(XMLHttpRequest.status);
+                        //alert(XMLHttpRequest.readyState);
+                        //alert(textStatus);
+                        alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                    }
+                });
+
+
+                var popupHTML = '<div class="popup">' +
+                                    //'<header class="bar bar-nav">' +
+                                    //    '<button class="close-popup button button-link button-nav pull-left"><span class="icon icon-left"></span>返回</button>' +
+                                    //    '<h1 class="title">报关单调阅</h1>' +
+                                    //'</header>'+
+                                     '<div class="content">' +
+                                             filesrc +
+                                            '<div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
+                                     '</div>' +
+                                 '</div>';
+                $.popup(popupHTML);
             });
 
             $.init();
@@ -404,6 +442,7 @@
                         success: function (data) {
                             if (data.d == "success") {
                                 $.toast("保存成功");
+                                $("#div_list #" + predelcode).children("ul").children().eq(2).children("div").children().eq(2).text(modifystr);
                             } else {
                                 $.toast("保存失败");
                             }

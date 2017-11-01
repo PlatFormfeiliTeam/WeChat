@@ -19,6 +19,7 @@ namespace WeChat.Page.BusiOpera
 
         }
 
+        //查询绑定
         [WebMethod]
         public static string BindList(string declcode, string startdate, string enddate, string busitype, string modifyflag, string customsstatus, int start, int itemsPerLoad)
         {
@@ -64,6 +65,7 @@ namespace WeChat.Page.BusiOpera
         }
 
 
+        //删改单维护
         [WebMethod]
         public static string ModifySave(string predelcode, int modifyflag)
         {
@@ -72,7 +74,14 @@ namespace WeChat.Page.BusiOpera
             if (i > 0) { jsonstr = "success"; }
             return jsonstr;
         }
-
+        
+        //报关单调阅
+        [WebMethod]
+        public static string FileConsult(string predelcode)
+        {
+            var jsonstr = "";
+            return jsonstr;
+        }
 
     }
 }
