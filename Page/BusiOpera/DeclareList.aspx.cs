@@ -64,6 +64,16 @@ namespace WeChat.Page.BusiOpera
             return code;
         }
 
+        //关联报关单
+        [WebMethod]
+        public static string AssCon(string predelcode)
+        {
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+            DataTable dt= Declare.AssCon(predelcode);
+            var json = JsonConvert.SerializeObject(dt, iso);
+            return json;
+        }
 
         //删改单维护
         [WebMethod]

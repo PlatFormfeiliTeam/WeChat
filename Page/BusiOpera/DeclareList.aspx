@@ -283,6 +283,134 @@
                     return;
                 }
 
+                var busitypename_con = $("#div_list #" + predelcode).children("ul").children().eq(0).children("div").children().eq(1).text();
+                if (busitypename_con != "国内出口" && busitypename_con != "国内进口") {
+                    $.toast("请选择国内业务");
+                    return;
+                }
+
+                $.ajax({
+                    type: "post", //要用post方式                 
+                    url: "DeclareList.aspx/AssCon",//方法所在页面和方法名
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'predelcode':'" + predelcode + "'}",
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        var obj = eval("(" + data.d + ")");//将字符串转为json
+
+                        /*var tb_con = "";
+                        tb_con = '<div class="list-block">'
+                                + '<ul>'
+                                    + '<li class="item-content">'
+                                         + '<div class="item-inner row">'
+                                            + '<div class="item-title col-50">' + obj[0]["DECLARATIONCODE"] + '</div>'
+                                            + '<div class="item-title col-33">' + getname("BUSITYPE", obj[0]["BUSITYPE"]) + '</div>'
+                                            + '<div class="item-title col-15">' + obj[0]["TRADEMETHOD"] + '</div>'
+                                        + '</div>'
+                                    + '</li>'
+                                    + '<li class="item-content">'
+                                        + '<div class="item-inner row">'
+                                            + '<div class="item-title col-50">' + obj[0]["CONSIGNEESHIPPERNAME"] + '</div>'
+                                            + '<div class="item-title col-33">' + obj[0]["CONTRACTNO"] + '</div>'
+                                            + '<div class="item-title col-15">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
+                                        + '</div>'
+                                    + '</li>'
+                                    + '<li class="item-content">'
+                                        + '<div class="item-inner row">'
+                                            + '<div class="item-title col-50">' + obj[0]["TRANSNAME"] + '</div>'
+                                            + '<div class="item-title col-33">' + obj[0]["GOODSNUM"] + '/' + obj[0]["GOODSGW"] + '</div>'
+                                            + '<div class="item-title col-15">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
+                                        + '</div>'
+                                    + '</li>'
+                                    + '<li class="item-content">'
+                                        + '<div class="item-inner row">'
+                                            + '<div class="item-title col-50">' + obj[0]["BLNO"] + '</div>'
+                                            + '<div class="item-title col-33">' + obj[0]["CUSNO"] + '</div>'
+                                            + '<div class="item-title col-15">' + obj[0]["CUSTOMSSTATUS"] + '</div>'
+                                        + '</div>'
+                                    + '</li>'
+                                + '</ul>'
+                         + '</div>';
+                         */
+
+                        var buttons1 = [
+                            {
+                                text: '<font style="font-weight:800">关联报关单信息</font>',
+                                label: true
+                            },
+                            {
+                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                        + '<ul>'
+                                           + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">' +
+                                                  '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-50">' + obj[0]["DECLARATIONCODE"] + '</div>'
+                                                    + '<div class="item-title col-33">' + getname("BUSITYPE", obj[0]["BUSITYPE"]) + '</div>'
+                                                    + '<div class="item-title col-15">' + obj[0]["TRADEMETHOD"] + '</div>'
+                                                + '</div>'
+                                           + '</li>'
+                                    + '</ul>'
+                                + '</div>'
+                            },
+                            {
+                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                        + '<ul>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-50">' + obj[0]["CONSIGNEESHIPPERNAME"] + '</div>'
+                                                    + '<div class="item-title col-33">' + obj[0]["CONTRACTNO"] + '</div>'
+                                                    + '<div class="item-title col-15">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                    + '</ul>'
+                                + '</div>'
+                            },
+                            {
+                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                        + '<ul>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-50">' + (obj[0]["TRANSNAME"] == null ? "" : obj[0]["TRANSNAME"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + obj[0]["GOODSNUM"] + '/' + obj[0]["GOODSGW"] + '</div>'
+                                                    + '<div class="item-title col-15">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                    + '</ul>'
+                                + '</div>'
+                            },
+                            {
+                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                        + '<ul>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-50">' + (obj[0]["BLNO"] == null ? "" : obj[0]["BLNO"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + obj[0]["CUSNO"] + '</div>'
+                                                    + '<div class="item-title col-15">' + obj[0]["CUSTOMSSTATUS"] + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                    + '</ul>'
+                                + '</div>'
+                            }
+                        ];
+                        //var buttons2 = [
+                        //            {
+                        //                text: '返回', bg: 'danger'
+                        //            }
+                        //];
+                        var groups = [buttons1];//, buttons2
+                        $.actions(groups);
+
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                        //alert(XMLHttpRequest.status);
+                        //alert(XMLHttpRequest.readyState);
+                        //alert(textStatus);
+                        alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                    }
+                });
+
             });
 
             //报关单调阅
@@ -324,12 +452,12 @@
                                     //    '<button class="close-popup button button-link button-nav pull-left"><span class="icon icon-left"></span>返回</button>' +
                                     //    '<h1 class="title">报关单调阅</h1>' +
                                     //'</header>'+
-                                     '<div class="content">' +
-                                             filesrc +
+                                     ' <div class="content">' +
+                                            filesrc +
                                             '<div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
                                      '</div>' +
                                  '</div>';
-                $.popup(popupHTML);
+                //$.popup(popupHTML);
             });
 
             $.init();
@@ -368,14 +496,14 @@
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
-                                                + '<div class="item-title col-50">' + obj[i]["TRANSNAME"] + '</div>'
+                                                + '<div class="item-title col-50">' + (obj[i]["TRANSNAME"] == null ? "" : obj[i]["TRANSNAME"]) + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>'
                                                 + '<div class="item-title col-15">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
-                                                + '<div class="item-title col-50">' + obj[i]["BLNO"] + '</div>'
+                                                + '<div class="item-title col-50">' + (obj[i]["BLNO"] == null ? "" : obj[i]["BLNO"]) + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["CUSNO"] + '</div>'
                                                 + '<div class="item-title col-15">' + obj[i]["CUSTOMSSTATUS"] + '</div>'
                                             + '</div>'
