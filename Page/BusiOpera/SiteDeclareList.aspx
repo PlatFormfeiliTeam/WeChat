@@ -67,6 +67,7 @@
     <script type="text/javascript">
         $(function () {
             initsearch_condition();
+
             var loading = false;
             var itemsPerLoad = 10;// 每次加载添加多少条目                
             var maxItems = 100;// 最多可加载的条目
@@ -402,8 +403,10 @@
                      {
                          text: '重置', bold: true,
                          onClick: function () {
-                             $("#picker_inout_type").val(""); $("#picker_is_siterep").val(""); $("#picker_busitype").val(""); $("#picker_is_pass").val("");
+                             $("#picker_inout_type").picker("setValue", ["全部"]); $("#picker_is_siterep").picker("setValue", ["仅现场"]);
+                             $("#picker_busitype").picker("setValue", ["全部"]); $("#picker_is_pass").picker("setValue", ["未放行"]);
                              $("#txt_startdate").val(""); $("#txt_enddate").val("");
+                             $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
 
                              //$("input[name='radio_type']").attr('checked', false); $("#txt_morecon").val("");//因每次窗口都是新开的，可以不用置空，置空隐藏值即可
                              $("#txt_radio_type_hidden").val(""); $("#txt_morecon_hidden").val("");
@@ -429,6 +432,7 @@
 
             });
         }
+
     </script>
 
 </head>
@@ -456,21 +460,29 @@
             </header>
 
             <%--工具栏 --%>
-            <%--<nav class="bar bar-tab">
-                <a class="tab-item external active" href="#" id="Ass_a">
-                    <span class="icon icon-menu"></span>
-                    <span class="tab-label">关联报关单信息</span>
+            <nav class="bar bar-tab">
+                <a class="tab-item external" href="#" id="Handover_a"><%--active--%>
+                    <span class="icon icon-friends"></span>
+                    <span class="tab-label">报关单交接</span>
                 </a>
-                <a class="tab-item external" href="#" id="ModifyEdit_a">
-                    <span class="icon icon-edit"></span>
-                    <span class="tab-label">删改单维护</span>
-                    <span class="badge">2</span>
-                </a>
-                <a class="tab-item external" href="#" id="FileConsult_a">
+                <a class="tab-item external" href="#" id="Detail_a">
                     <span class="icon icon-message"></span>
-                    <span class="tab-label">报关单调阅</span>
+                    <span class="tab-label">报关单详细</span>
+                    <%--<span class="badge">2</span>--%>
                 </a>
-            </nav>--%>
+                <a class="tab-item external" href="#" id="Pass_a">
+                    <span class="icon icon-cart"></span>
+                    <span class="tab-label">报关放行</span>
+                </a>
+                <a class="tab-item external" href="#" id="Check_a">
+                    <span class="icon icon-check"></span>
+                    <span class="tab-label">查验标志</span>
+                </a>
+                <a class="tab-item external" href="#" id="Picture_a">
+                    <span class="icon icon-picture"></span>
+                    <span class="tab-label">查验图片</span>
+                </a>
+            </nav>
 
            <%--body --%>
             <div class="content infinite-scroll native-scroll" data-distance="100">

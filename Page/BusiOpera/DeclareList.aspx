@@ -35,6 +35,15 @@
             height:1.3rem;
             min-height:1.3rem;
         }
+
+        /************************************************ 更多查询*********************************/
+        .morediv{
+            width: 98%;
+            left: 1%;
+            right: 1%;
+            margin-left: 0px;
+        }    
+
     </style>
 
     <script type="text/javascript">
@@ -91,13 +100,15 @@
                          text: '重置', bold: true,
                          onClick: function () {
                              $("#txt_declcode").val(""); $("#txt_startdate").val(""); $("#txt_enddate").val("");
+                             $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
 
                              $("#txt_busitype").val(""); $("#picker_busitype").val("")
                              $("#txt_modifyflag").val(""); $("#picker_modifyflag").val("");
                              $("#txt_customsstatus").val(""); $("#picker_customsstatus").val("");
                          }
                      }
-                    ]
+                    ],
+                    extraClass: 'morediv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
 
                 $("#picker_busitype").picker({
@@ -597,7 +608,7 @@
             <header class="bar bar-nav">
                 <div class="search-input">                    
                     <div class="row"> 
-                        <div class="col-100"><input type="search" id='txt_declcode' placeholder='请输入18位或9位报关单号...'/></div>
+                        <div class="col-100"><input type="search" id='txt_declcode' placeholder='请输入18位或后9位报关单号...'/></div>
                     </div>
                     <div class="row">
                         <div class="col-40"><input type="search" id='txt_startdate' placeholder='申报起始日期'/></div>
