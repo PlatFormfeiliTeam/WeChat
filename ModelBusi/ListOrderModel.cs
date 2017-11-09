@@ -63,6 +63,59 @@ namespace WeChat.ModelBusi
             }
         }
 
+
+        public DataTable getDeclPath(string orderCode)
+        {
+            using(DBSession db=new DBSession())
+            {
+                string sql = "select filename,declcode from list_attachment where ordercode='" + orderCode + "' and filetype=61 order by declcode";
+                DataTable dt = db.QuerySignle(sql);
+                return dt;
+            }
+            
+        }
+        public DataSet getOrderDetail(string code)
+        {
+            using(DBSession db=new DBSession())
+            {
+                DataSet ds = new DataSet();
+                //业务信息
+                string sql = @"select lo.code,lo.totalno,lo.divideno,lo.entrusttype,lo.busitype,lo.submittime,lo.submitusername,lo.moendtime,lo.moendname,lo.coendtime,lo.coendname,
+lo.preendtime,lo.preendname,lo.rependtime,lo.rependname,lo.handoverusername,lo.handovertime,lo.siteapplytime,lo.siteapplyusername,lo.sitepasstime,lo.sitepassusername,
+lo.inspmoendtime,lo.inspmoendname,lo.inspcoendtime,lo.inspcoendname,lo.insppreendtime,lo.insppreendname,lo.insprependtime,lo.insprependname,
+lo.insphandoverusername,lo.insphandovertime,lo.inspsiteapplytime,lo.inspsiteapplyusername,lo.inspsitepasstime,lo.inspsitepassusername
+ from list_order lo where lo.code='" + code + "'";
+                DataTable dt1 = db.QuerySignle(sql);
+                dt1.TableName = "OrderTable";
+                ds.Tables.Add(dt1);
+                //报关单信息
+                sql = @" select ld.declarationcode,ld.goodsnum,ld.goodsgw,ld.tradecode,ld.transname,to_char(ld.modifyflag) as modifyflag,ld.customsstatus,
+cbd.name as tradename from list_declaration ld left join cusdoc.base_decltradeway cbd on ld.tradecode=cbd.code
+where ld.ordercode='" + code + "'";
+                DataTable dt2 = db.QuerySignle(sql);
+                dt2.TableName = "DeclTable";
+                ds.Tables.Add(dt2);
+                //报检单信息
+                if (dt1.Rows[0]["entrusttype"].ToString2() == "02" || dt1.Rows[0]["entrusttype"].ToString2() == "03")
+                {
+                    sql = "select li.approvalcode,li.inspectioncode,li.clearancecode,li.modifyflag,li.inspstatus from list_inspection li where li.ordercode='" + code + "'";
+                    DataTable dt3 = db.QuerySignle(sql);
+                    dt3.TableName = "InspTable";
+                    ds.Tables.Add(dt3);
+                }
+                //物流信息
+                if (!string.IsNullOrEmpty(dt1.Rows[0]["totalno"].ToString2()) && !string.IsNullOrEmpty(dt1.Rows[0]["divideno"].ToString2()))
+                {
+                    sql = @"select ll.totalno,ll.divideno,ll.operater,ll.operate_type,ll.operate_result,ll.operate_date from list_logisticsstatus ll 
+where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate_date";
+                    DataTable dt4 = db.QuerySignle(string.Format(sql, dt1.Rows[0]["totalno"], dt1.Rows[0]["divideno"]));
+                    dt4.TableName = "LogisticsTable";
+                    ds.Tables.Add(dt4);
+                }
+                return ds;
+            }
+        }
+
         private string switchValue(string kind, string str)
         {
             str = str.Trim2();
@@ -143,7 +196,7 @@ namespace WeChat.ModelBusi
                         case "全部":
                             break;
                         case "需现场申报":
-                            strWhere += " and ischeck=1 or inspcheck=1";
+                            strWhere += " and HANDOVERTIME is not null";
                             break;
                     }
                     break;

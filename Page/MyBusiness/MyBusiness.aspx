@@ -7,8 +7,12 @@
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css" />
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css" />
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
     <style type="text/css">
         .content-block
         {
@@ -31,20 +35,12 @@
         }
         .row
         {
+            font-size:small;
             overflow:hidden;
-            margin-left:-2%;
             margin-top:0.3rem;
+            margin-left:-2%;
         }
-        .lab
-        {
-            /*font-size:smaller;*/
-            color:white;
-            font-family:"微软雅黑";
-        }
-        .picker-items-col-wrapper
-        {
-            width:12rem;
-        }
+        
         .list-block {
             margin: 0.25rem 0;
         }
@@ -72,15 +68,55 @@
             text-overflow:ellipsis;
             text-align:center;
         }
-        .button
+        .lab
         {
             color:white;
-            border:2px solid white;
-            background-color:#2B79FF;
-            font-size:larger;
             font-family:"微软雅黑";
-            height:1.5rem;
-            line-height:1.3rem;
+            font-size:initial;
+        }
+        .picker-items-col-wrapper
+        {
+            width:12rem;
+        }
+        .button
+        {
+            font-size:larger;
+        }
+       
+        .popup .list_block
+        {
+            margin-top:0.2rem;
+            background-color:white;
+            padding:0.1rem 0rem 0.1rem 0.1rem;
+        }
+        .popup-subscribe .content-block .content-block
+        {
+            background-color:#1D2E3C;
+            padding:0.2rem 0rem 0rem 0rem;
+            color:white;
+        }
+        .popup-subscribe .row
+        {
+            background-color:#456581;
+            border-top:solid 1px white;
+            margin:0rem;
+            font-size:initial;
+            vertical-align:middle;
+            height:2rem;
+            line-height:2rem;
+        }
+        .popup-subscribe .col-33
+        {
+            padding-top:0.2rem;
+        }
+        .popup-subscribe .col-50
+        {
+            margin-left:2%;
+        }
+        .myrow
+        {
+            line-height:2rem;
+            padding-left:4%;
         }
     </style>
 
@@ -92,6 +128,7 @@
         // 每次加载添加多少条目
         var itemsPerLoad = 6;
         var lastIndex = 0;
+        var myPhotoBrowserStandalone;
         //按钮查询
         function loadData(itemsPerLoad, lastIndex) {
             $.ajax({
@@ -116,7 +153,7 @@
                 success: function (data) {
                     var obj = eval("(" + data.d + ")");//将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
-                        var str = '<div class="list-block">' +
+                        var str = '<div class="list-block" id="' + obj[i]["CODE"] + '" ondblclick="subscribe(' + obj[i]["CODE"] + ')">' +
                                     '<ul>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
@@ -150,7 +187,7 @@
                                             '<div class="item-inner">' +
                                                 '<div class="my-title">' + obj[i]["INSPSTATUS"] + '</div>' +
                                                 '<div class="my-after">' + obj[i]["LOGISTICSSTATUS"] + '</div>' +
-                                                '<div class="my-after">海关状态</div>' +
+                                                '<div class="my-after"><a href="#" class="open-detail">详情>></a></div>' +
                                             '</div>' +
                                         '</li>' +
                                     '</ul>' +
@@ -160,7 +197,7 @@
                 }
             });
         }
-
+        //查询
         $(function () {
             $('.infinite-scroll-preloader').hide();
             //FastClick.attach(document.body);
@@ -180,54 +217,442 @@
                     if (lastIndex < itemsPerLoad) {
                         $.detachInfiniteScroll($('.infinite-scroll-bottom'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
                         $('.infinite-scroll-preloader').hide();
-
                         if (lastIndex == 0) { $.toast("没有符合的数据！"); }
                         else { $.toast("已经加载到最后"); }
                     }
-                }, 1000);
+                }, 500);
                 $.hidePreloader();
             })
-
-            $(document).on("pageInit", "#router1", function (e, id, page) {
-                //无限滚动 注册'infinite'事件处理函数
-                $(page).on('infinite',  function () {
-                    // 如果正在加载，则退出
-                    if (loading) return;
-                    // 设置flag
-                    loading = true;
-                    //显示加载栏
-                    $('.infinite-scroll-preloader').show();
-                    // 模拟1s的加载过程
-                    setTimeout(function () {
-                        // 重置加载flag
-                        loading = false;
-                        if (lastIndex >= maxItems || lastIndex % itemsPerLoad != 0) {
-                            // 加载完毕，则注销无限加载事件，以防不必要的加载
-                            $.detachInfiniteScroll($('.infinite-scroll'));
-                            // 删除加载提示符
-                            $('.infinite-scroll-preloader').hide();
-                            return;
-                        }
-                        // 添加新条目
-                        loadData(itemsPerLoad, lastIndex);
-                        
-                        if (lastIndex == $('#busicontent .list-block').length) {
-                            $.detachInfiniteScroll($('.infinite-scroll'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
-                            $('.infinite-scroll-preloader').hide();
-
-                            $.toast("已经加载到最后");
-                            return;
-                        }
-                        // 更新最后加载的序号
-                        lastIndex = $('#busicontent .list-block').length;
-                        //容器发生改变,如果是js滚动，需要刷新滚动
-                        $.refreshScroller();
-                    }, 1000);
-                });
+            
+            
+            //物流状态——按钮切换
+            $(document).on('click', '.iconfont', function () {
+                $("#choudan").hide();
+                $("#zhuanguan").hide();
+                $("#baojian").hide();
+                $("#yunshu").hide();
+                $("#icon_choudan").parent().css('color', '#6D6D72');
+                $("#icon_zhuanguan").parent().css('color', '#6D6D72');
+                $("#icon_baojian").parent().css('color', '#6D6D72');
+                $("#icon_yunshu").parent().css('color', '#6D6D72');
+                $(this).parent().css('color', '#0894EC');
+                var id = $(this).attr("id");
+                id = id.substring(5);
+                $("#" + id).show();
+                //if (encodeURI($(this).html()) == "%EE%98%82") {
+                //    $(this).parent().css('color', 'blue');
+                //}
+                //else {
+                //    $(this).html("&#xe63f;");
+                //}
+                
             })
+            //无限滚动 注册'infinite'事件处理函数
+            $(document).on('infinite', "#router1", function () {
+                // 如果正在加载，则退出
+                if (loading) return;
+                // 设置flag
+                loading = true;
+                //显示加载栏
+                $('.infinite-scroll-preloader').show();
+                // 模拟1s的加载过程
+                setTimeout(function () {
+                    // 重置加载flag
+                    loading = false;
+                    if (lastIndex >= maxItems || lastIndex % itemsPerLoad != 0) {
+                        // 加载完毕，则注销无限加载事件，以防不必要的加载
+                        $.detachInfiniteScroll($('.infinite-scroll'));
+                        // 删除加载提示符
+                        $('.infinite-scroll-preloader').hide();
+                        $.toast("已经加载到最后");
+                        return;
+                    }
+                    // 添加新条目
+                    loadData(itemsPerLoad, lastIndex);
+                        
+                    if (lastIndex == $('#busicontent .list-block').length) {
+                        $.detachInfiniteScroll($('.infinite-scroll'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
+                        $('.infinite-scroll-preloader').hide();
+
+                        $.toast("已经加载到最后");
+                        return;
+                    }
+                    // 更新最后加载的序号
+                    lastIndex = $('#busicontent .list-block').length;
+                    //容器发生改变,如果是js滚动，需要刷新滚动
+                    $.refreshScroller();
+                }, 500);
+            });
+            //选中变色
+            $(document).on('click', '#busicontent .list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
+
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    $(this).children("ul").css('background-color', '#fff');
+                } else {
+                    $("#div_list .list-block ul").css('background-color', '#fff');
+                    $(this).children("ul").css('background-color', '#C1DDF1');
+                }
+            });
+
+            //功能菜单
+            $(document).on('click', '.tab-item', function (e) {
+                $(".tab-item").removeClass("active");
+                $(this).addClass("active");
+            })
+            //打开订阅弹出框
+            $(document).on('click', '.open-subscribe', function () {
+                $.popup(".popup-subscribe");
+            })
+            
+            //打开详情弹出框
+            $(document).on('click', '.open-detail', function () {
+                $.showPreloader('加载中...');
+                //清空弹出窗信息
+                $("#pop_tab_decl").html("");
+                $("#pop_tab_insp").html("");
+                $("#pop_tab_logistics").html("");
+                var code = "";
+                $("#busicontent .list-block").each(function () {
+
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        code = $(this)[0].id;
+                    }
+                });
+                if (code == "") {
+                    $.toast("请选择需要调阅的记录");
+                    $.hidePreloader();
+                    return;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: 'MyBusiness.aspx/QueryOrderDetail',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'code':'" + code + "'}",
+                    cache: false,
+                    async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                    success: function (data) {
+                        var obj = eval("(" + data.d + ")");
+                        //1、报关信息
+                        var orderTable = obj.OrderTable;
+                        var declTable = obj.DeclTable;
+                        var inspTable = obj.InspTable;
+                        var logisticsTable = obj.LogisticsTable;
+                        if (orderTable != null && orderTable.length > 0)
+                        {
+                            var declstr = '<div class="content-padded grid-demo" >' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">委托时间</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["SUBMITTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["SUBMITUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">制单完成</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["MOENDTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["MOENDNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">审核完成</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["COENDTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["COENDNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">预录完成</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["PREENDTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["PREENDNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">申报完成</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["REPENDTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["REPENDNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">报关交接</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["HANDOVERTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["HANDOVERUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">现场报关</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["SITEAPPLYTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["SITEAPPLYUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">查验维护</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["SUBMITTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["SUBMITUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">现场放行</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["SITEPASSTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["SITEPASSUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">查验图片</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["CHECKPIC"] + '</div>' +
+                                                            '<div class="col-20"></div>' +
+                                                        '</div>' +
+                                                        '</div>';
+                            declstr += '<div style="width:100%;background-color:#DBDBDB;line-height:0.1rem;">&nbsp;</div>';
+                            declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                            if (declTable != null) {
+                                for (var i = 0; i < declTable.length; i++) {
+                                    declstr += '<div class="list_block">';
+                                    declstr += '<div class="row">';
+                                    declstr += '<div class="col-40">' + declTable[i]["DECLARATIONCODE"] + '</div>';
+                                    declstr += '<div class="col-40">' + declTable[i]["GOODSNUM"] + '/' + declTable[i]["GOODSGW"] + '</div>';
+                                    declstr += '<div class="col-20">' + declTable[i]["MODIFYFLAG"] + '</div>';
+                                    declstr += '</div>';
+                                    declstr += '<div class="row">';
+                                    declstr += '<div class="col-40">' + declTable[i]["TRANSNAME"] + '</div>';
+                                    declstr += '<div class="col-40">' + declTable[i]["TRADENAME"] + '</div>';
+                                    declstr += '<div class="col-20">' + declTable[i]["CUSTOMSSTATUS"] + '</div>';
+                                    declstr += '</div>';
+                                    declstr += '</div>';
+                                }
+                            }
+                            declstr += '</dvi>';
+                            $("#pop_tab_decl").append(declstr);
+                        }
+                        //2、报检信息
+                        if (orderTable != null && (orderTable[0]["ENTRUSTTYPE"] == "02" || orderTable[0]["ENTRUSTTYPE"] == "03")) {
+                            var inspstr = '<div class="content-padded grid-demo" >' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">委托时间</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["SUBMITTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["SUBMITUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">制单完成</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["INSPMOENDTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["INSPMOENDNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">审核完成</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["INSPCOENDTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["INSPCOENDNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">预录完成</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["INSPPREENDTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["INSPPREENDNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">申报完成</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["INSPREPENDTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["INSPREPENDNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">报关交接</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["INSPHANDOVERTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["INSPHANDOVERUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">现场报关</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["INSPSITEAPPLYTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["INSPSITEAPPLYUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">查验维护</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["INSPSUBMITTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["INSPSUBMITUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">现场放行</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["INSPSITEPASSTIME"] + '</div>' +
+                                                            '<div class="col-20">' + orderTable[0]["INSPSITEPASSUSERNAME"] + '</div>' +
+                                                        '</div>' +
+                                                        '<div class="row">' +
+                                                            '<div class="col-20">查验图片</div>' +
+                                                            '<div class="col-40">' + orderTable[0]["INSPCHECKPIC"] + '</div>' +
+                                                            '<div class="col-20"></div>' +
+                                                        '</div>' +
+                                                        '</div>';
+                            inspstr += '<div style="width:100%;background-color:#DBDBDB;line-height:0.1rem;">&nbsp;</div>';
+                            inspstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                            if (inspTable != null) {
+                                for (var i = 0; i < inspTable.length; i++) {
+                                    inspstr += '<div class="list_block">';
+                                    inspstr += '<div class="row">';
+                                    inspstr += '<div class="col-40">' + inspTable[i]["APPROVALCODE"] + '</div>';
+                                    inspstr += '<div class="col-40">' + inspTable[i]["INSPSTATUS"] + '</div>';
+                                    inspstr += '<div class="col-20">' + inspTable[i]["MODIFYFLAG"] + '</div>';
+                                    inspstr += '</div>';
+                                    inspstr += '<div class="row">';
+                                    inspstr += '<div class="col-40">' + inspTable[i]["INSPECTIONCODE"] + '</div>';
+                                    inspstr += '<div class="col-40">' + inspTable[i]["CLEARANCECODE"] + '</div>';
+                                    inspstr += '<div class="col-20"></div>';
+                                    inspstr += '</div>';
+                                    inspstr += '</div>';
+                                }
+                            }
+                            inspstr += '</dvi>';
+                            $("#pop_tab_insp").append(inspstr);
+                        }
+                        //物流状态
+                        if (logisticsTable != null && logisticsTable.length > 0) {
+                            var logstr = '<div style="text-align:center;">物流状态（' + orderTable[0]["BUSITYPE"] + '）</div>';
+                            logstr += '<div class="row">' +
+                                        '<div class="col-25" style="color:#0894EC"><i id="icon_choudan" class="iconfont" >&#xe63f;抽单</i></div>' +
+                                        '<div class="col-25"><i id="icon_zhuanguan" class="iconfont" >&#xe63f;转关</i></div>' +
+                                        '<div class="col-25"><i id="icon_baojian" class="iconfont" >&#xe63f;报检</i></div>' +
+                                        '<div class="col-25"><i id="icon_yunshu" class="iconfont" >&#xe63f;运输</i></div>' +
+                                      '</div>';
+                            logstr += '<div style="width:100%;background-color:#DBDBDB;line-height:0.1rem;">&nbsp;</div>';
+                            logstr += '<div id="logistics" style="background-color:white;">';
+                            logstr += '<div class="row">' +
+                                        '<div class="col-40">操作人</div>' +
+                                        '<div class="col-25">时间</div>' +
+                                        '<div class="col-35">状态值</div>' +
+                                      '</div>'
+                            var choudan = '<div id="choudan">';
+                            var zhuanguan = '<div id="zhuanguan" style="display:none">';
+                            var baojian = '<div id="baojian" style="display:none">';
+                            var yunshu = '<div id="yunshu" style="display:none">';
+                            for (var i = 0; i < logisticsTable.length; i++)
+                            {
+                                if (logisticsTable[i]["OPERATE_TYPE"] == "抽单状态")
+                                {
+                                    choudan += '<div class="row">' +
+                                                '<div class="col-40">' + logisticsTable[i]["OPERATE_DATE"] + '</div>' +
+                                                '<div class="col-25">' + logisticsTable[i]["OPERATER"] + '</div>' +
+                                                '<div class="col-35">' + logisticsTable[i]["OPERATE_RESULT"] + '</div>' +
+                                              '</div>';
+                                }
+                                else if (logisticsTable[i]["OPERATE_TYPE"] == "报关申报状态" || logisticsTable[i]["OPERATE_TYPE"] == "转关申报状态") {
+                                    zhuanguan += '<div class="row">' +
+                                                    '<div class="col-40">' + logisticsTable[i]["OPERATE_DATE"] + '</div>' +
+                                                    '<div class="col-25">' + logisticsTable[i]["OPERATER"] + '</div>' +
+                                                    '<div class="col-35">' + logisticsTable[i]["OPERATE_RESULT"] + '</div>' +
+                                                  '</div>';
+                                }
+                                else if (logisticsTable[i]["OPERATE_TYPE"] == "商检状态") {
+                                    baojian += '<div class="row">' +
+                                                    '<div class="col-40">' + logisticsTable[i]["OPERATE_DATE"] + '</div>' +
+                                                    '<div class="col-25">' + logisticsTable[i]["OPERATER"] + '</div>' +
+                                                    '<div class="col-35">' + logisticsTable[i]["OPERATE_RESULT"] + '</div>' +
+                                                  '</div>';
+                                }
+                                else if (logisticsTable[i]["OPERATE_TYPE"] == "运输状态") {
+                                    yunshu += '<div class="row">' +
+                                                '<div class="col-40">' + logisticsTable[i]["OPERATE_DATE"] + '</div>' +
+                                                '<div class="col-25">' + logisticsTable[i]["OPERATER"] + '</div>' +
+                                                '<div class="col-35">' + logisticsTable[i]["OPERATE_RESULT"] + '</div>' +
+                                              '</div>';
+                                }
+                                
+                            }
+                            choudan += '</div>';
+                            zhuanguan += '</div>';
+                            baojian += '</div>';
+                            yunshu += '</div>';
+                            logstr += choudan;
+                            logstr += zhuanguan;
+                            logstr += baojian;
+                            logstr += yunshu;
+                            logstr += "</div>";
+                            $("#pop_tab_logistics").append(logstr);
+                        }
+                    }
+                })
+                $.hidePreloader();
+                $.popup('.popup-detail');
+
+            });
+
             $.init();
 
-        })
+
+       })
+        //消息订阅
+        function subscribe() {
+            var code = "";
+            $("#busicontent .list-block").each(function () {
+
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    code = $(this)[0].id;
+                }
+            });
+            if (code == "") {
+                $.toast("请选择需要订阅的记录");
+                return;
+            }
+            var decl = $(".popup-subscribe .tab").css("display");
+            var status;
+            var input;
+            if(decl=="block")
+            {
+                status="decl:";
+                input = $("#pop_sub_decl input");
+            }
+            else
+            {
+                status = "log:";
+                input = $("#pop_sub_log input");
+                
+            }
+            for (var i = 0; i < input.length; i++) {
+                if (input[i].checked) {
+                    status += input[i].value + ",";
+                }
+            }
+            $.ajax({
+                type: 'post',
+                url: 'MyBusiness.aspx/SubscribeStatus',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: "{'status':'" + status + "','orderCode':'"+code+"'}",
+                cache: false,
+                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                success: function (data) {
+
+                }
+            })
+        }
+        //报关单调阅
+        function showDeclPdf() {
+            var code = "";
+            $("#busicontent .list-block").each(function () {
+
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    code = $(this)[0].id;
+                }
+            });
+            if (code == "") {
+                $.toast("请选择需要订阅的记录");
+                return;
+            }
+            $.ajax({
+                type: 'post',
+                url: 'MyBusiness.aspx/GetDeclPdf',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: "{'orderCode':'" + code + "'}",
+                cache: false,
+                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                success: function (data) {
+                    var obj = eval("(" + data.d + ")");
+                    var str = "";
+                    var imgs="[";
+                    for (var i = 0; i < obj.path.length; i++) {
+                        //str += '<div>image' + i + '<img height="100%" width="100%" src="/TempFile/tempPic/' + obj.path[i] + '" /></div>';
+                        imgs += "'/TempFile/tempPic/" + obj.path[i] + "',";
+                    }
+                    imgs += "]";
+                    //$("#declpdfshow").append(str);
+                    
+                    myPhotoBrowserStandalone = $.photoBrowser({
+                        photos: eval( imgs)
+                    });
+                    myPhotoBrowserStandalone.open();
+                }
+            })
+            //$.popup(".popup-declpdf");
+        }
+        //查验图片调阅
+        function showCheckPic() {
+            alert(1);
+        }
+
     </script>
 </head>
 <body>
@@ -241,22 +666,23 @@
             </header>
             <!-- 工具栏 -->
             <nav class="bar bar-tab">
-                <a class="tab-item  active" href="#router1">
+                <a class="tab-item  active open-subscribe" href="#">
                     <span class="icon icon-edit"></span>
                     <span class="tab-label">消息订阅</span>
                 </a>
-                <a class="tab-item " href="#router2">
-                    <span class="icon icon-menu"></span>
-                    <span class="tab-label">订阅清单</span>
-                </a>
-                <a class="tab-item " href="#router3">
-                    <span class="icon icon-star"></span>
+                <a class="tab-item open-declpdf"  href="javascript:showDeclPdf()">
+                    <span class="icon icon-star" ></span>
                     <span class="tab-label">报关单调阅</span>
                 </a>
-                <a class="tab-item " href="#router4">
+                <a class="tab-item open-detail"  href="javascript:showCheckPic()"> 
                     <span class="icon icon-picture"></span>
                     <span class="tab-label">查验图片调阅</span>
                 </a>
+                <a class="tab-item " href="SubscribeList.aspx">
+                    <span class="icon icon-menu"></span>
+                    <span class="tab-label">订阅清单</span>
+                </a>
+                
             </nav>
             <!-- 这里是页面内容区 -->
             <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100" id="scroll-bottom-one">
@@ -265,97 +691,11 @@
                 <div class="infinite-scroll-preloader"> 
                     <div class="preloader"></div>
                 </div>
+                
             </div>
         </div>
-        
-        <!-- page2 订阅清单-->
-        <div class="page" id="router2">
-            <header class="bar bar-nav">
-                <a class="icon icon-me pull-left open-panel"></a>
-                <h1 class="title">我的业务</h1>
-            </header>
-            <nav class="bar bar-tab">
-                <a class="tab-item " href="#router1">
-                    <span class="icon icon-edit"></span>
-                    <span class="tab-label">消息订阅</span>
-                </a>
-                <a class="tab-item  active" href="#router2">
-                    <span class="icon icon-menu"></span>
-                    <span class="tab-label">订阅清单</span>
-                </a>
-                <a class="tab-item " href="#router3">
-                    <span class="icon icon-star"></span>
-                    <span class="tab-label">报关单调阅</span>
-                </a>
-                <a class="tab-item " href="#router4">
-                    <span class="icon icon-picture"></span>
-                    <span class="tab-label">查验图片调阅</span>
-                </a>
-            </nav>
-            <div class="content">
-                <div class="content-block">这里是content2</div>
-            </div>
-        </div>
-        <!-- page3 报关单调阅-->
-        <div class="page"  id="router3">
-            <header class="bar bar-nav">
-                <a class="icon icon-me pull-left open-panel"></a>
-                <h1 class="title">我的业务</h1>
-            </header>
-            <nav class="bar bar-tab">
-                <a class="tab-item " href="#router1">
-                    <span class="icon icon-edit"></span>
-                    <span class="tab-label">消息订阅</span>
-                </a>
-                <a class="tab-item " href="#router2">
-                    <span class="icon icon-menu"></span>
-                    <span class="tab-label">订阅清单</span>
-                </a>
-                <a class="tab-item  active" href="#router3">
-                    <span class="icon icon-star"></span>
-                    <span class="tab-label">报关单调阅</span>
-                </a>
-                <a class="tab-item " href="#router4">
-                    <span class="icon icon-picture"></span>
-                    <span class="tab-label">查验图片调阅</span>
-                </a>
-            </nav>
-            <div class="content">
-                <div class="content-block">这里是content3</div>
-            </div>
-        </div>
-        <!-- page4 查验图片调阅-->
-        <div class="page"  id="router4">
-            <header class="bar bar-nav">
-                <a class="icon icon-me pull-left open-panel"></a>
-                <h1 class="title">我的业务</h1>
-            </header>
-            <nav class="bar bar-tab">
-                <a class="tab-item " href="#router1">
-                    <span class="icon icon-edit"></span>
-                    <span class="tab-label">消息订阅</span>
-                </a>
-                <a class="tab-item " href="#router2">
-                    <span class="icon icon-menu"></span>
-                    <span class="tab-label">订阅清单</span>
-                </a>
-                <a class="tab-item " href="#router3">
-                    <span class="icon icon-star"></span>
-                    <span class="tab-label">报关单调阅</span>
-                </a>
-                <a class="tab-item  active" href="#router4">
-                    <span class="icon icon-picture"></span>
-                    <span class="tab-label">查验图片调阅</span>
-                </a>
-            </nav>
-            <div class="content">
-                <div class="content-block">这里是content4</div>
-            </div>
-        </div>
-
     </div>
-
-    <!-- popup, panel 等放在这里 -->
+    <!-- popup, 右侧弹出的查询条件 -->
     <div class="panel-overlay"></div>
     <!-- Left Panel with Reveal effect -->
     <div style="background-color:#2C2C37" class="panel panel-right panel-reveal">
@@ -389,11 +729,107 @@
                     <div class="col-95"><span class="lab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至：</span><input type="text"  id='picker_endtime'/></div>
                 </div>
             </div>
-            <p><a href="#" class="open-preloader-title button button-round" id="button_one">查&nbsp;&nbsp;&nbsp;&nbsp;询</a></p>
+            <p><a href="#" class="open-preloader-title button  button-fill" id="button_one">查&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;询</a></p>
             <%--<p><a href="#" class="button button-round">重&nbsp;&nbsp;&nbsp;&nbsp;置</a></p>--%>
         </div>
     </div>
 
+    <!--popup 详情弹出页-->
+    <div class="popup popup-detail" >
+        <div class="content" >
+          <div class="buttons-tab">
+            <a href="#tab1" class="tab-link active button">报关信息</a>
+            <a href="#tab2" class="tab-link button">报检信息</a>
+            <a href="#tab3" class="tab-link button">物流信息</a>
+          </div>
+          <div class="content-block">
+            <div class="tabs">
+              <div id="tab1" class="tab active">
+                <div class="content-block" id="pop_tab_decl"></div>
+              </div>
+              <div id="tab2" class="tab">
+                <div class="content-block" id="pop_tab_insp"></div>
+              </div>
+              <div id="tab3" class="tab">
+                <div class="content-block" id="pop_tab_logistics"></div>
+              </div>
+            </div>
+          </div>
+          <div class="content-block"><a href="#" class="close-popup button button-fill">返  回</a></div>
+        </div>
+    </div>
+    <!--popup 订阅弹出页-->
+    <div class="popup popup-subscribe" >
+        <div class="content" >
+          <div class="buttons-tab">
+            <a href="#sub_tab1" class="tab-link active button">报关状态</a>
+            <a href="#sub_tab2" class="tab-link button">物流状态</a>
+          </div>
+          <div class="content-block">
+            <div class="tabs">
+              <div id="sub_tab1" class="tab active">
+                <div class="content-block" id="pop_sub_decl">
+                    <div class="myrow">报关状态订阅</div>
+                    <div class="row">
+                        <div class="col-66">申报完成</div>
+                        <div class="col-33"><input type="checkbox" value="申报完成"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-66">已放行</div>
+                        <div class="col-33"><input type="checkbox" value="已放行"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-66">已结关</div>
+                        <div class="col-33"><input type="checkbox" value="已结关"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-66">改单完成</div>
+                        <div class="col-33"><input type="checkbox" value="改单完成"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-66">删单完成</div>
+                        <div class="col-33"><input type="checkbox" value="删单完成"/></div>
+                    </div>
+                </div>
+              </div>
+              <div id="sub_tab2" class="tab">
+                <div class="content-block" id="pop_sub_log">
+                    <div class="myrow">物流状态订阅</div>
+                    <div class="row">
+                        <div class="col-66">抽单完成</div>
+                        <div class="col-33"><input type="checkbox" value="抽单完成"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-66">已派车</div>
+                        <div class="col-33"><input type="checkbox" value="已派车"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-66">运输完成</div>
+                        <div class="col-33"><input type="checkbox" value="运输完成"/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-66">送货完成</div>
+                        <div class="col-33"><input type="checkbox" value="送货完成"/></div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content-block">
+            <div class="row" style="background-color:white">
+                <div class="col-50"><a href="javascript:subscribe()" class="button button-fill">确  认</a></div>
+                <div class="col-50"><a href="#" class="close-popup button button-fill">返  回</a></div>
+            </div>
+              </div>
+        </div>
+    </div>
+    <!--popup 报关单调阅弹出页-->
+    <%--<div class="popup popup-declpdf" >
+        <div class="content" >
+            <div class="content-block" id="declpdfshow"></div>
+            <div class="content-block"><a href="#" class="close-popup button button-fill">返  回</a></div>
+        </div>
+    </div>--%>
 
     <!-- 默认必须要执行$.init(),实际业务里一般不会在HTML文档里执行，通常是在业务页面代码的最后执行 -->
     
@@ -402,7 +838,7 @@
         //初始化控件的值
         var myDate = new Date();
         var nowDate = myDate.toLocaleDateString();
-        $("#picker_starttime").val(nowDate);
+        $("#picker_starttime").val("2017/03/04");
         $("#picker_endtime").val(nowDate);
         //创建picker
         $("#picker_declstatus").picker({
