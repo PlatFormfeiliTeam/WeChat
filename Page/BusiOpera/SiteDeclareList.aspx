@@ -62,6 +62,17 @@
         .morediv .modal-inner .list-block:first-child label .item-inner{
            margin-left:.2rem;padding-right:2px;
         }
+        /************************************************ 查验标志*********************************/
+        .checkdiv{
+            width: 98%;
+            left: 1%;
+            right: 1%;
+            margin-left: 0px;
+        }  
+        .checkdiv .modal-inner{
+            height:15rem;
+        } 
+
     </style>
 
     <script type="text/javascript">
@@ -152,6 +163,480 @@
                 }
             });
 
+            //报关单交接
+            $("#Handover_a").click(function () {
+                var divid = "";//order_
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        divid = $(this)[0].id;
+                        //alert($(this).children("ul").children().eq(2).children("div").children().eq(0).text());
+                    }
+                });
+                if (divid == "") {
+                    $.toast("请选择需要交接的记录");
+                    return;
+                }
+                if ($("#div_list #" + divid).children("ul").children().eq(2).children("div").children().eq(0).text() != "") {
+                    $.toast("该笔记录已经交接，不能再次交接");
+                    return;
+                }
+
+
+                $.confirm('请确认是否需要<font color=blue>交接</font>?',
+                function () {//OK事件
+                    $.ajax({
+                        type: "post", //要用post方式                 
+                        url: "SiteDeclareList.aspx/Handover",//方法所在页面和方法名
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: "{'ordercode':'" + divid.substring(6) + "'}",
+                        cache: false,
+                        async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                        success: function (data) {
+                            if (data.d != "") {
+                                $.toast("交接成功");
+                                $("#div_list #" + divid).children("ul").children().eq(2).children("div").children().eq(0).text(data.d);//更新交接时间
+                            } else {
+                                $.toast("交接失败");
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                            //alert(XMLHttpRequest.status);
+                            //alert(XMLHttpRequest.readyState);
+                            //alert(textStatus);
+                            alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                        }
+                    });
+                },
+                function () { }//cancel事件
+              );
+
+            });
+
+            //报关单详细
+            $("#Detail_a").click(function () {
+                var divid = "";//order_
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        divid = $(this)[0].id;
+                        //alert($(this).children("ul").children().eq(4).children("div").children().eq(0).text());
+                    }
+                });
+                if (divid == "") {
+                    $.toast("请选择需要查看的记录");
+                    return;
+                }
+
+                var strconHTML = "";
+
+                $.ajax({
+                    type: "post", //要用post方式                 
+                    url: "SiteDeclareList.aspx/Detail",//方法所在页面和方法名
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'ordercode':'" + divid.substring(6) + "'}",
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        var obj = eval("(" + data.d + ")");//将字符串转为json
+                       
+                        var jsonorder = obj[0].json_order;
+                        var jsondecl = obj[0].json_decl;
+
+                        //strconHTML = '<font style="font-weight:800;font-size:.9rem;">报关详细信息</font>';
+                        strconHTML = '<font class="title">报关详细信息</font>';
+                        strconHTML += '<div class="list-block" style="margin:0;margin-top:2rem;margin-buttom:1.5rem;font-size:14px;color:black;">'
+                                        + '<ul>'
+                                           + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">' +
+                                                  '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">委托时间</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["SUBMITTIME"] == null ? "" : jsonorder[0]["SUBMITTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["SUBMITUSERNAME"] == null ? "" : jsonorder[0]["SUBMITUSERNAME"]) + '</div>'
+                                                + '</div>'
+                                           + '</li>'
+                                           + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">报关交接</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["HANDOVERTIME"] == null ? "" : jsonorder[0]["HANDOVERTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["HANDOVERUSERNAME"] == null ? "" : jsonorder[0]["HANDOVERUSERNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">制单完成</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["MOENDTIME"] == null ? "" : jsonorder[0]["MOENDTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["MOENDNAME"] == null ? "" : jsonorder[0]["MOENDNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">现场报关</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["SITEAPPLYTIME"] == null ? "" : jsonorder[0]["SITEAPPLYTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["SITEAPPLYUSERNAME"] == null ? "" : jsonorder[0]["SITEAPPLYUSERNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">审核完成</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["COENDTIME"] == null ? "" : jsonorder[0]["COENDTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["COENDNAME"] == null ? "" : jsonorder[0]["COENDNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">查验维护</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["DECLCHECKTIME"] == null ? "" : jsonorder[0]["DECLCHECKTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["DECLCHECKNAME"] == null ? "" : jsonorder[0]["DECLCHECKNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">预录完成</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["PREENDTIME"] == null ? "" : jsonorder[0]["PREENDTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["PREENDNAME"] == null ? "" : jsonorder[0]["PREENDNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">现场放行</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["SITEPASSTIME"] == null ? "" : jsonorder[0]["SITEPASSTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["SITEPASSUSERNAME"] == null ? "" : jsonorder[0]["SITEPASSUSERNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">申报完成</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["REPENDTIME"] == null ? "" : jsonorder[0]["REPENDTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["REPENDNAME"] == null ? "" : jsonorder[0]["REPENDNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">检验图片</div>'
+                                                    + '<div class="item-title col-50">' + getname("CHECKPIC", jsonorder[0]["CHECKPIC"]) + '</div>'
+                                                    + '<div class="item-title col-25"></div>'
+                                                + '</div>'
+                                            + '</li>'
+                                        + '</ul>'
+                                    + '</div>';
+
+                   
+                        strconHTML += '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                        + '<ul>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                                    + '<div class="item-title col-50">报关单号</div>'
+                                                    + '<div class="item-title col-25">件数</div>'
+                                                    + '<div class="item-title col-25">毛重</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                                    + '<div class="item-title col-50">运输工具名称</div>'
+                                                    + '<div class="item-title col-25">监管方式</div>'
+                                                    + '<div class="item-title col-25">删改单</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border:2px solid #0894EC;">'
+                                                    + '<div class="item-title col-50">海关状态</div>'
+                                                    + '<div class="item-title col-25"></div>'
+                                                    + '<div class="item-title col-25"></div>'
+                                                + '</div>'
+                                            + '</li>'
+                                        + '</ul>'
+                                    + '</div>';
+                    
+
+
+                        for (var i = 0; i < jsondecl.length; i++) {
+                            strconHTML += '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                            + '<ul>'
+                                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                        + '<div class="item-title col-50">' + (jsondecl[i]["DECLARATIONCODE"] == null ? "" : jsondecl[i]["DECLARATIONCODE"]) + '</div>'
+                                                        + '<div class="item-title col-25">' + (jsondecl[i]["GOODSNUM"] == null ? "" : jsondecl[i]["GOODSNUM"]) + '</div>'
+                                                        + '<div class="item-title col-25">' + (jsondecl[i]["GOODSGW"] == null ? "" : jsondecl[i]["GOODSGW"]) + '</div>'
+                                                    + '</div>'
+                                                + '</li>'
+                                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                        + '<div class="item-title col-50">' + (jsondecl[i]["TRANSNAME"] == null ? "" : jsondecl[i]["TRANSNAME"]) + '</div>'
+                                                        + '<div class="item-title col-25">' + (jsondecl[i]["TRADECODE"] == null ? "" : jsondecl[i]["TRADECODE"]) + '</div>'
+                                                        + '<div class="item-title col-25">' + getname("MODIFYFLAG", jsondecl[i]["MODIFYFLAG"]) + '</div>'
+                                                    + '</div>'
+                                                + '</li>'
+                                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                        + '<div class="item-title col-50">' + (jsondecl[i]["CUSTOMSSTATUS"] == null ? "" : jsondecl[i]["CUSTOMSSTATUS"]) + '</div>'
+                                                        + '<div class="item-title col-25"></div>'
+                                                        + '<div class="item-title col-25"></div>'
+                                                    + '</div>'
+                                                + '</li>'
+                                            + '</ul>'
+                                        + '</div>';
+                        }
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                        //alert(XMLHttpRequest.status);
+                        //alert(XMLHttpRequest.readyState);
+                        //alert(textStatus);
+                        alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                    }
+                });
+
+                var popupHTML = '<div class="popup">' +
+                                 '<div class="content">' +//data-type='native'                                                                               
+                                        strconHTML +
+                                        '<div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
+                                 '</div>' +
+                             '</div>';
+                $.popup(popupHTML);
+
+            });
+
+            //报关单放行
+            $("#Pass_a").click(function () {
+                var divid = "";//order_
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        divid = $(this)[0].id;
+                        //alert($(this).children("ul").children().eq(4).children("div").children().eq(0).text());
+                    }
+                });
+                if (divid == "") {
+                    $.toast("请选择需要放行的记录");
+                    return;
+                }
+                if ($("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(0).text() != "") {
+                    $.toast("该笔记录已经放行，不能再放行");
+                    return;
+                }
+
+
+                $.confirm('请确认是否需要<font color=blue>放行</font>?',
+                function () {//OK事件
+                    $.ajax({
+                        type: "post", //要用post方式                 
+                        url: "SiteDeclareList.aspx/Pass",//方法所在页面和方法名
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: "{'ordercode':'" + divid.substring(6) + "'}",
+                        cache: false,
+                        async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                        success: function (data) {
+                            if (data.d != "") {
+                                $.toast("放行成功");
+                                $("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(0).text(data.d);//更新交接时间
+                            } else {
+                                $.toast("放行失败");
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                            //alert(XMLHttpRequest.status);
+                            //alert(XMLHttpRequest.readyState);
+                            //alert(textStatus);
+                            alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                        }
+                    });
+                },
+                function () { }//cancel事件
+              );
+
+            });
+
+            //查验标志
+            $("#Check_a").click(function () {
+                var divid = "";//order_
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        divid = $(this)[0].id;
+                        //alert($(this).children("ul").children().eq(2).children("div").children().eq(0).text());
+                    }
+                });
+                if (divid == "") {
+                    $.toast("请选择需要查验标志的记录");
+                    return;
+                }
+
+                var strconHTML = "";
+                strconHTML = '<font class="title"><b>报关查验维护</b></font>';
+
+                strconHTML += '<div class="list-block" style="margin:0; margin-top:2rem;margin-buttom:2rem;margin-left:4%;margin-right:4%;line-height:1.5rem;font-size:.7rem">' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">订单编号：</div>' +
+                                        '<div class="col-66">' + divid.substring(6) + '</div>' +
+                                    '</div> ' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">企业编号：</div>' +
+                                        '<div class="col-66">' + $("#div_list #" + divid).children("ul").children().eq(1).children("div").children().eq(2).text() + '</div>' +
+                                    '</div> ' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">查验维护时间：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declchecktime" value="" /></div>' +
+                                    '</div> ' +
+                                        '<div class="row"> ' +
+                                        '<div class="col-33">查验维护人员：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declcheckname" value="" /></div>' +
+                                    '</div> ' +
+                                '</div>';
+                strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
+                                 '<ul>' +
+                                   '<li>' +
+                                       '<div class="row" style="height:2rem"> ' +
+                                           '<div class="col-50" style="margin-top:.5rem;">箱号</div>' +
+                                           '<div class="col-25" style="margin-top:.5rem;">箱型</div>' +
+                                           '<div class="col-25" style="margin-top:.5rem;">查验选择</div>' +
+                                       '</div> ' +
+                                   '</li>' +
+                                '</ul>' +
+                           '</div>';
+
+                $.ajax({
+                    type: "post", //要用post方式                 
+                    url: "SiteDeclareList.aspx/declcontainerdata",//方法所在页面和方法名
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'ordercode':'" + divid.substring(6) + "'}",
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        var obj = eval("(" + data.d + ")");//将字符串转为json
+
+                        for (var i = 0; i < obj.length; i++) {
+                            strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
+                                              '<ul>' +
+                                                '<li>' +
+                                                    '<div class="row"> ' +
+                                                       '<div class="col-50" style="margin-top:.5rem;">' + (obj[i]["CONTAINERNO"] == null ? "" : obj[i]["CONTAINERNO"]) + '</div>' +
+                                                       '<div class="col-25" style="margin-top:.5rem;">' + (obj[i]["CONTAINERSIZEE"] == null ? "" : obj[i]["CONTAINERSIZEE"]) + '</div>' +
+                                                       '<div class="col-25">' +
+                                                           '<label class="label-checkbox item-content">' +
+                                                               '<input type="checkbox" name="checkbox_type" value="">' +
+                                                               '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
+                                                           '</label>' +
+                                                       '</div>' +
+                                                   '</div> ' +
+                                               '</li>' +
+                                            '</ul>' +
+                                       '</div>';
+                        }
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                        //alert(XMLHttpRequest.status);
+                        //alert(XMLHttpRequest.readyState);
+                        //alert(textStatus);
+                        alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                    }
+                });
+
+                var strconButton = '<div class="content-block">' +
+                                        '<div class="row"> ' +
+                                            '<div class="col-33"><a href="#" class="close-popup button button-fill button-warning">撤销标志</a></div>' +
+                                            '<div class="col-33"><a href="#" class="close-popup button button-fill">查验标志</a></div>' +
+                                            '<div class="col-33"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
+                                        '</div>' +
+                                    '</div>';
+
+                var popupHTML = '<div class="popup">' +
+                                 '<div class="content">' +//data-type='native'                                                                               
+                                        strconHTML +
+                                        strconButton +
+                                 '</div>' +
+                             '</div>';
+                $.popup(popupHTML);
+
+                $("#txt_declchecktime").datetimePicker({});
+
+                /*$.modal({
+                    title: '<b>报关查验维护</b>',
+                    text:'<div class="list-block" style="margin:0; line-height:1.5rem;font-size:.7rem">' +
+                            '<div class="row"> ' +
+                                '<div class="col-33">查验维护时间：</div>' +
+                                '<div class="col-66"><input type="text" style="background:#fff;height:1.2rem;font-size:.7rem" id="txt_declchecktime" value="" /></div>' +
+                             '</div> '+
+                             '<div class="row"> ' +
+                                '<div class="col-33">查验维护人员：</div>' +
+                                '<div class="col-66"><input type="text" style="background:#fff;height:1.2rem;font-size:.7rem" id="txt_declcheckname" value="" /></div>' +
+                             '</div> ' +
+                        '</div>'+
+                        '<div class="list-block" style="margin:0;font-size:.7rem">' +
+                              '<ul>' +
+                                '<li>' +
+                                    '<div class="row" style="height:2rem"> ' +
+                                        '<div class="col-50" style="margin-top:.5rem;">箱号</div>' +
+                                        '<div class="col-25" style="margin-top:.5rem;">箱型</div>' +
+                                        '<div class="col-25" style="margin-top:.5rem;">查验选择</div>' +
+                                    '</div> ' +
+                                '</li>' +
+                                '<li style="border-top:1px dashed gray;">' +
+                                     '<div class="row"> ' +
+                                        '<div class="col-50" style="margin-top:.5rem;">QL121212121</div>' +
+                                        '<div class="col-25" style="margin-top:.5rem;">L</div>' +
+                                        '<div class="col-25">' +
+                                            '<label class="label-checkbox item-content">' +
+                                                '<input type="checkbox" name="checkbox_type" value="">' +
+                                                '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
+                                            '</label>' +
+                                        '</div>' +
+                                    '</div> ' +                                    
+                                '</li>' +
+                                '<li style="border-top:1px dashed gray;">' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-50" style="margin-top:.5rem;">QL121212121</div>' +
+                                        '<div class="col-25" style="margin-top:.5rem;">L</div>' +
+                                        '<div class="col-25">' +
+                                            '<label class="label-checkbox item-content">' +
+                                                '<input type="checkbox" name="checkbox_type" value="">' +
+                                                '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
+                                            '</label>' +
+                                        '</div>' +
+                                    '</div> ' +                                    
+                                '</li>' +
+                                '<li style="border-top:1px dashed gray;">' +
+                                     '<div class="row"> ' +
+                                        '<div class="col-50" style="margin-top:.5rem;">QL121212121</div>' +
+                                        '<div class="col-25" style="margin-top:.5rem;">L</div>' +
+                                        '<div class="col-25">' +
+                                            '<label class="label-checkbox item-content">' +
+                                                '<input type="checkbox" name="checkbox_type" value="">' +
+                                                '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
+                                            '</label>' +
+                                        '</div>' +
+                                    '</div> ' +                                    
+                                '</li>' +
+                            '</ul>' +
+                        '</div>',
+                    buttons: [
+                     {
+                         text: '撤销标志', bold: true,
+                         onClick: function () {
+                            
+                         }
+                     },
+                     {
+                         text: '查验标志', bold: true,
+                         onClick: function () {
+
+                         }
+                     },
+                     {
+                         text: '返回', bold: true,
+                         onClick: function () { }
+                     }
+                    ],
+                    extraClass: 'checkdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+               
+                $("#txt_declchecktime").datetimePicker({});
+                 */
+            });
+
+            //查验图片
+
+
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
             function loaddata(itemsPerLoad, lastIndex) {
@@ -202,7 +687,7 @@
                                     break;
                             }
 
-                            tb = '<div class="list-block" id="' + obj[i]["CODE"] + '">'
+                            tb = '<div class="list-block" id="order_' + obj[i]["CODE"] + '">'
                                     + '<ul>'
                                         + '<li class="item-content">'
                                              + '<div class="item-inner row">'
@@ -281,7 +766,14 @@
                     default: str = "否"; break;
                 }
             }
-
+            if (key == "MODIFYFLAG") {
+                switch (value) {
+                    case 0: str = "正常"; break;
+                    case 1: str = "删单"; break;
+                    case 2: str = "改单"; break;
+                    case 3: str = "改单完成"; break;
+                }
+            }
             return str;
         }
         
@@ -440,7 +932,7 @@
     <div class="page-group">
         <div id="page-infinite-scroll-bottom" class="page page-current">
             <%--search --%>
-            <header class="bar bar-nav">
+            <header class="bar bar-nav"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
                 <div class="search-input">                    
                     <div class="row"> 
                         <div class="col-25"><input type="search" id='picker_inout_type' placeholder='进出口'/></div> <%--value="全部"--%>

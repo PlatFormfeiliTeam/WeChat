@@ -70,8 +70,13 @@ namespace WeChat.Page.BusiOpera
         {
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            DataTable dt= Declare.AssCon(predelcode);
-            var json = JsonConvert.SerializeObject(dt, iso);
+            DataTable dt = Declare.AssCon(predelcode);
+
+            var json = "[]";
+            if (dt != null)
+            {
+                json = JsonConvert.SerializeObject(dt, iso);
+            }
             return json;
         }
 

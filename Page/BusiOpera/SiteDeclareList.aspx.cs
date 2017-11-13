@@ -29,24 +29,41 @@ namespace WeChat.Page.BusiOpera
             var json = JsonConvert.SerializeObject(dt, iso);
             return json;
         }
-        private static string getcode(string key, string value)
-        {
-            string code = "";
-            if (key == "busitype")
-            {
-                switch (value)
-                {
-                    case "空运": code = "'10','11'"; break;
-                    case "海运": code = "'20','21'"; break;
-                    case "陆运": code = "'30','31'"; break;
-                    case "国内": code = "40-41"; break;
-                    case "特殊出口": code = "50"; break;
-                    case "特殊进口": code = "51"; break;
-                    default: code = ""; break;
-                }
-            }
 
-            return code;
+        //报关单交接
+        [WebMethod]
+        public static string Handover(string ordercode)
+        {
+            return SiteDeclare.Handover(ordercode);
+        }
+
+        //报关单详细
+        [WebMethod]
+        public static string Detail(string ordercode)
+        {
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();
+            iso.DateTimeFormat = "yyyyMMdd HH:mm:ss";
+
+            DataSet ds = SiteDeclare.Detail(ordercode);
+            var json_order = JsonConvert.SerializeObject(ds.Tables[0], iso);
+            var json_decl = JsonConvert.SerializeObject(ds.Tables[1]);
+            return "[{\"json_order\":" + json_order + ",\"json_decl\":" + json_decl + "}]";
+        }
+
+        //报关单放行
+        [WebMethod]
+        public static string Pass(string ordercode)
+        {
+            return SiteDeclare.Pass(ordercode);
+        }
+
+        //查验标志 绑定集装箱数据
+        [WebMethod]
+        public static string declcontainerdata(string ordercode)
+        {
+            DataTable dt = SiteDeclare.getdeclcontainerdata(ordercode);
+            var json = JsonConvert.SerializeObject(dt);
+            return json;
         }
 
     }
