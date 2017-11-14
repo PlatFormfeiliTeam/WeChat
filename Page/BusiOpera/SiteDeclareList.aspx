@@ -416,33 +416,33 @@
 
 
                 $.confirm('请确认是否需要<font color=blue>放行</font>?',
-                function () {//OK事件
-                    $.ajax({
-                        type: "post", //要用post方式                 
-                        url: "SiteDeclareList.aspx/Pass",//方法所在页面和方法名
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: "{'ordercode':'" + divid.substring(6) + "'}",
-                        cache: false,
-                        async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
-                        success: function (data) {
-                            if (data.d != "") {
-                                $.toast("放行成功");
-                                $("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(0).text(data.d);//更新交接时间
-                            } else {
-                                $.toast("放行失败");
+                    function () {//OK事件
+                        $.ajax({
+                            type: "post", //要用post方式                 
+                            url: "SiteDeclareList.aspx/Pass",//方法所在页面和方法名
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: "{'ordercode':'" + divid.substring(6) + "'}",
+                            cache: false,
+                            async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                            success: function (data) {
+                                if (data.d != "") {
+                                    $.toast("放行成功");
+                                    $("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(0).text(data.d);//更新交接时间
+                                } else {
+                                    $.toast("放行失败");
+                                }
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                                //alert(XMLHttpRequest.status);
+                                //alert(XMLHttpRequest.readyState);
+                                //alert(textStatus);
+                                alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
                             }
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
-                            //alert(XMLHttpRequest.status);
-                            //alert(XMLHttpRequest.readyState);
-                            //alert(textStatus);
-                            alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
-                        }
-                    });
-                },
-                function () { }//cancel事件
-              );
+                        });
+                    },
+                    function () { }//cancel事件
+                  );
 
             });
 
@@ -459,7 +459,7 @@
                     $.toast("请选择需要查验标志的记录");
                     return;
                 }
-
+               
                 var strconHTML = "";
                 strconHTML = '<font class="title"><b>报关查验维护</b></font>';
 
@@ -474,11 +474,11 @@
                                     '</div> ' +
                                     '<div class="row"> ' +
                                         '<div class="col-33">查验维护时间：</div>' +
-                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declchecktime" value="" /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declchecktime" readonly /></div>' +
                                     '</div> ' +
                                         '<div class="row"> ' +
-                                        '<div class="col-33">查验维护人员：</div>' +
-                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declcheckname" value="" /></div>' +
+                                        '<div class="col-33">查验维护人员：<input type="hidden" id="txt_declcheckid" readonly /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declcheckname" readonly /></div>' +
                                     '</div> ' +
                                 '</div>';
                 strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
@@ -534,104 +534,104 @@
 
                 var strconButton = '<div class="content-block">' +
                                         '<div class="row"> ' +
-                                            '<div class="col-33"><a href="#" class="close-popup button button-fill button-warning">撤销标志</a></div>' +
-                                            '<div class="col-33"><a href="#" class="close-popup button button-fill">查验标志</a></div>' +
+                                            '<div class="col-33"><a href="#" id="checkcancel" class="button button-fill button-warning">撤销标志</a></div>' +
+                                            '<div class="col-33"><a href="#" id="checksave" class="button button-fill">查验标志</a></div>' +
                                             '<div class="col-33"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
                                         '</div>' +
                                     '</div>';
 
-                var popupHTML = '<div class="popup">' +
+                var popupHTML = '<div class="popup popup-services">' +
                                  '<div class="content">' +//data-type='native'                                                                               
                                         strconHTML +
                                         strconButton +
                                  '</div>' +
                              '</div>';
+
                 $.popup(popupHTML);
+                
+                var nd = new Date();
+                var y = nd.getFullYear();
+                var m = nd.getMonth() + 1;
+                var d = nd.getDate();
+                var h = nd.getHours();
+                var mi = nd.getMinutes();
 
-                $("#txt_declchecktime").datetimePicker({});
+                if (m <= 9) m = "0" + m;
+                if (d <= 9) d = "0" + d;
+                if (h <= 9) h = "0" + h;
+                if (mi <= 9) mi = "0" + mi;
+                
+                //$("#txt_declchecktime").datetimePicker({ value: [y, m, d, h, mi] });//此行不用 ，用下一行代码，因为是只读，不允许操作
+                $("#txt_declchecktime").val(y + "" + m + "" + d + " " + h + ":" + mi);//初始化日期时间
 
-                /*$.modal({
-                    title: '<b>报关查验维护</b>',
-                    text:'<div class="list-block" style="margin:0; line-height:1.5rem;font-size:.7rem">' +
-                            '<div class="row"> ' +
-                                '<div class="col-33">查验维护时间：</div>' +
-                                '<div class="col-66"><input type="text" style="background:#fff;height:1.2rem;font-size:.7rem" id="txt_declchecktime" value="" /></div>' +
-                             '</div> '+
-                             '<div class="row"> ' +
-                                '<div class="col-33">查验维护人员：</div>' +
-                                '<div class="col-66"><input type="text" style="background:#fff;height:1.2rem;font-size:.7rem" id="txt_declcheckname" value="" /></div>' +
-                             '</div> ' +
-                        '</div>'+
-                        '<div class="list-block" style="margin:0;font-size:.7rem">' +
-                              '<ul>' +
-                                '<li>' +
-                                    '<div class="row" style="height:2rem"> ' +
-                                        '<div class="col-50" style="margin-top:.5rem;">箱号</div>' +
-                                        '<div class="col-25" style="margin-top:.5rem;">箱型</div>' +
-                                        '<div class="col-25" style="margin-top:.5rem;">查验选择</div>' +
-                                    '</div> ' +
-                                '</li>' +
-                                '<li style="border-top:1px dashed gray;">' +
-                                     '<div class="row"> ' +
-                                        '<div class="col-50" style="margin-top:.5rem;">QL121212121</div>' +
-                                        '<div class="col-25" style="margin-top:.5rem;">L</div>' +
-                                        '<div class="col-25">' +
-                                            '<label class="label-checkbox item-content">' +
-                                                '<input type="checkbox" name="checkbox_type" value="">' +
-                                                '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                            '</label>' +
-                                        '</div>' +
-                                    '</div> ' +                                    
-                                '</li>' +
-                                '<li style="border-top:1px dashed gray;">' +
-                                    '<div class="row"> ' +
-                                        '<div class="col-50" style="margin-top:.5rem;">QL121212121</div>' +
-                                        '<div class="col-25" style="margin-top:.5rem;">L</div>' +
-                                        '<div class="col-25">' +
-                                            '<label class="label-checkbox item-content">' +
-                                                '<input type="checkbox" name="checkbox_type" value="">' +
-                                                '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                            '</label>' +
-                                        '</div>' +
-                                    '</div> ' +                                    
-                                '</li>' +
-                                '<li style="border-top:1px dashed gray;">' +
-                                     '<div class="row"> ' +
-                                        '<div class="col-50" style="margin-top:.5rem;">QL121212121</div>' +
-                                        '<div class="col-25" style="margin-top:.5rem;">L</div>' +
-                                        '<div class="col-25">' +
-                                            '<label class="label-checkbox item-content">' +
-                                                '<input type="checkbox" name="checkbox_type" value="">' +
-                                                '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                            '</label>' +
-                                        '</div>' +
-                                    '</div> ' +                                    
-                                '</li>' +
-                            '</ul>' +
-                        '</div>',
-                    buttons: [
-                     {
-                         text: '撤销标志', bold: true,
-                         onClick: function () {
-                            
-                         }
-                     },
-                     {
-                         text: '查验标志', bold: true,
-                         onClick: function () {
+                $("#txt_declcheckid").val("763");//当前登录人id
+                $("#txt_declcheckname").val("昆山吉时报关有限公司");//当前登录人name
 
-                         }
-                     },
-                     {
-                         text: '返回', bold: true,
-                         onClick: function () { }
-                     }
-                    ],
-                    extraClass: 'checkdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                $("#checkcancel").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
+                    $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
+                         function () {//OK事件
+                             $.ajax({
+                                 type: "post", //要用post方式                 
+                                 url: "SiteDeclareList.aspx/checkcancel",//方法所在页面和方法名
+                                 contentType: "application/json; charset=utf-8",
+                                 dataType: "json",
+                                 data: "{'ordercode':'" + divid.substring(6) + "'}",
+                                 cache: false,
+                                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                                 success: function (data) {
+                                     if (data.d == "sucess") {
+                                         $.toast("撤销成功");
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text("");//更新查验时间
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text("否");
+                                     } else {
+                                         $.toast("撤销失败");
+                                     }
+                                 },
+                                 error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                                     //alert(XMLHttpRequest.status);
+                                     //alert(XMLHttpRequest.readyState);
+                                     //alert(textStatus);
+                                     alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                                 }
+                             });
+                         },
+                         function () { }//cancel事件
+                       );
                 });
-               
-                $("#txt_declchecktime").datetimePicker({});
-                 */
+
+                $("#checksave").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
+                    $.confirm('请确认是否需要<font color=blue>查验</font>?',
+                        function () {//OK事件
+                            $.ajax({
+                                type: "post", //要用post方式                 
+                                url: "SiteDeclareList.aspx/checksave",//方法所在页面和方法名
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: "{'ordercode':'" + divid.substring(6) + "','checktime':'" + $("#txt_declchecktime").val()
+                                    + "','checkname':'" + $("#txt_declcheckname").val() + "','checkid':'" + $("#txt_declcheckid").val() + "'}",
+                                cache: false,
+                                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                                success: function (data) {
+                                    if (data.d != "") {
+                                        $.toast("查验成功");
+                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(data.d);//更新查验时间
+                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text("是");
+                                    } else {
+                                        $.toast("查验失败");
+                                    }
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                                    //alert(XMLHttpRequest.status);
+                                    //alert(XMLHttpRequest.readyState);
+                                    //alert(textStatus);
+                                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                                }
+                            });
+                        },
+                        function () { }//cancel事件
+                      );
+                });
+
             });
 
             //查验图片
@@ -988,7 +988,6 @@
             
         </div>
     </div>  
-
 
      <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
    <%-- <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>

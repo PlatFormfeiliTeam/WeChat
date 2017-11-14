@@ -198,14 +198,71 @@ namespace WeChat.ModelBusi
             }
         }
 
+        /*public static DataSet getdeclcontainerdata(string ordercode)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = ""; DataSet ds = new DataSet();
+
+                DataTable dt_order = new DataTable();
+                sql = @"select ort.code,ort.cusno,ort.declchecktime,ort.declcheckname,ort.declcheckid,ort.ischeck 
+                        from list_order ort where ort.isinvalid=0 and code='" + ordercode + "'";
+                dt_order = db.QuerySignle(sql);
+                ds.Tables.Add(dt_order);
+
+                DataTable dt_predeclcontainer = new DataTable();
+                sql = @"select lp.CONTAINERNO,lp.CONTAINERSIZEE
+                                from list_predeclcontainer lp   
+                                where lp.isinvalid=0 and lp.ordercode='" + ordercode + "'";
+                dt_predeclcontainer = db.QuerySignle(sql);
+                ds.Tables.Add(dt_predeclcontainer);
+                return ds;
+            }
+        }*/
         public static DataTable getdeclcontainerdata(string ordercode)
         {
             using (DBSession db = new DBSession())
             {
-                string sql = @"select lp.CONTAINERNO,lp.CONTAINERSIZEE
+                string sql =  @"select lp.CONTAINERNO,lp.CONTAINERSIZEE
                                 from list_predeclcontainer lp   
                                 where lp.isinvalid=0 and lp.ordercode='" + ordercode + "'";
                 return db.QuerySignle(sql);
+            }
+        }
+
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "update list_order set ischeck=1,declcheckid='{1}',declcheckname='{2}',declchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
+                sql = string.Format(sql, ordercode, checkid, checkname, checktime);
+                int i = db.ExecuteSignle(sql);
+                if (i > 0)
+                {
+                    return checktime.Replace("-", "");
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        public static string checkcancel(string ordercode)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "update list_order set ischeck=0,declcheckid=null,declcheckname=null,declchecktime=null where code='{0}'";
+                sql = string.Format(sql, ordercode);
+                int i = db.ExecuteSignle(sql);
+                if (i > 0)
+                {
+                    return "sucess";
+                }
+                else
+                {
+                    return "";
+                }
             }
         }
 

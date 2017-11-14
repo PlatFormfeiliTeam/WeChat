@@ -58,12 +58,38 @@ namespace WeChat.Page.BusiOpera
         }
 
         //查验标志 绑定集装箱数据
+        /*
+        [WebMethod]
+        public static string declcontainerdata(string ordercode)
+        {
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();
+            iso.DateTimeFormat = "yyyyMMdd HH:mm";
+
+            DataSet ds = SiteDeclare.getdeclcontainerdata(ordercode);
+            var json_order = JsonConvert.SerializeObject(ds.Tables[0], iso);
+            var json_predeclcontainer = JsonConvert.SerializeObject(ds.Tables[1]);
+            return "[{\"json_order\":" + json_order + ",\"json_predeclcontainer\":" + json_predeclcontainer + "}]";
+        }
+        */
+
         [WebMethod]
         public static string declcontainerdata(string ordercode)
         {
             DataTable dt = SiteDeclare.getdeclcontainerdata(ordercode);
             var json = JsonConvert.SerializeObject(dt);
             return json;
+        }
+
+        [WebMethod]
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid)
+        {
+            return SiteDeclare.checksave(ordercode, checktime, checkname, checkid);
+        }
+
+        [WebMethod]
+        public static string checkcancel(string ordercode)
+        {
+            return SiteDeclare.checkcancel(ordercode);
         }
 
     }
