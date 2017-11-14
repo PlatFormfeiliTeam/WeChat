@@ -22,7 +22,7 @@ namespace WeChat.ModelWeChat
             while(true)
             {
                 LogHelper.Write("进入订阅执行...");
-                List<SubcribeInfoEn> sublist = SubscribeModel.getSubscribeInfo();
+                List<SubcribeInfoEn> sublist = SubscribeModel.getSubscribeTask();
                 foreach (SubcribeInfoEn sub in sublist)
                 {
                     var data = new

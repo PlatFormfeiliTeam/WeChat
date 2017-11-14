@@ -53,8 +53,8 @@ namespace WeChat.Page.MyBusiness
                     dr["checkpic"] = dr["checkpic"].ToString2() == "1" ? "含查验图片" : "";
                     dr["inspcheck"] = dr["inspcheck"].ToString2() == "1" ? "国检查验" : "";
                     dr["lawflag"] = dr["lawflag"].ToString2() == "1" ? "含法检" : "";
-                    dr["declstatus"] = switchValue("declstatus", dr["declstatus"].ToString2());
-                    dr["inspstatus"] = switchValue("inspstatus", dr["inspstatus"].ToString2());
+                    dr["declstatus"] = SwitchHelper.switchValue("declstatus", dr["declstatus"].ToString2());
+                    dr["inspstatus"] = SwitchHelper.switchValue("inspstatus", dr["inspstatus"].ToString2());
                     if (string.IsNullOrEmpty(dr["divideno"].ToString2())) dr["divideno"] = "";
                     if (string.IsNullOrEmpty(dr["logisticsstatus"].ToString2())) dr["logisticsstatus"] = "";
                     if (string.IsNullOrEmpty(dr["contractno"].ToString2())) dr["contractno"] = "";
@@ -81,10 +81,10 @@ namespace WeChat.Page.MyBusiness
             {
                 ListOrderModel orderModel = new ListOrderModel();
                 DataSet ds = orderModel.getOrderDetail(code);
-                ds.Tables[0].Rows[0]["busitype"] = switchValue("busitype", ds.Tables[0].Rows[0]["busitype"].ToString2());
+                ds.Tables[0].Rows[0]["busitype"] = SwitchHelper.switchValue("busitype", ds.Tables[0].Rows[0]["busitype"].ToString2());
                 foreach (DataRow dr in ds.Tables[1].Rows)
                 {
-                    dr["modifyflag"] = switchValue("modifyflag", dr["modifyflag"].ToString2());
+                    dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
                 }
                 IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
                 iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -105,9 +105,47 @@ namespace WeChat.Page.MyBusiness
         /// <param name="orderCode"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string SubscribeStatus(string status,string orderCode)
+        public static string SubscribeStatus(string type, string status, string ordercode, string declcode, string userid, string username, string openid, string codetype)
         {
-            return "";
+            try
+            {
+                if (status.Length > 0)
+                    status = status.Substring(0, status.Length - 1);
+                string[] st = status.Split(',');
+                //判断是否订阅的信息是否已经触发
+                if (type == "报关状态")
+                {
+                    DataTable dt = SubscribeModel.getCustomsstatus(declcode);
+                    for (int i = 0; i < st.Length; i++)
+                    {
+                        if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() < SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
+                        {
+                            return "订阅失败，报关状态已过：" + st[i] + "，不能订阅";
+                        }
+                    }
+                }
+                else
+                {
+                    DataTable dt = SubscribeModel.getLogisticsstatus(ordercode);
+                    for (int i = 0; i < st.Length; i++)
+                    {
+                        if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() < SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
+                        {
+                            return "订阅失败，物流状态已过：" + st[i] + "，不能订阅";
+                        }
+                    }
+                }
+                //订阅
+                if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
+                    return "订阅成功";
+                else
+                    return "订阅失败：系统异常";
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
+            
         }
         /// <summary>
         /// 调阅报关单
@@ -150,98 +188,6 @@ namespace WeChat.Page.MyBusiness
 
 
 
-        private static string switchValue(string kind,string str)
-        {
-            string value = "";
-            switch(kind)
-            {
-                case "declstatus":
-                    switch (str)
-                    {
-                        case "130":
-                            value = "报关完结";
-                            break;
-                        case "140":
-                            value = "报关资料整理";
-                            break;
-                        case "150":
-                            value = "现场报关";
-                            break;
-                        case "160":
-                            value = "海关放行";
-                            break;
-                    }
-                    break;
-                case "inspstatus":
-                    switch (str)
-                    {
-                        case "130":
-                            value = "报检完结";
-                            break;
-                        case "140":
-                            value = "报检资料整理";
-                            break;
-                        case "150":
-                            value = "现场报检";
-                            break;
-                        case "160":
-                            value = "国检放行";
-                            break;
-                    }
-                    break;
-                case "modifyflag":
-                    switch(str)
-                    {
-                        case "":
-                        case "null":
-                        case "0":
-                            value = "正常";
-                            break;
-                        case "1":
-                            value = "删单";
-                            break;
-                        case "2":
-                            value = "改单";
-                            break;
-                    }
-                    break;
-                case "busitype":
-                    switch (str)
-                    {
-                        case "10":
-                            value = "空出";
-                            break;
-                        case "11":
-                            value = "空进";
-                            break;
-                        case "20":
-                            value = "海出";
-                            break;
-                        case "22":
-                            value = "海进";
-                            break;
-                        case "30":
-                            value = "陆出";
-                            break;
-                        case "31":
-                            value = "陆进";
-                            break;
-                        case "40":
-                            value = "国内出";
-                            break;
-                        case "41":
-                            value = "国内进";
-                            break;
-                        case "50":
-                            value = "特殊出";
-                            break;
-                        case "51":
-                            value = "特殊进";
-                            break;
-                    }
-                    break;
-            }
-            return value;
-        }
+        
     }
 }

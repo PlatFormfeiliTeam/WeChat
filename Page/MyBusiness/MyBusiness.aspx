@@ -121,6 +121,7 @@
     </style>
 
     <script type="text/javascript">
+        var userid = "22", username = "test", openid = "oLVv71Ma9dCp5zhoJWuAHTDKAx4A";
         // 加载flag
         var loading = false;
         // 最多可加载的条目
@@ -129,6 +130,7 @@
         var itemsPerLoad = 6;
         var lastIndex = 0;
         var myPhotoBrowserStandalone;
+        var subOrderCode = "";//订阅的单号
         //按钮查询
         function loadData(itemsPerLoad, lastIndex) {
             $.ajax({
@@ -153,7 +155,7 @@
                 success: function (data) {
                     var obj = eval("(" + data.d + ")");//将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
-                        var str = '<div class="list-block" id="' + obj[i]["CODE"] + '" ondblclick="subscribe(' + obj[i]["CODE"] + ')">' +
+                        var str = '<div class="list-block" id="' + obj[i]["CODE"] + '">' +
                                     '<ul>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
@@ -186,7 +188,7 @@
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
                                                 '<div class="my-title">' + obj[i]["INSPSTATUS"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["LOGISTICSSTATUS"] + '</div>' +
+                                                '<div class="my-after">' + obj[i]["LOGISTICSNAME"] + '</div>' +
                                                 '<div class="my-after"><a href="#" class="open-detail">详情>></a></div>' +
                                             '</div>' +
                                         '</li>' +
@@ -298,10 +300,6 @@
             $(document).on('click', '.tab-item', function (e) {
                 $(".tab-item").removeClass("active");
                 $(this).addClass("active");
-            })
-            //打开订阅弹出框
-            $(document).on('click', '.open-subscribe', function () {
-                $.popup(".popup-subscribe");
             })
             
             //打开详情弹出框
@@ -562,9 +560,9 @@
             $.init();
 
 
-       })
-        //消息订阅
-        function subscribe() {
+        })
+        //打开订阅弹出框
+        $(document).on('click', '.open-subscribe', function () {
             var code = "";
             $("#busicontent .list-block").each(function () {
 
@@ -576,17 +574,27 @@
                 $.toast("请选择需要订阅的记录");
                 return;
             }
+            subOrderCode = code;
+            $.popup(".popup-subscribe");
+        })
+
+        //订阅消息
+        function subscribe() {
+            if (subOrderCode == "") {
+                $.toast("请选择需要订阅的记录");
+                return;
+            }
             var decl = $(".popup-subscribe .tab").css("display");
-            var status;
+            var type = "", status = "";
             var input;
             if(decl=="block")
             {
-                status="decl:";
+                type = "报关状态";
                 input = $("#pop_sub_decl input");
             }
             else
             {
-                status = "log:";
+                type = "物流状态";
                 input = $("#pop_sub_log input");
                 
             }
@@ -595,16 +603,27 @@
                     status += input[i].value + ",";
                 }
             }
+            if (status == "")
+            {
+                $.toast("请选择需要订阅的状态");
+                return;
+            }
             $.ajax({
                 type: 'post',
                 url: 'MyBusiness.aspx/SubscribeStatus',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: "{'status':'" + status + "','orderCode':'"+code+"'}",
+                data: "{'type':'" + type +
+                    "','status':'" + status +
+                    "','ordercode':'" + subOrderCode +
+                    "','declcode':'','userid':'" + userid +
+                    "','username':'" + username +
+                    "','openid':'" + openid +
+                    "','codetype':'1'}",
                 cache: false,
                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                 success: function (data) {
-
+                    $.toast(data.d);
                 }
             })
         }
@@ -666,7 +685,11 @@
             </header>
             <!-- 工具栏 -->
             <nav class="bar bar-tab">
-                <a class="tab-item  active open-subscribe" href="#">
+                <a class="tab-item open-detail" href="#">
+                    <span class="icon icon-menu"></span>
+                    <span class="tab-label">业务详情</span>
+                </a>
+                <a class="tab-item  open-subscribe" href="#">
                     <span class="icon icon-edit"></span>
                     <span class="tab-label">消息订阅</span>
                 </a>
@@ -674,14 +697,14 @@
                     <span class="icon icon-star" ></span>
                     <span class="tab-label">报关单调阅</span>
                 </a>
-                <a class="tab-item open-detail"  href="javascript:showCheckPic()"> 
+                <a class="tab-item "  href="javascript:showCheckPic()"> 
                     <span class="icon icon-picture"></span>
                     <span class="tab-label">查验图片调阅</span>
                 </a>
-                <a class="tab-item " href="SubscribeList.aspx">
+                <%--<a class="tab-item " href="SubscribeList.aspx">
                     <span class="icon icon-menu"></span>
                     <span class="tab-label">订阅清单</span>
-                </a>
+                </a>--%>
                 
             </nav>
             <!-- 这里是页面内容区 -->

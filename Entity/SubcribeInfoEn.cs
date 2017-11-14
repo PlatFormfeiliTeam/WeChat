@@ -66,6 +66,10 @@ namespace WeChat.Entity
         /// 微信号
         /// </summary>
         public string Openid { get; set; }
+        /// <summary>
+        /// 状态值
+        /// </summary>
+        public int StatusValue { get; set; }
         
     }
 }
