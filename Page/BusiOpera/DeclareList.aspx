@@ -311,6 +311,11 @@
                     success: function (data) {
                         var obj = eval("(" + data.d + ")");//将字符串转为json
 
+                        if (obj.length <= 0) {
+                            $.toast("没有关联报关单");
+                            return;
+                        }
+
                         /*var tb_con = "";
                         tb_con = '<div class="list-block">'
                                 + '<ul>'
