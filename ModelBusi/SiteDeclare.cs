@@ -300,6 +300,7 @@ namespace WeChat.ModelBusi
                         {
                             using (DBSession db = new DBSession())
                             {
+                                List<string> sqls = new List<string>();
                                 int uploaduserid = 763;
                                 string customercode = "KSJSBGYXGS";
 
@@ -312,9 +313,14 @@ namespace WeChat.ModelBusi
                                     , ftppath, filename, "67", uploaduserid, customercode, ordercode
                                     , fi.Length, "查验文件", ".jpg");
 
-                                int i = db.ExecuteSignle(sql);
+                                string sql2 = "update list_order set checkpic=1 where code='" + ordercode + "'";
+
+                                sqls.Add(sql); sqls.Add(sql2);
+
+                                int i = db.ExecuteBatch(sqls);
                                 if (i > 0)//插入成功，后删除本地文件
                                 {
+                                    
                                     str = "success"; 
                                     fi.Delete();
                                 }
@@ -332,6 +338,17 @@ namespace WeChat.ModelBusi
 
             return str;
 
+        }
+
+        public static DataTable picfileconsult(string ordercode)
+        {
+            DataTable dt = new DataTable();
+            using (DBSession db = new DBSession())
+            {
+                string sql = "select filename from list_attachment where filetype=67 and ordercode='" + ordercode + "'";
+                dt = db.QuerySignle(sql);     
+            }
+            return dt;
         }
 
     }

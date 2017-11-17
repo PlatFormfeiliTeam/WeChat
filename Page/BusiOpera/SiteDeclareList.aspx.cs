@@ -108,6 +108,13 @@ namespace WeChat.Page.BusiOpera
             return SiteDeclare.SaveFile(mediaIds, ordercode);            
         }
 
+        [WebMethod]
+        public static string picfileconsult(string ordercode)
+        {
+            DataTable dt = SiteDeclare.picfileconsult(ordercode);
+            var json = JsonConvert.SerializeObject(dt);
+            return json;
+        }
 
     }
 }

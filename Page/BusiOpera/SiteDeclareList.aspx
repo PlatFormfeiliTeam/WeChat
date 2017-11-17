@@ -10,18 +10,18 @@
     <title>现场报关</title>
     <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
-    <%--<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">--%>
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
 
     <style>
-        .bar input[type=search]{
+        #page-infinite-scroll-bottom .bar input[type=search]{
              margin:.2rem 0;
         }
-        .bar .button {
+        #page-infinite-scroll-bottom .bar .button {
             top:0;
         }
-        .bar-nav ~ .content {
+        #page-infinite-scroll-bottom .bar-nav~.content{
             top: 5rem;
         }
         #div_list .list-block{
@@ -77,8 +77,11 @@
     </style>
 
     <script type="text/javascript">
-
         $(function () {
+            //var myPhotoBrowserStandalone = $.photoBrowser({
+            //    photos: ['http://221.224.21.28:8383/file//67/16120200593/e8981602-6da0-4180-beba-9ed272d7a47d.jpg', 'http://221.224.21.28:8383/file//67/16120200593/3161a348-a9a7-4dd1-9370-3046270f7118.jpg']
+            //});
+
             initsearch_condition();
 
             var loading = false;
@@ -709,6 +712,8 @@
                             success: function (data) {
                                 if (data.d == "success") {
                                     $.toast("上传成功");
+                                    //修改页面查验图片标志
+                                    $("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(1).text("是");
                                 } else {
                                     $.toast("上传失败");
                                 }
@@ -726,7 +731,28 @@
                         $.toast("没有查验图片");
                     }
 
-
+                    $.ajax({
+                        type: "post", //要用post方式                 
+                        url: "SiteDeclareList.aspx/picfileconsult",//方法所在页面和方法名
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: "{'ordercode':'" + divid.substring(6) + "'}",
+                        cache: false,
+                        async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                        success: function (data) {
+                            var obj = eval("(" + data.d + ")");//将字符串转为json
+                            var imgs = "[";
+                            for (var i = 0; i < obj.length; i++) {
+                                imgs += "'" + $("#hd_AdminUrl").val() + "file/" + obj[i]["FILENAME"] + "',";
+                            }
+                            imgs += "]";
+                           
+                            var myPhotoBrowserStandalone = $.photoBrowser({
+                                photos: eval(imgs)
+                            });
+                            myPhotoBrowserStandalone.open(); 
+                        }
+                    });
 
                 });
 
@@ -1067,7 +1093,7 @@
                 </a>
                 <a class="tab-item external" href="#" id="Picture_a">
                     <span class="icon icon-picture"></span>
-                    <span class="tab-label">查验图片</span>
+                    <span class="tab-label">查验图片<input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' /></span>
                 </a>
             </nav>
 
@@ -1084,10 +1110,9 @@
         </div>
     </div>  
 
-     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
-   <%-- <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
-    <script type="text/javascript" src="//g.alicdn.com/msui/sm/0.6.2/js/sm-city-picker.min.js" charset="utf-8"></script>--%>
-
+    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
+    <%--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
+    <script src="/js/sm-extend.min.js"></script>
 </body>
 
     

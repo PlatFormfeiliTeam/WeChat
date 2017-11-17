@@ -14,13 +14,13 @@
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
     <style>
-        .bar input[type=search]{
+        #page-infinite-scroll-bottom .bar input[type=search]{
              margin:.2rem 0;
         }
-        .bar .button {
+        #page-infinite-scroll-bottom .bar .button {
             top:0;
         }
-        .bar-nav ~ .content {
+        #page-infinite-scroll-bottom .bar-nav ~ .content {
             top: 5rem;
         }
         #div_list .list-block{
