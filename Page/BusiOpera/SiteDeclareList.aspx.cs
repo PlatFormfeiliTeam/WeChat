@@ -16,8 +16,16 @@ namespace WeChat.Page.BusiOpera
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+           
         }
+
+        //微信接口js-sdk config
+        [WebMethod]
+        public static string getConf(string url)
+        {
+            return ModelWeChat.SignatureModel.getSignature(url);
+        }
+
         //查询绑定
         [WebMethod]
         public static string BindList(string inout_type, string issiterep, string busitype, string ispass, string startdate, string enddate
@@ -91,6 +99,15 @@ namespace WeChat.Page.BusiOpera
         {
             return SiteDeclare.checkcancel(ordercode);
         }
+
+
+        //查验图片
+        [WebMethod]
+        public static string SaveFile(string mediaIds, string ordercode)
+        {
+            return SiteDeclare.SaveFile(mediaIds, ordercode);            
+        }
+
 
     }
 }

@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
+using WeChat.Common;
 using WeChat.Entity.Enum;
 
 namespace WeChat.ModelBusi
@@ -264,6 +268,70 @@ namespace WeChat.ModelBusi
                     return "";
                 }
             }
+        }
+
+        public static string SaveFile(string mediaIds, string ordercode)
+        {
+            string str = "false";
+            if (!string.IsNullOrEmpty(mediaIds))
+            {
+                string url = string.Format("http://file.api.weixin.qq.com/cgi-bin/media/get?access_token={0}&media_id={1}", ModelWeChat.TokenModel.AccessToken, mediaIds);
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
+                using (WebResponse wr = req.GetResponse())
+                {
+                    string dicPath = System.AppDomain.CurrentDomain.BaseDirectory;
+                    string filename = Guid.NewGuid() + ".jpg";
+                    string filepath = @"uploadimage\" + filename;
+
+                    WebClient mywebclient = new WebClient();
+                    mywebclient.DownloadFile(wr.ResponseUri, dicPath + filepath);                    
+
+                    if (File.Exists(dicPath + filepath))//ftp 到文件服务器,然后往数据库插入一笔记录
+                    {
+                        FileInfo fi = new FileInfo(dicPath + filepath);
+
+                        System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
+                        string UserName = ConfigurationManager.AppSettings["FTPUserName"];
+                        string Password = ConfigurationManager.AppSettings["FTPPassword"];
+                        FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+                        string ftppath = "/67/" + ordercode + "/" + filename;
+                        bool bf = ftp.UploadFile(dicPath + filepath, ftppath, true); ;
+                        if (bf)
+                        {
+                            using (DBSession db = new DBSession())
+                            {
+                                int uploaduserid = 763;
+                                string customercode = "KSJSBGYXGS";
+
+                                string sql = @"insert into LIST_ATTACHMENT (id
+                                                ,filename,originalname,filetype,uploadtime,uploaduserid,customercode,ordercode
+                                                ,sizes,filetypename,filesuffix)
+                                        values(List_Attachment_Id.Nextval,'{0}','{1}','{2}',sysdate,{3},'{4}','{5}'
+                                                ,'{6}','{7}','{8}')";
+                                sql = string.Format(sql
+                                    , ftppath, filename, "67", uploaduserid, customercode, ordercode
+                                    , fi.Length, "查验文件", ".jpg");
+
+                                int i = db.ExecuteSignle(sql);
+                                if (i > 0)//插入成功，后删除本地文件
+                                {
+                                    str = "success"; 
+                                    fi.Delete();
+                                }
+                                else//插入失败后，远程删除文件，本地文件暂且留着
+                                {
+                                    ftp.DeleteFile(ftppath);
+                                }
+                            }
+
+                        }//ftp失败，本地文件暂且留着
+                    }
+
+                }
+            }
+
+            return str;
+
         }
 
     }

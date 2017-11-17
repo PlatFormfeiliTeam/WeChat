@@ -13,6 +13,7 @@
     <%--<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">--%>
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
+
     <style>
         .bar input[type=search]{
              margin:.2rem 0;
@@ -76,6 +77,7 @@
     </style>
 
     <script type="text/javascript">
+
         $(function () {
             initsearch_condition();
 
@@ -540,7 +542,7 @@
                                         '</div>' +
                                     '</div>';
 
-                var popupHTML = '<div class="popup popup-services">' +
+                var popupHTML = '<div class="popup">' +
                                  '<div class="content">' +//data-type='native'                                                                               
                                         strconHTML +
                                         strconButton +
@@ -635,7 +637,100 @@
             });
 
             //查验图片
+            $("#Picture_a").click(function () {
+                var divid = "";//order_
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        divid = $(this)[0].id;
+                    }
+                }); 
+                if (divid == "") {
+                    $.toast("请选择需要查验图片的记录");
+                    return;
+                }
 
+                if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() != "是") {
+                    $.toast("无查验标志，不能使用查验图片功能");
+                    return;
+                }                
+
+                $.modal({
+                    title: '查验图片',
+                    text: '<div class="content-block row">' +
+                                '<div class="col-50"><a href="#" id="picfileupload" class="button button-fill">上传</a></div>' +
+                                '<div class="col-50"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
+                            '</div>',
+                    extraClass: 'picdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $("#picfileupload").click(function () {
+                    $.closeModal(".picdiv");
+
+                    wx.ready(function () {
+                        wx.chooseImage({
+                            count: 5, // 默认9
+                            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                            success: function (res) {　 　　　　　              
+                                var localIds = res.localIds;//把图片本地的id信息，用于上传图片到微信浏览器时使用                                            
+                                syncUpload(localIds);                               
+                            }
+                        });
+
+                        var syncUpload = function (localIds) {
+                            var localId = localIds.pop();
+                            wx.uploadImage({
+                                localId: localId,
+                                isShowProgressTips: 1,
+                                success: function (res) {
+                                    savefile(res.serverId); // 返回图片的服务器端ID
+                                    if (localIds.length > 0) {
+                                        syncUpload(localIds);
+                                    }
+                                }
+                            });
+                        };
+
+                    });
+                    //初始化jsapi接口 状态
+                    wx.error(function (res) {
+                        alert("调用微信jsapi返回的状态:" + res.errMsg);
+                    });
+
+                    function savefile(serverId) {
+                        $.ajax({
+                            type: "post", //要用post方式                 
+                            url: "SiteDeclareList.aspx/SaveFile",//方法所在页面和方法名
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: "{'mediaIds':'" + serverId + "','ordercode':'" + divid.substring(6) + "'}",
+                            cache: false,
+                            async: true,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                            success: function (data) {
+                                if (data.d == "success") {
+                                    $.toast("上传成功");
+                                } else {
+                                    $.toast("上传失败");
+                                }
+                            }
+                        });
+                    }
+
+                });
+
+                $("#picfileconsult").click(function () {
+
+                    $.closeModal(".picdiv");
+
+                    if ($("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(1).text() != "是") {
+                        $.toast("没有查验图片");
+                    }
+
+
+
+                });
+
+            });
 
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
@@ -994,4 +1089,38 @@
     <script type="text/javascript" src="//g.alicdn.com/msui/sm/0.6.2/js/sm-city-picker.min.js" charset="utf-8"></script>--%>
 
 </body>
+
+    
+    <script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
+    <script type='text/javascript'>
+
+
+        var conf = [];
+        $.ajax({
+            type: "post", //要用post方式                 
+            url: "SiteDeclareList.aspx/getConf",//方法所在页面和方法名
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: "{'url':'" + window.location.href.split('#')[0] + "'}",
+            cache: false,
+            async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+            success: function (data) {
+                conf = eval("(" + data.d + ")");//将字符串转为json
+            }
+        });
+
+        wx.config({
+            debug: false,
+            appId: conf.appid,
+            timestamp: conf.timestamp,
+            nonceStr: conf.noncestr,
+            signature: conf.signature,
+            jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage']
+        });
+
+    </script>
+
+
+
+
 </html>

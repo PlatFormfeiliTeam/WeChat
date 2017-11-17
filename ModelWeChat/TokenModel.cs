@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -38,8 +39,8 @@ namespace WeChat.ModelWeChat
         /// </summary>
         private static string mAccessToken;
 
-        public static string AppID = "wxbf28a5d74131c29b";
-        public static string AppSecret = "a568400b7c9014fe23f3a036888b2716";
+        public static string AppID = ConfigurationManager.AppSettings["AppID"];
+        public static string AppSecret = ConfigurationManager.AppSettings["AppSecret"];
         /// <summary>
         /// 调用获取ACCESS_TOKEN,包含判断是否过期
         /// </summary>
