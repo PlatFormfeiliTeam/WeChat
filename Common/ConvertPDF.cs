@@ -28,7 +28,7 @@ namespace WeChat.Common
                 {
                     Image bmp = doc.SaveAsImage(i);
                     bmp.Save(picPath + filename + "-" + i + ".png", ImageFormat.Png);
-                    str += "'" + filename + "-" + i + ".png" + "',";
+                    str += filename + "-" + i + ".png" + ",";
                 }
 
             }

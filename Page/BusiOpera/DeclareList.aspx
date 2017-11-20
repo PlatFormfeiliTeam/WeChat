@@ -10,7 +10,7 @@
     <title>报关单查询</title>
     <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
-    <%--<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">--%>
+    <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
     <style>
@@ -442,7 +442,6 @@
                     return;
                 }
 
-                var filesrc = "";
                 $.ajax({
                     type: "post", //要用post方式                 
                     url: "DeclareList.aspx/FileConsult",//方法所在页面和方法名
@@ -451,8 +450,25 @@
                     data: "{'predelcode':'" + predelcode + "'}",
                     cache: false,
                     async: false,
-                    success: function (data) {//http://223.68.174.213:8383/file/61/2017-11-01/20171101131613646_1abd4738-2cce-4ff4-9b7d-3e04052091e6.pdf
-                        filesrc = '<embed  id="pdf" width="100%" height="80%" src="http://223.68.174.213:8383/file/61/2017-11-01/20171101131613646_1abd4738-2cce-4ff4-9b7d-3e04052091e6.pdf"></embed>';//data.d;
+                    success: function (data) {
+                        if (data.d == "") {
+                            $.toast("报关单文件不存在");
+                            return;
+                        }
+
+                        var picstr = data.d;
+                        var picarr = picstr.split(',');
+
+                        var imgs = "[";
+                        for (var i = 0; i < picarr.length; i++) {
+                            if (picarr[i] != "") { imgs += "'/TempFile/tempPic/" + picarr[i] + "',"; }
+                        }
+                        imgs += "]";
+
+                        var myPhotoBrowserStandalone = $.photoBrowser({
+                            photos: eval(imgs)
+                        });
+                        myPhotoBrowserStandalone.open();
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
                         //alert(XMLHttpRequest.status);
@@ -462,18 +478,6 @@
                     }
                 });
 
-
-                var popupHTML = '<div class="popup">' +
-                                    //'<header class="bar bar-nav">' +
-                                    //    '<button class="close-popup button button-link button-nav pull-left"><span class="icon icon-left"></span>返回</button>' +
-                                    //    '<h1 class="title">报关单调阅</h1>' +
-                                    //'</header>'+
-                                     ' <div class="content">' +
-                                            filesrc +
-                                            '<div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
-                                     '</div>' +
-                                 '</div>';
-                //$.popup(popupHTML);
             });
 
             $.init();
@@ -660,7 +664,7 @@
 
 
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
-   <%-- <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
-    <script type="text/javascript" src="//g.alicdn.com/msui/sm/0.6.2/js/sm-city-picker.min.js" charset="utf-8"></script>--%>
+   <%-- <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
+    <script src="/js/sm-extend.min.js"></script>
 </body>
 </html>

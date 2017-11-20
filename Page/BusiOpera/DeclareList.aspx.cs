@@ -2,12 +2,16 @@
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using WeChat.Common;
 using WeChat.ModelBusi;
 
 namespace WeChat.Page.BusiOpera
@@ -94,8 +98,32 @@ namespace WeChat.Page.BusiOpera
         [WebMethod]
         public static string FileConsult(string predelcode)
         {
-            var jsonstr = "";
-            return jsonstr;
+            DataTable dt = Declare.FileConsult(predelcode);
+            string json = "";
+            if (dt != null)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    string downfile = HttpRuntime.AppDomainAppPath + @"\TempFile\tempPdf\" + dr["declcode"] + ".pdf";
+                    bool bf = true;
+                    if (!File.Exists(downfile))
+                    {
+                        //PDF获取文件
+                        System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
+                        string UserName = ConfigurationManager.AppSettings["FTPUserName"];
+                        string Password = ConfigurationManager.AppSettings["FTPPassword"];
+                        FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+                        bf = ftp.DownloadFile("/" + dr["filename"].ToString2() + "", downfile);
+                    }
+                    if (bf)
+                    {
+                        //pdf转picture
+                        string picPath = HttpRuntime.AppDomainAppPath + @"\TempFile\tempPic\";
+                        json = ConvertPDF.pdfToPic(downfile, picPath, dr["declcode"].ToString2());
+                    }
+                }
+            }
+            return json;
         }
 
     }

@@ -130,10 +130,14 @@ namespace WeChat.ModelBusi
             }
         }
 
-        public static string FileConsult(string predelcode)
+        public static DataTable FileConsult(string predelcode)
         {
-            return "";
-
+            using (DBSession db = new DBSession())
+            {
+                string sql = "select filename,declcode from list_attachment where ordercode=(select ordercode from list_declaration where code='" + predelcode + "') and filetype=61 order by declcode";
+                DataTable dt = db.QuerySignle(sql);
+                return dt;
+            }
         }
 
     }
