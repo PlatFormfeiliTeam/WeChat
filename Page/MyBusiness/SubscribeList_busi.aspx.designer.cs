@@ -8,8 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace WeChat.Page.MyBusiness {
-    
-    
-    public partial class SubscribeList {
+
+
+    public partial class SubscribeList_busi
+    {
     }
 }

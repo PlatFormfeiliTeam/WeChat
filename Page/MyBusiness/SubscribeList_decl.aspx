@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SubscribeList.aspx.cs" Inherits="WeChat.Page.MyBusiness.SubscribeList" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SubscribeList_decl.aspx.cs" Inherits="WeChat.Page.MyBusiness.SubscribeList_decl" %>
 
 <!DOCTYPE html>
 
@@ -15,17 +15,22 @@
              font-size:small;
          }
         .bar input[type=search]{
-             margin:.2rem 0;
+             margin:0;
+             height:1.4rem;
+        }
+        .row
+        {
+            margin:0.2rem 0 0 0 ;
         }
         .bar .button {
             top:0;
         }
         .bar-nav
         {
-            height:4rem;
+            height:5rem;
         }
         .bar-nav ~ .content {
-            top: 4rem;
+            top: 5rem;
         }
         .list-block {
             margin: 0.25rem 0;
@@ -144,13 +149,14 @@
 
         function loadData(pagesize, lastnum) {
             $.ajax({
-                url: 'SubscribeList.aspx/QuerySubscribeInfo',
+                url: 'SubscribeList_decl.aspx/QuerySubscribeInfo',
                 contentType: "application/json; charset=utf-8",
                 type: 'post',
                 dataType: 'json',
                 data: "{'starttime':'" + $("#txt_startdate").val() +
                         "','endtime':'" + $("#txt_enddate").val() +
                         "','istigger':'" + $("#picker_tigger").val() +
+                        "','declcode':'" + $("#txt_code").val() +
                         "','pagesize':" + pagesize +
                         ",'lastnum':" + lastnum + "}",
                 cache: false,
@@ -163,34 +169,27 @@
                                     '<ul>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["BUSIUNITNAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["BUSINAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["CUSNO"] + '</div>' +
+                                                '<div class="my-title">' + obj[i]["DECLARATIONCODE"] + '</div>' +
+                                                '<div class="my-after">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>' +
+                                                '<div class="my-after">' + obj[i]["MODIFYFLAG"] + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["DIVIDENO"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["REPWAYNAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["CONTRACTNO"] + '</div>' +
+                                                '<div class="my-title">' + obj[i]["TRANSNAME"] + '</div>' +
+                                                '<div class="my-after">' + obj[i]["TRADENAME"] + '</div>' +
+                                                '<div class="my-after">' + obj[i]["CUSTOMSSTATUS"] + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["DECLSTATUS"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["INSPSTATUS"] + '</div>' +
-                                            '</div>' +
-                                        '</li>' +
-                                        '<li class="item-content">' +
-                                            '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["SUBLOGSTATUS"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["SUBSTATUS"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["LOGISTICSNAME"] + '</div>' +
+                                                '<div class="my-title">' + obj[i]["SUBSTATUS"] +  '</div>' +
+                                                '<div class="my-after"></div>' +
+                                                '<div class="my-after"></div>' +
                                             '</div>' +
                                         '</li>' +
                                     '</ul>' +
-                                    '</div>';
+                                  '</div>';
                         $("#subcontent").append(str);
                     }
                 }
@@ -205,12 +204,15 @@
             <header class="bar bar-nav">
                 <div class="search-input">                    
                     <div class="row">
-                        <div class="col-50"><input type="search" id='txt_startdate' placeholder='申报起始日期'/></div>
-                        <div class="col-50"><input type="search" id='txt_enddate' placeholder='申报结束日期'/></div>
+                        <div class="col-50"><input type="search" id='txt_startdate' placeholder='订阅起始日期'/></div>
+                        <div class="col-50"><input type="search" id='txt_enddate' placeholder='订阅结束日期'/></div>
                     </div>    
                     <div class="row"> 
                         <div class="col-50"><input type="text" id='picker_tigger' placeholder='是否触发'/></div>
-                        <div class="col-50"><a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a> </div>
+                        <div class="col-50"><input type="text" id='txt_code' placeholder='报关单号'/></div>
+                    </div> 
+                    <div class="row"> 
+                        <div class="col-100"><a href="#" id="search_a" class="open-preloader-title button button-fill">查  询</a> </div>
                     </div>                
                 </div>  
             </header>
