@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SiteDeclareList.aspx.cs" Inherits="WeChat.Page.BusiOpera.SiteDeclareList" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SiteInspectionList.aspx.cs" Inherits="WeChat.Page.BusiOpera.SiteInspectionList" %>
 
 <!DOCTYPE html>
 
@@ -7,12 +7,11 @@
 <%--<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>--%>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <title>现场报关</title>
+    <title>现场报检</title>
     <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
-
 
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
@@ -22,7 +21,7 @@
             top:0;
         }
         #page-infinite-scroll-bottom .bar-nav~.content{
-            top: 5rem;
+            top: 7rem;
         }
         #div_list .list-block{
             font-size:14px;
@@ -51,7 +50,7 @@
             margin-left: 0px;
         }        
         .morediv .modal-inner{
-            height:8.5rem;
+            height:11rem;
         }
 
         /* 更多查询 第一个ul 样式*/
@@ -85,12 +84,9 @@
 
     <script type="text/javascript">
         $(function () {
-            //var myPhotoBrowserStandalone = $.photoBrowser({
-            //    photos: ['http://221.224.21.28:8383/file//67/16120200593/e8981602-6da0-4180-beba-9ed272d7a47d.jpg', 'http://221.224.21.28:8383/file//67/16120200593/3161a348-a9a7-4dd1-9370-3046270f7118.jpg']
-            //});
 
             initsearch_condition();
-
+           
             var loading = false;
             var itemsPerLoad = 10;// 每次加载添加多少条目                
             var maxItems = 100;// 最多可加载的条目
@@ -174,8 +170,8 @@
                     $(this).children("ul").css('background-color', '#C1DDF1');
                 }
             });
-
-            //报关单交接
+            
+            //报检单交接
             $("#Handover_a").click(function () {
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
@@ -198,7 +194,7 @@
                 function () {//OK事件
                     $.ajax({
                         type: "post", //要用post方式                 
-                        url: "SiteDeclareList.aspx/Handover",//方法所在页面和方法名
+                        url: "SiteInspectionList.aspx/Handover",//方法所在页面和方法名
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         data: "{'ordercode':'" + divid.substring(6) + "'}",
@@ -224,8 +220,8 @@
               );
 
             });
-
-            //报关单详细
+            
+            //报检单详细
             $("#Detail_a").click(function () {
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
@@ -243,7 +239,7 @@
 
                 $.ajax({
                     type: "post", //要用post方式                 
-                    url: "SiteDeclareList.aspx/Detail",//方法所在页面和方法名
+                    url: "SiteInspectionList.aspx/Detail",//方法所在页面和方法名
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: "{'ordercode':'" + divid.substring(6) + "'}",
@@ -251,12 +247,12 @@
                     async: false,
                     success: function (data) {
                         var obj = eval("(" + data.d + ")");//将字符串转为json
-                       
-                        var jsonorder = obj[0].json_order;
-                        var jsondecl = obj[0].json_decl;
 
-                        //strconHTML = '<font style="font-weight:800;font-size:.9rem;">报关详细信息</font>';
-                        strconHTML = '<font class="title"><b>报关详细信息</b></font>';
+                        var jsonorder = obj[0].json_order;
+                        var jsoninsp = obj[0].json_insp;
+                       
+                        //strconHTML = '<font style="font-weight:800;font-size:.9rem;">报检详细信息</font>';
+                        strconHTML = '<font class="title"><b>报检详细信息</b></font>';
                         strconHTML += '<div class="list-block" style="margin:0;margin-top:2rem;margin-buttom:1.5rem;font-size:13px;color:black;">'
                                         + '<ul>'
                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">' +
@@ -268,121 +264,105 @@
                                            + '</li>'
                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-title col-25">报关交接</div>'
-                                                    + '<div class="item-title col-50">' + (jsonorder[0]["HANDOVERTIME"] == null ? "" : jsonorder[0]["HANDOVERTIME"]) + '</div>'
-                                                    + '<div class="item-title col-25">' + (jsonorder[0]["HANDOVERUSERNAME"] == null ? "" : jsonorder[0]["HANDOVERUSERNAME"]) + '</div>'
+                                                    + '<div class="item-title col-25">报检交接</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["INSPHANDOVERTIME"] == null ? "" : jsonorder[0]["INSPHANDOVERTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["INSPHANDOVERUSERNAME"] == null ? "" : jsonorder[0]["INSPHANDOVERUSERNAME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-25">制单完成</div>'
-                                                    + '<div class="item-title col-50">' + (jsonorder[0]["MOENDTIME"] == null ? "" : jsonorder[0]["MOENDTIME"]) + '</div>'
-                                                    + '<div class="item-title col-25">' + (jsonorder[0]["MOENDNAME"] == null ? "" : jsonorder[0]["MOENDNAME"]) + '</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["INSPMOENDTIME"] == null ? "" : jsonorder[0]["INSPMOENDTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["INSPMOENDNAME"] == null ? "" : jsonorder[0]["INSPMOENDNAME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-title col-25">现场报关</div>'
-                                                    + '<div class="item-title col-50">' + (jsonorder[0]["SITEAPPLYTIME"] == null ? "" : jsonorder[0]["SITEAPPLYTIME"]) + '</div>'
-                                                    + '<div class="item-title col-25">' + (jsonorder[0]["SITEAPPLYUSERNAME"] == null ? "" : jsonorder[0]["SITEAPPLYUSERNAME"]) + '</div>'
+                                                    + '<div class="item-title col-25">现场报检</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["INSPSITEAPPLYTIME"] == null ? "" : jsonorder[0]["INSPSITEAPPLYTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["INSPSITEAPPLYUSERNAME"] == null ? "" : jsonorder[0]["INSPSITEAPPLYUSERNAME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-25">审核完成</div>'
-                                                    + '<div class="item-title col-50">' + (jsonorder[0]["COENDTIME"] == null ? "" : jsonorder[0]["COENDTIME"]) + '</div>'
-                                                    + '<div class="item-title col-25">' + (jsonorder[0]["COENDNAME"] == null ? "" : jsonorder[0]["COENDNAME"]) + '</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["INSPCOENDTIME"] == null ? "" : jsonorder[0]["INSPCOENDTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["INSPCOENDNAME"] == null ? "" : jsonorder[0]["INSPCOENDNAME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-title col-25">查验维护</div>'
-                                                    + '<div class="item-title col-50">' + (jsonorder[0]["DECLCHECKTIME"] == null ? "" : jsonorder[0]["DECLCHECKTIME"]) + '</div>'
-                                                    + '<div class="item-title col-25">' + (jsonorder[0]["DECLCHECKNAME"] == null ? "" : jsonorder[0]["DECLCHECKNAME"]) + '</div>'
+                                                    + '<div class="item-title col-25">报检查验</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["INSPCHECKTIME"] == null ? "" : jsonorder[0]["INSPCHECKTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["INSPCHECKNAME"] == null ? "" : jsonorder[0]["INSPCHECKNAME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-25">预录完成</div>'
-                                                    + '<div class="item-title col-50">' + (jsonorder[0]["PREENDTIME"] == null ? "" : jsonorder[0]["PREENDTIME"]) + '</div>'
-                                                    + '<div class="item-title col-25">' + (jsonorder[0]["PREENDNAME"] == null ? "" : jsonorder[0]["PREENDNAME"]) + '</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["INSPPREENDTIME"] == null ? "" : jsonorder[0]["INSPPREENDTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["INSPPREENDNAME"] == null ? "" : jsonorder[0]["INSPPREENDNAME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-title col-25">现场放行</div>'
-                                                    + '<div class="item-title col-50">' + (jsonorder[0]["SITEPASSTIME"] == null ? "" : jsonorder[0]["SITEPASSTIME"]) + '</div>'
-                                                    + '<div class="item-title col-25">' + (jsonorder[0]["SITEPASSUSERNAME"] == null ? "" : jsonorder[0]["SITEPASSUSERNAME"]) + '</div>'
+                                                    + '<div class="item-title col-25">报检放行</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["INSPSITEPASSTIME"] == null ? "" : jsonorder[0]["INSPSITEPASSTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["INSPSITEPASSUSERNAME"] == null ? "" : jsonorder[0]["INSPSITEPASSUSERNAME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-25">申报完成</div>'
-                                                    + '<div class="item-title col-50">' + (jsonorder[0]["REPENDTIME"] == null ? "" : jsonorder[0]["REPENDTIME"]) + '</div>'
-                                                    + '<div class="item-title col-25">' + (jsonorder[0]["REPENDNAME"] == null ? "" : jsonorder[0]["REPENDNAME"]) + '</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["INSPREPENDTIME"] == null ? "" : jsonorder[0]["INSPREPENDTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["INSPREPENDNAME"] == null ? "" : jsonorder[0]["INSPREPENDNAME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-title col-25">检验图片</div>'
-                                                    + '<div class="item-title col-50">' + getname("CHECKPIC", jsonorder[0]["CHECKPIC"]) + '</div>'
+                                                    + '<div class="item-title col-25">查验图片</div>'
+                                                    + '<div class="item-title col-50">' + getname("INSPCHECKPIC", jsonorder[0]["INSPCHECKPIC"]) + '</div>'
                                                     + '<div class="item-title col-25"></div>'
                                                 + '</div>'
                                             + '</li>'
                                         + '</ul>'
                                     + '</div>';
 
-                   
+
                         strconHTML += '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
                                         + '<ul>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
-                                                    + '<div class="item-title col-50">报关单号</div>'
-                                                    + '<div class="item-title col-25">件数</div>'
-                                                    + '<div class="item-title col-25">毛重</div>'
-                                                + '</div>'
-                                            + '</li>'
-                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
-                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
-                                                    + '<div class="item-title col-50">运输工具名称</div>'
-                                                    + '<div class="item-title col-25">监管方式</div>'
-                                                    + '<div class="item-title col-25">删改单</div>'
+                                                    + '<div class="item-title col-50">流水号</div>'
+                                                    + '<div class="item-title col-50">报检单号</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border:2px solid #0894EC;">'
-                                                    + '<div class="item-title col-50">海关状态</div>'
-                                                    + '<div class="item-title col-25"></div>'
-                                                    + '<div class="item-title col-25"></div>'
+                                                    + '<div class="item-title col-50">通关单号</div>'
+                                                    + '<div class="item-title col-25">删改单</div>'
+                                                    + '<div class="item-title col-25">国检状态</div>'
                                                 + '</div>'
                                             + '</li>'
                                         + '</ul>'
                                     + '</div>';
-                    
 
+                        
 
-                        for (var i = 0; i < jsondecl.length; i++) {
+                        for (var i = 0; i < jsoninsp.length; i++) {
                             strconHTML += '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                             + '<ul>'
                                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                        + '<div class="item-title col-50">' + (jsondecl[i]["DECLARATIONCODE"] == null ? "" : jsondecl[i]["DECLARATIONCODE"]) + '</div>'
-                                                        + '<div class="item-title col-25">' + (jsondecl[i]["GOODSNUM"] == null ? "" : jsondecl[i]["GOODSNUM"]) + '</div>'
-                                                        + '<div class="item-title col-25">' + (jsondecl[i]["GOODSGW"] == null ? "" : jsondecl[i]["GOODSGW"]) + '</div>'
+                                                        + '<div class="item-title col-50">' + (jsoninsp[i]["APPROVALCODE"] == null ? "" : jsoninsp[i]["APPROVALCODE"]) + '</div>'
+                                                        + '<div class="item-title col-50">' + (jsoninsp[i]["INSPECTIONCODE"] == null ? "" : jsoninsp[i]["INSPECTIONCODE"]) + '</div>'
                                                     + '</div>'
                                                 + '</li>'
                                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                        + '<div class="item-title col-50">' + (jsondecl[i]["TRANSNAME"] == null ? "" : jsondecl[i]["TRANSNAME"]) + '</div>'
-                                                        + '<div class="item-title col-25">' + (jsondecl[i]["TRADECODE"] == null ? "" : jsondecl[i]["TRADECODE"]) + '</div>'
-                                                        + '<div class="item-title col-25">' + getname("MODIFYFLAG", jsondecl[i]["MODIFYFLAG"]) + '</div>'
-                                                    + '</div>'
-                                                + '</li>'
-                                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                        + '<div class="item-title col-50">' + (jsondecl[i]["CUSTOMSSTATUS"] == null ? "" : jsondecl[i]["CUSTOMSSTATUS"]) + '</div>'
-                                                        + '<div class="item-title col-25"></div>'
-                                                        + '<div class="item-title col-25"></div>'
+                                                        + '<div class="item-title col-50">' + (jsoninsp[i]["CLEARANCECODE"] == null ? "" : jsoninsp[i]["CLEARANCECODE"]) + '</div>'
+                                                        + '<div class="item-title col-25">' + getname("MODIFYFLAG", jsoninsp[i]["MODIFYFLAG"]) + '</div>'
+                                                        + '<div class="item-title col-25">' + (jsoninsp[i]["INSPSTATUS"] == null ? "" : jsoninsp[i]["INSPSTATUS"]) + '</div>'
                                                     + '</div>'
                                                 + '</li>'
                                             + '</ul>'
@@ -408,7 +388,7 @@
 
             });
 
-            //报关单放行
+            //报检单放行
             $("#Pass_a").click(function () {
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
@@ -431,7 +411,7 @@
                     function () {//OK事件
                         $.ajax({
                             type: "post", //要用post方式                 
-                            url: "SiteDeclareList.aspx/Pass",//方法所在页面和方法名
+                            url: "SiteInspectionList.aspx/Pass",//方法所在页面和方法名
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             data: "{'ordercode':'" + divid.substring(6) + "'}",
@@ -457,23 +437,22 @@
                   );
 
             });
-
+           
             //查验标志
             $("#Check_a").click(function () {
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         divid = $(this)[0].id;
-                        //alert($(this).children("ul").children().eq(2).children("div").children().eq(0).text());
                     }
                 });
                 if (divid == "") {
                     $.toast("请选择需要查验标志的记录");
                     return;
                 }
-               
+
                 var strconHTML = "";
-                strconHTML = '<font class="title"><b>报关查验维护</b></font>';
+                strconHTML = '<font class="title"><b>报检查验维护</b></font>';
 
                 strconHTML += '<div class="list-block" style="margin:0; margin-top:2rem;margin-buttom:2rem;margin-left:4%;margin-right:4%;line-height:1.5rem;font-size:.7rem">' +
                                     '<div class="row"> ' +
@@ -486,11 +465,11 @@
                                     '</div> ' +
                                     '<div class="row"> ' +
                                         '<div class="col-33">查验维护时间：</div>' +
-                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declchecktime" readonly /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_inspchecktime" readonly /></div>' +
                                     '</div> ' +
                                         '<div class="row"> ' +
-                                        '<div class="col-33">查验维护人员：<input type="hidden" id="txt_declcheckid" readonly /></div>' +
-                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declcheckname" readonly /></div>' +
+                                        '<div class="col-33">查验维护人员：<input type="hidden" id="txt_inspcheckid" readonly /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_inspcheckname" readonly /></div>' +
                                     '</div> ' +
                                 '</div>';
                 strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
@@ -507,7 +486,7 @@
 
                 $.ajax({
                     type: "post", //要用post方式                 
-                    url: "SiteDeclareList.aspx/declcontainerdata",//方法所在页面和方法名
+                    url: "SiteInspectionList.aspx/inspcontainerdata",//方法所在页面和方法名
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: "{'ordercode':'" + divid.substring(6) + "'}",
@@ -560,7 +539,7 @@
                              '</div>';
 
                 $.popup(popupHTML);
-                
+
                 var nd = new Date();
                 var y = nd.getFullYear();
                 var m = nd.getMonth() + 1;
@@ -572,19 +551,19 @@
                 if (d <= 9) d = "0" + d;
                 if (h <= 9) h = "0" + h;
                 if (mi <= 9) mi = "0" + mi;
-                
-                //$("#txt_declchecktime").datetimePicker({ value: [y, m, d, h, mi] });//此行不用 ，用下一行代码，因为是只读，不允许操作
-                $("#txt_declchecktime").val(y + "" + m + "" + d + " " + h + ":" + mi);//初始化日期时间
 
-                $("#txt_declcheckid").val("763");//当前登录人id
-                $("#txt_declcheckname").val("昆山吉时报关有限公司");//当前登录人name
+                //$("#txt_inspchecktime").datetimePicker({ value: [y, m, d, h, mi] });//此行不用 ，用下一行代码，因为是只读，不允许操作
+                $("#txt_inspchecktime").val(y + "" + m + "" + d + " " + h + ":" + mi);//初始化日期时间
+
+                $("#txt_inspcheckid").val("763");//当前登录人id
+                $("#txt_inspcheckname").val("昆山吉时报关有限公司");//当前登录人name
 
                 $("#checkcancel").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
                     $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
                          function () {//OK事件
                              $.ajax({
                                  type: "post", //要用post方式                 
-                                 url: "SiteDeclareList.aspx/checkcancel",//方法所在页面和方法名
+                                 url: "SiteInspectionList.aspx/checkcancel",//方法所在页面和方法名
                                  contentType: "application/json; charset=utf-8",
                                  dataType: "json",
                                  data: "{'ordercode':'" + divid.substring(6) + "'}",
@@ -616,11 +595,11 @@
                         function () {//OK事件
                             $.ajax({
                                 type: "post", //要用post方式                 
-                                url: "SiteDeclareList.aspx/checksave",//方法所在页面和方法名
+                                url: "SiteInspectionList.aspx/checksave",//方法所在页面和方法名
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json",
-                                data: "{'ordercode':'" + divid.substring(6) + "','checktime':'" + $("#txt_declchecktime").val()
-                                    + "','checkname':'" + $("#txt_declcheckname").val() + "','checkid':'" + $("#txt_declcheckid").val() + "'}",
+                                data: "{'ordercode':'" + divid.substring(6) + "','checktime':'" + $("#txt_inspchecktime").val()
+                                    + "','checkname':'" + $("#txt_inspcheckname").val() + "','checkid':'" + $("#txt_inspcheckid").val() + "'}",
                                 cache: false,
                                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                                 success: function (data) {
@@ -645,7 +624,7 @@
                 });
 
             });
-
+           
             //查验图片
             $("#Picture_a").click(function () {
                 var divid = "";//order_
@@ -653,7 +632,7 @@
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         divid = $(this)[0].id;
                     }
-                }); 
+                });
                 if (divid == "") {
                     $.toast("请选择需要查验图片的记录");
                     return;
@@ -662,7 +641,7 @@
                 if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() != "是") {
                     $.toast("无查验标志，不能使用查验图片功能");
                     return;
-                }                
+                }
 
                 $.modal({
                     title: '查验图片',
@@ -681,9 +660,9 @@
                             count: 5, // 默认9
                             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
                             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-                            success: function (res) {　 　　　　　              
+                            success: function (res) {
                                 var localIds = res.localIds;//把图片本地的id信息，用于上传图片到微信浏览器时使用                                            
-                                syncUpload(localIds);                               
+                                syncUpload(localIds);
                             }
                         });
 
@@ -710,7 +689,7 @@
                     function savefile(serverId) {
                         $.ajax({
                             type: "post", //要用post方式                 
-                            url: "SiteDeclareList.aspx/SaveFile",//方法所在页面和方法名
+                            url: "SiteInspectionList.aspx/SaveFile",//方法所在页面和方法名
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             data: "{'mediaIds':'" + serverId + "','ordercode':'" + divid.substring(6) + "'}",
@@ -720,7 +699,7 @@
                                 if (data.d == "success") {
                                     $.toast("上传成功");
                                     //修改页面查验图片标志
-                                    $("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(1).text("是");
+                                    $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text("是");
                                 } else {
                                     $.toast("上传失败");
                                 }
@@ -734,14 +713,14 @@
 
                     $.closeModal(".picdiv");
 
-                    if ($("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(1).text() != "是") {
+                    if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text() != "是") {
                         $.toast("没有查验图片");
                         return;
                     }
 
                     $.ajax({
                         type: "post", //要用post方式                 
-                        url: "SiteDeclareList.aspx/picfileconsult",//方法所在页面和方法名
+                        url: "SiteInspectionList.aspx/picfileconsult",//方法所在页面和方法名
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         data: "{'ordercode':'" + divid.substring(6) + "'}",
@@ -754,36 +733,42 @@
                                 imgs += "'" + $("#hd_AdminUrl").val() + "file/" + obj[i]["FILENAME"] + "',";
                             }
                             imgs += "]";
-                           
+
                             var myPhotoBrowserStandalone = $.photoBrowser({
                                 photos: eval(imgs)
                             });
-                            myPhotoBrowserStandalone.open(); 
+                            myPhotoBrowserStandalone.open();
                         }
                     });
 
                 });
 
             });
-
+            
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
             function loaddata(itemsPerLoad, lastIndex) {
+
+                var chk_lawflag = $("input[name='checkbox_lawflag']").prop('checked') == true ? "1" : "0";
+                var chk_isneedclearance = $("input[name='checkbox_isneedclearance']").prop('checked') == true ? "1" : "0";
+
                 $.ajax({
                     type: "post", //要用post方式                 
-                    url: "SiteDeclareList.aspx/BindList",//方法所在页面和方法名
+                    url: "SiteInspectionList.aspx/BindList",//方法所在页面和方法名
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'inout_type':'" + $("#picker_inout_type").val() + "','issiterep':'" + $("#picker_is_siterep").val() + "','busitype':'" + $("#picker_busitype").val()
-                        + "','ispass':'" + $("#picker_is_pass").val() + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
-                        + "','radiotype':'" + $("#txt_radio_type_hidden").val() + "','morecon':'" + $("#txt_morecon_hidden").val() 
+                    data: "{'inout_type':'" + $("#picker_inout_type").val() + "','issiterep':'" + $("#picker_is_siterep").val()
+                        + "','lawflag':'" + chk_lawflag + "','isneedclearance':'" + chk_isneedclearance
+                        + "','busitype':'" + $("#picker_busitype").val() + "','ispass':'" + $("#picker_is_pass").val() 
+                        + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
+                        + "','radiotype':'" + $("#txt_radio_type_hidden").val() + "','morecon':'" + $("#txt_morecon_hidden").val()
                         + "','start':" + lastIndex + ",'itemsPerLoad':" + itemsPerLoad + "}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
                         var obj = eval("(" + data.d + ")");//将字符串转为json
 
-                        
+
 
                         var tb = "";
                         var blno_busi = "";//分提单号
@@ -834,23 +819,23 @@
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
-                                                + '<div class="item-title col-40">' + (obj[i]["HANDOVERTIME"] == null ? "" : obj[i]["HANDOVERTIME"]) + '</div>'
+                                                + '<div class="item-title col-40">' + (obj[i]["INSPHANDOVERTIME"] == null ? "" : obj[i]["INSPHANDOVERTIME"]) + '</div>'
                                                 + '<div class="item-title col-25">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["CONTRACTNO"] + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
-                                                + '<div class="item-title col-40">' + (obj[i]["DECLCHECKTIME"] == null ? "" : obj[i]["DECLCHECKTIME"]) + '</div>'
-                                                + '<div class="item-title col-25">' + getname("ISCHECK", obj[i]["ISCHECK"]) + '</div>'
-                                                + '<div class="item-title col-33">' + (obj[i]["ASSOCIATENO"] == null ? "" : obj[i]["ASSOCIATENO"]) + '</div>'
+                                                + '<div class="item-title col-40">' + (obj[i]["INSPCHECKTIME"] == null ? "" : obj[i]["INSPCHECKTIME"]) + '</div>'
+                                                + '<div class="item-title col-25">' + getname("INSPISCHECK", obj[i]["INSPISCHECK"]) + '</div>'
+                                                + '<div class="item-title col-33">' + getname("INSPCHECKPIC", obj[i]["INSPCHECKPIC"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
-                                                + '<div class="item-title col-40">' + (obj[i]["SITEPASSTIME"] == null ? "" : obj[i]["SITEPASSTIME"]) + '</div>'
-                                                + '<div class="item-title col-25">' + getname("CHECKPIC", obj[i]["CHECKPIC"]) + '</div>'
-                                                + '<div class="item-title col-33">' + (obj[i]["CORRESPONDNO"] == null ? "" : obj[i]["CORRESPONDNO"]) + '</div>'
+                                                + '<div class="item-title col-40">' + (obj[i]["INSPSITEPASSTIME"] == null ? "" : obj[i]["INSPSITEPASSTIME"]) + '</div>'
+                                                + '<div class="item-title col-25">' + getname("LAWFLAG", obj[i]["LAWFLAG"]) + '</div>'
+                                                + '<div class="item-title col-33">' + getname("ISNEEDCLEARANCE", obj[i]["ISNEEDCLEARANCE"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                     + '</ul>'
@@ -888,7 +873,7 @@
                     case "51": str = "特殊进口"; break;
                 }
             }
-            if (key == "ISCHECK" || key == "CHECKPIC") {
+            if (key == "INSPISCHECK" || key == "INSPCHECKPIC" || key == "LAWFLAG" || key == "ISNEEDCLEARANCE") {
                 switch (value) {
                     case 0: str = "否"; break;
                     case 1: str = "是"; break;
@@ -905,7 +890,7 @@
             }
             return str;
         }
-        
+
         function initsearch_condition() {
             $("#picker_inout_type").picker({
                 toolbarTemplate: '<header class="bar bar-nav">\
@@ -968,10 +953,10 @@
                               '<ul>' +
                                 '<li>' +
                                     '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="报关单号" checked>' +
+                                        '<input type="radio" name="radio_type" value="报检单号" checked>' +
                                         '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
                                         '<div class="item-inner">' +
-                                            '<div class="item-text">报关单号</div>' +
+                                            '<div class="item-text">报检单号</div>' +
                                         '</div>' +
                                     '</label>' +
                                 '</li>' +
@@ -1003,6 +988,17 @@
                                     '</label>' +
                                 '</li>' +
                             '</ul>' +
+                            '<ul>' +
+                                '<li style="float:left;width:25%;">' +
+                                    '<label class="label-checkbox item-content">' +
+                                        '<input type="radio" name="radio_type" value="通关单号">' +
+                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
+                                        '<div class="item-inner">' +
+                                            '<div class="item-text">通关单号</div>' +
+                                        '</div>' +
+                                    '</label>' +
+                                '</li>' +
+                            '</ul>' +
                         '</div>' +
                         '<div class="list-block" style="margin:0;">' +
                             '<input type="text" style="background:#fff;height:1.5rem;font-size:.62rem" id="txt_morecon" value="' + $("#txt_morecon_hidden").val() + '" />' +
@@ -1025,6 +1021,7 @@
                          text: '重置', bold: true,
                          onClick: function () {
                              $("#picker_inout_type").picker("setValue", ["全部"]); $("#picker_is_siterep").picker("setValue", ["仅现场"]);
+                             $("input[name='checkbox_lawflag']").prop('checked', false); $("input[name='checkbox_isneedclearance']").prop('checked', false);
                              $("#picker_busitype").picker("setValue", ["全部"]); $("#picker_is_pass").picker("setValue", ["未放行"]);
                              $("#txt_startdate").val(""); $("#txt_enddate").val("");
                              $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
@@ -1036,13 +1033,14 @@
                     ],
                     extraClass: 'morediv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
-                
+
                 $('input[name="radio_type"]').change(function (e) {
                     var radio_type_checked = $("input[name='radio_type']:checked").val();
-                    if (radio_type_checked == "报关单号") { $("#p_morecon").text("注意：请输入报关单后9位或18位报关号"); }
+                    if (radio_type_checked == "报检单号") { $("#p_morecon").text("注意：请输入报检单后7位或15位报检单号"); }
                     if (radio_type_checked == "收发货人") { $("#p_morecon").text("注意：请输入4位以上连续名称"); }
                     if (radio_type_checked == "客户编号") { $("#p_morecon").text("注意：请输入后5位以上的号码"); }
                     if (radio_type_checked == "业务编号") { $("#p_morecon").text("注意：请输入后5位以上的编号"); }
+                    if (radio_type_checked == "通关单号") { $("#p_morecon").text("注意：请输入报检单后7位或15位报检单号"); }
                 });
 
                 //radio 初始化上次 点击 确认后 选中的值（文本框的默认值上面直接绑定在value上了）
@@ -1055,7 +1053,6 @@
         }
 
     </script>
-
 </head>
 <body>
     <div class="page-group">
@@ -1066,15 +1063,42 @@
                     <div class="row"> 
                         <div class="col-25"><input type="search" id='picker_inout_type' placeholder='进出口'/></div> <%--value="全部"--%>
                         <div class="col-25"><input type="search" id='picker_is_siterep' placeholder='现场申报'/></div><%--value="仅现场"--%>
-                        <div class="col-25"><input type="search" id='picker_busitype' placeholder='业务类型'/></div> <%--value="全部"--%>
-                        <div class="col-25"><input type="search" id='picker_is_pass' placeholder='放行情况'/></div> <%--value="未放行"--%>
+                        <div class="col-50">
+                            <div class="list-block" style="margin:0;">
+                                <ul>
+                                    <li style="float:left; width:50%;">
+                                        <label class="label-checkbox item-content" style="padding-left:0px;min-height:0rem;">
+                                            <input type="checkbox" name="checkbox_lawflag" value="法检">
+                                            <div class="item-media" style="padding-top:.8rem;padding-bottom:0rem;"><i class="icon icon-form-checkbox"></i></div>
+                                            <div class="item-inner" style="margin-left:.5rem;padding-right:0px;padding-top:0rem;padding-bottom:0rem;min-height:0rem;">
+                                                <div class="item-text" style="height:1.3rem;">法检</div>
+                                            </div>
+                                        </label>
+                                    </li>
+                                    <li style="float:left; width:50%;">
+                                        <label class="label-checkbox item-content" style="padding-left:0px;min-height:0rem;">
+                                            <input type="checkbox" name="checkbox_isneedclearance" value="通关单">
+                                            <div class="item-media" style="padding-top:.8rem;padding-bottom:0rem;"><i class="icon icon-form-checkbox"></i></div>
+                                            <div class="item-inner" style="margin-left:.5rem;padding-right:0px;padding-top:0rem;padding-bottom:0rem;min-height:0rem;">
+                                                <div class="item-text" style="height:1.3rem;">通关单</div>
+                                           </div>
+                                        </label>
+                                   </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-50"><input type="search" id='picker_busitype' placeholder='业务类型'/></div> <%--value="全部"--%>
+                        <div class="col-50"><input type="search" id='picker_is_pass' placeholder='放行情况'/></div> <%--value="未放行"--%>
+                    </div>        
                     <div class="row">
                         <div class="col-40"><input type="search" id='txt_startdate' placeholder='委托起始日期'/></div>
                         <div class="col-5">~</div>
                         <div class="col-40"><input type="search" id='txt_enddate' placeholder='委托结束日期'/></div>
                         <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
-                    </div>                    
+                    </div>  
+                                
                 </div>  
                 <input type="hidden" id='txt_radio_type_hidden'/><input type="hidden" id='txt_morecon_hidden'/>              
                 <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>   
@@ -1084,16 +1108,16 @@
             <nav class="bar bar-tab">
                 <a class="tab-item external" href="#" id="Handover_a"><%--active--%>
                     <span class="icon icon-friends"></span>
-                    <span class="tab-label">报关单交接</span>
+                    <span class="tab-label">报检单交接</span>
                 </a>
                 <a class="tab-item external" href="#" id="Detail_a">
                     <span class="icon icon-message"></span>
-                    <span class="tab-label">报关单详细</span>
+                    <span class="tab-label">报检单详细</span>
                     <%--<span class="badge">2</span>--%>
                 </a>
                 <a class="tab-item external" href="#" id="Pass_a">
                     <span class="icon icon-cart"></span>
-                    <span class="tab-label">报关放行</span>
+                    <span class="tab-label">报检放行</span>
                 </a>
                 <a class="tab-item external" href="#" id="Check_a">
                     <span class="icon icon-check"></span>
@@ -1123,7 +1147,6 @@
     <script src="/js/sm-extend.min.js"></script>
 </body>
 
-    
     <script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
     <script type='text/javascript'>
 
@@ -1131,7 +1154,7 @@
         var conf = [];
         $.ajax({
             type: "post", //要用post方式                 
-            url: "SiteDeclareList.aspx/getConf",//方法所在页面和方法名
+            url: "SiteInspectionList.aspx/getConf",//方法所在页面和方法名
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             data: "{'url':'" + window.location.href.split('#')[0] + "'}",
@@ -1152,8 +1175,5 @@
         });
 
     </script>
-
-
-
 
 </html>
