@@ -35,7 +35,13 @@
             height:1.3rem;
             min-height:1.3rem;
         }
-
+        .picker-items-col.picker-items-col-center{
+             width: 100%;
+        }
+        .picker-items-col-wrapper
+        {
+           width: 100%;
+        }
         /************************************************ 更多查询*********************************/
         .morediv{
             width: 98%;
@@ -173,7 +179,7 @@
                     $.attachInfiniteScroll($('.infinite-scroll'));
 
                     loaddata(itemsPerLoad, lastIndex);
-                    lastIndex = $('.list-block').length;// 更新最后加载的序号
+                    lastIndex = $('#div_list .list-block').length;// 更新最后加载的序号
                     $.refreshScroller();
                     scroller.scrollTop(0); //首次查询后，滚动条需要置为初始值0
 
@@ -212,14 +218,14 @@
 
                         loaddata(itemsPerLoad, lastIndex);
 
-                        if (lastIndex == $('.list-block').length) {
+                        if (lastIndex == $('#div_list .list-block').length) {
                             $.detachInfiniteScroll($('.infinite-scroll'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
                             $('.infinite-scroll-preloader').hide();
 
                             $.toast("已经加载到最后");
                             return;
                         }
-                        lastIndex = $('.list-block').length;// 更新最后加载的序号
+                        lastIndex = $('#div_list .list-block').length;// 更新最后加载的序号
                         $.refreshScroller();
 
                     }, 500);

@@ -109,7 +109,7 @@ namespace WeChat.ModelBusi
                                     ,to_char(ort.sitepasstime,'yyyyMMdd HH24:mi') sitepasstime,ort.checkpic,ort.correspondno 
                                 from list_order ort
                                     left join list_declaration det on ort.code=det.ordercode   
-                                where ort.isinvalid=0 and det.isinvalid=0" + where;
+                                where ort.entrusttype in('01','03') and ort.isinvalid=0 and det.isinvalid=0" + where;
 
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
                 string sql = string.Format(pageSql, tempsql, "ort.handovertime", "desc", start + 1, start + itemsPerLoad);
