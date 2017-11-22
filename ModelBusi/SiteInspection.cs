@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
+using WeChat.Common;
 using WeChat.Entity.Enum;
 
 namespace WeChat.ModelBusi
@@ -113,9 +117,9 @@ namespace WeChat.ModelBusi
                 string tempsql = @"select ort.busiunitname,ort.busitype,ort.code
                                     ,ort.totalno,ort.divideno,ort.secondladingbillno,ort.landladingno,ort.associatepedeclno,ort.repwayid
                                     ,(select name from cusdoc.sys_repway where enabled=1 and code=ort.repwayid and rownum=1) repwayname,ort.cusno
-                                    ,to_char(ort.handovertime,'yyyyMMdd HH24:mi') handovertime,ort.goodsnum,ort.goodsgw,ort.contractno
-                                    ,to_char(ort.declchecktime,'yyyyMMdd HH24:mi') declchecktime,ort.ischeck,ort.checkpic
-                                    ,to_char(ort.sitepasstime,'yyyyMMdd HH24:mi') sitepasstime,ort.lawflag,ort.isneedclearance 
+                                    ,to_char(ort.insphandovertime,'yyyyMMdd HH24:mi') insphandovertime,ort.goodsnum,ort.goodsgw,ort.contractno
+                                    ,to_char(ort.inspchecktime,'yyyyMMdd HH24:mi') inspchecktime,ort.inspischeck,ort.inspcheckpic
+                                    ,to_char(ort.inspsitepasstime,'yyyyMMdd HH24:mi') inspsitepasstime,ort.lawflag,ort.isneedclearance 
                                 from list_order ort
                                     left join list_inspection li on ort.code=li.ordercode 
                                 where ort.entrusttype in('02','03') and ort.isinvalid=0 and li.isinvalid=0" + where;
@@ -127,7 +131,224 @@ namespace WeChat.ModelBusi
             }
         }
 
+        public static string Handover(string ordercode)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                string sql = "update list_order set insphandoveruserid='{1}',insphandoverusername='{2}',insphandovertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
+                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
+                int i = db.ExecuteSignle(sql);
+                if (i > 0)
+                {
+                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        public static string Pass(string ordercode)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                string sql = "update list_order set inspsitepassuserid='{1}',inspsitepassusername='{2}',inspsitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
+                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
+                int i = db.ExecuteSignle(sql);
+                if (i > 0)
+                {
+                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        public static DataSet Detail(string ordercode)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = ""; DataSet ds = new DataSet();
+
+                DataTable dt_order = new DataTable();
+                sql = @"select ort.code
+                            ,ort.submittime,ort.submitusername,ort.insphandovertime,ort.insphandoverusername
+                            ,ort.inspmoendtime,ort.inspmoendname,ort.inspsiteapplytime,ort.inspsiteapplyusername 
+                            ,ort.inspcoendtime,ort.inspcoendname,ort.inspchecktime,ort.inspcheckname
+                            ,ort.insppreendtime,ort.insppreendname,ort.inspsitepasstime,ort.inspsitepassusername
+                            ,ort.insprependtime,ort.insprependname,ort.inspcheckpic
+                        from list_order ort where ort.isinvalid=0 and code='" + ordercode + "'";
+                dt_order = db.QuerySignle(sql);
+
+                //dt_order.TableName = "order";
+                ds.Tables.Add(dt_order);
 
 
+                DataTable dt_insp = new DataTable();
+                sql = @"select li.APPROVALCODE,li.INSPECTIONCODE,li.CLEARANCECODE,li.MODIFYFLAG,li.INSPSTATUS
+                        from list_inspection li 
+                        where li.isinvalid=0 and li.ordercode='" + ordercode + "'";
+                dt_insp = db.QuerySignle(sql);
+
+                //dt_insp.TableName = "insp";
+                ds.Tables.Add(dt_insp);
+
+                return ds;
+            }
+        }
+
+        /*public static DataSet getinspcontainerdata(string ordercode)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = ""; DataSet ds = new DataSet();
+
+                DataTable dt_order = new DataTable();
+                sql = @"select ort.code,ort.cusno,ort.inspchecktime,ort.inspcheckname,ort.inspcheckid,ort.inspischeck 
+                        from list_order ort where ort.isinvalid=0 and code='" + ordercode + "'";
+                dt_order = db.QuerySignle(sql);
+                ds.Tables.Add(dt_order);
+
+                DataTable dt_predeclcontainer = new DataTable();
+                sql = @"select lp.CONTAINERNO,lp.CONTAINERSIZEE
+                        from list_predeclcontainer lp   
+                        where lp.isinvalid=0 and lp.ordercode='" + ordercode + "'";
+                dt_predeclcontainer = db.QuerySignle(sql);
+                ds.Tables.Add(dt_predeclcontainer);
+                return ds;
+            }
+        }*/
+        public static DataTable getinspcontainerdata(string ordercode)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = @"select lp.CONTAINERNO,lp.CONTAINERSIZEE
+                                from list_predeclcontainer lp   
+                                where lp.isinvalid=0 and lp.ordercode='" + ordercode + "'";
+                return db.QuerySignle(sql);
+            }
+        }
+
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "update list_order set inspischeck=1,inspcheckid='{1}',inspcheckname='{2}',inspchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
+                sql = string.Format(sql, ordercode, checkid, checkname, checktime);
+                int i = db.ExecuteSignle(sql);
+                if (i > 0)
+                {
+                    return checktime.Replace("-", "");
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        public static string checkcancel(string ordercode)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "update list_order set inspischeck=0,inspcheckid=null,inspcheckname=null,inspchecktime=null where code='{0}'";
+                sql = string.Format(sql, ordercode);
+                int i = db.ExecuteSignle(sql);
+                if (i > 0)
+                {
+                    return "sucess";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        public static string SaveFile(string mediaIds, string ordercode)
+        {
+            string str = "false";
+            if (!string.IsNullOrEmpty(mediaIds))
+            {
+                string url = string.Format("http://file.api.weixin.qq.com/cgi-bin/media/get?access_token={0}&media_id={1}", ModelWeChat.TokenModel.AccessToken, mediaIds);
+                HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
+                using (WebResponse wr = req.GetResponse())
+                {
+                    string dicPath = System.AppDomain.CurrentDomain.BaseDirectory;
+                    string filename = Guid.NewGuid() + ".jpg";
+                    string filepath = @"uploadimage\" + filename;
+
+                    WebClient mywebclient = new WebClient();
+                    mywebclient.DownloadFile(wr.ResponseUri, dicPath + filepath);
+
+                    if (File.Exists(dicPath + filepath))//ftp 到文件服务器,然后往数据库插入一笔记录
+                    {
+                        FileInfo fi = new FileInfo(dicPath + filepath);
+
+                        System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
+                        string UserName = ConfigurationManager.AppSettings["FTPUserName"];
+                        string Password = ConfigurationManager.AppSettings["FTPPassword"];
+                        FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+                        string ftppath = "/67/" + ordercode + "/" + filename;
+                        bool bf = ftp.UploadFile(dicPath + filepath, ftppath, true); ;
+                        if (bf)
+                        {
+                            using (DBSession db = new DBSession())
+                            {
+                                List<string> sqls = new List<string>();
+                                int uploaduserid = 763;
+                                string customercode = "KSJSBGYXGS";
+
+                                string sql = @"insert into LIST_ATTACHMENT (id
+                                                ,filename,originalname,filetype,uploadtime,uploaduserid,customercode,ordercode
+                                                ,sizes,filetypename,filesuffix)
+                                        values(List_Attachment_Id.Nextval,'{0}','{1}','{2}',sysdate,{3},'{4}','{5}'
+                                                ,'{6}','{7}','{8}')";
+                                sql = string.Format(sql
+                                    , ftppath, filename, "67", uploaduserid, customercode, ordercode
+                                    , fi.Length, "查验文件", ".jpg");
+
+                                string sql2 = "update list_order set inspcheckpic=1 where code='" + ordercode + "'";
+
+                                sqls.Add(sql); sqls.Add(sql2);
+
+                                int i = db.ExecuteBatch(sqls);
+                                if (i > 0)//插入成功，后删除本地文件
+                                {
+
+                                    str = "success";
+                                    fi.Delete();
+                                }
+                                else//插入失败后，远程删除文件，本地文件暂且留着
+                                {
+                                    ftp.DeleteFile(ftppath);
+                                }
+                            }
+
+                        }//ftp失败，本地文件暂且留着
+                    }
+
+                }
+            }
+
+            return str;
+
+        }
+
+        public static DataTable picfileconsult(string ordercode)
+        {
+            DataTable dt = new DataTable();
+            using (DBSession db = new DBSession())
+            {
+                string sql = "select filename from list_attachment where filetype=67 and ordercode='" + ordercode + "'";
+                dt = db.QuerySignle(sql);
+            }
+            return dt;
+        }
     }
 }

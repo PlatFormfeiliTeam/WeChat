@@ -256,8 +256,8 @@
                         var jsondecl = obj[0].json_decl;
 
                         //strconHTML = '<font style="font-weight:800;font-size:.9rem;">报关详细信息</font>';
-                        strconHTML = '<font class="title">报关详细信息</font>';
-                        strconHTML += '<div class="list-block" style="margin:0;margin-top:2rem;margin-buttom:1.5rem;font-size:14px;color:black;">'
+                        strconHTML = '<font class="title"><b>报关详细信息</b></font>';
+                        strconHTML += '<div class="list-block" style="margin:0;margin-top:2rem;margin-buttom:1.5rem;font-size:13px;color:black;">'
                                         + '<ul>'
                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">' +
                                                   '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
@@ -362,7 +362,7 @@
 
 
                         for (var i = 0; i < jsondecl.length; i++) {
-                            strconHTML += '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                            strconHTML += '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                             + '<ul>'
                                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
@@ -736,6 +736,7 @@
 
                     if ($("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(1).text() != "是") {
                         $.toast("没有查验图片");
+                        return;
                     }
 
                     $.ajax({
@@ -1028,7 +1029,7 @@
                              $("#txt_startdate").val(""); $("#txt_enddate").val("");
                              $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
 
-                             //$("input[name='radio_type']").attr('checked', false); $("#txt_morecon").val("");//因每次窗口都是新开的，可以不用置空，置空隐藏值即可
+                             //$("input[name='radio_type']").prop('checked', false); $("#txt_morecon").val("");//因每次窗口都是新开的，可以不用置空，置空隐藏值即可
                              $("#txt_radio_type_hidden").val(""); $("#txt_morecon_hidden").val("");
                          }
                      }
@@ -1046,7 +1047,7 @@
 
                 //radio 初始化上次 点击 确认后 选中的值（文本框的默认值上面直接绑定在value上了）
                 if ($("#txt_radio_type_hidden").val() != "") {
-                    $('input[name="radio_type"][value="' + $("#txt_radio_type_hidden").val() + '"]').attr("checked", true);
+                    $('input[name="radio_type"][value="' + $("#txt_radio_type_hidden").val() + '"]').prop("checked", true);
                     $('input[name="radio_type"]').trigger('change');//触发change事件
                 }
 

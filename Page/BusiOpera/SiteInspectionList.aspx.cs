@@ -38,83 +38,83 @@ namespace WeChat.Page.BusiOpera
             return json;
         }
 
-        ////报关单交接
-        //[WebMethod]
-        //public static string Handover(string ordercode)
-        //{
-        //    return SiteDeclare.Handover(ordercode);
-        //}
+        //报检单交接
+        [WebMethod]
+        public static string Handover(string ordercode)
+        {
+            return SiteInspection.Handover(ordercode);
+        }
 
-        ////报关单详细
-        //[WebMethod]
-        //public static string Detail(string ordercode)
-        //{
-        //    IsoDateTimeConverter iso = new IsoDateTimeConverter();
-        //    iso.DateTimeFormat = "yyyyMMdd HH:mm:ss";
+        //报关单详细
+        [WebMethod]
+        public static string Detail(string ordercode)
+        {
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();
+            iso.DateTimeFormat = "yyyyMMdd HH:mm:ss";
 
-        //    DataSet ds = SiteDeclare.Detail(ordercode);
-        //    var json_order = JsonConvert.SerializeObject(ds.Tables[0], iso);
-        //    var json_decl = JsonConvert.SerializeObject(ds.Tables[1]);
-        //    return "[{\"json_order\":" + json_order + ",\"json_decl\":" + json_decl + "}]";
-        //}
+            DataSet ds = SiteInspection.Detail(ordercode);
+            var json_order = JsonConvert.SerializeObject(ds.Tables[0], iso);
+            var json_insp = JsonConvert.SerializeObject(ds.Tables[1]);
+            return "[{\"json_order\":" + json_order + ",\"json_insp\":" + json_insp + "}]";
+        }
 
-        ////报关单放行
-        //[WebMethod]
-        //public static string Pass(string ordercode)
-        //{
-        //    return SiteDeclare.Pass(ordercode);
-        //}
+        //报关单放行
+        [WebMethod]
+        public static string Pass(string ordercode)
+        {
+            return SiteInspection.Pass(ordercode);
+        }
 
-        ////查验标志 绑定集装箱数据
-        ///*
-        //[WebMethod]
-        //public static string declcontainerdata(string ordercode)
-        //{
-        //    IsoDateTimeConverter iso = new IsoDateTimeConverter();
-        //    iso.DateTimeFormat = "yyyyMMdd HH:mm";
+        //查验标志 绑定集装箱数据
+        /*
+        [WebMethod]
+        public static string declcontainerdata(string ordercode)
+        {
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();
+            iso.DateTimeFormat = "yyyyMMdd HH:mm";
 
-        //    DataSet ds = SiteDeclare.getdeclcontainerdata(ordercode);
-        //    var json_order = JsonConvert.SerializeObject(ds.Tables[0], iso);
-        //    var json_predeclcontainer = JsonConvert.SerializeObject(ds.Tables[1]);
-        //    return "[{\"json_order\":" + json_order + ",\"json_predeclcontainer\":" + json_predeclcontainer + "}]";
-        //}
-        //*/
+            DataSet ds = SiteDeclare.getdeclcontainerdata(ordercode);
+            var json_order = JsonConvert.SerializeObject(ds.Tables[0], iso);
+            var json_predeclcontainer = JsonConvert.SerializeObject(ds.Tables[1]);
+            return "[{\"json_order\":" + json_order + ",\"json_predeclcontainer\":" + json_predeclcontainer + "}]";
+        }
+        */
 
-        //[WebMethod]
-        //public static string declcontainerdata(string ordercode)
-        //{
-        //    DataTable dt = SiteDeclare.getdeclcontainerdata(ordercode);
-        //    var json = JsonConvert.SerializeObject(dt);
-        //    return json;
-        //}
+        [WebMethod]
+        public static string inspcontainerdata(string ordercode)
+        {
+            DataTable dt = SiteInspection.getinspcontainerdata(ordercode);
+            var json = JsonConvert.SerializeObject(dt);
+            return json;
+        }
 
-        //[WebMethod]
-        //public static string checksave(string ordercode, string checktime, string checkname, string checkid)
-        //{
-        //    return SiteDeclare.checksave(ordercode, checktime, checkname, checkid);
-        //}
+        [WebMethod]
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid)
+        {
+            return SiteInspection.checksave(ordercode, checktime, checkname, checkid);
+        }
 
-        //[WebMethod]
-        //public static string checkcancel(string ordercode)
-        //{
-        //    return SiteDeclare.checkcancel(ordercode);
-        //}
+        [WebMethod]
+        public static string checkcancel(string ordercode)
+        {
+            return SiteInspection.checkcancel(ordercode);
+        }
 
 
-        ////查验图片
-        //[WebMethod]
-        //public static string SaveFile(string mediaIds, string ordercode)
-        //{
-        //    return SiteDeclare.SaveFile(mediaIds, ordercode);
-        //}
+        //查验图片
+        [WebMethod]
+        public static string SaveFile(string mediaIds, string ordercode)
+        {
+            return SiteInspection.SaveFile(mediaIds, ordercode);
+        }
 
-        //[WebMethod]
-        //public static string picfileconsult(string ordercode)
-        //{
-        //    DataTable dt = SiteDeclare.picfileconsult(ordercode);
-        //    var json = JsonConvert.SerializeObject(dt);
-        //    return json;
-        //}
+        [WebMethod]
+        public static string picfileconsult(string ordercode)
+        {
+            DataTable dt = SiteInspection.picfileconsult(ordercode);
+            var json = JsonConvert.SerializeObject(dt);
+            return json;
+        }
 
 
     }
