@@ -88,9 +88,9 @@ namespace WeChat.Page.BusiOpera
         [WebMethod]
         public static string ModifySave(string predelcode, int modifyflag)
         {
-            int i = Declare.saveModifyFlag(predelcode, modifyflag);
+            bool bf = Declare.saveModifyFlag(predelcode, modifyflag);
             var jsonstr = "false";
-            if (i > 0) { jsonstr = "success"; }
+            if (bf) { jsonstr = "success"; }
             return jsonstr;
         }
         

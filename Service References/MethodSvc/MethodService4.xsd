@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/FL.CT.Common" />
+  <xs:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/FL.CT.Entity.UserEntity" />
+  <xs:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/FL.CT.Entity.BusiEntity" />
+  <xs:element name="ExecuteSignle">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="sql" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExecuteSignleResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ExecuteSignleResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExecuteBatch">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="sqls" nillable="true" type="q1:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ExecuteBatchResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ExecuteBatchResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueryBatch">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="sqls" nillable="true" type="q2:ArrayOfstring" />
+        <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="isSplit" nillable="true" type="q3:ArrayOfboolean" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/FL.CT.Common" minOccurs="0" name="splitPage" nillable="true" type="q4:ArrayOfSplitPage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueryBatchResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/FL.CT.Common" minOccurs="0" name="QueryBatchResult" nillable="true" type="q5:QueryDataObject" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueryHSCode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="prefix" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="customCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="index" type="xs:int" />
+        <xs:element minOccurs="0" name="pageSize" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="QueryHSCodeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/FL.CT.Entity.UserEntity" minOccurs="0" name="QueryHSCodeResult" nillable="true" type="q6:ArrayOfProductViewEn" />
+        <xs:element minOccurs="0" name="count" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindNullHsCodeName">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="customCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="recordid" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindNullHsCodeNameResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/FL.CT.Entity.UserEntity" minOccurs="0" name="FindNullHsCodeNameResult" nillable="true" type="q7:ArrayOfHsCodeItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="k" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCodeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetCodeResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Save">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/FL.CT.Entity.BusiEntity" minOccurs="0" name="order" nillable="true" type="q8:LIST_ORDER" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/FL.CT.Entity.BusiEntity" minOccurs="0" name="declaration" nillable="true" type="q9:LIST_DECLARATION" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/FL.CT.Entity.BusiEntity" minOccurs="0" name="bodyList" nillable="true" type="q10:ArrayOfLIST_DECLLIST" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/FL.CT.Entity.BusiEntity" minOccurs="0" name="containerList" nillable="true" type="q11:ArrayOfLIST_PREDECLCONTAINER" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/FL.CT.Entity.BusiEntity" minOccurs="0" name="accdocList" nillable="true" type="q12:ArrayOfLIST_PREDECLACCDOC" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="redis_OrderStatusLog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ordercode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="redis_OrderStatusLogResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="redis_OrderStatusLogResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="redis_DeclarationLog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ordercode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="predeclcode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="declarationcode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="old_declarationcode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="isdel" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="redis_DeclarationLogResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="redis_DeclarationLogResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="redis_InspectionLog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ordercode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="preinspcode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="inspectioncode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="old_inspectioncode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="isdel" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="redis_InspectionLogResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="redis_InspectionLogResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChangeStatus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="status" type="xs:int" />
+        <xs:element minOccurs="0" name="orderCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="userId" type="xs:int" />
+        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="declCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="manual" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChangeStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ChangeStatusResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChangeStatus_Insp">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="status" type="xs:int" />
+        <xs:element minOccurs="0" name="orderCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="userId" type="xs:int" />
+        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="declCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="manual" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChangeStatus_InspResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ChangeStatus_InspResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="JudgeEdit">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="post" type="xs:int" />
+        <xs:element minOccurs="0" name="orderCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="preDeclCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="userId" type="xs:int" />
+        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="JudgeEditResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="JudgeEditResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancleEdit">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="post" type="xs:int" />
+        <xs:element minOccurs="0" name="orderCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="preDeclCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="userId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cancleEditResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="cancleEditResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindHSCodeByItemNo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="itemNo" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="recordCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="tradeType" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="decltype" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindHSCodeByItemNoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/FL.CT.Entity.UserEntity" minOccurs="0" name="FindHSCodeByItemNoResult" nillable="true" type="q13:ArrayOfHSCodeViewEn" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetServerDateTime">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetServerDateTimeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetServerDateTimeResult" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindHSCodeByCustomCode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="prefix" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="customCode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindHSCodeByCustomCodeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/FL.CT.Entity.UserEntity" minOccurs="0" name="FindHSCodeByCustomCodeResult" nillable="true" type="q14:ArrayOfProductViewEn" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getCongfigureData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="orderCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="predeclcode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getCongfigureDataResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="getCongfigureDataResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:element ref="xs:schema" />
+              <xs:any />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoginVerify">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="companyCode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoginVerifyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="LoginVerifyResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataTable" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+              <xs:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoadMenu">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="customerID" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="type" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LoadMenuResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="LoadMenuResult" nillable="true">
+          <xs:complexType>
+            <xs:annotation>
+              <xs:appinfo>
+                <ActualType Name="DataTable" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+              <xs:any minOccurs="0" maxOccurs="unbounded" namespace="http://www.w3.org/2001/XMLSchema" processContents="lax" />
+              <xs:any minOccurs="1" namespace="urn:schemas-microsoft-com:xml-diffgram-v1" processContents="lax" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendErrLog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="frmName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="errInfo" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendErrLogResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="redis_SupplyLog">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="predeclcode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="redis_SupplyLogResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="redis_SupplyLogResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Update_Blno_Status">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="totalNo" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="divideNo" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Update_Blno_StatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="Update_Blno_StatusResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Invalid_Offline_OrderAndDecl">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="declarationCode" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Invalid_Offline_OrderAndDeclResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

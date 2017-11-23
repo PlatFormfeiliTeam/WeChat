@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MethodService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/FL.CT.Common" />
+      <xsd:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd4" />
+      <xsd:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/FL.CT.Entity.UserEntity" />
+      <xsd:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/FL.CT.Entity.BusiEntity" />
+      <xsd:import schemaLocation="http://172.20.70.20:8090/MethodService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/System.Data" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IMethodService_ExecuteSignle_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteSignle" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_ExecuteSignle_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteSignleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_ExecuteBatch_InputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteBatch" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_ExecuteBatch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ExecuteBatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_QueryBatch_InputMessage">
+    <wsdl:part name="parameters" element="tns:QueryBatch" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_QueryBatch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:QueryBatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_QueryHSCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:QueryHSCode" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_QueryHSCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:QueryHSCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_FindNullHsCodeName_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindNullHsCodeName" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_FindNullHsCodeName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindNullHsCodeNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_GetCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCode" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_GetCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_Save_InputMessage">
+    <wsdl:part name="parameters" element="tns:Save" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_Save_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_redis_OrderStatusLog_InputMessage">
+    <wsdl:part name="parameters" element="tns:redis_OrderStatusLog" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_redis_OrderStatusLog_OutputMessage">
+    <wsdl:part name="parameters" element="tns:redis_OrderStatusLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_redis_DeclarationLog_InputMessage">
+    <wsdl:part name="parameters" element="tns:redis_DeclarationLog" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_redis_DeclarationLog_OutputMessage">
+    <wsdl:part name="parameters" element="tns:redis_DeclarationLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_redis_InspectionLog_InputMessage">
+    <wsdl:part name="parameters" element="tns:redis_InspectionLog" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_redis_InspectionLog_OutputMessage">
+    <wsdl:part name="parameters" element="tns:redis_InspectionLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_ChangeStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeStatus" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_ChangeStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_ChangeStatus_Insp_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeStatus_Insp" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_ChangeStatus_Insp_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeStatus_InspResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_JudgeEdit_InputMessage">
+    <wsdl:part name="parameters" element="tns:JudgeEdit" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_JudgeEdit_OutputMessage">
+    <wsdl:part name="parameters" element="tns:JudgeEditResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_cancleEdit_InputMessage">
+    <wsdl:part name="parameters" element="tns:cancleEdit" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_cancleEdit_OutputMessage">
+    <wsdl:part name="parameters" element="tns:cancleEditResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_FindHSCodeByItemNo_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindHSCodeByItemNo" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_FindHSCodeByItemNo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindHSCodeByItemNoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_GetServerDateTime_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetServerDateTime" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_GetServerDateTime_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetServerDateTimeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_FindHSCodeByCustomCode_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindHSCodeByCustomCode" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_FindHSCodeByCustomCode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindHSCodeByCustomCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_getCongfigureData_InputMessage">
+    <wsdl:part name="parameters" element="tns:getCongfigureData" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_getCongfigureData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getCongfigureDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_LoginVerify_InputMessage">
+    <wsdl:part name="parameters" element="tns:LoginVerify" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_LoginVerify_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginVerifyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_LoadMenu_InputMessage">
+    <wsdl:part name="parameters" element="tns:LoadMenu" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_LoadMenu_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoadMenuResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_SendErrLog_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendErrLog" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_SendErrLog_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendErrLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_redis_SupplyLog_InputMessage">
+    <wsdl:part name="parameters" element="tns:redis_SupplyLog" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_redis_SupplyLog_OutputMessage">
+    <wsdl:part name="parameters" element="tns:redis_SupplyLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_Update_Blno_Status_InputMessage">
+    <wsdl:part name="parameters" element="tns:Update_Blno_Status" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_Update_Blno_Status_OutputMessage">
+    <wsdl:part name="parameters" element="tns:Update_Blno_StatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_Invalid_Offline_OrderAndDecl_InputMessage">
+    <wsdl:part name="parameters" element="tns:Invalid_Offline_OrderAndDecl" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_Invalid_Offline_OrderAndDecl_OutputMessage">
+    <wsdl:part name="parameters" element="tns:Invalid_Offline_OrderAndDeclResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IMethodService">
+    <wsdl:operation name="ExecuteSignle">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/ExecuteSignle" message="tns:IMethodService_ExecuteSignle_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/ExecuteSignleResponse" message="tns:IMethodService_ExecuteSignle_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ExecuteBatch">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/ExecuteBatch" message="tns:IMethodService_ExecuteBatch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/ExecuteBatchResponse" message="tns:IMethodService_ExecuteBatch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryBatch">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/QueryBatch" message="tns:IMethodService_QueryBatch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/QueryBatchResponse" message="tns:IMethodService_QueryBatch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="QueryHSCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/QueryHSCode" message="tns:IMethodService_QueryHSCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/QueryHSCodeResponse" message="tns:IMethodService_QueryHSCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindNullHsCodeName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/FindNullHsCodeName" message="tns:IMethodService_FindNullHsCodeName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/FindNullHsCodeNameResponse" message="tns:IMethodService_FindNullHsCodeName_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/GetCode" message="tns:IMethodService_GetCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/GetCodeResponse" message="tns:IMethodService_GetCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Save">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/Save" message="tns:IMethodService_Save_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/SaveResponse" message="tns:IMethodService_Save_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="redis_OrderStatusLog">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/redis_OrderStatusLog" message="tns:IMethodService_redis_OrderStatusLog_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/redis_OrderStatusLogResponse" message="tns:IMethodService_redis_OrderStatusLog_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="redis_DeclarationLog">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/redis_DeclarationLog" message="tns:IMethodService_redis_DeclarationLog_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/redis_DeclarationLogResponse" message="tns:IMethodService_redis_DeclarationLog_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="redis_InspectionLog">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/redis_InspectionLog" message="tns:IMethodService_redis_InspectionLog_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/redis_InspectionLogResponse" message="tns:IMethodService_redis_InspectionLog_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/ChangeStatus" message="tns:IMethodService_ChangeStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/ChangeStatusResponse" message="tns:IMethodService_ChangeStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatus_Insp">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/ChangeStatus_Insp" message="tns:IMethodService_ChangeStatus_Insp_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/ChangeStatus_InspResponse" message="tns:IMethodService_ChangeStatus_Insp_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="JudgeEdit">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/JudgeEdit" message="tns:IMethodService_JudgeEdit_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/JudgeEditResponse" message="tns:IMethodService_JudgeEdit_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="cancleEdit">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/cancleEdit" message="tns:IMethodService_cancleEdit_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/cancleEditResponse" message="tns:IMethodService_cancleEdit_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindHSCodeByItemNo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/FindHSCodeByItemNo" message="tns:IMethodService_FindHSCodeByItemNo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/FindHSCodeByItemNoResponse" message="tns:IMethodService_FindHSCodeByItemNo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServerDateTime">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/GetServerDateTime" message="tns:IMethodService_GetServerDateTime_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/GetServerDateTimeResponse" message="tns:IMethodService_GetServerDateTime_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindHSCodeByCustomCode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/FindHSCodeByCustomCode" message="tns:IMethodService_FindHSCodeByCustomCode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/FindHSCodeByCustomCodeResponse" message="tns:IMethodService_FindHSCodeByCustomCode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getCongfigureData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/getCongfigureData" message="tns:IMethodService_getCongfigureData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/getCongfigureDataResponse" message="tns:IMethodService_getCongfigureData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginVerify">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/LoginVerify" message="tns:IMethodService_LoginVerify_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/LoginVerifyResponse" message="tns:IMethodService_LoginVerify_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoadMenu">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/LoadMenu" message="tns:IMethodService_LoadMenu_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/LoadMenuResponse" message="tns:IMethodService_LoadMenu_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendErrLog">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/SendErrLog" message="tns:IMethodService_SendErrLog_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/SendErrLogResponse" message="tns:IMethodService_SendErrLog_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="redis_SupplyLog">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/redis_SupplyLog" message="tns:IMethodService_redis_SupplyLog_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/redis_SupplyLogResponse" message="tns:IMethodService_redis_SupplyLog_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Update_Blno_Status">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/Update_Blno_Status" message="tns:IMethodService_Update_Blno_Status_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/Update_Blno_StatusResponse" message="tns:IMethodService_Update_Blno_Status_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Invalid_Offline_OrderAndDecl">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/Invalid_Offline_OrderAndDecl" message="tns:IMethodService_Invalid_Offline_OrderAndDecl_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/Invalid_Offline_OrderAndDeclResponse" message="tns:IMethodService_Invalid_Offline_OrderAndDecl_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IMethodService" type="tns:IMethodService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ExecuteSignle">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/ExecuteSignle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ExecuteBatch">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/ExecuteBatch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryBatch">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/QueryBatch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="QueryHSCode">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/QueryHSCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindNullHsCodeName">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/FindNullHsCodeName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCode">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/GetCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Save">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/Save" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="redis_OrderStatusLog">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/redis_OrderStatusLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="redis_DeclarationLog">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/redis_DeclarationLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="redis_InspectionLog">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/redis_InspectionLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatus">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/ChangeStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeStatus_Insp">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/ChangeStatus_Insp" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="JudgeEdit">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/JudgeEdit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancleEdit">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/cancleEdit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindHSCodeByItemNo">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/FindHSCodeByItemNo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerDateTime">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/GetServerDateTime" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindHSCodeByCustomCode">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/FindHSCodeByCustomCode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCongfigureData">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/getCongfigureData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginVerify">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/LoginVerify" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoadMenu">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/LoadMenu" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendErrLog">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/SendErrLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="redis_SupplyLog">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/redis_SupplyLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Update_Blno_Status">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/Update_Blno_Status" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Invalid_Offline_OrderAndDecl">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/Invalid_Offline_OrderAndDecl" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MethodService">
+    <wsdl:port name="BasicHttpBinding_IMethodService" binding="tns:BasicHttpBinding_IMethodService">
+      <soap:address location="http://172.20.70.20:8090/MethodService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

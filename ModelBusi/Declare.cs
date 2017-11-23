@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using WeChat.Common;
 
 namespace WeChat.ModelBusi
 {
@@ -119,15 +120,72 @@ namespace WeChat.ModelBusi
         }
 
 
-        public static int saveModifyFlag(string predelcode, int modifyflag)
+        public static bool saveModifyFlag(string predelcode, int modifyflag)
         {
-            using (DBSession db = new DBSession())
+            bool bf = false;
+            try
             {
-                string sql = "update list_declaration set modifyflag={1} where code='{0}'";
-                sql = string.Format(sql, predelcode, modifyflag);
-                //return db.ExecuteSignle(sql);
-                return 1;
+                using (DBSession db = new DBSession())
+                {
+                    string sql = "";
+
+                    if (modifyflag == 1)//删单1
+                    {
+                        sql = @"select ld.code,ld.ordercode 
+                            from list_declaration ld 
+                                inner join config_filesplit cfs on ld.busiunitcode=cfs.busiunitcode and cfs.filetype='53' and ld.code='" + predelcode + "'";
+                        DataTable dt = db.QuerySignle(sql);
+                        if (dt != null)
+                        {
+                            if (dt.Rows.Count > 0)
+                            {
+                                string ordercode = dt.Rows[0]["ordercode"].ToString();
+                                if (!string.IsNullOrEmpty(ordercode))
+                                {
+                                    sql = @"update list_attachmentdetail t1 set t1.filetypeid='162' and t1.ordercode='" + ordercode + "' and t1.filetypeid='53'";
+                                    db.ExecuteSignle(sql);
+                                }
+                            }
+                        }
+                    }
+
+                    if (modifyflag == 2)//改单2
+                    {
+                        DateTime time = DateTime.Now;
+                        sql = @"update list_declaration_after set dataconfirm='1'
+                                ,dataconfirmusertime=to_date('" + time + "','yyyy-MM-dd HH24:mi:ss') where code='" + predelcode + "' and xzlb like '报关单%'";
+                        db.ExecuteSignle(sql);
+                    }
+
+                    //改单完成3
+
+
+                    //修改删改单标志
+                    sql = @"update list_declaration set modifyflag=" + modifyflag + " where code='" + predelcode + "'";
+                    db.ExecuteSignle(sql);
+
+                    //保存操作记录list_times
+                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+                        values(list_times_id.nextval,'" + predelcode + "','763','昆山吉时报关有限公司',sysdate,'1'," + modifyflag + ")";
+                    db.ExecuteSignle(sql);
+
+                    //调用缓存接口redis_DeclarationLog
+                    sql = @"select code,ordercode,declarationcode from list_declaration ld where ld.code='" + predelcode + "'";
+                    DataTable dt_decl = db.QuerySignle(sql);
+
+                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
+                    msc.redis_DeclarationLog(dt_decl.Rows[0]["ordercode"].ToString(), predelcode, dt_decl.Rows[0]["declarationcode"].ToString(), "", "0");
+
+                    bf = true;
+                }
+
             }
+            catch (Exception ex)
+            {
+                LogHelper.Write("saveModifyFlag_sql:" + ex.Message + "——code:" + predelcode + " modifyflag:" + modifyflag);
+            }
+             return bf;
+            
         }
 
         public static DataTable FileConsult(string predelcode)

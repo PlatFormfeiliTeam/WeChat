@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/FL.CT.Common" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/FL.CT.Common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfSplitPage">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SplitPage" nillable="true" type="tns:SplitPage" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSplitPage" nillable="true" type="tns:ArrayOfSplitPage" />
+  <xs:complexType name="SplitPage">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currpg" type="xs:int" />
+      <xs:element minOccurs="0" name="dtcount" type="xs:int" />
+      <xs:element minOccurs="0" name="pgcount" type="xs:int" />
+      <xs:element minOccurs="0" name="pgsize" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SplitPage" nillable="true" type="tns:SplitPage" />
+  <xs:complexType name="QueryDataObject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ds" nillable="true">
+        <xs:complexType>
+          <xs:annotation>
+            <xs:appinfo>
+              <ActualType Name="DataSet" Namespace="http://schemas.datacontract.org/2004/07/System.Data" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:sequence>
+            <xs:element ref="xs:schema" />
+            <xs:any />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="sp" nillable="true" type="tns:ArrayOfSplitPage" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="QueryDataObject" nillable="true" type="tns:QueryDataObject" />
+</xs:schema>

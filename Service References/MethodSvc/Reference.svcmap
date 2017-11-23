@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2abf2fdf-3752-4ff2-b465-e657cf4a80de" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://172.20.70.20:8090/MethodService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="MethodService.xsd" MetadataType="Schema" ID="da7c5f6b-569f-4c47-a00a-20966533f997" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?xsd=xsd6" />
+    <MetadataFile FileName="MethodService.wsdl" MetadataType="Wsdl" ID="d8e9c1a7-ffb4-47d0-9925-e93ff1991503" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?wsdl" />
+    <MetadataFile FileName="MethodService1.xsd" MetadataType="Schema" ID="eb27cb2e-bd7f-41ba-b568-592d6baf455e" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?xsd=xsd1" />
+    <MetadataFile FileName="MethodService2.xsd" MetadataType="Schema" ID="340f9428-b47d-4ad7-8379-8e5c856ada36" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?xsd=xsd7" />
+    <MetadataFile FileName="MethodService3.xsd" MetadataType="Schema" ID="ccf829c0-30f8-42bd-a46b-66de6a04c0f0" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?xsd=xsd4" />
+    <MetadataFile FileName="MethodService4.xsd" MetadataType="Schema" ID="89b425d8-52d1-4fcd-bd49-80c21cea1173" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?xsd=xsd0" />
+    <MetadataFile FileName="MethodService.disco" MetadataType="Disco" ID="ca44c67a-8ded-4da9-a3d7-06ef70fb3d47" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?disco" />
+    <MetadataFile FileName="MethodService5.xsd" MetadataType="Schema" ID="acd87085-bc6b-4b1e-830a-b38102a4332d" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?xsd=xsd5" />
+    <MetadataFile FileName="MethodService6.xsd" MetadataType="Schema" ID="63fca9e4-8bdd-457e-9f8b-a28ce20bf7ab" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?xsd=xsd3" />
+    <MetadataFile FileName="MethodService7.xsd" MetadataType="Schema" ID="36334bf1-6ec7-4058-87ad-aa1de6e69d77" SourceId="1" SourceUrl="http://172.20.70.20:8090/MethodService.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
