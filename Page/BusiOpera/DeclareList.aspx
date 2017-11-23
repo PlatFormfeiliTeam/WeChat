@@ -50,9 +50,48 @@
             margin-left: 0px;
         }    
 
+        /************************************************ 报关订阅*********************************/
+        #pop_sub_decl
+        {
+            background-color:#1D2E3C;
+            color:white;
+            margin-top:1rem;
+        }
+        #pop_sub_decl .row
+        {
+            background-color:#456581;
+            border-top:solid 1px white;
+            margin:0rem;
+            font-size:initial;
+            vertical-align:middle;
+            height:2rem;
+            line-height:2rem;
+        }
+        #pop_sub_decl .col-33
+        {
+            padding-top:0.2rem;
+        }
+       
+        #pop_sub_decl .myrow
+        {
+            line-height:2rem;
+            padding-left:4%;
+        }
+        #pop_sub_decl input
+        {
+            font-family:"微软雅黑";
+            width:6rem;
+            height: 1.5rem;
+            border: none;
+            border-radius: .15rem;
+            font-size: .8rem;
+        }
+
     </style>
 
     <script type="text/javascript">
+        var userid = "763", username = "昆山吉时报关有限公司", openid = "ohNOmwZOt0tNr9WN7s1i7dHqOQnU";
+
         $(function () {
             //----------------------------------------------------------------------------------------------------------------查询条件
             $("#txt_startdate").calendar({});
@@ -486,6 +525,56 @@
 
             });
 
+            //报关订阅
+            $("#Subs_decl_a").click(function () {
+                var predeclcode = ""; var div_ordercode = "";
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        predeclcode = $(this)[0].id;
+                        div_ordercode = $(this).children("ul")[0].id;
+                    }
+                });
+                if (predeclcode == "") {
+                    $.toast("请选择需要订阅的记录");
+                    return;
+                }
+                $.popup("#popup-subscribe-decl");
+
+                $(document).on('opened', '#popup-subscribe-decl', function () {
+                    $("#Pop_hd_predeclcode").val(predeclcode);
+                    $("#Pop_hd_ordercode").val(div_ordercode.substring(6));
+                });
+            });
+
+            $("#Pop_Subscribe").click(function () {
+                var predeclcode = $("#Pop_hd_predeclcode").val();
+                var ordercode = $("#Pop_hd_ordercode").val();
+               
+                var status = "";
+                $("input[name='chk_status']:checked").each(function (index, item) {
+                    status += $(this).val() + ",";
+                });
+
+                if (status == "") {
+                    $.toast("请选择需要订阅的状态");
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: '/Page/MyBusiness/MyBusiness.aspx/SubscribeStatus',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'type':'报关状态','status':'" + status + "','ordercode':'" + ordercode + "','declcode':'" + predeclcode +
+                        "','userid':'" + userid + "','username':'" + username + "','openid':'" + openid + "'}",
+                    cache: false,
+                    async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                    success: function (data) {
+                        $.toast(data.d);
+                    }
+                });
+            });
+
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
             function loaddata(itemsPerLoad, lastIndex) {                
@@ -505,7 +594,7 @@
                         var tb = ""; 
                         for (var i = 0; i < obj.length; i++) {
                             tb = '<div class="list-block" id="' + obj[i]["CODE"] + '">'
-                                    + '<ul>'
+                                    + '<ul id="order_' + obj[i]["ORDERCODE"] + '">'
                                         + '<li class="item-content">'
                                              + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + obj[i]["DECLARATIONCODE"] + '</div>'
@@ -651,6 +740,10 @@
                     <span class="icon icon-message"></span>
                     <span class="tab-label">报关单调阅</span>
                 </a>
+                <a class="tab-item external" href="#" id="Subs_decl_a">
+                    <span class="icon icon-card"></span>
+                    <span class="tab-label">报关订阅</span>
+                </a>
             </nav>
 
            <%--body --%>
@@ -667,7 +760,38 @@
         </div>
     </div>  
 
-
+    <!--popup 订阅弹出页-->
+    <div class="popup popup-subscribe" id="popup-subscribe-decl" >
+        <div class="content" >
+            <div id="pop_sub_decl">
+                <div class="myrow">报关状态订阅<input type="hidden" id="Pop_hd_predeclcode" value="" /><input type="hidden" id="Pop_hd_ordercode" value="" /></div>
+                <div class="row">
+                    <div class="col-66">申报完成</div>
+                    <div class="col-33"><input type="checkbox" name="chk_status" value="申报完成"/></div>
+                </div>
+                <div class="row">
+                    <div class="col-66">已放行</div>
+                    <div class="col-33"><input type="checkbox" name="chk_status" value="已放行"/></div>
+                </div>
+                <div class="row">
+                    <div class="col-66">已结关</div>
+                    <div class="col-33"><input type="checkbox" name="chk_status" value="已结关"/></div>
+                </div>
+                <div class="row">
+                    <div class="col-66">改单完成</div>
+                    <div class="col-33"><input type="checkbox" name="chk_status" value="改单完成"/></div>
+                </div>
+                <div class="row">
+                    <div class="col-66">删单完成</div>
+                    <div class="col-33"><input type="checkbox" name="chk_status" value="删单完成"/></div>
+                </div>
+            </div>
+            <div class="content-block row">
+                <div class="col-50"><a href="#" class="button button-fill" id="Pop_Subscribe">确  认</a></div>
+                <div class="col-50"><a href="#" class="close-popup button button-fill">返  回</a></div>
+            </div>
+        </div>
+    </div>
 
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
    <%-- <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>

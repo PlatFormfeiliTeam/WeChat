@@ -46,7 +46,7 @@ namespace WeChat.ModelBusi
                 string tempsql = @"select det.code,det.modifyflag,det.CUSTOMSSTATUS
                                     ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,lda.reptime
                                     ,lda.GOODSNUM,lda.GOODSGW
-                                    ,ort.busitype,ort.cusno
+                                    ,ort.busitype,ort.cusno,ort.code ordercode
                                 from list_declaration det     
                                     left join list_order ort on det.ordercode = ort.code 
                                     left join list_declaration_after lda on det.code=lda.code and lda.csid=1
