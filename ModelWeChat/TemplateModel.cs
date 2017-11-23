@@ -11,17 +11,17 @@ namespace WeChat.ModelWeChat
     /// <summary>
     /// 模板消息推送
     /// </summary>
-    public class TemplateModel
+    public static class TemplateModel
     {
-        static bool flag = false;
+        public static bool taskFlag = false;
         public static void ExcuteSubcirbePush()
         {
-            if (flag)
+            if (taskFlag)
                 return;
-            flag = true;//已经运行
-            while(true)
+            taskFlag = true;//已经运行
+            LogHelper.Write("进入订阅执行...");
+            while (taskFlag)
             {
-                LogHelper.Write("进入订阅执行...");
                 List<SubcribeInfoEn> sublist = SubscribeModel.getSubscribeTask();
                 foreach (SubcribeInfoEn sub in sublist)
                 {
@@ -33,14 +33,13 @@ namespace WeChat.ModelWeChat
                         status = new TemplateDataItem(sub.Status)
                     };
                     //var obj = JsonHelper.SerializeObject(data);
-                    LogHelper.Write("data：" + data.ToString());
                     SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.Openid, sub.TemplateId, data, "http://weixin.qq.com/download");
-                    if(msg.errcode=="0")
+                    if (msg.errcode == "0")
                     {
                         SubscribeModel.updateSubscirbeInfo(sub.Id);
                     }
                 }
-                System.Threading.Thread.Sleep(10000);
+                System.Threading.Thread.Sleep(5000);
             }
         }
 

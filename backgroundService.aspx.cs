@@ -44,10 +44,12 @@ namespace WeChat
             {
                 if (th != null)
                 {
+                    TemplateModel.taskFlag = false;
                     th.Abort();
                     th = null;
                     flag = false;
                     this.Label2.Text = "服务停止";
+
                 }
                 
             }

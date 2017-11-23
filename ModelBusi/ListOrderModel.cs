@@ -89,7 +89,7 @@ lo.insphandoverusername,lo.insphandovertime,lo.inspsiteapplytime,lo.inspsiteappl
                 dt1.TableName = "OrderTable";
                 ds.Tables.Add(dt1);
                 //报关单信息
-                sql = @" select ld.declarationcode,ld.goodsnum,ld.goodsgw,ld.tradecode,ld.transname,to_char(ld.modifyflag) as modifyflag,ld.customsstatus,
+                sql = @" select ld.code,ld.declarationcode,ld.goodsnum,ld.goodsgw,ld.tradecode,ld.transname,to_char(ld.modifyflag) as modifyflag,ld.customsstatus,
 cbd.name as tradename from list_declaration ld left join cusdoc.base_decltradeway cbd on ld.tradecode=cbd.code
 where ld.ordercode='" + code + "'";
                 DataTable dt2 = db.QuerySignle(sql);

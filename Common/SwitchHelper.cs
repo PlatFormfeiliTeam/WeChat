@@ -140,6 +140,32 @@ namespace WeChat.Common
                                 break;
                     }
                     break;
+                case "业务状态":
+                    switch (str)
+                    {
+                        case "订单受理":
+                            value = "15";
+                            break;
+                        case "申报开始":
+                            value = "100";
+                            break;
+                        case "提前申报完成":
+                            value = "110";
+                            break;
+                        case "申报完成":
+                            value = "120";
+                            break;
+                        case "现场报关":
+                            value = "150";
+                            break;
+                        case "现场放行":
+                            value = "160";
+                            break;
+                        default:
+                            value = "0";
+                            break;
+                    }
+                    break;
             }
             return value;
         }

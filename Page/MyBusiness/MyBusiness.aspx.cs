@@ -105,35 +105,50 @@ namespace WeChat.Page.MyBusiness
         /// <param name="orderCode"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string SubscribeStatus(string type, string status, string ordercode, string declcode, string userid, string username, string openid, string codetype)
+        public static string SubscribeStatus(string type, string status, string ordercode, string declcode, string userid, string username, string openid)
         {
             try
             {
+                string codetype = "0";
                 if (status.Length > 0)
                     status = status.Substring(0, status.Length - 1);
                 string[] st = status.Split(',');
                 //判断是否订阅的信息是否已经触发
                 if (type == "报关状态")
                 {
-                    DataTable dt = SubscribeModel.getCustomsstatus(declcode);
+                    DataTable dt = SubscribeModel.getDeclstatus(declcode);
                     for (int i = 0; i < st.Length; i++)
                     {
-                        if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() < SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
+                        if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
                         {
-                            return "订阅失败，报关状态已过：" + st[i] + "，不能订阅";
+                            return "订阅失败，报关状态已过：" + st[i] + "";
                         }
                     }
+                    codetype = "3";
                 }
-                else
+                else if(type=="物流状态")
                 {
                     DataTable dt = SubscribeModel.getLogisticsstatus(ordercode);
                     for (int i = 0; i < st.Length; i++)
                     {
-                        if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() < SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
+                        if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
                         {
-                            return "订阅失败，物流状态已过：" + st[i] + "，不能订阅";
+                            return "订阅失败，物流状态已过：" + st[i] + "";
                         }
                     }
+                    codetype = "2";
+                }
+                else if (type == "业务状态")
+                {
+                    DataTable dt = SubscribeModel.getOrderstatus(ordercode);
+                    for (int i = 0; i < st.Length; i++)
+                    {
+                        if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= dt.Rows[0][0].ToString2().ToInt32())
+                        {
+                            return "订阅失败，业务状态已过：" + st[i] + "";
+                        }
+                    }
+                    codetype = "1";
                 }
                 //订阅
                 if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
@@ -157,12 +172,13 @@ namespace WeChat.Page.MyBusiness
         {
             ListOrderModel orderModel = new ListOrderModel();
             DataTable dt = orderModel.getDeclPath(orderCode);
-            string json = "{'path':[";
+            string json = "";
             if (dt != null)
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    string output = HttpRuntime.AppDomainAppPath + "\\TempFile\\tempPdf\\" + dr["declcode"] + ".pdf";
+                    string output = HttpRuntime.AppDomainAppPath + @"\TempFile\tempPdf\" + dr["declcode"] + ".pdf";
+                    bool bf = true;
                     if (!File.Exists(output))
                     {
                         //PDF获取文件
@@ -170,19 +186,17 @@ namespace WeChat.Page.MyBusiness
                         string UserName = ConfigurationManager.AppSettings["FTPUserName"];
                         string Password = ConfigurationManager.AppSettings["FTPPassword"];
                         FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
-                        bool file = ftp.DownloadFile("/" + dr["filename"].ToString2() + "", output);
+                        bf = ftp.DownloadFile("/" + dr["filename"].ToString2() + "", output);
                         
                     }
-                    //pdf转picture
-                    string picPath = HttpRuntime.AppDomainAppPath + "\\TempFile\\tempPic\\" ;
-                    json += ConvertPDF.pdfToPic(output, picPath, dr["declcode"].ToString2());
+                    if (bf)
+                    {
+                        //pdf转picture
+                        string picPath = HttpRuntime.AppDomainAppPath + @"\TempFile\tempPic\";
+                        json += ConvertPDF.pdfToPic(output, picPath, dr["declcode"].ToString2());
+                    }
                 }
             }
-            if (json.Length > 9)
-            {
-                json = json.Substring(0, json.Length - 1);
-            }
-            json += "]}";
             return json;
         }
 
