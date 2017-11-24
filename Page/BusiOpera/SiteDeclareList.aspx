@@ -80,15 +80,49 @@
         .checkdiv .modal-inner{
             height:15rem;
         } 
+         /************************************************ 报关订阅*********************************/
+        #popup-subscribe-log_con
+        {
+            background-color:#1D2E3C;
+            color:white;
+            margin-top:1rem;
+        }
+        #popup-subscribe-log_con .row
+        {
+            background-color:#456581;
+            border-top:solid 1px white;
+            margin:0rem;
+            font-size:initial;
+            vertical-align:middle;
+            height:2rem;
+            line-height:2rem;
+        }
+        #popup-subscribe-log_con .col-33
+        {
+            padding-top:0.2rem;
+        }
+       
+        #popup-subscribe-log_con .myrow
+        {
+            line-height:2rem;
+            padding-left:4%;
+        }
+        #popup-subscribe-log_con input
+        {
+            font-family:"微软雅黑";
+            width:6rem;
+            height: 1.5rem;
+            border: none;
+            border-radius: .15rem;
+            font-size: .8rem;
+        }
 
     </style>
 
     <script type="text/javascript">
-        $(function () {
-            //var myPhotoBrowserStandalone = $.photoBrowser({
-            //    photos: ['http://221.224.21.28:8383/file//67/16120200593/e8981602-6da0-4180-beba-9ed272d7a47d.jpg', 'http://221.224.21.28:8383/file//67/16120200593/3161a348-a9a7-4dd1-9370-3046270f7118.jpg']
-            //});
+        var userid = "763", username = "昆山吉时报关有限公司", openid = "ohNOmwZOt0tNr9WN7s1i7dHqOQnU";
 
+        $(function () {
             initsearch_condition();
 
             var loading = false;
@@ -766,6 +800,64 @@
 
             });
 
+            $("#Subs_log_a").click(function () {
+                var divid = "";//order_
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        divid = $(this)[0].id;
+                    }
+                });
+                if (divid == "") {
+                    $.toast("请选择需要订阅的记录");
+                    return;
+                }
+                $.popup("#popup-subscribe-log");
+
+                $(document).on('opened', '#popup-subscribe-log', function () {
+                    $("#Pop_hd_ordercode").val(divid.substring(6));
+                });
+            });
+
+            $("#Pop_Subscribe_log").click(function () {
+                var ordercode = $("#Pop_hd_ordercode").val();
+                var type = "", status = "";
+
+                var tab = $("#popup-subscribe-log_con .tab").css("display");
+                if (tab == "block") {
+                    type = "业务状态";
+
+                    $("input[name='chk_orderstatus']:checked").each(function (index, item) {
+                        status += $(this).val() + ",";
+                    });
+                }
+                else {
+                    type = "物流状态";
+
+                    $("input[name='chk_logisticstatus']:checked").each(function (index, item) {
+                        status += $(this).val() + ",";
+                    });
+                }
+
+                if (status == "") {
+                    $.toast("请选择需要订阅的" + type + "");
+                    return;
+                }
+
+                $.ajax({
+                    type: 'post',
+                    url: '/Page/MyBusiness/MyBusiness.aspx/SubscribeStatus',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'type':'" + type + "','status':'" + status + "','ordercode':'" + ordercode + "','declcode':'','userid':'" + userid + "','username':'" + username + "','openid':'" + openid + "'}",
+                    cache: false,
+                    async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                    success: function (data) {
+                        $.toast(data.d);
+                    }
+                });
+
+            });
+
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
             function loaddata(itemsPerLoad, lastIndex) {
@@ -1103,6 +1195,10 @@
                     <span class="icon icon-picture"></span>
                     <span class="tab-label">查验图片<input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' /></span>
                 </a>
+                <a class="tab-item external" href="#" id="Subs_log_a">
+                    <span class="icon icon-card"></span>
+                    <span class="tab-label">消息订阅</span>
+                </a>
             </nav>
 
            <%--body --%>
@@ -1117,6 +1213,70 @@
             
         </div>
     </div>  
+
+    <div class="popup popup-subscribe" id="popup-subscribe-log" >
+        <div class="content" >
+            <div class="buttons-tab">
+                <input type="hidden" id="Pop_hd_predeclcode" value="" /><input type="hidden" id="Pop_hd_ordercode" value="" />
+                <a href="#sub_tab1" class="tab-link active button">业务状态</a>
+                <a href="#sub_tab2" class="tab-link button">物流状态</a>
+            </div>
+            <div class="content-block" id="popup-subscribe-log_con">
+                <div class="tabs">
+                    <div id="sub_tab1" class="tab active">
+                        <div class="myrow">业务状态订阅</div>
+                        <div class="row">
+                            <div class="col-66">订单受理</div>
+                            <div class="col-33"><input type="checkbox" name="chk_orderstatus" value="订单受理"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-66">申报开始</div>
+                            <div class="col-33"><input type="checkbox" name="chk_orderstatus" value="申报开始"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-66">提前申报完成</div>
+                            <div class="col-33"><input type="checkbox" name="chk_orderstatus" value="提前申报完成"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-66">申报完成</div>
+                            <div class="col-33"><input type="checkbox" name="chk_orderstatus" value="申报完成"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-66">现场报关</div>
+                            <div class="col-33"><input type="checkbox" name="chk_orderstatus" value="现场报关"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-66">现场放行</div>
+                            <div class="col-33"><input type="checkbox" name="chk_orderstatus" value="现场放行"/></div>
+                        </div>
+                    </div>
+                    <div id="sub_tab2" class="tab">
+                        <div class="myrow">物流状态订阅</div>
+                        <div class="row">
+                            <div class="col-66">抽单完成</div>
+                            <div class="col-33"><input type="checkbox" name="chk_logisticstatus" value="抽单完成"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-66">已派车</div>
+                            <div class="col-33"><input type="checkbox" name="chk_logisticstatus" value="已派车"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-66">运输完成</div>
+                            <div class="col-33"><input type="checkbox" name="chk_logisticstatus" value="运输完成"/></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-66">送货完成</div>
+                            <div class="col-33"><input type="checkbox" name="chk_logisticstatus" value="送货完成"/></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block row">
+                <div class="col-50"><a href="#" class="button button-fill" id="Pop_Subscribe_log">确  认</a></div>
+                <div class="col-50"><a href="#" class="close-popup button button-fill">返  回</a></div>
+            </div>
+        </div>
+    </div>   
 
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
     <%--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
