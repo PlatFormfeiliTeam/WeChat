@@ -23,6 +23,13 @@ namespace WeChat.Page.BusiOpera
 
         }
 
+        //微信接口js-sdk config
+        [WebMethod]
+        public static string getConf(string url)
+        {
+            return ModelWeChat.SignatureModel.getSignature(url);
+        }
+
         //查询绑定
         [WebMethod]
         public static string BindList(string declcode, string startdate, string enddate, string busitype, string modifyflag, string customsstatus, int start, int itemsPerLoad)

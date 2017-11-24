@@ -98,7 +98,7 @@
             $("#txt_enddate").calendar({});          
             $(document).on('click', '.open-tabs-modal', function () {
                 $.modal({
-                    title: '更多查询',
+                    title: '<b>更多查询</b>',
                     text: '<div class="list-block" style="margin:0;">' +
                               '<ul>' +
                                 '<li>' +
@@ -278,6 +278,27 @@
                     $("#div_list .list-block ul").css('background-color', '#fff');
                     $(this).children("ul").css('background-color', '#C1DDF1');
                 }
+            });
+
+            //条码扫描
+            $("#btn_barcode").click(function () {
+                wx.ready(function () {
+                    wx.scanQRCode({
+                        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                        scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                        success: function (res) {
+                            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                            var serial = result.split(",");
+                            var serialNumber = serial[serial.length - 1];
+                            $("#txt_declcode").val(serialNumber);
+                        }
+                    });
+
+                });
+                //初始化jsapi接口 状态
+                wx.error(function (res) {
+                    alert("调用微信jsapi返回的状态:" + res.errMsg);
+                });
             });
 
             //删改单维护
@@ -712,7 +733,8 @@
             <header class="bar bar-nav">
                 <div class="search-input">                    
                     <div class="row"> 
-                        <div class="col-100"><input type="search" id='txt_declcode' placeholder='请输入18位或后9位报关单号...'/></div>
+                        <div class="col-85"><input type="search" id='txt_declcode' placeholder='请输入18位或后9位报关单号...'/></div>
+                        <div class="col-15"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
                     </div>
                     <div class="row">
                         <div class="col-40"><input type="search" id='txt_startdate' placeholder='申报起始日期'/></div>
@@ -797,4 +819,35 @@
    <%-- <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
     <script src="/js/sm-extend.min.js"></script>
 </body>
+
+    <script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
+    <script type='text/javascript'>
+
+
+        var conf = [];
+        $.ajax({
+            type: "post", //要用post方式                 
+            url: "DeclareList.aspx/getConf",//方法所在页面和方法名
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: "{'url':'" + window.location.href.split('#')[0] + "'}",
+            cache: false,
+            async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+            success: function (data) {
+                conf = eval("(" + data.d + ")");//将字符串转为json
+            }
+        });
+
+        wx.config({
+            debug: false,
+            appId: conf.appid,
+            timestamp: conf.timestamp,
+            nonceStr: conf.noncestr,
+            signature: conf.signature,
+            jsApiList: ['scanQRCode']
+        });
+
+    </script>
+
+
 </html>
