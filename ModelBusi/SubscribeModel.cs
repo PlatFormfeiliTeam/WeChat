@@ -111,14 +111,14 @@ namespace WeChat.ModelBusi
                     string sql = @"select ld.declarationcode,ld.goodsnum,ld.goodsgw,ld.tradecode,ld.modifyflag,ld.customsstatus,ld.transname,ws.declcode,
                             ws.ordercode,ws.triggerstatus, ws.substype,ws.status as substatus ,ws.statusvalue,cbd.name as tradename from wechat_subscribe ws 
                             left join list_declaration ld on ws.declcode=ld.code 
-                            left join cusdoc.base_decltradeway cbd on ld.tradecode=cbd.code where ws.ordercode in (
-                            select ordercode from ( select rownum as rown ,tab.* from 
+                            left join cusdoc.base_decltradeway cbd on ld.tradecode=cbd.code where ws.declcode in (
+                            select declcode from ( select rownum as rown ,tab.* from 
                             (select * from 
-                                (select ordercode,substime, ROW_NUMBER() OVER(partition by ordercode order by substime desc) as rnum from  wechat_subscribe subws where {0} 
+                                (select declcode,substime, ROW_NUMBER() OVER(partition by declcode order by substime desc) as rnum from  wechat_subscribe subws where {0} 
                             ）
                             newws where newws.rnum=1 order by newws.substime desc ) tab where rownum<={1}) t1 where t1.rown>{2}
                             
-                            ) and ws.codetype=3 and ws.isinvalid=0 and declcode is not null order by ws.ordercode,ws.substype,ws.statusvalue";
+                            ) and ws.codetype=3 and ws.isinvalid=0 and declcode is not null order by ws.declcode,ws.substype,ws.statusvalue";
                     return db.QuerySignle(string.Format(sql, strWhere, lastnum + pagesize, lastnum));
                 }
             }

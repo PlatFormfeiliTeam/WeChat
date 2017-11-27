@@ -695,7 +695,7 @@
                 }
             });
             if (code == "") {
-                $.toast("请选择需要订阅的记录");
+                $.toast("请选择需要调阅的记录");
                 return;
             }
             $.ajax({
@@ -731,7 +731,40 @@
         }
         //查验图片调阅
         function showCheckPic() {
-            alert(1);
+            var code = "";
+            $("#busicontent .list-block").each(function () {
+
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    code = $(this)[0].id;
+                }
+            });
+            if (code == "") {
+                $.toast("请选择需要调阅的记录");
+                return;
+            }
+
+            $.ajax({
+                type: "post", //要用post方式                 
+                url: "/page/BusiOpera/SiteDeclareList.aspx/picfileconsult",//方法所在页面和方法名
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: "{'ordercode':'" + code + "'}",
+                cache: false,
+                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                success: function (data) {
+                    var obj = eval("(" + data.d + ")");//将字符串转为json
+                    var imgs = "[";
+                    for (var i = 0; i < obj.length; i++) {
+                        imgs += "'" + $("#hd_AdminUrl").val() + "file/" + obj[i]["FILENAME"] + "',";
+                    }
+                    imgs += "]";
+
+                    var myPhotoBrowserStandalone = $.photoBrowser({
+                        photos: eval(imgs)
+                    });
+                    myPhotoBrowserStandalone.open();
+                }
+            });
         }
 
     </script>
@@ -763,6 +796,7 @@
                     <span class="icon icon-picture"></span>
                     <span class="tab-label">查验图片调阅</span>
                 </a>
+                <input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' />
                 <%--<a class="tab-item " href="SubscribeList.aspx">
                     <span class="icon icon-menu"></span>
                     <span class="tab-label">订阅清单</span>
