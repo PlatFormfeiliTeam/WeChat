@@ -26,10 +26,12 @@ namespace WeChat.ModelBusi
         public DataTable getOrder(string declstatus,string inspstatus,string inout,string busitype,string customs,string sitedeclare,string logisticsstatus,
             string starttime, string endtime, int itemsperLoad, int lastIndex)
         {
-            using(DBSession db=new DBSession())
+            DataTable dt = new DataTable();
+            try
             {
-                DataTable dt = new DataTable();
-                string sql = @"with newtab as
+                using (DBSession db = new DBSession())
+                {
+                    string sql = @"with newtab as
                             ( select * from ( select rownum as rown ,tab.* from 
                             (select code,submittime,busiunitname,busitype,cusno,divideno,repwayid,contractno,goodsnum,goodsgw,to_char(ischeck) as ischeck,
                             to_char(checkpic) as checkpic,to_char(declstatus) as declstatus,to_char(inspstatus) as inspstatus,to_char(lawflag) as lawflag,
@@ -38,29 +40,35 @@ namespace WeChat.ModelBusi
                             select nt.*,sb.name as busitypename,sr.name as repwayname from newtab nt 
                             left join cusdoc.sys_busitype sb on nt.busitype=sb.code 
                             left join cusdoc.sys_repway sr on nt.repwayid=sr.code";
-                string strWhere = " where 1=1";
-                strWhere += switchValue("报关状态", declstatus);
-                strWhere += switchValue("报检状态", inspstatus);
-                strWhere += switchValue("进出口", inout);
-                strWhere += switchValue("业务类型", busitype);
-                strWhere += switchValue("现场申报", sitedeclare);
-                strWhere += switchValue("物流状态", logisticsstatus);
-                if(!string.IsNullOrEmpty(customs.Trim2()))
-                {
-                    strWhere += " and customareacode='" + customs + "'";
+                    string strWhere = " where 1=1";
+                    strWhere += switchValue("报关状态", declstatus);
+                    strWhere += switchValue("报检状态", inspstatus);
+                    strWhere += switchValue("进出口", inout);
+                    strWhere += switchValue("业务类型", busitype);
+                    strWhere += switchValue("现场申报", sitedeclare);
+                    strWhere += switchValue("物流状态", logisticsstatus);
+                    if (!string.IsNullOrEmpty(customs.Trim2()))
+                    {
+                        strWhere += " and customareacode='" + customs + "'";
+                    }
+                    if (!string.IsNullOrEmpty(starttime))
+                    {
+                        strWhere += " and submittime>to_date('" + starttime + "','yyyy-mm-dd hh24:mi:ss')";
+                    }
+                    if (!string.IsNullOrEmpty(endtime))
+                    {
+                        strWhere += " and submittime<to_date('" + endtime + " 23:59:59','yyyy-mm-dd hh24:mi:ss')";
+                    }
+                    sql = string.Format(sql, strWhere, lastIndex + itemsperLoad, lastIndex);
+                    dt = db.QuerySignle(sql);
+                   
                 }
-                if(!string.IsNullOrEmpty(starttime))
-                {
-                    strWhere += " and submittime>to_date('" + starttime + "','yyyy-mm-dd hh24:mi:ss')";
-                }
-                if (!string.IsNullOrEmpty(endtime))
-                {
-                    strWhere += " and submittime<to_date('" + endtime + " 23:59:59','yyyy-mm-dd hh24:mi:ss')";
-                }
-                sql = string.Format(sql, strWhere, lastIndex + itemsperLoad, lastIndex);
-                dt = db.QuerySignle(sql);
-                return dt;
             }
+            catch(Exception ex)
+            {
+                LogHelper.Write("ListOrderModel_getOrder异常：" + ex.Message);
+            }
+            return dt;
         }
 
 
