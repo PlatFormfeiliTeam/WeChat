@@ -873,7 +873,14 @@
                     case "51": str = "特殊进口"; break;
                 }
             }
-            if (key == "INSPISCHECK" || key == "INSPCHECKPIC" || key == "LAWFLAG" || key == "ISNEEDCLEARANCE") {
+            if (key == "INSPISCHECK") {
+                switch (value) {
+                    case 0: str = "未查验"; break;
+                    case 1: str = "已查验"; break;
+                    default: str = "未查验"; break;
+                }
+            }
+            if (key == "INSPCHECKPIC" || key == "LAWFLAG" || key == "ISNEEDCLEARANCE") {
                 switch (value) {
                     case 0: str = "否"; break;
                     case 1: str = "是"; break;
