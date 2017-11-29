@@ -33,6 +33,20 @@ namespace WeChat.ModelWeChat
                         status = new TemplateDataItem(sub.Status)
                     };
                     //var obj = JsonHelper.SerializeObject(data);
+                   
+                    if (sub.SubsType == "物流状态")
+                    {
+                        sub.TemplateId = "2W7nYI371TSk18pLLubXelXz59wA3yMxoWq6o9uLYXY";
+                    }
+                    if (sub.SubsType == "报关状态")
+                    {
+                        sub.TemplateId = "PDpzPNCQdKFyyxTXCxZphl9Vor2mkgfUf-CLqPlLk8E";
+                    }
+                    if (sub.SubsType == "业务状态")
+                    {
+                        sub.TemplateId = "82bKjSd9Iyxdi0JPZMvUZ3zwmuleev6PfXimPfyb7aE";
+                    }
+
                     SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.Openid, sub.TemplateId, data, "http://weixin.qq.com/download");
                     if (msg.errcode == "0")
                     {
