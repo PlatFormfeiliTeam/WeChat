@@ -24,7 +24,7 @@
             top: 5rem;
         }
         #div_list .list-block{
-            font-size:14px;
+            font-size:13px;
             margin:.2rem 0;
         }
         #div_list .list-block .item-content{
@@ -423,52 +423,52 @@
                                 label: true
                             },
                             {
-                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                text: '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                         + '<ul>'
                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">' +
                                                   '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + obj[0]["DECLARATIONCODE"] + '</div>'
                                                     + '<div class="item-title col-33">' + getname("BUSITYPE", obj[0]["BUSITYPE"]) + '</div>'
-                                                    + '<div class="item-title col-15">' + obj[0]["TRADEMETHOD"] + '</div>'
+                                                    + '<div class="item-title col-20">' + obj[0]["TRADEMETHOD"] + '</div>'
                                                 + '</div>'
                                            + '</li>'
                                     + '</ul>'
                                 + '</div>'
                             },
                             {
-                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                text: '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                         + '<ul>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + obj[0]["CONSIGNEESHIPPERNAME"] + '</div>'
                                                     + '<div class="item-title col-33">' + obj[0]["CONTRACTNO"] + '</div>'
-                                                    + '<div class="item-title col-15">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
+                                                    + '<div class="item-title col-20">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
                                 + '</div>'
                             },
                             {
-                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                text: '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                         + '<ul>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["TRANSNAME"] == null ? "" : obj[0]["TRANSNAME"]) + '</div>'
                                                     + '<div class="item-title col-33">' + obj[0]["GOODSNUM"] + '/' + obj[0]["GOODSGW"] + '</div>'
-                                                    + '<div class="item-title col-15">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
+                                                    + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
                                 + '</div>'
                             },
                             {
-                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                text: '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                         + '<ul>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["BLNO"] == null ? "" : obj[0]["BLNO"]) + '</div>'
                                                     + '<div class="item-title col-33">' + obj[0]["CUSNO"] + '</div>'
-                                                    + '<div class="item-title col-15">' + obj[0]["CUSTOMSSTATUS"] + '</div>'
+                                                    + '<div class="item-title col-20">' + obj[0]["CUSTOMSSTATUS"] + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -628,28 +628,28 @@
                                              + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + obj[i]["DECLARATIONCODE"] + '</div>'
                                                 + '<div class="item-title col-33">' + getname("BUSITYPE", obj[i]["BUSITYPE"]) + '</div>'
-                                                + '<div class="item-title col-15">' + obj[i]["TRADEMETHOD"] + '</div>'
+                                                + '<div class="item-title col-20">' + obj[i]["TRADEMETHOD"] + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + obj[i]["CONSIGNEESHIPPERNAME"] + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["CONTRACTNO"] + '</div>'
-                                                + '<div class="item-title col-15">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
+                                                + '<div class="item-title col-20">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["TRANSNAME"] == null ? "" : obj[i]["TRANSNAME"]) + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>'
-                                                + '<div class="item-title col-15">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
+                                                + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["BLNO"] == null ? "" : obj[i]["BLNO"]) + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["CUSNO"] + '</div>'
-                                                + '<div class="item-title col-15">' + obj[i]["CUSTOMSSTATUS"] + '</div>'
+                                                + '<div class="item-title col-20">' + obj[i]["CUSTOMSSTATUS"] + '</div>'
                                             + '</div>'
                                         + '</li>'
                                     + '</ul>'

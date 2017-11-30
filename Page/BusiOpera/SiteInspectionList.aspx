@@ -24,7 +24,7 @@
             top: 7rem;
         }
         #div_list .list-block{
-            font-size:14px;
+            font-size:13px;
             margin:.2rem 0;
         }
         #div_list .list-block .item-content{
