@@ -548,11 +548,14 @@
 
             //报关订阅
             $("#Subs_decl_a").click(function () {
-                var predeclcode = ""; var div_ordercode = "";
+                var predeclcode = ""; var div_ordercode = ""; var declcode = ""; var cusno = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                        predeclcode = $(this)[0].id;
-                        div_ordercode = $(this).children("ul")[0].id;
+
+                        predeclcode = $(this)[0].id; div_ordercode = $(this).children("ul")[0].id;
+
+                        declcode = $(this).children("ul").children().eq(0).children("div").children().eq(0).text();
+                        cusno = $(this).children("ul").children().eq(3).children("div").children().eq(1).text();
                     }
                 });
                 if (predeclcode == "") {
@@ -564,13 +567,18 @@
                 $(document).on('opened', '#popup-subscribe-decl', function () {
                     $("#Pop_hd_predeclcode").val(predeclcode);
                     $("#Pop_hd_ordercode").val(div_ordercode.substring(6));
+
+                    $("#Pop_hd_declcode").val(declcode);
+                    $("#Pop_hd_cusno").val(cusno);
                 });
             });
 
             $("#Pop_Subscribe").click(function () {
-                var predeclcode = $("#Pop_hd_predeclcode").val();
-                var ordercode = $("#Pop_hd_ordercode").val();
-               
+                var predeclcode = $("#Pop_hd_predeclcode").val(); var ordercode = $("#Pop_hd_ordercode").val();
+
+                var declcode = $("#Pop_hd_declcode").val();
+                var cusno = $("#Pop_hd_cusno").val();
+
                 var status = "";
                 $("input[name='chk_status']:checked").each(function (index, item) {
                     status += $(this).val() + ",";
@@ -586,7 +594,7 @@
                     url: '/Page/MyBusiness/MyBusiness.aspx/SubscribeStatus',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'type':'报关状态','status':'" + status + "','ordercode':'" + ordercode + "','declcode':'" + predeclcode +
+                    data: "{'type':'报关状态','status':'" + status + "','cusno':'" + cusno + "','declarationcode':'" + declcode +
                         "','userid':'" + userid + "','username':'" + username + "','openid':'" + openid + "'}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
@@ -786,7 +794,10 @@
     <div class="popup popup-subscribe" id="popup-subscribe-decl" >
         <div class="content" >
             <div id="pop_sub_decl">
-                <div class="myrow">报关状态订阅<input type="hidden" id="Pop_hd_predeclcode" value="" /><input type="hidden" id="Pop_hd_ordercode" value="" /></div>
+                <div class="myrow">
+                    报关状态订阅<input type="hidden" id="Pop_hd_predeclcode" value="" /><input type="hidden" id="Pop_hd_ordercode" value="" />
+                    <input type="hidden" id="Pop_hd_declcode" value="" /><input type="hidden" id="Pop_hd_cusno" value="" />
+                </div>
                 <div class="row">
                     <div class="col-66">申报完成</div>
                     <div class="col-33"><input type="checkbox" name="chk_status" value="申报完成"/></div>
