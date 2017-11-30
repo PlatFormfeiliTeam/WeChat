@@ -104,6 +104,14 @@
                                 '<li>' +
                                   '<div class="item-content">' +
                                     '<div class="item-inner">' +
+                                      //'<div class="item-title label">进出口</div>' +
+                                      '<div class="item-input"><input type="text" placeholder="选择进出口类型" id="picker_inout_type" value="' + $("#txt_inout_type").val() + '" readonly/></div>' +
+                                    '</div>' +
+                                  '</div>' +
+                                '</li>' +
+                                '<li>' +
+                                  '<div class="item-content">' +
+                                    '<div class="item-inner">' +
                                       //'<div class="item-title label">业务类型</div>' +
                                       '<div class="item-input"><input type="text" placeholder="选择业务类型" id="picker_busitype" value="' + $("#txt_busitype").val() + '" readonly/></div>' +
                                     '</div>' +
@@ -131,6 +139,7 @@
                      {
                          text: '确认', bold: true,
                          onClick: function () {
+                             $("#txt_inout_type").val($("#picker_inout_type").val());
                              $("#txt_busitype").val($("#picker_busitype").val());
                              $("#txt_modifyflag").val($("#picker_modifyflag").val());
                              $("#txt_customsstatus").val($("#picker_customsstatus").val());
@@ -147,6 +156,7 @@
                              $("#txt_declcode").val(""); $("#txt_startdate").val(""); $("#txt_enddate").val("");
                              $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
 
+                             $("#txt_inout_type").val(""); $("#picker_inout_type").val("")
                              $("#txt_busitype").val(""); $("#picker_busitype").val("")
                              $("#txt_modifyflag").val(""); $("#picker_modifyflag").val("");
                              $("#txt_customsstatus").val(""); $("#picker_customsstatus").val("");
@@ -156,6 +166,18 @@
                     extraClass: 'morediv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
 
+                $("#picker_inout_type").picker({
+                    toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择进出口类型</h1>\
+                      </header>',
+                    cols: [
+                      {
+                          textAlign: 'center',
+                          values: ['全部', '进口', '出口']
+                      }
+                    ]
+                });
                 $("#picker_busitype").picker({
                     toolbarTemplate: '<header class="bar bar-nav">\
                       <button class="button button-link pull-right close-picker">确定</button>\
@@ -164,7 +186,7 @@
                     cols: [
                       {
                           textAlign: 'center',
-                          values: ['空运进口', '空运出口', '海运进口', '海运出口', '陆运进口', '陆运出口', '国内业务', '特殊进口', '特殊出口']
+                          values: ['全部', '空运业务', '海运业务', '陆运业务', '国内业务', '特殊区域']
                       }
                     ]
                 });
@@ -613,7 +635,8 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: "{'declcode':'" + $("#txt_declcode").val() + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
-                        + "','busitype':'" + $("#txt_busitype").val() + "','modifyflag':'" + $("#txt_modifyflag").val() + "','customsstatus':'" + $("#txt_customsstatus").val()
+                        + "','inouttype':'" + $("#txt_inout_type").val() + "','busitype':'" + $("#txt_busitype").val() + "','modifyflag':'" + $("#txt_modifyflag").val()
+                        + "','customsstatus':'" + $("#txt_customsstatus").val()
                         + "','start':" + lastIndex + ",'itemsPerLoad':" + itemsPerLoad + "}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
@@ -751,7 +774,7 @@
                         <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
                     </div>                    
                 </div>  
-                <input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/>  <input type="hidden" id='txt_customsstatus'/>                
+                <input type="hidden" id='txt_inout_type'/><input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/>  <input type="hidden" id='txt_customsstatus'/>                
                 <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>   
             </header>
 
