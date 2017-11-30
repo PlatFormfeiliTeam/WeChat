@@ -817,7 +817,10 @@
 
                 $(document).on('open', '#popup-subscribe-log', function () {
                     $("input[name='chk_orderstatus']").prop('checked', false);
-                    $("input[name='chk_logisticstatus']").prop('checked', false);                   
+                    $("input[name='chk_logisticstatus']").prop('checked', false);
+
+                    $("[href='#sub_tab1']").addClass("active"); $("#sub_tab1").addClass("active");
+                    $("[href='#sub_tab2']").removeClass("active"); $("#sub_tab2").removeClass("active");
                 });
 
                 $(document).on('opened', '#popup-subscribe-log', function () {
