@@ -74,13 +74,16 @@ namespace WeChat.ModelBusi
                 }
                 if (!string.IsNullOrEmpty(ispass))//放行情况
                 {
-                    if (issiterep == "未放行")
+                    switch (ispass)
                     {
-                        where += " and ort.declstatus<" + (int)DeclStatusEnum.SitePass;
-                    }
-                    if (issiterep == "已放行")
-                    {
-                        where += " and ort.declstatus=" + (int)DeclStatusEnum.SitePass;
+                        case "全部":
+                            break;
+                        case "未放行":
+                            where += " and ort.inspstatus<" + (int)DeclStatusEnum.SitePass;
+                            break;
+                        case "已放行":
+                            where += " and ort.inspstatus=" + (int)DeclStatusEnum.SitePass;
+                            break;
                     }
                 }
                 if (!string.IsNullOrEmpty(startdate))//委托日期
