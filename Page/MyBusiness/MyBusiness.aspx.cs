@@ -151,10 +151,31 @@ namespace WeChat.Page.MyBusiness
                     codetype = "1";
                 }
                 //订阅
-                if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
-                    return "订阅成功";
-                else
-                    return "订阅失败：系统异常";
+                //if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
+                //    return "订阅成功";
+                //else
+                //    return "订阅失败：系统异常";
+                //防止重复订阅
+                for (int i = 0; i < st.Length; i++)
+                {
+                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(ordercode, st[i], type);
+
+                    if (getTriggerStatus.Rows.Count > 0)
+                    {
+                        return st[i] + "已订阅请勿重复订阅";
+                    }
+                    else if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
+                    {
+                        return "订阅成功";
+                    }
+                    else
+                    {
+                        return "订阅失败：系统异常";
+                    }
+                }
+
+                return "";
+
             }
             catch(Exception ex)
             {

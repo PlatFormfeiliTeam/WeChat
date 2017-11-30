@@ -239,6 +239,20 @@ namespace WeChat.ModelBusi
                 return db.QuerySignle(sql);
             }
         }
+        /// <summary>
+        /// 获取触发状态（0已订阅，1已触发，2已推送）
+        /// </summary>
+        /// <param name="orderCode"></param>
+        /// <returns></returns>
+        public static DataTable GetTriggerstatus(string orderCode, string checkedStatus, string type)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "select triggerstatus from wechat_subscribe where ordercode='" + orderCode + "' and status = '" + checkedStatus + "' and substype = '" + type + "'";
+                return db.QuerySignle(sql);
+            }
+        }
+
     }
 
 }
