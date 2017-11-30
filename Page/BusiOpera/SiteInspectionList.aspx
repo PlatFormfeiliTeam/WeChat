@@ -880,11 +880,25 @@
                     default: str = "未查验"; break;
                 }
             }
-            if (key == "INSPCHECKPIC" || key == "LAWFLAG" || key == "ISNEEDCLEARANCE") {
+            if (key == "INSPCHECKPIC") {
                 switch (value) {
-                    case 0: str = "否"; break;
-                    case 1: str = "是"; break;
-                    default: str = "否"; break;
+                    case 0: str = "无查验图"; break;
+                    case 1: str = "有查验图"; break;
+                    default: str = "无查验图"; break;
+                }
+            }
+            if (key == "LAWFLAG") {
+                switch (value) {
+                    case 0: str = "不含法检"; break;
+                    case 1: str = "含法检"; break;
+                    default: str = "不含法检"; break;
+                }
+            }
+            if (key == "ISNEEDCLEARANCE") {
+                switch (value) {
+                    case 0: str = "不需通关"; break;
+                    case 1: str = "需通关"; break;
+                    default: str = "不需通关"; break;
                 }
             }
             if (key == "MODIFYFLAG") {
@@ -946,7 +960,7 @@
                 cols: [
                   {
                       textAlign: 'center',
-                      values: ['未放行', '已放行']
+                      values: ['全部', '未放行', '已放行']
                   }
                 ]
             });

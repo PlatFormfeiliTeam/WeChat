@@ -989,9 +989,9 @@
             }
             if (key == "CHECKPIC") {
                 switch (value) {
-                    case 0: str = "否"; break;
-                    case 1: str = "是"; break;
-                    default: str = "否"; break;
+                    case 0: str = "无查验图"; break;
+                    case 1: str = "有查验图"; break;
+                    default: str = "无查验图"; break;
                 }
             }
             if (key == "MODIFYFLAG") {
@@ -1053,10 +1053,11 @@
                 cols: [
                   {
                       textAlign: 'center',
-                      values: ['未放行', '已放行']
+                      values: ['全部', '未放行', '已放行']
                   }
                 ]
             });
+
             $("#txt_startdate").calendar({});
             $("#txt_enddate").calendar({});
 
