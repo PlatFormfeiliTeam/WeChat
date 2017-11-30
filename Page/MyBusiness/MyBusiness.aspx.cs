@@ -109,6 +109,10 @@ namespace WeChat.Page.MyBusiness
         {
             try
             {
+                //存放订阅的数据数组
+                List<string> orderData = new List<string>();
+                //订阅过的节点
+                string orderedLine = "";
                 string codetype = "0";
                 if (status.Length > 0)
                     status = status.Substring(0, status.Length - 1);
@@ -159,22 +163,42 @@ namespace WeChat.Page.MyBusiness
                 for (int i = 0; i < st.Length; i++)
                 {
                     DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type);
-
                     if (getTriggerStatus.Rows.Count > 0)
                     {
-                        return st[i] + "已订阅请勿重复订阅";
+                        orderData.Add(st[i]);
+                        //return st[i] + "已订阅请勿重复订阅";
                     }
-                    else if (SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, userid, username, openid, codetype))
+                    //else if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
+                    //{
+                    //    return "订阅成功";
+                    //}
+                    //else
+                    //{
+                    //    return "订阅失败：系统异常";
+                    //}
+                }
+                if (orderData.Count == 0)
+                {
+                    try
                     {
+                        SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, userid, username, openid, codetype);
                         return "订阅成功";
                     }
-                    else
+                    catch (Exception e)
                     {
-                        return "订阅失败：系统异常";
+                        return e.Message;
                     }
+                    
                 }
-
-                return "";
+                else
+                {
+                    for (int i = 0; i < orderData.Count; i++)
+                    {
+                        orderedLine = orderedLine + orderData[i].ToString() + ",";
+                    }
+                    int length = orderedLine.Length;
+                    return orderedLine.Substring(0, length - 1) + "已订阅请勿重复订阅";
+                }
 
             }
             catch(Exception ex)

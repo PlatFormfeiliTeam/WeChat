@@ -687,13 +687,30 @@
                 }
             })
         }
+
+        //返回后Checked置空
+        $(document).on('click', '#backto', function () {
+            var input = $('.popup input');
+            for (var i = 0; i < input.length; i++) {
+                if (input[i].checked) {
+                    input[i].checked = false;
+                }
+            }
+        });
+
+
+
         //报关单调阅
         function showDeclPdf() {
             var ordercode = "";
             $("#busicontent .list-block").each(function () {
 
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+
                     ordercode = $(this)[0].id;
+                    //yangyang.zhao
+                    ordercode = ordercode.split(",")[0];
+                    //console.log(ordercode);
                 }
             });
             if (ordercode == "") {
@@ -705,7 +722,7 @@
                 url: 'MyBusiness.aspx/GetDeclPdf',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: "{'ordercode':'" + ordercode + "'}",
+                data: "{'orderCode':'" + ordercode + "'}",
                 cache: false,
                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                 success: function (data) {
@@ -909,7 +926,7 @@
                 </div>
             <div class="row" style="background-color:white;margin-top:1rem">
                 <div class="col-50"><a href="javascript:subscribe('报关状态')" class="button button-fill">确  认</a></div>
-                <div class="col-50"><a href="#" class="close-popup button button-fill">返  回</a></div>
+                <div class="col-50"><a href="#" class="close-popup button button-fill" id="backto">返  回</a></div>
             </div>
         </div>
     </div>
@@ -975,7 +992,7 @@
           </div>
             <div class="row" style="background-color:white;margin-top:1rem">
                 <div class="col-50"><a href="javascript:subscribe('订单状态')" class="button button-fill">确  认</a></div>
-                <div class="col-50"><a href="#" class="close-popup button button-fill">返  回</a></div>
+                <div class="col-50"><a href="#" class="close-popup button button-fill" id="backto">返  回</a></div>
             </div>
         </div>
     </div>   
