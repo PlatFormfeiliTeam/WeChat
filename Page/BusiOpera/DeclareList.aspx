@@ -586,6 +586,9 @@
                 }
                 $.popup("#popup-subscribe-decl");
 
+                $(document).on('open', '#popup-subscribe-decl', function () {
+                    $("input[name='chk_status']").prop('checked', false);
+                });
                 $(document).on('opened', '#popup-subscribe-decl', function () {
                     $("#Pop_hd_predeclcode").val(predeclcode);
                     $("#Pop_hd_ordercode").val(div_ordercode.substring(6));

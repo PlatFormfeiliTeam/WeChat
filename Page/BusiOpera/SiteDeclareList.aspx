@@ -815,6 +815,11 @@
                 }
                 $.popup("#popup-subscribe-log");
 
+                $(document).on('open', '#popup-subscribe-log', function () {
+                    $("input[name='chk_orderstatus']").prop('checked', false);
+                    $("input[name='chk_logisticstatus']").prop('checked', false);                   
+                });
+
                 $(document).on('opened', '#popup-subscribe-log', function () {
                     $("#Pop_hd_ordercode").val(divid.substring(6));
                     $("#Pop_hd_cusno").val(cusno);
