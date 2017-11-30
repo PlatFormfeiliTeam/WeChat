@@ -105,7 +105,7 @@ namespace WeChat.Page.MyBusiness
         /// <param name="orderCode"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string SubscribeStatus(string type, string status, string ordercode, string declcode, string userid, string username, string openid)
+        public static string SubscribeStatus(string type, string status, string cusno, string declarationcode, string userid, string username, string openid)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace WeChat.Page.MyBusiness
                 //判断是否订阅的信息是否已经触发
                 if (type == "报关状态")
                 {
-                    DataTable dt = SubscribeModel.getDeclstatus(declcode);
+                    DataTable dt = SubscribeModel.getDeclstatus(declarationcode);
                     for (int i = 0; i < st.Length; i++)
                     {
                         if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
@@ -128,7 +128,7 @@ namespace WeChat.Page.MyBusiness
                 }
                 else if(type=="物流状态")
                 {
-                    DataTable dt = SubscribeModel.getLogisticsstatus(ordercode);
+                    DataTable dt = SubscribeModel.getLogisticsstatus(cusno);
                     for (int i = 0; i < st.Length; i++)
                     {
                         if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
@@ -140,7 +140,7 @@ namespace WeChat.Page.MyBusiness
                 }
                 else if (type == "业务状态")
                 {
-                    DataTable dt = SubscribeModel.getOrderstatus(ordercode);
+                    DataTable dt = SubscribeModel.getOrderstatus(cusno);
                     for (int i = 0; i < st.Length; i++)
                     {
                         if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= dt.Rows[0][0].ToString2().ToInt32())
@@ -158,13 +158,13 @@ namespace WeChat.Page.MyBusiness
                 //防止重复订阅
                 for (int i = 0; i < st.Length; i++)
                 {
-                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(ordercode, st[i], type);
+                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type);
 
                     if (getTriggerStatus.Rows.Count > 0)
                     {
                         return st[i] + "已订阅请勿重复订阅";
                     }
-                    else if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
+                    else if (SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, userid, username, openid, codetype))
                     {
                         return "订阅成功";
                     }

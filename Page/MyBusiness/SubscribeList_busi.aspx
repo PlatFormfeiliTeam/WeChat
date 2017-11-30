@@ -156,7 +156,7 @@
                 data: "{'starttime':'" + $("#txt_startdate").val() +
                         "','endtime':'" + $("#txt_enddate").val() +
                         "','istigger':'" + $("#picker_tigger").val() +
-                        "','ordercode':'" + $("#txt_code").val() +
+                        "','cusno':'" + $("#txt_code").val() +
                         "','pagesize':" + pagesize +
                         ",'lastnum':" + lastnum + "}",
                 cache: false,
@@ -165,7 +165,7 @@
                     var obj = eval("(" + data.d + ")");//将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
                         var obj = eval("(" + data.d + ")");//将字符串转为json
-                        var str = '<div class="list-block" id="' + obj[i]["CODE"] + '" ondblclick="subscribe(' + obj[i]["CODE"] + ')">' +
+                        var str = '<div class="list-block" id="' + obj[i]["CODE"] + '">' +
                                     '<ul>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +

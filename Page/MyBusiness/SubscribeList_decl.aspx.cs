@@ -20,25 +20,25 @@ namespace WeChat.Page.MyBusiness
 
         }
         [WebMethod]
-        public static string QuerySubscribeInfo(string starttime,string endtime,string istigger,int pagesize,int lastnum,string declcode)
+        public static string QuerySubscribeInfo(string starttime, string endtime, string istigger, int pagesize, int lastnum, string declarationcode)
         {
-            DataTable infodt = SubscribeModel.getSubscribeInfo_Decl(starttime, endtime, istigger, pagesize, lastnum, declcode);
+            DataTable infodt = SubscribeModel.getSubscribeInfo_Decl(starttime, endtime, istigger, pagesize, lastnum, declarationcode);
             if (infodt == null || infodt.Rows.Count == 0)
                 return "";
             DataTable resultdt=infodt.Clone();
             try
             {
-                foreach (DataRow dr in infodt.DefaultView.ToTable(true,"declcode").Rows)
+                foreach (DataRow dr in infodt.DefaultView.ToTable(true, "declarationcode").Rows)
                 {
                     //给物流状态赋值
-                    DataRow[] resultrow = infodt.Select("declcode='" + dr["declcode"] + "' and substype='报关状态' and TRIGGERSTATUS=0", " statusvalue");//找到未触发的最小状态
+                    DataRow[] resultrow = infodt.Select("declarationcode='" + dr["declarationcode"] + "' and substype='报关状态' and TRIGGERSTATUS=0", " statusvalue");//找到未触发的最小状态
                     if (resultrow.Length > 0)
                     {
-                        resultrow[0]["substatus"] = resultrow[0]["substatus"] + "/未触发";
+                        resultrow[0]["substatus"] = resultrow[0]["declarationcode"] + "/未触发";
                     }
                     else
                     {//否则找触发里最大的状态
-                        resultrow = infodt.Select("declcode='" + dr["declcode"] + "' and substype='报关状态' and (TRIGGERSTATUS=1 or TRIGGERSTATUS=2)", " statusvalue desc");
+                        resultrow = infodt.Select("declarationcode='" + dr["declarationcode"] + "' and substype='报关状态' and (TRIGGERSTATUS=1 or TRIGGERSTATUS=2)", " statusvalue desc");
                         if (resultrow.Length > 0)
                         {
                             resultrow[0]["substatus"] = resultrow[0]["substatus"] + "/已触发";

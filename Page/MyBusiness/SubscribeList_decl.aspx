@@ -78,7 +78,7 @@
         // 最多可加载的条目
         var maxItems = 100;
         // 每次加载添加多少条目
-        var pagesize = 6;
+        var pagesize = 8;
         $(function () {
             //----------------------------------------------------------------------------------------------------------------查询条件
             $("#txt_startdate").calendar({});
@@ -156,7 +156,7 @@
                 data: "{'starttime':'" + $("#txt_startdate").val() +
                         "','endtime':'" + $("#txt_enddate").val() +
                         "','istigger':'" + $("#picker_tigger").val() +
-                        "','declcode':'" + $("#txt_code").val() +
+                        "','declarationcode':'" + $("#txt_code").val() +
                         "','pagesize':" + pagesize +
                         ",'lastnum':" + lastnum + "}",
                 cache: false,
@@ -165,7 +165,7 @@
                     var obj = eval("(" + data.d + ")");//将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
                         var obj = eval("(" + data.d + ")");//将字符串转为json
-                        var str = '<div class="list-block" id="' + obj[i]["CODE"] + '" ondblclick="subscribe(' + obj[i]["CODE"] + ')">' +
+                        var str = '<div class="list-block" id="' + obj[i]["DECLARATIONCODE"] + '" >' +
                                     '<ul>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +

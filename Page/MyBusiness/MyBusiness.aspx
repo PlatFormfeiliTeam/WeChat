@@ -139,7 +139,7 @@
         // 每次加载添加多少条目
         var itemsPerLoad = 6;
         var lastIndex = 0;
-        var subOrderCode = "", subDeclCode = "";//订阅的单号
+        var subCusno = "", subDeclarationCode = "";//订阅的单号
         //按钮查询
         function loadData(itemsPerLoad, lastIndex) {
             $.ajax({
@@ -164,7 +164,7 @@
                 success: function (data) {
                     var obj = eval("(" + data.d + ")");//将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
-                        var str = '<div class="list-block" id="' + obj[i]["CODE"] + '">' +
+                        var str = '<div class="list-block" id="' + obj[i]["CODE"] + ',' + obj[i]["CUSNO"] + '" >' +
                                     '<ul>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
@@ -325,14 +325,15 @@
                 $("#pop_tab_decl").html("");
                 $("#pop_tab_insp").html("");
                 $("#pop_tab_logistics").html("");
-                var code = "";
+                var ordercode = "";
                 $("#busicontent .list-block").each(function () {
 
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                        code = $(this)[0].id;
+                        ordercode = $(this)[0].id;
+                        ordercode = ordercode.split(",")[0];
                     }
                 });
-                if (code == "") {
+                if (ordercode == "") {
                     $.toast("请选择需要调阅的记录");
                     $.hidePreloader();
                     return;
@@ -342,7 +343,7 @@
                     url: 'MyBusiness.aspx/QueryOrderDetail',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'code':'" + code + "'}",
+                    data: "{'code':'" + ordercode + "'}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
@@ -410,7 +411,7 @@
                             declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
                             if (declTable != null) {
                                 for (var i = 0; i < declTable.length; i++) {
-                                    declstr += '<div class="list-block" id="' + declTable[i]["CODE"] + '">';
+                                    declstr += '<div class="list-block" id="' + declTable[i]["DECLARATIONCODE"] + '">';
                                     declstr += '<div class="row">';
                                     declstr += '<div class="col-40">' + declTable[i]["DECLARATIONCODE"] + '</div>';
                                     declstr += '<div class="col-40">' + declTable[i]["GOODSNUM"] + '/' + declTable[i]["GOODSGW"] + '</div>';
@@ -589,36 +590,37 @@
         //长按事件
         //$('#pop_tab_decl .list-block').longPress(function (e) {
         //});
-        //打开订阅弹出框
+        //打开业务订阅弹出框
         $(document).on('click', '.open-subscribe', function () {
-            var code = "";
+            var cusno = "";
             $("#busicontent .list-block").each(function () {
 
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                    code = $(this)[0].id;
+                    cusno = $(this)[0].id;
+                    cusno = cusno.split(",")[1];
                 }
             });
-            if (code == "") {
+            if (cusno == "") {
                 $.toast("请选择需要订阅的记录");
                 return;
             }
-            subOrderCode = code;
+            subCusno = cusno;
             $.popup("#popup-subscribe-log");
         })
-        //打开订阅弹出框
+        //打开预制单订阅弹出框
         $(document).on('click', '#btn-subs-decl', function () {
-            var code = "";
+            var declcode = "";
             $("#pop_tab_decl .list-block").each(function () {
 
                 if ($(this).css('background-color') == "rgb(193, 221, 241)") {
-                    code = $(this)[0].id;
+                    declcode = $(this)[0].id;
                 }
             });
-            if (code == "") {
+            if (declcode == "") {
                 $.toast("请选择需要订阅的记录");
                 return;
             }
-            subDeclCode = code;
+            subDeclarationCode = declcode;
             $.popup("#popup-subscribe-decl");
         })
         //订阅消息
@@ -627,7 +629,7 @@
             var input;
             if (type == "订单状态")
             {
-                if (subOrderCode == "") {
+                if (subCusno == "") {
                     $.toast("请选择需要订阅的业务");
                     return;
                 }
@@ -648,7 +650,7 @@
             }
             if (type == "报关状态")
             {
-                if (subDeclCode == "") {
+                if (subDeclarationCode == "") {
                     $.toast("请选择需要订阅的报关单");
                     return;
                 }
@@ -673,8 +675,8 @@
                 dataType: "json",
                 data: "{'type':'" + type +
                     "','status':'" + status +
-                    "','ordercode':'" + subOrderCode +
-                    "','declcode':'" + subDeclCode +
+                    "','cusno':'" + subCusno +
+                    "','declarationcode':'" + subDeclarationCode +
                     "','userid':'" + userid +
                     "','username':'" + username +
                     "','openid':'" + openid + "'}",
@@ -687,14 +689,14 @@
         }
         //报关单调阅
         function showDeclPdf() {
-            var code = "";
+            var ordercode = "";
             $("#busicontent .list-block").each(function () {
 
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                    code = $(this)[0].id;
+                    ordercode = $(this)[0].id;
                 }
             });
-            if (code == "") {
+            if (ordercode == "") {
                 $.toast("请选择需要调阅的记录");
                 return;
             }
@@ -703,7 +705,7 @@
                 url: 'MyBusiness.aspx/GetDeclPdf',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: "{'orderCode':'" + code + "'}",
+                data: "{'ordercode':'" + ordercode + "'}",
                 cache: false,
                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                 success: function (data) {
@@ -731,14 +733,15 @@
         }
         //查验图片调阅
         function showCheckPic() {
-            var code = "";
+            var ordercode = "";
             $("#busicontent .list-block").each(function () {
 
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                    code = $(this)[0].id;
+                    ordercode = $(this)[0].id;
+                    ordercode = ordercode.split(",")[0];
                 }
             });
-            if (code == "") {
+            if (ordercode == "") {
                 $.toast("请选择需要调阅的记录");
                 return;
             }
@@ -748,7 +751,7 @@
                 url: "/page/BusiOpera/SiteDeclareList.aspx/picfileconsult",//方法所在页面和方法名
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: "{'ordercode':'" + code + "'}",
+                data: "{'ordercode':'" + ordercode + "'}",
                 cache: false,
                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                 success: function (data) {

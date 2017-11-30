@@ -20,32 +20,32 @@ namespace WeChat.Page.MyBusiness
 
         }
         [WebMethod]
-        public static string QuerySubscribeInfo(string starttime,string endtime,string istigger,int pagesize,int lastnum,string ordercode)
+        public static string QuerySubscribeInfo(string starttime, string endtime, string istigger, int pagesize, int lastnum, string cusno)
         {
-            DataTable infodt = SubscribeModel.getSubscribeInfo_Order(starttime, endtime, istigger, pagesize, lastnum, ordercode);
+            DataTable infodt = SubscribeModel.getSubscribeInfo_Order(starttime, endtime, istigger, pagesize, lastnum, cusno);
             if (infodt == null || infodt.Rows.Count == 0)
                 return "";
             DataTable resultdt=infodt.Clone();
             try
             {
-                foreach (DataRow dr in infodt.DefaultView.ToTable(true,"ordercode").Rows)
+                foreach (DataRow dr in infodt.DefaultView.ToTable(true, "cusno").Rows)
                 {
                     //给物流状态赋值
-                    DataRow[] resultrow = infodt.Select("ordercode='" + dr["ordercode"] + "' and substype='物流状态' and TRIGGERSTATUS=0", " statusvalue");//找到未触发的最小状态
+                    DataRow[] resultrow = infodt.Select("cusno='" + dr["cusno"] + "' and substype='物流状态' and TRIGGERSTATUS=0", " statusvalue");//找到未触发的最小状态
                     if (resultrow.Length > 0)
                     {
                         resultrow[0]["sublogstatus"] = resultrow[0]["substatus"] + "/未触发";
                     }
                     else
                     {//否则找触发里最大的状态
-                        resultrow = infodt.Select("ordercode='" + dr["ordercode"] + "' and substype='物流状态' and (TRIGGERSTATUS=1 or TRIGGERSTATUS=2)", " statusvalue desc");
+                        resultrow = infodt.Select("cusno='" + dr["cusno"] + "' and substype='物流状态' and (TRIGGERSTATUS=1 or TRIGGERSTATUS=2)", " statusvalue desc");
                         if (resultrow.Length > 0)
                         {
                             resultrow[0]["sublogstatus"] = resultrow[0]["substatus"] + "/已触发";
                         }
                     }
                     //给业务状态赋值
-                    DataRow[] declrow = infodt.Select("ordercode='" + dr["ordercode"] + "' and substype='业务状态' and TRIGGERSTATUS=0", " statusvalue");//找到未触发的最小状态
+                    DataRow[] declrow = infodt.Select("cusno='" + dr["cusno"] + "' and substype='业务状态' and TRIGGERSTATUS=0", " statusvalue");//找到未触发的最小状态
                     if (resultrow.Length > 0)//存在物流状态，则要把stauts（物流状态）清空，用来保存业务状态
                     {
                         resultrow[0]["substatus"] = "";
@@ -61,7 +61,7 @@ namespace WeChat.Page.MyBusiness
                     }
                     else
                     {//否则找触发里最大的状态
-                        declrow = infodt.Select("ordercode='" + dr["ordercode"] + "' and substype='业务状态' and (TRIGGERSTATUS=1 or TRIGGERSTATUS=2)", " statusvalue desc");
+                        declrow = infodt.Select("cusno='" + dr["cusno"] + "' and substype='业务状态' and (TRIGGERSTATUS=1 or TRIGGERSTATUS=2)", " statusvalue desc");
                         if (declrow.Length > 0)
                         {
                             if (resultrow.Length == 0)
