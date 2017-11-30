@@ -24,7 +24,7 @@
             top: 5rem;
         }
         #div_list .list-block{
-            font-size:14px;
+            font-size:13px;
             margin:.2rem 0;
         }
         #div_list .list-block .item-content{
@@ -104,6 +104,14 @@
                                 '<li>' +
                                   '<div class="item-content">' +
                                     '<div class="item-inner">' +
+                                      //'<div class="item-title label">进出口</div>' +
+                                      '<div class="item-input"><input type="text" placeholder="选择进出口类型" id="picker_inout_type" value="' + $("#txt_inout_type").val() + '" readonly/></div>' +
+                                    '</div>' +
+                                  '</div>' +
+                                '</li>' +
+                                '<li>' +
+                                  '<div class="item-content">' +
+                                    '<div class="item-inner">' +
                                       //'<div class="item-title label">业务类型</div>' +
                                       '<div class="item-input"><input type="text" placeholder="选择业务类型" id="picker_busitype" value="' + $("#txt_busitype").val() + '" readonly/></div>' +
                                     '</div>' +
@@ -131,6 +139,7 @@
                      {
                          text: '确认', bold: true,
                          onClick: function () {
+                             $("#txt_inout_type").val($("#picker_inout_type").val());
                              $("#txt_busitype").val($("#picker_busitype").val());
                              $("#txt_modifyflag").val($("#picker_modifyflag").val());
                              $("#txt_customsstatus").val($("#picker_customsstatus").val());
@@ -147,6 +156,7 @@
                              $("#txt_declcode").val(""); $("#txt_startdate").val(""); $("#txt_enddate").val("");
                              $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
 
+                             $("#txt_inout_type").val(""); $("#picker_inout_type").val("")
                              $("#txt_busitype").val(""); $("#picker_busitype").val("")
                              $("#txt_modifyflag").val(""); $("#picker_modifyflag").val("");
                              $("#txt_customsstatus").val(""); $("#picker_customsstatus").val("");
@@ -156,6 +166,18 @@
                     extraClass: 'morediv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
 
+                $("#picker_inout_type").picker({
+                    toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择进出口类型</h1>\
+                      </header>',
+                    cols: [
+                      {
+                          textAlign: 'center',
+                          values: ['全部', '进口', '出口']
+                      }
+                    ]
+                });
                 $("#picker_busitype").picker({
                     toolbarTemplate: '<header class="bar bar-nav">\
                       <button class="button button-link pull-right close-picker">确定</button>\
@@ -164,7 +186,7 @@
                     cols: [
                       {
                           textAlign: 'center',
-                          values: ['空运进口', '空运出口', '海运进口', '海运出口', '陆运进口', '陆运出口', '国内业务', '特殊进口', '特殊出口']
+                          values: ['全部', '空运业务', '海运业务', '陆运业务', '国内业务', '特殊区域']
                       }
                     ]
                 });
@@ -423,52 +445,52 @@
                                 label: true
                             },
                             {
-                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                text: '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                         + '<ul>'
                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">' +
                                                   '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + obj[0]["DECLARATIONCODE"] + '</div>'
                                                     + '<div class="item-title col-33">' + getname("BUSITYPE", obj[0]["BUSITYPE"]) + '</div>'
-                                                    + '<div class="item-title col-15">' + obj[0]["TRADEMETHOD"] + '</div>'
+                                                    + '<div class="item-title col-20">' + obj[0]["TRADEMETHOD"] + '</div>'
                                                 + '</div>'
                                            + '</li>'
                                     + '</ul>'
                                 + '</div>'
                             },
                             {
-                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                text: '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                         + '<ul>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + obj[0]["CONSIGNEESHIPPERNAME"] + '</div>'
                                                     + '<div class="item-title col-33">' + obj[0]["CONTRACTNO"] + '</div>'
-                                                    + '<div class="item-title col-15">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
+                                                    + '<div class="item-title col-20">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
                                 + '</div>'
                             },
                             {
-                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                text: '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                         + '<ul>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["TRANSNAME"] == null ? "" : obj[0]["TRANSNAME"]) + '</div>'
                                                     + '<div class="item-title col-33">' + obj[0]["GOODSNUM"] + '/' + obj[0]["GOODSGW"] + '</div>'
-                                                    + '<div class="item-title col-15">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
+                                                    + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
                                 + '</div>'
                             },
                             {
-                                text: '<div class="list-block" style="margin:0;font-size:14px;color:black;">'
+                                text: '<div class="list-block" style="margin:0;font-size:13px;color:black;">'
                                         + '<ul>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["BLNO"] == null ? "" : obj[0]["BLNO"]) + '</div>'
                                                     + '<div class="item-title col-33">' + obj[0]["CUSNO"] + '</div>'
-                                                    + '<div class="item-title col-15">' + obj[0]["CUSTOMSSTATUS"] + '</div>'
+                                                    + '<div class="item-title col-20">' + obj[0]["CUSTOMSSTATUS"] + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -548,11 +570,14 @@
 
             //报关订阅
             $("#Subs_decl_a").click(function () {
-                var predeclcode = ""; var div_ordercode = "";
+                var predeclcode = ""; var div_ordercode = ""; var declcode = ""; var cusno = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                        predeclcode = $(this)[0].id;
-                        div_ordercode = $(this).children("ul")[0].id;
+
+                        predeclcode = $(this)[0].id; div_ordercode = $(this).children("ul")[0].id;
+
+                        declcode = $(this).children("ul").children().eq(0).children("div").children().eq(0).text();
+                        cusno = $(this).children("ul").children().eq(3).children("div").children().eq(1).text();
                     }
                 });
                 if (predeclcode == "") {
@@ -561,16 +586,24 @@
                 }
                 $.popup("#popup-subscribe-decl");
 
+                $(document).on('open', '#popup-subscribe-decl', function () {
+                    $("input[name='chk_status']").prop('checked', false);
+                });
                 $(document).on('opened', '#popup-subscribe-decl', function () {
                     $("#Pop_hd_predeclcode").val(predeclcode);
                     $("#Pop_hd_ordercode").val(div_ordercode.substring(6));
+
+                    $("#Pop_hd_declcode").val(declcode);
+                    $("#Pop_hd_cusno").val(cusno);
                 });
             });
 
             $("#Pop_Subscribe").click(function () {
-                var predeclcode = $("#Pop_hd_predeclcode").val();
-                var ordercode = $("#Pop_hd_ordercode").val();
-               
+                var predeclcode = $("#Pop_hd_predeclcode").val(); var ordercode = $("#Pop_hd_ordercode").val();
+
+                var declcode = $("#Pop_hd_declcode").val();
+                var cusno = $("#Pop_hd_cusno").val();
+
                 var status = "";
                 $("input[name='chk_status']:checked").each(function (index, item) {
                     status += $(this).val() + ",";
@@ -586,7 +619,7 @@
                     url: '/Page/MyBusiness/MyBusiness.aspx/SubscribeStatus',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'type':'报关状态','status':'" + status + "','ordercode':'" + ordercode + "','declcode':'" + predeclcode +
+                    data: "{'type':'报关状态','status':'" + status + "','cusno':'" + cusno + "','declarationcode':'" + declcode +
                         "','userid':'" + userid + "','username':'" + username + "','openid':'" + openid + "'}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
@@ -605,7 +638,8 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: "{'declcode':'" + $("#txt_declcode").val() + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
-                        + "','busitype':'" + $("#txt_busitype").val() + "','modifyflag':'" + $("#txt_modifyflag").val() + "','customsstatus':'" + $("#txt_customsstatus").val()
+                        + "','inouttype':'" + $("#txt_inout_type").val() + "','busitype':'" + $("#txt_busitype").val() + "','modifyflag':'" + $("#txt_modifyflag").val()
+                        + "','customsstatus':'" + $("#txt_customsstatus").val()
                         + "','start':" + lastIndex + ",'itemsPerLoad':" + itemsPerLoad + "}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
@@ -620,28 +654,28 @@
                                              + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + obj[i]["DECLARATIONCODE"] + '</div>'
                                                 + '<div class="item-title col-33">' + getname("BUSITYPE", obj[i]["BUSITYPE"]) + '</div>'
-                                                + '<div class="item-title col-15">' + obj[i]["TRADEMETHOD"] + '</div>'
+                                                + '<div class="item-title col-20">' + obj[i]["TRADEMETHOD"] + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + obj[i]["CONSIGNEESHIPPERNAME"] + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["CONTRACTNO"] + '</div>'
-                                                + '<div class="item-title col-15">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
+                                                + '<div class="item-title col-20">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["TRANSNAME"] == null ? "" : obj[i]["TRANSNAME"]) + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>'
-                                                + '<div class="item-title col-15">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
+                                                + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["BLNO"] == null ? "" : obj[i]["BLNO"]) + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["CUSNO"] + '</div>'
-                                                + '<div class="item-title col-15">' + obj[i]["CUSTOMSSTATUS"] + '</div>'
+                                                + '<div class="item-title col-20">' + obj[i]["CUSTOMSSTATUS"] + '</div>'
                                             + '</div>'
                                         + '</li>'
                                     + '</ul>'
@@ -743,7 +777,7 @@
                         <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
                     </div>                    
                 </div>  
-                <input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/>  <input type="hidden" id='txt_customsstatus'/>                
+                <input type="hidden" id='txt_inout_type'/><input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/>  <input type="hidden" id='txt_customsstatus'/>                
                 <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>   
             </header>
 
@@ -786,7 +820,10 @@
     <div class="popup popup-subscribe" id="popup-subscribe-decl" >
         <div class="content" >
             <div id="pop_sub_decl">
-                <div class="myrow">报关状态订阅<input type="hidden" id="Pop_hd_predeclcode" value="" /><input type="hidden" id="Pop_hd_ordercode" value="" /></div>
+                <div class="myrow">
+                    报关状态订阅<input type="hidden" id="Pop_hd_predeclcode" value="" /><input type="hidden" id="Pop_hd_ordercode" value="" />
+                    <input type="hidden" id="Pop_hd_declcode" value="" /><input type="hidden" id="Pop_hd_cusno" value="" />
+                </div>
                 <div class="row">
                     <div class="col-66">申报完成</div>
                     <div class="col-33"><input type="checkbox" name="chk_status" value="申报完成"/></div>

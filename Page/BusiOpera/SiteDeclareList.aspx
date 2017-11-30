@@ -25,7 +25,7 @@
             top: 5rem;
         }
         #div_list .list-block{
-            font-size:14px;
+            font-size:13px;
             margin:.2rem 0;
         }
         #div_list .list-block .item-content{
@@ -802,9 +802,11 @@
 
             $("#Subs_log_a").click(function () {
                 var divid = "";//order_
+                var cusno = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         divid = $(this)[0].id;
+                        cusno = $(this).children("ul").children().eq(1).children("div").children().eq(2).text();
                     }
                 });
                 if (divid == "") {
@@ -813,13 +815,20 @@
                 }
                 $.popup("#popup-subscribe-log");
 
+                $(document).on('open', '#popup-subscribe-log', function () {
+                    $("input[name='chk_orderstatus']").prop('checked', false);
+                    $("input[name='chk_logisticstatus']").prop('checked', false);                   
+                });
+
                 $(document).on('opened', '#popup-subscribe-log', function () {
                     $("#Pop_hd_ordercode").val(divid.substring(6));
+                    $("#Pop_hd_cusno").val(cusno);
                 });
             });
 
             $("#Pop_Subscribe_log").click(function () {
                 var ordercode = $("#Pop_hd_ordercode").val();
+                var cusno = $("#Pop_hd_cusno").val();
                 var type = "", status = "";
 
                 var tab = $("#popup-subscribe-log_con .tab").css("display");
@@ -848,7 +857,7 @@
                     url: '/Page/MyBusiness/MyBusiness.aspx/SubscribeStatus',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'type':'" + type + "','status':'" + status + "','ordercode':'" + ordercode + "','declcode':'','userid':'" + userid + "','username':'" + username + "','openid':'" + openid + "'}",
+                    data: "{'type':'" + type + "','status':'" + status + "','cusno':'" + cusno + "','declarationcode':'','userid':'" + userid + "','username':'" + username + "','openid':'" + openid + "'}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
@@ -1225,7 +1234,7 @@
     <div class="popup popup-subscribe" id="popup-subscribe-log" >
         <div class="content" >
             <div class="buttons-tab">
-                <input type="hidden" id="Pop_hd_predeclcode" value="" /><input type="hidden" id="Pop_hd_ordercode" value="" />
+                <input type="hidden" id="Pop_hd_ordercode" value="" /><input type="hidden" id="Pop_hd_cusno" value="" />
                 <a href="#sub_tab1" class="tab-link active button">业务状态</a>
                 <a href="#sub_tab2" class="tab-link button">物流状态</a>
             </div>

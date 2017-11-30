@@ -9,7 +9,7 @@ namespace WeChat.ModelBusi
 {
     public class Declare
     {
-        public static DataTable getDeclareInfo(string declcode, string startdate, string enddate, string busitypeid, string modifyflag, string customsstatus, int start, int itemsPerLoad)
+        public static DataTable getDeclareInfo(string declcode, string startdate, string enddate, string inouttype, string busitypeid, string modifyflag, string customsstatus, int start, int itemsPerLoad)
         {
             using (DBSession db = new DBSession())
             {
@@ -26,9 +26,44 @@ namespace WeChat.ModelBusi
                 {
                     where += " and lda.reptime<=to_date('" + enddate + " 23:59:59','yyyy-mm-dd hh24:mi:ss') ";
                 }
+
+                if (!string.IsNullOrEmpty(inouttype))
+                {
+                    switch (inouttype)
+                    {
+                        case "全部":
+                            break;
+                        case "进口":
+                            where += " and ort.busitype in ('11','21','31','41','51')";
+                            break;
+                        case "出口":
+                            where += " and ort.busitype in ('10','20','30','40','50')";
+                            break;
+                    }
+                }
+
                 if (!string.IsNullOrEmpty(busitypeid))
                 {
-                    where += " and instr('" + busitypeid + "',ort.BUSITYPE)>0 ";
+                    switch (busitypeid)
+                    {
+                        case "全部":
+                            break;
+                        case "空运业务":
+                            where += " and ort.busitype in ('11','10')";
+                            break;
+                        case "海运业务":
+                            where += " and ort.busitype in ('21','20')";
+                            break;
+                        case "陆运业务":
+                            where += " and ort.busitype in ('31','30')";
+                            break;
+                        case "国内业务":
+                            where += " and ort.busitype in ('41','40')";
+                            break;
+                        case "特殊区域":
+                            where += " and ort.busitype in ('51','50')";
+                            break;
+                    }                   
                 }
                 if (!string.IsNullOrEmpty(modifyflag))
                 {
@@ -53,7 +88,7 @@ namespace WeChat.ModelBusi
                                     left join (select ordercode from list_declaration ld where ld.isinvalid=0 and ld.STATUS!=130 and ld.STATUS!=110) a on det.ordercode=a.ordercode
                                     left join list_verification lv on lda.declarationcode=lv.declarationcode ";
 
-                if (busitypeid == "40-41")
+                if (busitypeid == "国内业务")
                 {
                     tempsql += @" left join (
                                                   select ASSOCIATENO from list_order l inner join list_declaration i on l.code=i.ordercode 
