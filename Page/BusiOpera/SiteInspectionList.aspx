@@ -573,7 +573,7 @@
                                      if (data.d == "sucess") {
                                          $.toast("撤销成功");
                                          $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text("");//更新查验时间
-                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text("否");
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("INSPISCHECK", 0));
                                      } else {
                                          $.toast("撤销失败");
                                      }
@@ -606,7 +606,7 @@
                                     if (data.d != "") {
                                         $.toast("查验成功");
                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(data.d);//更新查验时间
-                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text("是");
+                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("INSPISCHECK", 1));
                                     } else {
                                         $.toast("查验失败");
                                     }
@@ -638,7 +638,7 @@
                     return;
                 }
 
-                if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() != "是") {
+                if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() != getname("INSPISCHECK", 1)) {
                     $.toast("无查验标志，不能使用查验图片功能");
                     return;
                 }
@@ -699,7 +699,7 @@
                                 if (data.d == "success") {
                                     $.toast("上传成功");
                                     //修改页面查验图片标志
-                                    $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text("是");
+                                    $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text(getname("INSPCHECKPIC", 1));
                                 } else {
                                     $.toast("上传失败");
                                 }
@@ -713,7 +713,7 @@
 
                     $.closeModal(".picdiv");
 
-                    if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text() != "是") {
+                    if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text() != getname("INSPCHECKPIC", 1)) {
                         $.toast("没有查验图片");
                         return;
                     }
