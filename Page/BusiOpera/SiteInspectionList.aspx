@@ -559,6 +559,12 @@
                 $("#txt_inspcheckname").val("昆山吉时报关有限公司");//当前登录人name
 
                 $("#checkcancel").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
+
+                    if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() == getname("INSPISCHECK", 0)) {
+                        $.toast("还未查验，无需撤销");
+                        return;
+                    }
+
                     $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
                          function () {//OK事件
                              $.ajax({
@@ -574,6 +580,7 @@
                                          $.toast("撤销成功");
                                          $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text("");//更新查验时间
                                          $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("INSPISCHECK", 0));
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text(getname("INSPCHECKPIC", 0));
                                      } else {
                                          $.toast("撤销失败");
                                      }
