@@ -243,11 +243,21 @@ namespace WeChat.ModelBusi
         /// </summary>
         /// <param name="cusno"></param>
         /// <returns></returns>
-        public static DataTable GetTriggerstatus(string cusno, string checkedStatus, string type)
+        public static DataTable GetTriggerstatus(string cusno, string checkedStatus, string type, string declarationcode)
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "select triggerstatus from wechat_subscribe where cusno='" + cusno + "' and status = '" + checkedStatus + "' and substype = '" + type + "'";
+                string sql;
+                if (type.Equals("报关状态"))
+                {
+                     sql = "select triggerstatus from wechat_subscribe where cusno='" + cusno +
+                                 "'  and status = '" + checkedStatus + "' and substype = '" + type + "' and declarationcode = '"+declarationcode+"' ";
+                }
+                else
+                {
+                    sql = "select triggerstatus from wechat_subscribe where cusno='" + cusno + "'  and status = '" + checkedStatus + "' and substype = '" + type + "' ";
+                }
+                 
                 return db.QuerySignle(sql);
             }
         }

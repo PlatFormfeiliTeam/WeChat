@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css" />
     <%--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
     <style type="text/css">
+        #scroll-bottom-one {
+            top: 7.8rem;
+        }
+         .bar input[type=search]{
+             margin:.1rem 0;
+         }
         .content-block
         {
             margin:0rem 0;
@@ -80,14 +86,14 @@
         }
         .button
         {
-            font-size:34px;
-            height:40px;
-            line-height:40px;
+            font-size:15px;
+            height:25px;
+            line-height:1.35rem;
             vertical-align:middle;
         }
-       .button.button-fill
+        .button.button-fill
         {
-            line-height:40px;
+            line-height:28px;
         }
         .popup .list-block
         {
@@ -127,7 +133,6 @@
             line-height:2rem;
             padding-left:4%;
         }
-        
     </style>
 
     <script type="text/javascript">
@@ -155,8 +160,8 @@
                         "','customs':'" + $("#picker_customs").val() +
                         "','sitedeclare':'" + $("#picker_sitedeclare").val() +
                         "','logisticsstatus':'" + $("#picker_logisticsstatus").val() +
-                        "','starttime':'" + $("#picker_starttime").val() +
-                        "','endtime':'" + $("#picker_endtime").val() +
+                        "','starttime':'" + $("#txt_startdate").val() +
+                        "','endtime':'" + $("#txt_enddate").val() +
                         "','itemsperload':" + itemsPerLoad +
                         ",'lastindex':" + lastIndex + "}",
                 cache: false,
@@ -223,406 +228,542 @@
         //}
        
         //查询
-        $(function () {
+        $(function() {
             $('.infinite-scroll-preloader').hide();
             //FastClick.attach(document.body);
             //查询
-            $(document).on('click', '#button_one', function () {
-                $("#busicontent").html("");
-                $.showPreloader('加载中...');
-                lastIndex = 0;
-                $('.infinite-scroll-preloader').show();
-                $.attachInfiniteScroll($('.infinite-scroll'));
-                setTimeout(function () {
-                    loadData(itemsPerLoad, lastIndex);//加载数据
-                    lastIndex = $('#busicontent .list-block').length;//获取数据条数
-                    $.refreshScroller();//刷新滚动条
-                    $('.infinite-scroll-bottom').scrollTop(0);//滚动条置顶
+            $(document).on('click',
+                '#button_one',
+                function() {
+                    $("#busicontent").html("");
+                    $.showPreloader('加载中...');
+                    lastIndex = 0;
+                    $('.infinite-scroll-preloader').show();
+                    $.attachInfiniteScroll($('.infinite-scroll'));
+                    setTimeout(function() {
+                            loadData(itemsPerLoad, lastIndex); //加载数据
+                            lastIndex = $('#busicontent .list-block').length; //获取数据条数
+                            $.refreshScroller(); //刷新滚动条
+                            $('.infinite-scroll-bottom').scrollTop(0); //滚动条置顶
 
-                    if (lastIndex < itemsPerLoad) {
-                        $.detachInfiniteScroll($('.infinite-scroll-bottom'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
-                        $('.infinite-scroll-preloader').hide();
-                        if (lastIndex == 0) { $.toast("没有符合的数据！"); }
-                        else { $.toast("已经加载到最后"); }
-                    }
-                }, 500);
-                $.hidePreloader();
-            })
-            
+                            if (lastIndex < itemsPerLoad) {
+                                $.detachInfiniteScroll($('.infinite-scroll-bottom')); // 加载完毕，则注销无限加载事件，以防不必要的加载     
+                                $('.infinite-scroll-preloader').hide();
+                                if (lastIndex == 0) {
+                                    $.toast("没有符合的数据！");
+                                } else {
+                                    $.toast("已经加载到最后");
+                                }
+                            }
+                        },
+                        500);
+                    $.hidePreloader();
+                })
+
             //物流状态——按钮切换
-            $(document).on('click', '.iconfont', function () {
-                $("#choudan").hide();
-                $("#zhuanguan").hide();
-                $("#baojian").hide();
-                $("#yunshu").hide();
-                $("#icon_choudan").parent().css('color', '#6D6D72');
-                $("#icon_zhuanguan").parent().css('color', '#6D6D72');
-                $("#icon_baojian").parent().css('color', '#6D6D72');
-                $("#icon_yunshu").parent().css('color', '#6D6D72');
-                $(this).parent().css('color', '#0894EC');
-                var id = $(this).attr("id");
-                id = id.substring(5);
-                $("#" + id).show();
-            })
+            $(document).on('click',
+                '.iconfont',
+                function() {
+                    $("#choudan").hide();
+                    $("#zhuanguan").hide();
+                    $("#baojian").hide();
+                    $("#yunshu").hide();
+                    $("#icon_choudan").parent().css('color', '#6D6D72');
+                    $("#icon_zhuanguan").parent().css('color', '#6D6D72');
+                    $("#icon_baojian").parent().css('color', '#6D6D72');
+                    $("#icon_yunshu").parent().css('color', '#6D6D72');
+                    $(this).parent().css('color', '#0894EC');
+                    var id = $(this).attr("id");
+                    id = id.substring(5);
+                    $("#" + id).show();
+                });
             //无限滚动 注册'infinite'事件处理函数
-            $(document).on('infinite', "#router1", function () {
-                // 如果正在加载，则退出
-                if (loading) return;
-                // 设置flag
-                loading = true;
-                //显示加载栏
-                $('.infinite-scroll-preloader').show();
-                // 模拟1s的加载过程
-                setTimeout(function () {
-                    // 重置加载flag
-                    loading = false;
-                    if (lastIndex >= maxItems || lastIndex % itemsPerLoad != 0) {
-                        // 加载完毕，则注销无限加载事件，以防不必要的加载
-                        $.detachInfiniteScroll($('.infinite-scroll'));
-                        // 删除加载提示符
-                        $('.infinite-scroll-preloader').hide();
-                        $.toast("已经加载到最后");
-                        return;
-                    }
-                    // 添加新条目
-                    loadData(itemsPerLoad, lastIndex);
-                        
-                    if (lastIndex == $('#busicontent .list-block').length) {
-                        $.detachInfiniteScroll($('.infinite-scroll'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
-                        $('.infinite-scroll-preloader').hide();
+            $(document).on('infinite',
+                "#router1",
+                function() {
+                    // 如果正在加载，则退出
+                    if (loading) return;
+                    // 设置flag
+                    loading = true;
+                    //显示加载栏
+                    $('.infinite-scroll-preloader').show();
+                    // 模拟1s的加载过程
+                    setTimeout(function() {
+                            // 重置加载flag
+                            loading = false;
+                            if (lastIndex >= maxItems || lastIndex % itemsPerLoad != 0) {
+                                // 加载完毕，则注销无限加载事件，以防不必要的加载
+                                $.detachInfiniteScroll($('.infinite-scroll'));
+                                // 删除加载提示符
+                                $('.infinite-scroll-preloader').hide();
+                                $.toast("已经加载到最后");
+                                return;
+                            }
+                            // 添加新条目
+                            loadData(itemsPerLoad, lastIndex);
 
-                        $.toast("已经加载到最后");
-                        return;
-                    }
-                    // 更新最后加载的序号
-                    lastIndex = $('#busicontent .list-block').length;
-                    //容器发生改变,如果是js滚动，需要刷新滚动
-                    $.refreshScroller();
-                }, 500);
-            });
+                            if (lastIndex == $('#busicontent .list-block').length) {
+                                $.detachInfiniteScroll($('.infinite-scroll')); // 加载完毕，则注销无限加载事件，以防不必要的加载     
+                                $('.infinite-scroll-preloader').hide();
+
+                                $.toast("已经加载到最后");
+                                return;
+                            }
+                            // 更新最后加载的序号
+                            lastIndex = $('#busicontent .list-block').length;
+                            //容器发生改变,如果是js滚动，需要刷新滚动
+                            $.refreshScroller();
+                        },
+                        500);
+                });
             //选中业务变色
-            $("#busicontent").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
-
-                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                    $(this).children("ul").css('background-color', '#fff');
-                } else {
-                    $("#busicontent .list-block ul").css('background-color', '#fff');
-                    $(this).children("ul").css('background-color', '#C1DDF1');
-                }
-            });
-            
-
-            //功能菜单
-            $(document).on('click', '.tab-item', function (e) {
-                $(".tab-item").removeClass("active");
-                $(this).addClass("active");
-            })
-            
-            //打开详情弹出框
-            $(document).on('click', '.open-detail', function () {
-                $.showPreloader('加载中...');
-                //清空弹出窗信息
-                $("#pop_tab_decl").html("");
-                $("#pop_tab_insp").html("");
-                $("#pop_tab_logistics").html("");
-                var ordercode = "";
-                $("#busicontent .list-block").each(function () {
+            $("#busicontent").on('click',
+                '.list-block',
+                function(e) { // $("#div_list")也可以换成$(document)，是基于父容器的概念   
 
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                        ordercode = $(this)[0].id;
-                        ordercode = ordercode.split(",")[0];
+                        $(this).children("ul").css('background-color', '#fff');
+                    } else {
+                        $("#busicontent .list-block ul").css('background-color', '#fff');
+                        $(this).children("ul").css('background-color', '#C1DDF1');
                     }
                 });
-                if (ordercode == "") {
-                    $.toast("请选择需要调阅的记录");
-                    $.hidePreloader();
-                    return;
-                }
-                $.ajax({
-                    type: 'post',
-                    url: 'MyBusiness.aspx/QueryOrderDetail',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: "{'code':'" + ordercode + "'}",
-                    cache: false,
-                    async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
-                    success: function (data) {
-                        var obj = eval("(" + data.d + ")");
-                        //1、报关信息
-                        var orderTable = obj.OrderTable;
-                        var declTable = obj.DeclTable;
-                        var inspTable = obj.InspTable;
-                        var logisticsTable = obj.LogisticsTable;
-                        if (orderTable != null && orderTable.length > 0)
-                        {
-                            var declstr = '<div class="content-padded grid-demo" >' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">委托时间</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["SUBMITTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["SUBMITUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">制单完成</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["MOENDTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["MOENDNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">审核完成</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["COENDTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["COENDNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">预录完成</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["PREENDTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["PREENDNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">申报完成</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["REPENDTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["REPENDNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">报关交接</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["HANDOVERTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["HANDOVERUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">现场报关</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["SITEAPPLYTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["SITEAPPLYUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">查验维护</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["SUBMITTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["SUBMITUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">现场放行</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["SITEPASSTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["SITEPASSUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">查验图片</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["CHECKPIC"] + '</div>' +
-                                                            '<div class="col-20"></div>' +
-                                                        '</div>' +
-                                                        '</div>';
-                            declstr += '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                            declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
-                            if (declTable != null) {
-                                for (var i = 0; i < declTable.length; i++) {
-                                    declstr += '<div class="list-block" id="' + declTable[i]["DECLARATIONCODE"] + '">';
-                                    declstr += '<div class="row">';
-                                    declstr += '<div class="col-40">' + declTable[i]["DECLARATIONCODE"] + '</div>';
-                                    declstr += '<div class="col-40">' + declTable[i]["GOODSNUM"] + '/' + declTable[i]["GOODSGW"] + '</div>';
-                                    declstr += '<div class="col-20">' + declTable[i]["MODIFYFLAG"] + '</div>';
-                                    declstr += '</div>';
-                                    declstr += '<div class="row">';
-                                    declstr += '<div class="col-40">' + declTable[i]["TRANSNAME"] + '</div>';
-                                    declstr += '<div class="col-40">' + declTable[i]["TRADENAME"] + '</div>';
-                                    declstr += '<div class="col-20">' + declTable[i]["CUSTOMSSTATUS"] + '</div>';
-                                    declstr += '</div>';
-                                    declstr += '</div>';
-                                }
-                            }
-                            declstr += '</div>';
-                            $("#pop_tab_decl").append(declstr);
-                        }
-                        //2、报检信息
-                        if (orderTable != null && (orderTable[0]["ENTRUSTTYPE"] == "02" || orderTable[0]["ENTRUSTTYPE"] == "03")) {
-                            var inspstr = '<div class="content-padded grid-demo" >' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">委托时间</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["SUBMITTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["SUBMITUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">制单完成</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["INSPMOENDTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["INSPMOENDNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">审核完成</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["INSPCOENDTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["INSPCOENDNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">预录完成</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["INSPPREENDTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["INSPPREENDNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">申报完成</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["INSPREPENDTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["INSPREPENDNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">报关交接</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["INSPHANDOVERTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["INSPHANDOVERUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">现场报关</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["INSPSITEAPPLYTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["INSPSITEAPPLYUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">查验维护</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["INSPSUBMITTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["INSPSUBMITUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">现场放行</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["INSPSITEPASSTIME"] + '</div>' +
-                                                            '<div class="col-20">' + orderTable[0]["INSPSITEPASSUSERNAME"] + '</div>' +
-                                                        '</div>' +
-                                                        '<div class="row">' +
-                                                            '<div class="col-20">查验图片</div>' +
-                                                            '<div class="col-40">' + orderTable[0]["INSPCHECKPIC"] + '</div>' +
-                                                            '<div class="col-20"></div>' +
-                                                        '</div>' +
-                                                        '</div>';
-                            inspstr += '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                            inspstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
-                            if (inspTable != null) {
-                                for (var i = 0; i < inspTable.length; i++) {
-                                    inspstr += '<div class="list-block">';
-                                    inspstr += '<div class="row">';
-                                    inspstr += '<div class="col-40">' + inspTable[i]["APPROVALCODE"] + '</div>';
-                                    inspstr += '<div class="col-40">' + inspTable[i]["INSPSTATUS"] + '</div>';
-                                    inspstr += '<div class="col-20">' + inspTable[i]["MODIFYFLAG"] + '</div>';
-                                    inspstr += '</div>';
-                                    inspstr += '<div class="row">';
-                                    inspstr += '<div class="col-40">' + inspTable[i]["INSPECTIONCODE"] + '</div>';
-                                    inspstr += '<div class="col-40">' + inspTable[i]["CLEARANCECODE"] + '</div>';
-                                    inspstr += '<div class="col-20"></div>';
-                                    inspstr += '</div>';
-                                    inspstr += '</div>';
-                                }
-                            }
-                            inspstr += '</div>';
-                            $("#pop_tab_insp").append(inspstr);
-                        }
-                        //物流状态
-                        if (logisticsTable != null && logisticsTable.length > 0) {
-                            var logstr = '<div style="text-align:center;">物流状态（' + orderTable[0]["BUSITYPE"] + '）</div>';
-                            logstr += '<div class="row">' +
-                                        '<div class="col-25" style="color:#0894EC"><i id="icon_choudan" class="iconfont" >&#xe63f;抽单</i></div>' +
-                                        '<div class="col-25"><i id="icon_zhuanguan" class="iconfont" >&#xe63f;转关</i></div>' +
-                                        '<div class="col-25"><i id="icon_baojian" class="iconfont" >&#xe63f;报检</i></div>' +
-                                        '<div class="col-25"><i id="icon_yunshu" class="iconfont" >&#xe63f;运输</i></div>' +
-                                      '</div>';
-                            logstr += '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                            logstr += '<div id="logistics" style="background-color:white;">';
-                            logstr += '<div class="row">' +
-                                        '<div class="col-40">操作人</div>' +
-                                        '<div class="col-25">时间</div>' +
-                                        '<div class="col-35">状态值</div>' +
-                                      '</div>'
-                            var choudan = '<div id="choudan">';
-                            var zhuanguan = '<div id="zhuanguan" style="display:none">';
-                            var baojian = '<div id="baojian" style="display:none">';
-                            var yunshu = '<div id="yunshu" style="display:none">';
-                            for (var i = 0; i < logisticsTable.length; i++)
-                            {
-                                if (logisticsTable[i]["OPERATE_TYPE"] == "抽单状态")
-                                {
-                                    choudan += '<div class="row">' +
-                                                '<div class="col-40">' + logisticsTable[i]["OPERATE_DATE"] + '</div>' +
-                                                '<div class="col-25">' + logisticsTable[i]["OPERATER"] + '</div>' +
-                                                '<div class="col-35">' + logisticsTable[i]["OPERATE_RESULT"] + '</div>' +
-                                              '</div>';
-                                }
-                                else if (logisticsTable[i]["OPERATE_TYPE"] == "报关申报状态" || logisticsTable[i]["OPERATE_TYPE"] == "转关申报状态") {
-                                    zhuanguan += '<div class="row">' +
-                                                    '<div class="col-40">' + logisticsTable[i]["OPERATE_DATE"] + '</div>' +
-                                                    '<div class="col-25">' + logisticsTable[i]["OPERATER"] + '</div>' +
-                                                    '<div class="col-35">' + logisticsTable[i]["OPERATE_RESULT"] + '</div>' +
-                                                  '</div>';
-                                }
-                                else if (logisticsTable[i]["OPERATE_TYPE"] == "商检状态") {
-                                    baojian += '<div class="row">' +
-                                                    '<div class="col-40">' + logisticsTable[i]["OPERATE_DATE"] + '</div>' +
-                                                    '<div class="col-25">' + logisticsTable[i]["OPERATER"] + '</div>' +
-                                                    '<div class="col-35">' + logisticsTable[i]["OPERATE_RESULT"] + '</div>' +
-                                                  '</div>';
-                                }
-                                else if (logisticsTable[i]["OPERATE_TYPE"] == "运输状态") {
-                                    yunshu += '<div class="row">' +
-                                                '<div class="col-40">' + logisticsTable[i]["OPERATE_DATE"] + '</div>' +
-                                                '<div class="col-25">' + logisticsTable[i]["OPERATER"] + '</div>' +
-                                                '<div class="col-35">' + logisticsTable[i]["OPERATE_RESULT"] + '</div>' +
-                                              '</div>';
-                                }
-                                
-                            }
-                            choudan += '</div>';
-                            zhuanguan += '</div>';
-                            baojian += '</div>';
-                            yunshu += '</div>';
-                            logstr += choudan;
-                            logstr += zhuanguan;
-                            logstr += baojian;
-                            logstr += yunshu;
-                            logstr += "</div>";
-                            $("#pop_tab_logistics").append(logstr);
-                        }
-                    }
-                })
-                $.hidePreloader();
-                $.popup('.popup-detail');
-                
-               
-            });
-            //选中报关单变色
-            $("#pop_tab_decl").on('click', '.list-block', function (e) {
 
-                if ($(this).css('background-color') == "rgb(193, 221, 241)") {
-                    $(this).css('background-color', '#fff');
-                } else {
-                    $("#pop_tab_decl .list-block ").css('background-color', '#fff');
-                    $(this).css('background-color', '#C1DDF1');
-                }
-            });
+
+            //功能菜单
+            $(document).on('click',
+                '.tab-item',
+                function(e) {
+                    $(".tab-item").removeClass("active");
+                    $(this).addClass("active");
+                })
+
+            //打开详情弹出框
+            $(document).on('click',
+                '.open-detail',
+                function() {
+                    $.showPreloader('加载中...');
+                    //清空弹出窗信息
+                    $("#pop_tab_decl").html("");
+                    $("#pop_tab_insp").html("");
+                    $("#pop_tab_logistics").html("");
+                    var ordercode = "";
+                    $("#busicontent .list-block").each(function() {
+
+                        if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                            ordercode = $(this)[0].id;
+                            //console.log(ordercode);
+                            subCusno = ordercode.split(",")[1];
+                            ordercode = ordercode.split(",")[0];
+                            //console.log(ordercode);
+                            //console.log(subCusno);
+                        }
+                    });
+                    if (ordercode == "") {
+                        $.toast("请选择需要调阅的记录");
+                        $.hidePreloader();
+                        return;
+                    }
+                    $.ajax({
+                        type: 'post',
+                        url: 'MyBusiness.aspx/QueryOrderDetail',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: "{'code':'" + ordercode + "'}",
+                        cache: false,
+                        async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
+                        success: function(data) {
+                            var obj = eval("(" + data.d + ")");
+                            //1、报关信息
+                            var orderTable = obj.OrderTable;
+                            var declTable = obj.DeclTable;
+                            var inspTable = obj.InspTable;
+                            var logisticsTable = obj.LogisticsTable;
+                            if (orderTable != null && orderTable.length > 0) {
+                                var declstr = '<div class="content-padded grid-demo" >' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">委托时间</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["SUBMITTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["SUBMITUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">制单完成</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["MOENDTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["MOENDNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">审核完成</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["COENDTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["COENDNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">预录完成</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["PREENDTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["PREENDNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">申报完成</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["REPENDTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["REPENDNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">报关交接</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["HANDOVERTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["HANDOVERUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">现场报关</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["SITEAPPLYTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["SITEAPPLYUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">查验维护</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["SUBMITTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["SUBMITUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">现场放行</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["SITEPASSTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["SITEPASSUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">查验图片</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["CHECKPIC"] +
+                                    '</div>' +
+                                    '<div class="col-20"></div>' +
+                                    '</div>' +
+                                    '</div>';
+                                declstr +=
+                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                                declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                                if (declTable != null) {
+                                    for (var i = 0; i < declTable.length; i++) {
+                                        declstr += '<div class="list-block" id="' +
+                                            declTable[i]["DECLARATIONCODE"] +
+                                            '">';
+                                        declstr += '<div class="row">';
+                                        declstr += '<div class="col-40">' + declTable[i]["DECLARATIONCODE"] + '</div>';
+                                        declstr += '<div class="col-40">' +
+                                            declTable[i]["GOODSNUM"] +
+                                            '/' +
+                                            declTable[i]["GOODSGW"] +
+                                            '</div>';
+                                        declstr += '<div class="col-20">' + declTable[i]["MODIFYFLAG"] + '</div>';
+                                        declstr += '</div>';
+                                        declstr += '<div class="row">';
+                                        declstr += '<div class="col-40">' + declTable[i]["TRANSNAME"] + '</div>';
+                                        declstr += '<div class="col-40">' + declTable[i]["TRADENAME"] + '</div>';
+                                        declstr += '<div class="col-20">' + declTable[i]["CUSTOMSSTATUS"] + '</div>';
+                                        declstr += '</div>';
+                                        declstr += '</div>';
+                                    }
+                                }
+                                declstr += '</div>';
+                                $("#pop_tab_decl").append(declstr);
+                            }
+                            //2、报检信息
+                            if (orderTable != null &&
+                                (orderTable[0]["ENTRUSTTYPE"] == "02" || orderTable[0]["ENTRUSTTYPE"] == "03")) {
+                                var inspstr = '<div class="content-padded grid-demo" >' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">委托时间</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["SUBMITTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["SUBMITUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">制单完成</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["INSPMOENDTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["INSPMOENDNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">审核完成</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["INSPCOENDTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["INSPCOENDNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">预录完成</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["INSPPREENDTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["INSPPREENDNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">申报完成</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["INSPREPENDTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["INSPREPENDNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">报关交接</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["INSPHANDOVERTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["INSPHANDOVERUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">现场报关</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["INSPSITEAPPLYTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["INSPSITEAPPLYUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">查验维护</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["INSPSUBMITTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["INSPSUBMITUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">现场放行</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["INSPSITEPASSTIME"] +
+                                    '</div>' +
+                                    '<div class="col-20">' +
+                                    orderTable[0]["INSPSITEPASSUSERNAME"] +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="row">' +
+                                    '<div class="col-20">查验图片</div>' +
+                                    '<div class="col-40">' +
+                                    orderTable[0]["INSPCHECKPIC"] +
+                                    '</div>' +
+                                    '<div class="col-20"></div>' +
+                                    '</div>' +
+                                    '</div>';
+                                inspstr +=
+                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                                inspstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                                if (inspTable != null) {
+                                    for (var i = 0; i < inspTable.length; i++) {
+                                        inspstr += '<div class="list-block">';
+                                        inspstr += '<div class="row">';
+                                        inspstr += '<div class="col-40">' + inspTable[i]["APPROVALCODE"] + '</div>';
+                                        inspstr += '<div class="col-40">' + inspTable[i]["INSPSTATUS"] + '</div>';
+                                        inspstr += '<div class="col-20">' + inspTable[i]["MODIFYFLAG"] + '</div>';
+                                        inspstr += '</div>';
+                                        inspstr += '<div class="row">';
+                                        inspstr += '<div class="col-40">' + inspTable[i]["INSPECTIONCODE"] + '</div>';
+                                        inspstr += '<div class="col-40">' + inspTable[i]["CLEARANCECODE"] + '</div>';
+                                        inspstr += '<div class="col-20"></div>';
+                                        inspstr += '</div>';
+                                        inspstr += '</div>';
+                                    }
+                                }
+                                inspstr += '</div>';
+                                $("#pop_tab_insp").append(inspstr);
+                            }
+                            //物流状态
+                            if (logisticsTable != null && logisticsTable.length > 0) {
+                                var logstr = '<div style="text-align:center;">物流状态（' +
+                                    orderTable[0]["BUSITYPE"] +
+                                    '）</div>';
+                                logstr += '<div class="row">' +
+                                    '<div class="col-25" style="color:#0894EC"><i id="icon_choudan" class="iconfont" >&#xe63f;抽单</i></div>' +
+                                    '<div class="col-25"><i id="icon_zhuanguan" class="iconfont" >&#xe63f;转关</i></div>' +
+                                    '<div class="col-25"><i id="icon_baojian" class="iconfont" >&#xe63f;报检</i></div>' +
+                                    '<div class="col-25"><i id="icon_yunshu" class="iconfont" >&#xe63f;运输</i></div>' +
+                                    '</div>';
+                                logstr +=
+                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                                logstr += '<div id="logistics" style="background-color:white;">';
+                                logstr += '<div class="row">' +
+                                    '<div class="col-40">时间</div>' +
+                                    '<div class="col-25">操作人</div>' +
+                                    '<div class="col-35">状态值</div>' +
+                                    '</div>'
+                                var choudan = '<div id="choudan">';
+                                var zhuanguan = '<div id="zhuanguan" style="display:none">';
+                                var baojian = '<div id="baojian" style="display:none">';
+                                var yunshu = '<div id="yunshu" style="display:none">';
+                                for (var i = 0; i < logisticsTable.length; i++) {
+                                    if (logisticsTable[i]["OPERATE_TYPE"] == "抽单状态") {
+                                        choudan += '<div class="row">' +
+                                            '<div class="col-40">' +
+                                            logisticsTable[i]["OPERATE_DATE"] +
+                                            '</div>' +
+                                            '<div class="col-25">' +
+                                            logisticsTable[i]["OPERATER"] +
+                                            '</div>' +
+                                            '<div class="col-35">' +
+                                            logisticsTable[i]["OPERATE_RESULT"] +
+                                            '</div>' +
+                                            '</div>';
+                                    } else if (logisticsTable[i]["OPERATE_TYPE"] == "报关申报状态" ||
+                                        logisticsTable[i]["OPERATE_TYPE"] == "转关申报状态") {
+                                        zhuanguan += '<div class="row">' +
+                                            '<div class="col-40">' +
+                                            logisticsTable[i]["OPERATE_DATE"] +
+                                            '</div>' +
+                                            '<div class="col-25">' +
+                                            logisticsTable[i]["OPERATER"] +
+                                            '</div>' +
+                                            '<div class="col-35">' +
+                                            logisticsTable[i]["OPERATE_RESULT"] +
+                                            '</div>' +
+                                            '</div>';
+                                    } else if (logisticsTable[i]["OPERATE_TYPE"] == "商检状态") {
+                                        baojian += '<div class="row">' +
+                                            '<div class="col-40">' +
+                                            logisticsTable[i]["OPERATE_DATE"] +
+                                            '</div>' +
+                                            '<div class="col-25">' +
+                                            logisticsTable[i]["OPERATER"] +
+                                            '</div>' +
+                                            '<div class="col-35">' +
+                                            logisticsTable[i]["OPERATE_RESULT"] +
+                                            '</div>' +
+                                            '</div>';
+                                    } else if (logisticsTable[i]["OPERATE_TYPE"] == "运输状态") {
+                                        yunshu += '<div class="row">' +
+                                            '<div class="col-40">' +
+                                            logisticsTable[i]["OPERATE_DATE"] +
+                                            '</div>' +
+                                            '<div class="col-25">' +
+                                            logisticsTable[i]["OPERATER"] +
+                                            '</div>' +
+                                            '<div class="col-35">' +
+                                            logisticsTable[i]["OPERATE_RESULT"] +
+                                            '</div>' +
+                                            '</div>';
+                                    }
+
+                                }
+                                choudan += '</div>';
+                                zhuanguan += '</div>';
+                                baojian += '</div>';
+                                yunshu += '</div>';
+                                logstr += choudan;
+                                logstr += zhuanguan;
+                                logstr += baojian;
+                                logstr += yunshu;
+                                logstr += "</div>";
+                                $("#pop_tab_logistics").append(logstr);
+                            }
+                        }
+                    });
+                    $.hidePreloader();
+                    $.popup('.popup-detail');
+
+
+                });
+            //选中报关单变色
+            $("#pop_tab_decl").on('click',
+                '.list-block',
+                function(e) {
+
+                    if ($(this).css('background-color') == "rgb(193, 221, 241)") {
+                        $(this).css('background-color', '#fff');
+                    } else {
+                        $("#pop_tab_decl .list-block ").css('background-color', '#fff');
+                        $(this).css('background-color', '#C1DDF1');
+                    }
+                });
             $.init();
 
-        })
+        });
         //长按事件
         //$('#pop_tab_decl .list-block').longPress(function (e) {
         //});
         //打开业务订阅弹出框
-        $(document).on('click', '.open-subscribe', function () {
-            var cusno = "";
-            $("#busicontent .list-block").each(function () {
+        $(document).on('click',
+            '.open-subscribe',
+            function() {
+                var cusno = "";
+                $("#busicontent .list-block").each(function() {
 
-                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                    cusno = $(this)[0].id;
-                    cusno = cusno.split(",")[1];
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        cusno = $(this)[0].id;
+                        cusno = cusno.split(",")[1];
+                    }
+                });
+                if (cusno == "") {
+                    $.toast("请选择需要订阅的记录");
+                    return;
                 }
+                subCusno = cusno;
+                $.popup("#popup-subscribe-log");
             });
-            if (cusno == "") {
-                $.toast("请选择需要订阅的记录");
-                return;
-            }
-            subCusno = cusno;
-            $.popup("#popup-subscribe-log");
-        })
         //打开预制单订阅弹出框
-        $(document).on('click', '#btn-subs-decl', function () {
-            var declcode = "";
-            $("#pop_tab_decl .list-block").each(function () {
+        $(document).on('click',
+            '#btn-subs-decl',
+            function() {
+                var declcode = "";
+                $("#pop_tab_decl .list-block").each(function() {
 
-                if ($(this).css('background-color') == "rgb(193, 221, 241)") {
-                    declcode = $(this)[0].id;
+                    if ($(this).css('background-color') == "rgb(193, 221, 241)") {
+                        console.log($(this));
+                        declcode = $(this)[0].id;
+                        //console.log(declcode);
+                    }
+                });
+                if (declcode == "") {
+                    $.toast("请选择需要订阅的记录");
+                    return;
                 }
+                subDeclarationCode = declcode;
+                $.popup("#popup-subscribe-decl");
             });
-            if (declcode == "") {
-                $.toast("请选择需要订阅的记录");
-                return;
-            }
-            subDeclarationCode = declcode;
-            $.popup("#popup-subscribe-decl");
-        })
         //订阅消息
         function subscribe(type) {
             var status = "";
@@ -673,19 +814,27 @@
                 url: 'MyBusiness.aspx/SubscribeStatus',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: "{'type':'" + type +
-                    "','status':'" + status +
-                    "','cusno':'" + subCusno +
-                    "','declarationcode':'" + subDeclarationCode +
-                    "','userid':'" + userid +
-                    "','username':'" + username +
-                    "','openid':'" + openid + "'}",
+                data: "{'type':'" +
+                    type +
+                    "','status':'" +
+                    status +
+                    "','cusno':'" +
+                    subCusno +
+                    "','declarationcode':'" +
+                    subDeclarationCode +
+                    "','userid':'" +
+                    userid +
+                    "','username':'" +
+                    username +
+                    "','openid':'" +
+                    openid +
+                    "'}",
                 cache: false,
-                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
-                success: function (data) {
+                async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
+                success: function(data) {
                     $.toast(data.d);
                 }
-            })
+            });
         }
 
         //返回后Checked置空
@@ -696,9 +845,9 @@
                     input[i].checked = false;
                 }
             }
+            $("[href='#sub_tab1']").addClass("active"); $("#sub_tab1").addClass("active");
+            $("[href='#sub_tab2']").removeClass("active"); $("#sub_tab2").removeClass("active");
         });
-
-
 
         //报关单调阅
         function showDeclPdf() {
@@ -787,17 +936,96 @@
             });
         }
 
+        function reset() {
+            //报关状态重置
+            $("#picker_declstatus").remove();
+            $("#picker_declstatus1").append("<input type='search' id='picker_declstatus' placeholder='报关状态'/>");
+            util.picker_declstatus();
+            //报检状态重置
+            $("#picker_inspstatus").remove();
+            $("#picker_inspstatus1").append("<input type='search' id='picker_inspstatus' placeholder='报检状态'/>");
+            util.picker_inspstatus();
+            //进口出口重置
+            $("#picker_inout").remove();
+            $("#picker_inout1").append("<input type='search' id='picker_inout' placeholder='进口出口'/>");
+            util.picker_inout();
+            //业务类型重置
+            $("#picker_busitype").remove();
+            $("#picker_busitype1").append("<input type='search' id='picker_busitype' placeholder='业务类型'/>");
+            util.picker_busitype();
+            //申报现场（改为输入框）重置
+            $("#picker_customs").val("");
+            //$("#picker_customs").remove();
+            //$("#picker_customs1").append("<input type='search' id='picker_customs' placeholder='申报现场'/>");
+            //util.picker_customs();
+            //现场申报重置
+            $("#picker_sitedeclare").remove();
+            $("#picker_sitedeclare1").append("<input type='search' id='picker_sitedeclare' placeholder='现场申报'/>");
+            util.picker_sitedeclare();
+            //物流状态重置
+            $("#picker_logisticsstatus").remove();
+            $("#picker_logisticsstatus1").append("<input type='search' id='picker_logisticsstatus' placeholder='物流状态'/>");
+            util.picker_logisticsstatus();
+            //开始时间重置
+            $("#txt_startdate").remove();
+            $("#txt_startdate1").append("<input type='search' id='txt_startdate' placeholder='委托起始日期'/>");
+            $("#txt_startdate").calendar({});
+            //结束时间重置
+            $("#txt_enddate").remove();
+            $("#txt_enddate1").append("<input type='search' id='txt_enddate' placeholder='委托结束日期'/>");
+            $("#txt_enddate").calendar({});
+
+
+            console.log($("#picker_declstatus"));
+            
+            //window.location.reload();
+        }
+
+
     </script>
 </head>
 <body>
+
+<form id="form1" runat="server">
+
     <div class="page-group">
         <!-- page1 消息订阅-->
         <div class="page page-current"  id="router1">
+            
             <!-- 标题栏 -->
-            <header class="bar bar-nav">
+            <%--<header class="bar bar-nav">
                 <a  style=" width:4rem;" class="icon icon-search pull-right open-panel">查询</a>
                 <h1 class="title">我的业务</h1>
+            </header>--%>
+            
+            
+            <header class="bar bar-nav">
+                
+                <div class="search-input">
+                    <div class="row">
+                        <div class="col-25" id="picker_declstatus1"><input type="search" id='picker_declstatus' placeholder='报关状态'/></div> 
+                        <div class="col-25" id="picker_inspstatus1"><input type="search" id='picker_inspstatus' placeholder='报检状态'/></div>
+                        <div class="col-25" id="picker_inout1"><input type="search" id='picker_inout' placeholder='进口出口'/></div> 
+                        <div class="col-25" id="picker_busitype1"><input type="search" id='picker_busitype' placeholder='业务类型'/></div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-33" id="picker_customs1"><input type="text" id='picker_customs' placeholder='申报现场'/></div>
+                        <div class="col-33" id="picker_sitedeclare1"><input type="search" id='picker_sitedeclare' placeholder='现场申报'/></div> 
+                        <div class="col-33" id="picker_logisticsstatus1"><input type="search" id='picker_logisticsstatus' placeholder='物流状态'/></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-40" id="txt_startdate1"><input type="search" id='txt_startdate' placeholder='委托起始日期'/></div>
+                        <div class="col-5">~</div>
+                        <div class="col-40" id="txt_enddate1"><input type="search" id='txt_enddate' placeholder='委托结束日期'/></div>
+                        <div class="col-15"><i class="iconfont" style="font-size:1.2rem;" onclick="reset()" >&#xe604;</i></div>
+                    </div>
+                    <a href="#" class="open-preloader-title button  button-fill" id="button_one">查&nbsp;&nbsp;询</a>
+                </div>
+                    
             </header>
+            
+            
+
             <!-- 工具栏 -->
             <nav class="bar bar-tab">
                 <a class="tab-item open-detail" href="#">
@@ -820,9 +1048,11 @@
                 <%--<a class="tab-item " href="SubscribeList.aspx">
                     <span class="icon icon-menu"></span>
                     <span class="tab-label">订阅清单</span>
-                </a>--%>
-                
+                </a>--%>                
             </nav>
+            
+            
+
             <!-- 这里是页面内容区 -->
             <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100" id="scroll-bottom-one">
                 <div id ="busicontent"></div>
@@ -1073,92 +1303,205 @@
         var myDate = new Date();
         var nowDate = myDate.toLocaleDateString();
         $("#picker_starttime").val("2017/03/04");
-        $("#picker_endtime").val(nowDate);
+        $("#picker_endtime").val(nowDate);        
         //创建picker
-        $("#picker_declstatus").picker({
-            toolbarTemplate: '<header class="bar bar-nav">\
-  <button class="button button-link pull-right close-picker">确定</button>\
-  <h1 class="title">请选择</h1>\
-  </header>', 
-            cols: [
-              {
-                  textAlign: 'center',
-                  values: ['全部', '申报完结', '现场申报', '现场放行']
-              }
-            ]
-        });
-        $("#picker_inspstatus").picker({
-            toolbarTemplate: '<header class="bar bar-nav">\
+        
+        var util = {
+            picker_declstatus: function() {
+                $("#picker_declstatus").picker({
+                    toolbarTemplate: '<header class="bar bar-nav">\
   <button class="button button-link pull-right close-picker">确定</button>\
   <h1 class="title">请选择</h1>\
   </header>',
-            cols: [
-              {
-                  textAlign: 'center',
-                  values: ['全部', '申报完结', '现场报检','现场放行']
-              }
-            ]
-        });
-        $("#picker_inout").picker({
-            toolbarTemplate: '<header class="bar bar-nav">\
+                    cols: [
+                        {
+                            textAlign: 'center',
+                            values: ['全部', '申报完结', '现场申报', '现场放行']
+                        }
+                    ]
+
+                });
+            },
+            picker_inspstatus: function() {
+                $("#picker_inspstatus").picker({
+                    toolbarTemplate: '<header class="bar bar-nav">\
   <button class="button button-link pull-right close-picker">确定</button>\
   <h1 class="title">请选择</h1>\
   </header>',
-            cols: [
-              {
-                  textAlign: 'center',
-                  values: ['全部', '进口', '出口']
-              }
-            ]
-        });
-        $("#picker_busitype").picker({
-            toolbarTemplate: '<header class="bar bar-nav">\
+                    cols: [
+                        {
+                            textAlign: 'center',
+                            values: ['全部', '申报完结', '现场报检', '现场放行']
+                        }
+                    ]
+                });
+            },
+            picker_inout: function() {
+                $("#picker_inout").picker({
+                    toolbarTemplate: '<header class="bar bar-nav">\
   <button class="button button-link pull-right close-picker">确定</button>\
   <h1 class="title">请选择</h1>\
   </header>',
-            cols: [
-              {
-                  textAlign: 'center',
-                  values: ['全部（不含国内）', '国内业务', '特殊区域','空运业务','陆运业务']
-              }
-            ]
-        });
-        $("#picker_customs").picker({
-            toolbarTemplate: '<header class="bar bar-nav">\
+                    cols: [
+                        {
+                            textAlign: 'center',
+                            values: ['全部', '进口', '出口']
+                        }
+                    ]
+                });
+            },
+            picker_busitype: function() {
+                $("#picker_busitype").picker({
+                    toolbarTemplate: '<header class="bar bar-nav">\
   <button class="button button-link pull-right close-picker">确定</button>\
   <h1 class="title">请选择</h1>\
   </header>',
-            cols: [
-              {
-                  textAlign: 'center',
-                  values: ['全部', '2369']
-              }
-            ]
-        });
-        $("#picker_sitedeclare").picker({
-            toolbarTemplate: '<header class="bar bar-nav">\
+                    cols: [
+                        {
+                            textAlign: 'center',
+                            values: ['全部（不含国内）', '国内业务', '特殊区域', '空运业务', '陆运业务', '海运业务']
+                        }
+                    ]
+                });
+            },
+            picker_customs: function() {
+                $("#picker_customs").picker({
+                    toolbarTemplate: '<header class="bar bar-nav">\
   <button class="button button-link pull-right close-picker">确定</button>\
   <h1 class="title">请选择</h1>\
   </header>',
-            cols: [
-              {
-                  textAlign: 'center',
-                  values: ['全部', '需现场申报']
-              }
-            ]
-        });
-        $("#picker_logisticsstatus").picker({
-            toolbarTemplate: '<header class="bar bar-nav">\
+                    cols: [
+                        {
+                            textAlign: 'center',
+                            values: ['全部', '2369']
+                        }
+                    ]
+                });
+            },
+            picker_sitedeclare: function() {
+                $("#picker_sitedeclare").picker({
+                    toolbarTemplate: '<header class="bar bar-nav">\
   <button class="button button-link pull-right close-picker">确定</button>\
   <h1 class="title">请选择</h1>\
   </header>',
-            cols: [
-              {
-                  textAlign: 'center',
-                  values: ['全部', '待抽单', '抽单完成', '未派车', '已派车', '未运抵', '运输完成', '未送货', '送货完成']
-              }
-            ]
-        });
+                    cols: [
+                        {
+                            textAlign: 'center',
+                            values: ['全部', '需现场申报']
+                        }
+                    ]
+                });
+            },
+            picker_logisticsstatus: function() {
+                $("#picker_logisticsstatus").picker({
+                    toolbarTemplate: '<header class="bar bar-nav">\
+  <button class="button button-link pull-right close-picker">确定</button>\
+  <h1 class="title">请选择</h1>\
+  </header>',
+                    cols: [
+                        {
+                            textAlign: 'center',
+                            values: ['全部', '待抽单', '抽单完成', '未派车', '已派车', '未运抵', '运输完成', '未送货', '送货完成']
+                        }
+                    ]
+                });
+            }
+
+        }
+        util.picker_declstatus();
+        util.picker_inspstatus();
+        util.picker_inout();
+        util.picker_busitype();
+        //申报现场改为输入框
+        //util.picker_customs();
+        util.picker_sitedeclare();
+        util.picker_logisticsstatus();
+        
+  //      $("#picker_declstatus").picker({
+  //          toolbarTemplate: '<header class="bar bar-nav">\
+  //<button class="button button-link pull-right close-picker">确定</button>\
+  //<h1 class="title">请选择</h1>\
+  //</header>', 
+  //          cols: [
+  //            {
+  //                textAlign: 'center',
+  //                values: ['全部', '申报完结', '现场申报', '现场放行']
+  //            }
+  //          ]
+            
+  //      });
+  //      $("#picker_inspstatus").picker({
+  //          toolbarTemplate: '<header class="bar bar-nav">\
+  //<button class="button button-link pull-right close-picker">确定</button>\
+  //<h1 class="title">请选择</h1>\
+  //</header>',
+  //          cols: [
+  //            {
+  //                textAlign: 'center',
+  //                values: ['全部', '申报完结', '现场报检','现场放行']
+  //            }
+  //          ]
+  //      });
+  //      $("#picker_inout").picker({
+  //          toolbarTemplate: '<header class="bar bar-nav">\
+  //<button class="button button-link pull-right close-picker">确定</button>\
+  //<h1 class="title">请选择</h1>\
+  //</header>',
+  //          cols: [
+  //            {
+  //                textAlign: 'center',
+  //                values: ['全部', '进口', '出口']
+  //            }
+  //          ]
+  //      });
+  //      $("#picker_busitype").picker({
+  //          toolbarTemplate: '<header class="bar bar-nav">\
+  //<button class="button button-link pull-right close-picker">确定</button>\
+  //<h1 class="title">请选择</h1>\
+  //</header>',
+  //          cols: [
+  //            {
+  //                textAlign: 'center',
+  //                values: ['全部（不含国内）', '国内业务', '特殊区域','空运业务','陆运业务','海运业务']
+  //            }
+  //          ]
+  //      });
+  //      $("#picker_customs").picker({
+  //          toolbarTemplate: '<header class="bar bar-nav">\
+  //<button class="button button-link pull-right close-picker">确定</button>\
+  //<h1 class="title">请选择</h1>\
+  //</header>',
+  //          cols: [
+  //            {
+  //                textAlign: 'center',
+  //                values: ['全部', '2369']
+  //            }
+  //          ]
+  //      });
+  //      $("#picker_sitedeclare").picker({
+  //          toolbarTemplate: '<header class="bar bar-nav">\
+  //<button class="button button-link pull-right close-picker">确定</button>\
+  //<h1 class="title">请选择</h1>\
+  //</header>',
+  //          cols: [
+  //            {
+  //                textAlign: 'center',
+  //                values: ['全部', '需现场申报']
+  //            }
+  //          ]
+  //      });
+  //      $("#picker_logisticsstatus").picker({
+  //          toolbarTemplate: '<header class="bar bar-nav">\
+  //<button class="button button-link pull-right close-picker">确定</button>\
+  //<h1 class="title">请选择</h1>\
+  //</header>',
+  //          cols: [
+  //            {
+  //                textAlign: 'center',
+  //                values: ['全部', '待抽单', '抽单完成', '未派车', '已派车', '未运抵', '运输完成', '未送货', '送货完成']
+  //            }
+  //          ]
+  //      });
         
         $("#picker_starttime").calendar({
             value: [nowDate],
@@ -1169,9 +1512,11 @@
             dateFormat: 'yyyy/mm/dd'
         });
 
-
-
+        $("#txt_startdate").calendar({});
+        $("#txt_enddate").calendar({});
+       
     </script>
+</form>
 </body>
    
 

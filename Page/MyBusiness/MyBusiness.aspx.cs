@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
@@ -22,6 +23,7 @@ namespace WeChat.Page.MyBusiness
         {
             string action = Request["action"];
             string data = Request["data"];
+            
         }
         /// <summary>
         /// 获取业务信息
@@ -162,7 +164,7 @@ namespace WeChat.Page.MyBusiness
                 //防止重复订阅
                 for (int i = 0; i < st.Length; i++)
                 {
-                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type);
+                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type,declarationcode);
                     if (getTriggerStatus.Rows.Count > 0)
                     {
                         orderData.Add(st[i]);
@@ -244,9 +246,12 @@ namespace WeChat.Page.MyBusiness
             }
             return json;
         }
-
-
+       
 
         
+
+
+
+
     }
 }

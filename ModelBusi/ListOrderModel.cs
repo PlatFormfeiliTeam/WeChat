@@ -134,6 +134,10 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                 case "报关状态":
                     switch(str)
                     {
+                        //yangyang.zhao
+                        case "":
+                            strWhere += " and declstatus >= " + (int)DeclStatusEnum.DeclOver;
+                            break;
                         case "全部":
                             strWhere += " and declstatus >= " + (int)DeclStatusEnum.DeclOver;
                             break;
@@ -151,6 +155,10 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                 case "报检状态":
                     switch (str)
                     {
+                        //yangyang.zhao
+                        case "":
+                            strWhere += " and inspstatus >= " + (int)DeclStatusEnum.DeclOver;
+                            break;
                         case "全部":
                             strWhere += " and inspstatus >= " + (int)DeclStatusEnum.DeclOver;
                             break;
@@ -168,6 +176,9 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                 case "进出口":
                     switch (str)
                     {
+                        //yangyang.zhao
+                        case "":
+                            break;
                         case "全部":
                             break;
                         case "进口":
@@ -181,6 +192,10 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                 case "业务类型":
                     switch (str)
                     {
+                        //yangyang.zhao
+                        case "":
+                            strWhere += " and busitype in ('10','20','30','50','11','21','31','51')";
+                            break;
                         case "全部（不含国内）":
                             strWhere += " and busitype in ('10','20','30','50','11','21','31','51')";
                             break;
@@ -196,11 +211,17 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                         case "陆运业务":
                             strWhere += " and busitype in ('30','31')";
                             break;
+                        case "海运业务":
+                            strWhere += " and busitype in ('20','21')";
+                            break;
                     }
                     break;
                 case "现场申报":
                     switch (str)
                     {
+                        //yangyang.zhao
+                        case "":
+                            break;
                         case "全部":
                             break;
                         case "需现场申报":
@@ -211,6 +232,9 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                 case "物流状态":
                     switch (str)
                     {
+                        //yangyang.zhao
+                        case "":
+                            break;
                         case "全部":
                             break;
                         case "待抽单":
