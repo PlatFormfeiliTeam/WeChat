@@ -259,9 +259,25 @@ namespace WeChat.ModelBusi
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "update list_order set ischeck=0,declcheckid=null,declcheckname=null,declchecktime=null where code='{0}'";
-                sql = string.Format(sql, ordercode);
-                int i = db.ExecuteSignle(sql);
+                System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
+                string UserName = ConfigurationManager.AppSettings["FTPUserName"];
+                string Password = ConfigurationManager.AppSettings["FTPPassword"];
+                FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+
+                DataTable dt = db.QuerySignle("select * from list_attachment where ordercode='" + ordercode + "'");
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ftp.DeleteFile(dr["FILENAME"] + "");
+                }
+
+                List<string> sqls = new List<string>();
+
+                string sql = "update list_order set ischeck=0,declcheckid=null,declcheckname=null,declchecktime=null,checkpic=0 where code='" + ordercode + "'";
+                string sql2 = "delete LIST_ATTACHMENT where ordercode='" + ordercode + "' and filetype='67'";
+
+                sqls.Add(sql); sqls.Add(sql2);
+
+                int i = db.ExecuteBatch(sqls);
                 if (i > 0)
                 {
                     return "sucess";

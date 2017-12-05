@@ -259,9 +259,24 @@ namespace WeChat.ModelBusi
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "update list_order set inspischeck=0,inspcheckid=null,inspcheckname=null,inspchecktime=null where code='{0}'";
-                sql = string.Format(sql, ordercode);
-                int i = db.ExecuteSignle(sql);
+                System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
+                string UserName = ConfigurationManager.AppSettings["FTPUserName"];
+                string Password = ConfigurationManager.AppSettings["FTPPassword"];
+                FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+
+                DataTable dt = db.QuerySignle("select * from list_attachment where ordercode='" + ordercode + "'");
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ftp.DeleteFile(dr["FILENAME"] + "");
+                }
+
+                List<string> sqls = new List<string>();
+                string sql = "update list_order set inspischeck=0,inspcheckid=null,inspcheckname=null,inspchecktime=null,inspcheckpic=0 where code='" + ordercode + "'";
+                string sql2 = "delete LIST_ATTACHMENT where ordercode='" + ordercode + "' and filetype='68'";
+
+                sqls.Add(sql); sqls.Add(sql2);
+
+                int i = db.ExecuteBatch(sqls);
                 if (i > 0)
                 {
                     return "sucess";
@@ -313,7 +328,7 @@ namespace WeChat.ModelBusi
                                         values(List_Attachment_Id.Nextval,'{0}','{1}','{2}',sysdate,{3},'{4}','{5}'
                                                 ,'{6}','{7}','{8}')";
                                 sql = string.Format(sql
-                                    , ftppath, filename, "67", uploaduserid, customercode, ordercode
+                                    , ftppath, filename, "68", uploaduserid, customercode, ordercode
                                     , fi.Length, "查验文件", ".jpg");
 
                                 string sql2 = "update list_order set inspcheckpic=1 where code='" + ordercode + "'";
@@ -348,7 +363,7 @@ namespace WeChat.ModelBusi
             DataTable dt = new DataTable();
             using (DBSession db = new DBSession())
             {
-                string sql = "select filename from list_attachment where filetype=67 and ordercode='" + ordercode + "'";
+                string sql = "select filename from list_attachment where filetype=68 and ordercode='" + ordercode + "'";
                 dt = db.QuerySignle(sql);
             }
             return dt;
