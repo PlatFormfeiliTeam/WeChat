@@ -173,36 +173,36 @@
                                     '<ul>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["BUSIUNITNAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["BUSITYPENAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["CUSNO"] + '</div>' +
+                                                '<div class="my-title">' + (obj[i]["BUSIUNITNAME"] == null ? "" : obj[i]["BUSIUNITNAME"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["BUSITYPENAME"] == null ? "" : obj[i]["BUSITYPENAME"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["DIVIDENO"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["REPWAYNAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["CONTRACTNO"] + '</div>' +
+                                                '<div class="my-title">' + (obj[i]["DIVIDENO"] == null ? "" : obj[i]["DIVIDENO"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["REPWAYNAME"] == null ? "" : obj[i]["REPWAYNAME"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["CONTRACTNO"] == null ? "" : obj[i]["CONTRACTNO"]) + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["ISCHECK"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["CHECKPIC"] + '</div>' +
+                                                '<div class="my-title">' + (obj[i]["GOODSNUM"] == null ? "" : obj[i]["GOODSNUM"]) + '/' + obj[i]["GOODSGW"] + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["ISCHECK"] == null ? "" : obj[i]["ISCHECK"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["CHECKPIC"] == null ? "" : obj[i]["CHECKPIC"]) + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["DECLSTATUS"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["INSPCHECK"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["LAWFLAG"] + '</div>' +
+                                                '<div class="my-title">' + (obj[i]["DECLSTATUS"] == null ? "" : obj[i]["DECLSTATUS"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["INSPCHECK"] == null ? "" : obj[i]["INSPCHECK"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["LAWFLAG"] == null ? "" : obj[i]["LAWFLAG"]) + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["INSPSTATUS"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["LOGISTICSNAME"] + '</div>' +
+                                                '<div class="my-title">' + (obj[i]["INSPSTATUS"] == null ? "" : obj[i]["INSPSTATUS"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["LOGISTICSNAME"] == null ? "" : obj[i]["LOGISTICSNAME"]) + '</div>' +
                                                 '<div class="my-after"></div>' +
                                             '</div>' +
                                         '</li>' +
@@ -384,79 +384,79 @@
                                     '<div class="row">' +
                                     '<div class="col-20">委托时间</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["SUBMITTIME"] +
+                                    (orderTable[0]["SUBMITTIME"] == null ? "" : orderTable[0]["SUBMITTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["SUBMITUSERNAME"] +
+                                    (orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">制单完成</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["MOENDTIME"] +
+                                    (orderTable[0]["MOENDTIME"] == null ? "" : orderTable[0]["MOENDTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["MOENDNAME"] +
+                                    (orderTable[0]["MOENDNAME"] == null ? "" : orderTable[0]["MOENDNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">审核完成</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["COENDTIME"] +
+                                    (orderTable[0]["COENDTIME"] == null ? "" : orderTable[0]["COENDTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["COENDNAME"] +
+                                    (orderTable[0]["COENDNAME"] == null ? "" : orderTable[0]["COENDNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">预录完成</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["PREENDTIME"] +
+                                    (orderTable[0]["PREENDTIME"] == null ? "" : orderTable[0]["PREENDTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["PREENDNAME"] +
+                                    (orderTable[0]["PREENDNAME"] == null ? "" : orderTable[0]["PREENDNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">申报完成</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["REPENDTIME"] +
+                                    (orderTable[0]["REPENDTIME"] == null ? "" : orderTable[0]["REPENDTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["REPENDNAME"] +
+                                    (orderTable[0]["REPENDNAME"] == null ? "" : orderTable[0]["REPENDNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">现场报关</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["SITEAPPLYTIME"] +
+                                    (orderTable[0]["SITEAPPLYTIME"] == null ? "" : orderTable[0]["SITEAPPLYTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["SITEAPPLYUSERNAME"] +
+                                    (orderTable[0]["SITEAPPLYUSERNAME"] == null ? "" : orderTable[0]["SITEAPPLYUSERNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">查验维护</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["SUBMITTIME"] +
+                                    (orderTable[0]["SUBMITTIME"] == null ? "" : orderTable[0]["SUBMITTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["SUBMITUSERNAME"] +
+                                    (orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">现场放行</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["SITEPASSTIME"] +
+                                    (orderTable[0]["SITEPASSTIME"] == null ? "" : orderTable[0]["SITEPASSTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["SITEPASSUSERNAME"] +
+                                    (orderTable[0]["SITEPASSUSERNAME"] == null ? "" : orderTable[0]["SITEPASSUSERNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">查验图片</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["CHECKPIC"] +
+                                    (orderTable[0]["CHECKPIC"] == null ? "" : orderTable[0]["CHECKPIC"]) +
                                     '</div>' +
                                     '<div class="col-20"></div>' +
                                     '</div>' +
@@ -467,21 +467,21 @@
                                 if (declTable != null) {
                                     for (var i = 0; i < declTable.length; i++) {
                                         declstr += '<div class="list-block" id="' +
-                                            declTable[i]["DECLARATIONCODE"] +
+                                            (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"] == null) +
                                             '">';
                                         declstr += '<div class="row">';
-                                        declstr += '<div class="col-40">' + declTable[i]["DECLARATIONCODE"] + '</div>';
+                                        declstr += '<div class="col-40">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
                                         declstr += '<div class="col-40">' +
                                             declTable[i]["GOODSNUM"] +
                                             '/' +
                                             declTable[i]["GOODSGW"] +
                                             '</div>';
-                                        declstr += '<div class="col-20">' + declTable[i]["MODIFYFLAG"] + '</div>';
+                                        declstr += '<div class="col-20">' + (declTable[i]["MODIFYFLAG"] == null ? "" : declTable[i]["MODIFYFLAG"]) + '</div>';
                                         declstr += '</div>';
                                         declstr += '<div class="row">';
-                                        declstr += '<div class="col-40">' + declTable[i]["TRANSNAME"] + '</div>';
-                                        declstr += '<div class="col-40">' + declTable[i]["TRADENAME"] + '</div>';
-                                        declstr += '<div class="col-20">' + declTable[i]["CUSTOMSSTATUS"] + '</div>';
+                                        declstr += '<div class="col-40">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
+                                        declstr += '<div class="col-40">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
+                                        declstr += '<div class="col-20">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
                                         declstr += '</div>';
                                         declstr += '</div>';
                                     }
@@ -496,79 +496,79 @@
                                     '<div class="row">' +
                                     '<div class="col-20">委托时间</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["SUBMITTIME"] +
+                                    (orderTable[0]["SUBMITTIME"] == null ? "" : orderTable[0]["SUBMITTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["SUBMITUSERNAME"] +
+                                    (orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">制单完成</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["INSPMOENDTIME"] +
+                                    (orderTable[0]["INSPMOENDTIME"] == null ? "" : orderTable[0]["INSPMOENDTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["INSPMOENDNAME"] +
+                                    (orderTable[0]["INSPMOENDNAME"] == null ? "" : orderTable[0]["INSPMOENDNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">审核完成</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["INSPCOENDTIME"] +
+                                    (orderTable[0]["INSPCOENDTIME"] == null ? "" : orderTable[0]["INSPCOENDTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["INSPCOENDNAME"] +
+                                    (orderTable[0]["INSPCOENDNAME"] == null ? "" : orderTable[0]["INSPCOENDNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">预录完成</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["INSPPREENDTIME"] +
+                                    (orderTable[0]["INSPPREENDTIME"] == null ? "" : orderTable[0]["INSPPREENDTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["INSPPREENDNAME"] +
+                                    (orderTable[0]["INSPPREENDNAME"] == null ? "" : orderTable[0]["INSPPREENDNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">申报完成</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["INSPREPENDTIME"] +
+                                    (orderTable[0]["INSPREPENDTIME"] == null ? "" : orderTable[0]["INSPREPENDTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["INSPREPENDNAME"] +
+                                    (orderTable[0]["INSPREPENDNAME"] == null ? "" : orderTable[0]["INSPREPENDNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">现场报检</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["INSPSITEAPPLYTIME"] +
+                                    (orderTable[0]["INSPSITEAPPLYTIME"] == null ? "" : orderTable[0]["INSPSITEAPPLYTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["INSPSITEAPPLYUSERNAME"] +
+                                    (orderTable[0]["INSPSITEAPPLYUSERNAME"] == null ? "" : orderTable[0]["INSPSITEAPPLYUSERNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">查验维护</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["INSPSUBMITTIME"] +
+                                    (orderTable[0]["INSPSUBMITTIME"] == null ? "" : orderTable[0]["INSPSUBMITTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["INSPSUBMITUSERNAME"] +
+                                    (orderTable[0]["INSPSUBMITUSERNAME"] == null ? "" : orderTable[0]["INSPSUBMITUSERNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">报检放行</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["INSPSITEPASSTIME"] +
+                                    (orderTable[0]["INSPSITEPASSTIME"] == null ? "" : orderTable[0]["INSPSITEPASSTIME"]) +
                                     '</div>' +
                                     '<div class="col-20">' +
-                                    orderTable[0]["INSPSITEPASSUSERNAME"] +
+                                    (orderTable[0]["INSPSITEPASSUSERNAME"] == null ? "" : orderTable[0]["INSPSITEPASSUSERNAME"]) +
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
                                     '<div class="col-20">查验图片</div>' +
                                     '<div class="col-40">' +
-                                    orderTable[0]["INSPCHECKPIC"] +
+                                    (orderTable[0]["INSPCHECKPIC"] == null ? "" : orderTable[0]["INSPCHECKPIC"]) +
                                     '</div>' +
                                     '<div class="col-20"></div>' +
                                     '</div>' +
@@ -580,13 +580,13 @@
                                     for (var i = 0; i < inspTable.length; i++) {
                                         inspstr += '<div class="list-block">';
                                         inspstr += '<div class="row">';
-                                        inspstr += '<div class="col-40">' + inspTable[i]["APPROVALCODE"] + '</div>';
-                                        inspstr += '<div class="col-40">' + inspTable[i]["INSPSTATUS"] + '</div>';
-                                        inspstr += '<div class="col-20">' + inspTable[i]["MODIFYFLAG"] + '</div>';
+                                        inspstr += '<div class="col-40">' + (inspTable[i]["APPROVALCODE"] == null ? "" : inspTable[i]["APPROVALCODE"]) + '</div>';
+                                        inspstr += '<div class="col-40">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
+                                        inspstr += '<div class="col-20">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
                                         inspstr += '</div>';
                                         inspstr += '<div class="row">';
-                                        inspstr += '<div class="col-40">' + inspTable[i]["INSPECTIONCODE"] + '</div>';
-                                        inspstr += '<div class="col-40">' + inspTable[i]["CLEARANCECODE"] + '</div>';
+                                        inspstr += '<div class="col-40">' + (inspTable[i]["INSPECTIONCODE"] == null ? "" : inspTable[i]["INSPECTIONCODE"]) + '</div>';
+                                        inspstr += '<div class="col-40">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
                                         inspstr += '<div class="col-20"></div>';
                                         inspstr += '</div>';
                                         inspstr += '</div>';
@@ -622,50 +622,50 @@
                                     if (logisticsTable[i]["OPERATE_TYPE"] == "抽单状态") {
                                         choudan += '<div class="row">' +
                                             '<div class="col-40">' +
-                                            logisticsTable[i]["OPERATE_DATE"] +
+                                            (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
                                             '</div>' +
                                             '<div class="col-25">' +
-                                            logisticsTable[i]["OPERATER"] +
+                                            (logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
                                             '</div>' +
                                             '<div class="col-35">' +
-                                            logisticsTable[i]["OPERATE_RESULT"] +
+                                            (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
                                             '</div>' +
                                             '</div>';
                                     } else if (logisticsTable[i]["OPERATE_TYPE"] == "报关申报状态" ||
                                         logisticsTable[i]["OPERATE_TYPE"] == "转关申报状态") {
                                         zhuanguan += '<div class="row">' +
                                             '<div class="col-40">' +
-                                            logisticsTable[i]["OPERATE_DATE"] +
+                                            (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
                                             '</div>' +
                                             '<div class="col-25">' +
-                                            logisticsTable[i]["OPERATER"] +
+                                            (logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
                                             '</div>' +
                                             '<div class="col-35">' +
-                                            logisticsTable[i]["OPERATE_RESULT"] +
+                                            (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
                                             '</div>' +
                                             '</div>';
                                     } else if (logisticsTable[i]["OPERATE_TYPE"] == "商检状态") {
                                         baojian += '<div class="row">' +
                                             '<div class="col-40">' +
-                                            logisticsTable[i]["OPERATE_DATE"] +
+                                            (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
                                             '</div>' +
                                             '<div class="col-25">' +
-                                            logisticsTable[i]["OPERATER"] +
+                                            (logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
                                             '</div>' +
                                             '<div class="col-35">' +
-                                            logisticsTable[i]["OPERATE_RESULT"] +
+                                            (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
                                             '</div>' +
                                             '</div>';
                                     } else if (logisticsTable[i]["OPERATE_TYPE"] == "运输状态") {
                                         yunshu += '<div class="row">' +
                                             '<div class="col-40">' +
-                                            logisticsTable[i]["OPERATE_DATE"] +
+                                            (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
                                             '</div>' +
                                             '<div class="col-25">' +
-                                            logisticsTable[i]["OPERATER"] +
+                                            (logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
                                             '</div>' +
                                             '<div class="col-35">' +
-                                            logisticsTable[i]["OPERATE_RESULT"] +
+                                            (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
                                             '</div>' +
                                             '</div>';
                                     }

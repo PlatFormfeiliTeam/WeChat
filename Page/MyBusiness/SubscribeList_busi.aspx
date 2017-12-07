@@ -169,30 +169,30 @@
                                     '<ul>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["BUSIUNITNAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["BUSINAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["CUSNO"] + '</div>' +
+                                                '<div class="my-title">' + (obj[i]["BUSIUNITNAME"] == null ? "" : obj[i]["BUSIUNITNAME"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["BUSINAME"] == null ? "" : obj[i]["BUSINAME"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["DIVIDENO"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["REPWAYNAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["CONTRACTNO"] + '</div>' +
+                                                '<div class="my-title">' + (obj[i]["DIVIDENO"] == null ? "" : obj[i]["DIVIDENO"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["REPWAYNAME"] == null ? "" : obj[i]["REPWAYNAME"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["CONTRACTNO"] == null ? "" : obj[i]["CONTRACTNO"]) + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["DECLSTATUS"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["INSPSTATUS"] + '</div>' +
+                                                '<div class="my-title">' + (obj[i]["GOODSNUM"] == null ? "" : obj[i]["GOODSNUM"]) + '/' + (obj[i]["GOODSGW"] == null ? "" : obj[i]["GOODSGW"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["DECLSTATUS"] == null ? "" : obj[i]["DECLSTATUS"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["INSPSTATUS"] == null ? "" : obj[i]["INSPSTATUS"]) + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["SUBLOGSTATUS"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["SUBSTATUS"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["LOGISTICSNAME"] + '</div>' +
+                                                '<div class="my-title">' + (obj[i]["SUBLOGSTATUS"] == null ? "" : obj[i]["SUBLOGSTATUS"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["SUBSTATUS"] == null ? "" : obj[i]["SUBSTATUS"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["LOGISTICSNAME"] == null ? "" : obj[i]["LOGISTICSNAME"]) + '</div>' +
                                             '</div>' +
                                         '</li>' +
                                     '</ul>' +
