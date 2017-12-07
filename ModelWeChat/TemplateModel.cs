@@ -92,7 +92,7 @@ namespace WeChat.ModelWeChat
         {
             public string value { get; set; }
             public string color { get; set; }
-            public TemplateDataItem(string val, string col = "#00ff00")
+            public TemplateDataItem(string val, string col = "#0000FF")
             {
                 value = val;
                 color = col;

@@ -228,8 +228,9 @@
             });
 
             function select() {
-                //$.showPreloader('加载中...');
-                //setTimeout(function () {
+                $.showPreloader('加载中...');
+                setTimeout(function () {
+                    $.closeModal();
                     //首次查询需要置为初始值
                     $('#div_list').html("");
                     loading = false; itemsPerLoad = 10; lastIndex = 0;
@@ -252,8 +253,8 @@
                         else { $.toast("已经加载到最后"); }
                     }
 
-                //    $.hidePreloader();
-                //}, 500);
+                    $.hidePreloader();
+                }, 500);
             }
 
             //无限滚动

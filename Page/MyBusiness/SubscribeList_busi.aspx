@@ -88,11 +88,12 @@
             //查询
             $(document).on('click', '#search_a', function (e) {
                 $("#subcontent").html("");
-                //$.showPreloader('加载中...');
+                $.showPreloader('加载中...');
                 lastnum = 0;
                 $('.infinite-scroll-preloader').show();
                 $.attachInfiniteScroll($('.infinite-scroll'));
-                //setTimeout(function () {
+                setTimeout(function () {
+                    $.closeModal();
                     loadData(pagesize, lastnum);//加载数据
                     lastnum = $('#subcontent .list-block').length;//获取数据条数
                     $.refreshScroller();//刷新滚动条
@@ -104,8 +105,8 @@
                         if (lastnum == 0) { $.toast("没有符合的数据！"); }
                         else { $.toast("已经加载到最后"); }
                     }
-                //}, 500);
-                //$.hidePreloader();
+                }, 500);
+                $.hidePreloader();
             })
             //无限滚动 注册'infinite'事件处理函数
             $(document).on('infinite', "#pageone", function () {

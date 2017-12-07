@@ -236,11 +236,12 @@
                 '#button_one',
                 function() {
                     $("#busicontent").html("");
-                    //$.showPreloader('加载中...');
+                    $.showPreloader('加载中...');
                     lastIndex = 0;
                     $('.infinite-scroll-preloader').show();
                     $.attachInfiniteScroll($('.infinite-scroll'));
-                    //setTimeout(function() {
+                    setTimeout(function () {
+                        $.closeModal();
                             loadData(itemsPerLoad, lastIndex); //加载数据
                             lastIndex = $('#busicontent .list-block').length; //获取数据条数
                             $.refreshScroller(); //刷新滚动条
@@ -255,9 +256,9 @@
                                     $.toast("已经加载到最后");
                                 }
                             }
-                    //    },
-                    //    500);
-                    //$.hidePreloader();
+                        },
+                        500);
+                    $.hidePreloader();
                 })
 
             //物流状态——按钮切换
