@@ -40,9 +40,9 @@ namespace WeChat.Page.BusiOpera
 
         //报关单交接
         [WebMethod]
-        public static string Handover(string ordercode)
+        public static string Siteapply(string ordercode)
         {
-            return SiteDeclare.Handover(ordercode);
+            return SiteDeclare.Siteapply(ordercode);
         }
 
         //报关单详细

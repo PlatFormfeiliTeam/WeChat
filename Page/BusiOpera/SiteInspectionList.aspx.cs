@@ -38,11 +38,11 @@ namespace WeChat.Page.BusiOpera
             return json;
         }
 
-        //报检单交接
+        //现场报检
         [WebMethod]
-        public static string Handover(string ordercode)
+        public static string Siteapply(string ordercode)
         {
-            return SiteInspection.Handover(ordercode);
+            return SiteInspection.Siteapply(ordercode);
         }
 
         //报关单详细

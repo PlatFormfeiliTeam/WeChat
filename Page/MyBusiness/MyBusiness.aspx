@@ -427,15 +427,6 @@
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
-                                    '<div class="col-20">报关交接</div>' +
-                                    '<div class="col-40">' +
-                                    orderTable[0]["HANDOVERTIME"] +
-                                    '</div>' +
-                                    '<div class="col-20">' +
-                                    orderTable[0]["HANDOVERUSERNAME"] +
-                                    '</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
                                     '<div class="col-20">现场报关</div>' +
                                     '<div class="col-40">' +
                                     orderTable[0]["SITEAPPLYTIME"] +
@@ -548,16 +539,7 @@
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
-                                    '<div class="col-20">报关交接</div>' +
-                                    '<div class="col-40">' +
-                                    orderTable[0]["INSPHANDOVERTIME"] +
-                                    '</div>' +
-                                    '<div class="col-20">' +
-                                    orderTable[0]["INSPHANDOVERUSERNAME"] +
-                                    '</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">现场报关</div>' +
+                                    '<div class="col-20">现场报检</div>' +
                                     '<div class="col-40">' +
                                     orderTable[0]["INSPSITEAPPLYTIME"] +
                                     '</div>' +
@@ -575,7 +557,7 @@
                                     '</div>' +
                                     '</div>' +
                                     '<div class="row">' +
-                                    '<div class="col-20">现场放行</div>' +
+                                    '<div class="col-20">报检放行</div>' +
                                     '<div class="col-40">' +
                                     orderTable[0]["INSPSITEPASSTIME"] +
                                     '</div>' +
@@ -958,9 +940,9 @@
             //$("#picker_customs").remove();
             //$("#picker_customs1").append("<input type='search' id='picker_customs' placeholder='申报现场'/>");
             //util.picker_customs();
-            //现场申报重置
+            //现场报关重置
             $("#picker_sitedeclare").remove();
-            $("#picker_sitedeclare1").append("<input type='search' id='picker_sitedeclare' placeholder='现场申报'/>");
+            $("#picker_sitedeclare1").append("<input type='search' id='picker_sitedeclare' placeholder='现场报关'/>");
             util.picker_sitedeclare();
             //物流状态重置
             $("#picker_logisticsstatus").remove();
@@ -1010,7 +992,7 @@
                     </div> 
                     <div class="row">
                         <div class="col-33" id="picker_customs1"><input type="text" id='picker_customs' placeholder='申报现场'/></div>
-                        <div class="col-33" id="picker_sitedeclare1"><input type="search" id='picker_sitedeclare' placeholder='现场申报'/></div> 
+                        <div class="col-33" id="picker_sitedeclare1"><input type="search" id='picker_sitedeclare' placeholder='现场报关'/></div> 
                         <div class="col-33" id="picker_logisticsstatus1"><input type="search" id='picker_logisticsstatus' placeholder='物流状态'/></div>
                     </div>
                     <div class="row">
@@ -1086,7 +1068,7 @@
                     <div class="col-95"><span class="lab">申报现场：</span><input type="text" id='picker_customs'/></div>
                 </div>
                 <div class="row">
-                    <div class="col-95"><span class="lab">现场申报：</span><input type="text" id='picker_sitedeclare'/></div>                    
+                    <div class="col-95"><span class="lab">现场报关：</span><input type="text" id='picker_sitedeclare'/></div>                    
                 </div>
                 <div class="row">
                     <div class="col-95"><span class="lab">物流状态：</span><input type="text" id='picker_logisticsstatus'/></div>

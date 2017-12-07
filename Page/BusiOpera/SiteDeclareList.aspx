@@ -209,8 +209,8 @@
                 }
             });
 
-            //报关单交接
-            $("#Handover_a").click(function () {
+            //现场报关
+            $("#Siteapply_a").click(function () {
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
@@ -219,20 +219,20 @@
                     }
                 });
                 if (divid == "") {
-                    $.toast("请选择需要交接的记录");
+                    $.toast("请选择需要现场报关的记录");
                     return;
                 }
                 if ($("#div_list #" + divid).children("ul").children().eq(2).children("div").children().eq(0).text() != "") {
-                    $.toast("该笔记录已经交接，不能再次交接");
+                    $.toast("该笔记录已经现场报关");
                     return;
                 }
 
 
-                $.confirm('请确认是否需要<font color=blue>交接</font>?',
+                $.confirm('请确认是否需要<font color=blue>现场报关</font>?',
                 function () {//OK事件
                     $.ajax({
                         type: "post", //要用post方式                 
-                        url: "SiteDeclareList.aspx/Handover",//方法所在页面和方法名
+                        url: "SiteDeclareList.aspx/Siteapply",//方法所在页面和方法名
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         data: "{'ordercode':'" + divid.substring(6) + "'}",
@@ -240,10 +240,10 @@
                         async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                         success: function (data) {
                             if (data.d != "") {
-                                $.toast("交接成功");
-                                $("#div_list #" + divid).children("ul").children().eq(2).children("div").children().eq(0).text(data.d);//更新交接时间
+                                $.toast("现场报关成功");
+                                $("#div_list #" + divid).children("ul").children().eq(2).children("div").children().eq(0).text(data.d);//更新现场报关时间
                             } else {
-                                $.toast("交接失败");
+                                $.toast("现场报关失败");
                             }
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
@@ -300,13 +300,6 @@
                                                     + '<div class="item-title col-25">' + (jsonorder[0]["SUBMITUSERNAME"] == null ? "" : jsonorder[0]["SUBMITUSERNAME"]) + '</div>'
                                                 + '</div>'
                                            + '</li>'
-                                           + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
-                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-title col-25">报关交接</div>'
-                                                    + '<div class="item-title col-50">' + (jsonorder[0]["HANDOVERTIME"] == null ? "" : jsonorder[0]["HANDOVERTIME"]) + '</div>'
-                                                    + '<div class="item-title col-25">' + (jsonorder[0]["HANDOVERUSERNAME"] == null ? "" : jsonorder[0]["HANDOVERUSERNAME"]) + '</div>'
-                                                + '</div>'
-                                            + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-25">制单完成</div>'
@@ -372,22 +365,15 @@
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
                                                     + '<div class="item-title col-50">报关单号</div>'
-                                                    + '<div class="item-title col-25">件数</div>'
-                                                    + '<div class="item-title col-25">毛重</div>'
-                                                + '</div>'
-                                            + '</li>'
-                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
-                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
-                                                    + '<div class="item-title col-50">运输工具名称</div>'
-                                                    + '<div class="item-title col-25">监管方式</div>'
-                                                    + '<div class="item-title col-25">删改单</div>'
+                                                    + '<div class="item-title col-25">件数/毛重</div>'
+                                                    + '<div class="item-title col-25">海关状态</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border:2px solid #0894EC;">'
-                                                    + '<div class="item-title col-50">海关状态</div>'
-                                                    + '<div class="item-title col-25"></div>'
-                                                    + '<div class="item-title col-25"></div>'
+                                                    + '<div class="item-title col-50">运输工具名称</div>'
+                                                    + '<div class="item-title col-25">监管方式</div>'
+                                                    + '<div class="item-title col-25">删改单</div>'
                                                 + '</div>'
                                             + '</li>'
                                         + '</ul>'
@@ -401,8 +387,10 @@
                                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                         + '<div class="item-title col-50">' + (jsondecl[i]["DECLARATIONCODE"] == null ? "" : jsondecl[i]["DECLARATIONCODE"]) + '</div>'
-                                                        + '<div class="item-title col-25">' + (jsondecl[i]["GOODSNUM"] == null ? "" : jsondecl[i]["GOODSNUM"]) + '</div>'
-                                                        + '<div class="item-title col-25">' + (jsondecl[i]["GOODSGW"] == null ? "" : jsondecl[i]["GOODSGW"]) + '</div>'
+                                                        + '<div class="item-title col-25">' + (jsondecl[i]["GOODSNUM"] == null ? "" : jsondecl[i]["GOODSNUM"]) + '/'
+                                                                                            + (jsondecl[i]["GOODSGW"] == null ? "" : jsondecl[i]["GOODSGW"])
+                                                        + '</div>'
+                                                        + '<div class="item-title col-25">' + (jsondecl[i]["CUSTOMSSTATUS"] == null ? "" : jsondecl[i]["CUSTOMSSTATUS"]) + '</div>'
                                                     + '</div>'
                                                 + '</li>'
                                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
@@ -410,13 +398,6 @@
                                                         + '<div class="item-title col-50">' + (jsondecl[i]["TRANSNAME"] == null ? "" : jsondecl[i]["TRANSNAME"]) + '</div>'
                                                         + '<div class="item-title col-25">' + (jsondecl[i]["TRADECODE"] == null ? "" : jsondecl[i]["TRADECODE"]) + '</div>'
                                                         + '<div class="item-title col-25">' + getname("MODIFYFLAG", jsondecl[i]["MODIFYFLAG"]) + '</div>'
-                                                    + '</div>'
-                                                + '</li>'
-                                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                        + '<div class="item-title col-50">' + (jsondecl[i]["CUSTOMSSTATUS"] == null ? "" : jsondecl[i]["CUSTOMSSTATUS"]) + '</div>'
-                                                        + '<div class="item-title col-25"></div>'
-                                                        + '<div class="item-title col-25"></div>'
                                                     + '</div>'
                                                 + '</li>'
                                             + '</ul>'
@@ -945,7 +926,7 @@
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
-                                                + '<div class="item-title col-40">' + (obj[i]["HANDOVERTIME"] == null ? "" : obj[i]["HANDOVERTIME"]) + '</div>'
+                                                + '<div class="item-title col-40">' + (obj[i]["SITEAPPLYTIME"] == null ? "" : obj[i]["SITEAPPLYTIME"]) + '</div>'
                                                 + '<div class="item-title col-25">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>'
                                                 + '<div class="item-title col-33">' + obj[i]["CONTRACTNO"] + '</div>'
                                             + '</div>'
@@ -1041,7 +1022,7 @@
             $("#picker_is_siterep").picker({
                 toolbarTemplate: '<header class="bar bar-nav">\
                       <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择现场申报</h1>\
+                      <h1 class="title">请选择现场报关</h1>\
                       </header>',
                 cols: [
                   {
@@ -1184,7 +1165,7 @@
                 <div class="search-input">                    
                     <div class="row"> 
                         <div class="col-25"><input type="search" id='picker_inout_type' placeholder='进出口'/></div> <%--value="全部"--%>
-                        <div class="col-25"><input type="search" id='picker_is_siterep' placeholder='现场申报'/></div><%--value="仅现场"--%>
+                        <div class="col-25"><input type="search" id='picker_is_siterep' placeholder='现场报关'/></div><%--value="仅现场"--%>
                         <div class="col-25"><input type="search" id='picker_busitype' placeholder='业务类型'/></div> <%--value="全部"--%>
                         <div class="col-25"><input type="search" id='picker_is_pass' placeholder='放行情况'/></div> <%--value="未放行"--%>
                     </div>
@@ -1201,13 +1182,13 @@
 
             <%--工具栏 --%>
             <nav class="bar bar-tab">
-                <a class="tab-item external" href="#" id="Handover_a"><%--active--%>
+                <a class="tab-item external" href="#" id="Siteapply_a"><%--active--%>
                     <span class="icon icon-friends"></span>
-                    <span class="tab-label">报关单交接</span>
+                    <span class="tab-label">现场报关</span>
                 </a>
                 <a class="tab-item external" href="#" id="Detail_a">
                     <span class="icon icon-message"></span>
-                    <span class="tab-label">报关单详细</span>
+                    <span class="tab-label">报关详细</span>
                     <%--<span class="badge">2</span>--%>
                 </a>
                 <a class="tab-item external" href="#" id="Pass_a">

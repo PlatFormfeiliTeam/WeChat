@@ -89,10 +89,10 @@ namespace WeChat.ModelBusi
                 DataSet ds = new DataSet();
                 //业务信息
                 string sql = @"select lo.code,lo.totalno,lo.divideno,lo.entrusttype,lo.busitype,lo.submittime,lo.submitusername,lo.moendtime,lo.moendname,lo.coendtime,lo.coendname,
-lo.preendtime,lo.preendname,lo.rependtime,lo.rependname,lo.handoverusername,lo.handovertime,lo.siteapplytime,lo.siteapplyusername,lo.sitepasstime,lo.sitepassusername,
-lo.inspmoendtime,lo.inspmoendname,lo.inspcoendtime,lo.inspcoendname,lo.insppreendtime,lo.insppreendname,lo.insprependtime,lo.insprependname,
-lo.insphandoverusername,lo.insphandovertime,lo.inspsiteapplytime,lo.inspsiteapplyusername,lo.inspsitepasstime,lo.inspsitepassusername
- from list_order lo where lo.code='" + code + "'";
+                                    lo.preendtime,lo.preendname,lo.rependtime,lo.rependname,lo.siteapplytime,lo.siteapplyusername,lo.sitepasstime,lo.sitepassusername,
+                                    lo.inspmoendtime,lo.inspmoendname,lo.inspcoendtime,lo.inspcoendname,lo.insppreendtime,lo.insppreendname,lo.insprependtime,lo.insprependname,
+                                    lo.inspsiteapplytime,lo.inspsiteapplyusername,lo.inspsitepasstime,lo.inspsitepassusername
+                                from list_order lo where lo.code='" + code + "'";
                 DataTable dt1 = db.QuerySignle(sql);
                 dt1.TableName = "OrderTable";
                 ds.Tables.Add(dt1);
@@ -225,7 +225,7 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                         case "全部":
                             break;
                         case "需现场申报":
-                            strWhere += " and HANDOVERTIME is not null";
+                            strWhere += " and SITEAPPLYTIME is not null";
                             break;
                     }
                     break;

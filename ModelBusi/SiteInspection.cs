@@ -34,9 +34,9 @@ namespace WeChat.ModelBusi
                     }
 
                 }
-                if (!string.IsNullOrEmpty(issiterep))//现场申报->现场交接时间是否为空
+                if (!string.IsNullOrEmpty(issiterep))//现场报检时间是否为空
                 {
-                    if (issiterep == "仅现场") { where += " and ort.handovertime is not null"; }
+                    if (issiterep == "仅现场") { where += " and ort.inspsiteapplytime is not null"; }
                 }
 
                 if (lawflag == "1")//法检
@@ -120,7 +120,7 @@ namespace WeChat.ModelBusi
                 string tempsql = @"select ort.busiunitname,ort.busitype,ort.code
                                     ,ort.totalno,ort.divideno,ort.secondladingbillno,ort.landladingno,ort.associatepedeclno,ort.repwayid
                                     ,(select name from cusdoc.sys_repway where enabled=1 and code=ort.repwayid and rownum=1) repwayname,ort.cusno
-                                    ,to_char(ort.insphandovertime,'yyyyMMdd HH24:mi') insphandovertime,ort.goodsnum,ort.goodsgw,ort.contractno
+                                    ,to_char(ort.inspsiteapplytime,'yyyyMMdd HH24:mi') inspsiteapplytime,ort.goodsnum,ort.goodsgw,ort.contractno
                                     ,to_char(ort.inspchecktime,'yyyyMMdd HH24:mi') inspchecktime,ort.inspischeck,ort.inspcheckpic
                                     ,to_char(ort.inspsitepasstime,'yyyyMMdd HH24:mi') inspsitepasstime,ort.lawflag,ort.isneedclearance 
                                 from list_order ort
@@ -128,18 +128,18 @@ namespace WeChat.ModelBusi
                                 where ort.entrusttype in('02','03') and ort.isinvalid=0 and li.isinvalid=0" + where;
 
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
-                string sql = string.Format(pageSql, tempsql, "ort.handovertime", "desc", start + 1, start + itemsPerLoad);
+                string sql = string.Format(pageSql, tempsql, "ort.inspsiteapplytime", "desc", start + 1, start + itemsPerLoad);
 
                 return db.QuerySignle(sql);
             }
         }
 
-        public static string Handover(string ordercode)
+        public static string Siteapply(string ordercode)
         {
             using (DBSession db = new DBSession())
             {
                 string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                string sql = "update list_order set insphandoveruserid='{1}',insphandoverusername='{2}',insphandovertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
+                string sql = "update list_order set inspsiteapplyuserid='{1}',inspsiteapplyusername='{2}',inspsiteapplytime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
                 sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
@@ -180,11 +180,11 @@ namespace WeChat.ModelBusi
 
                 DataTable dt_order = new DataTable();
                 sql = @"select ort.code
-                            ,ort.submittime,ort.submitusername,ort.insphandovertime,ort.insphandoverusername
-                            ,ort.inspmoendtime,ort.inspmoendname,ort.inspsiteapplytime,ort.inspsiteapplyusername 
-                            ,ort.inspcoendtime,ort.inspcoendname,ort.inspchecktime,ort.inspcheckname
-                            ,ort.insppreendtime,ort.insppreendname,ort.inspsitepasstime,ort.inspsitepassusername
-                            ,ort.insprependtime,ort.insprependname,ort.inspcheckpic
+                            ,ort.submittime,ort.submitusername,ort.inspmoendtime,ort.inspmoendname
+                            ,ort.inspsiteapplytime,ort.inspsiteapplyusername,ort.inspcoendtime,ort.inspcoendname 
+                            ,ort.inspchecktime,ort.inspcheckname,ort.insppreendtime,ort.insppreendname
+                            ,ort.inspsitepasstime,ort.inspsitepassusername,ort.insprependtime,ort.insprependname
+                            ,ort.inspcheckpic
                         from list_order ort where ort.isinvalid=0 and code='" + ordercode + "'";
                 dt_order = db.QuerySignle(sql);
 
