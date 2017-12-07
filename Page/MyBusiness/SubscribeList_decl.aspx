@@ -105,8 +105,9 @@
                         if (lastnum == 0) { $.toast("没有符合的数据！"); }
                         else { $.toast("已经加载到最后"); }
                     }
+                    $.hidePreloader();
                 }, 500);
-                $.hidePreloader();
+                
             })
             //无限滚动 注册'infinite'事件处理函数
             $(document).on('infinite', "#pageone", function () {

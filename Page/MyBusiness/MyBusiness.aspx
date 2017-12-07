@@ -232,34 +232,35 @@
             $('.infinite-scroll-preloader').hide();
             //FastClick.attach(document.body);
             //查询
-            $(document).on('click',
-                '#button_one',
-                function() {
-                    $("#busicontent").html("");
-                    $.showPreloader('加载中...');
+            $(document).on('click', '#button_one', function () {
+                $("#busicontent").html("");
+                $.showPreloader('加载中...');
+
+                setTimeout(function () {
+                    $.closeModal();
+
                     lastIndex = 0;
                     $('.infinite-scroll-preloader').show();
                     $.attachInfiniteScroll($('.infinite-scroll'));
-                    setTimeout(function () {
-                        $.closeModal();
-                            loadData(itemsPerLoad, lastIndex); //加载数据
-                            lastIndex = $('#busicontent .list-block').length; //获取数据条数
-                            $.refreshScroller(); //刷新滚动条
-                            $('.infinite-scroll-bottom').scrollTop(0); //滚动条置顶
 
-                            if (lastIndex < itemsPerLoad) {
-                                $.detachInfiniteScroll($('.infinite-scroll-bottom')); // 加载完毕，则注销无限加载事件，以防不必要的加载     
-                                $('.infinite-scroll-preloader').hide();
-                                if (lastIndex == 0) {
-                                    $.toast("没有符合的数据！");
-                                } else {
-                                    $.toast("已经加载到最后");
-                                }
-                            }
-                        },
-                        500);
+                    loadData(itemsPerLoad, lastIndex); //加载数据
+                    lastIndex = $('#busicontent .list-block').length; //获取数据条数
+                    $.refreshScroller(); //刷新滚动条
+                    $('.infinite-scroll-bottom').scrollTop(0); //滚动条置顶
+
+                    if (lastIndex < itemsPerLoad) {
+                        $.detachInfiniteScroll($('.infinite-scroll-bottom')); // 加载完毕，则注销无限加载事件，以防不必要的加载     
+                        $('.infinite-scroll-preloader').hide();
+                        if (lastIndex == 0) {
+                            $.toast("没有符合的数据！");
+                        } else {
+                            $.toast("已经加载到最后");
+                        }
+                    }
                     $.hidePreloader();
-                })
+                }, 500);
+
+            });
 
             //物流状态——按钮切换
             $(document).on('click',
