@@ -125,6 +125,28 @@ namespace WeChat.ModelBusi
         {
             using (DBSession db = new DBSession())
             {
+                string sql = "select to_char(siteapplytime,'yyyy/mm/dd hh24:mi:ss') as siteapplytime from list_order where code='" + ordercode + "'";
+                DataTable dt = db.QuerySignle(sql);
+                string curtime = dt.Rows[0]["SITEAPPLYTIME"].ToString();
+                if (curtime != "")
+                {
+                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                }
+
+                curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                sql = "update list_order set siteapplyuserid='{1}',siteapplyusername='{2}',siteapplytime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=150 where code='{0}'";
+                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
+                int i = db.ExecuteSignle(sql);
+                if (i > 0)
+                {
+                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                }
+                else
+                {
+                    return "";
+                }
+
+                /*
                 string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                 string sql = "update list_order set siteapplyuserid='{1}',siteapplyusername='{2}',siteapplytime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
                 sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
@@ -136,7 +158,7 @@ namespace WeChat.ModelBusi
                 else
                 {
                     return "";
-                }
+                }*/
             }
         }
 
@@ -144,8 +166,16 @@ namespace WeChat.ModelBusi
         {
             using (DBSession db = new DBSession())
             {
-                string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                string sql = "update list_order set sitepassuserid='{1}',sitepassusername='{2}',sitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
+                string sql = "select to_char(sitepasstime,'yyyy/mm/dd hh24:mi:ss') as sitepasstime from list_order where code='" + ordercode + "'";
+                DataTable dt = db.QuerySignle(sql);
+                string curtime = dt.Rows[0]["SITEPASSTIME"].ToString();
+                if (curtime != "")
+                {
+                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                }
+
+                curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                sql = "update list_order set sitepassuserid='{1}',sitepassusername='{2}',sitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=160 where code='{0}'";
                 sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
@@ -156,6 +186,19 @@ namespace WeChat.ModelBusi
                 {
                     return "";
                 }
+
+                /*string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                string sql = "update list_order set sitepassuserid='{1}',sitepassusername='{2}',sitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
+                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
+                int i = db.ExecuteSignle(sql);
+                if (i > 0)
+                {
+                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                }
+                else
+                {
+                    return "";
+                }*/
             }
         }
 
