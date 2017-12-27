@@ -139,6 +139,9 @@ namespace WeChat.ModelBusi
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
                 {
+                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
+                    msc.redis_OrderStatusLog(ordercode);
+
                     return curtime.Left(curtime.Length - 3).Replace("/", "");
                 }
                 else
@@ -180,6 +183,9 @@ namespace WeChat.ModelBusi
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
                 {
+                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
+                    msc.redis_OrderStatusLog(ordercode);
+
                     return curtime.Left(curtime.Length - 3).Replace("/", "");
                 }
                 else
