@@ -106,7 +106,7 @@ where ld.ordercode='" + code + "'";
                 //报检单信息
                 if (dt1.Rows[0]["entrusttype"].ToString2() == "02" || dt1.Rows[0]["entrusttype"].ToString2() == "03")
                 {
-                    sql = "select li.approvalcode,li.inspectioncode,li.clearancecode,li.modifyflag,li.inspstatus from list_inspection li where li.ordercode='" + code + "'";
+                    sql = "select li.approvalcode,li.inspectioncode,li.clearancecode,to_char(li.modifyflag) as modifyflag,li.inspstatus from list_inspection li where li.ordercode='" + code + "'";
                     DataTable dt3 = db.QuerySignle(sql);
                     dt3.TableName = "InspTable";
                     ds.Tables.Add(dt3);

@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>详细界面</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
@@ -374,6 +374,7 @@
                         async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
                         success: function(data) {
                             var obj = eval("(" + data.d + ")");
+                            console.log(obj);
                             //1、报关信息
                             var orderTable = obj.OrderTable;
                             var declTable = obj.DeclTable;
@@ -580,16 +581,17 @@
                                     for (var i = 0; i < inspTable.length; i++) {
                                         inspstr += '<div class="list-block">';
                                         inspstr += '<div class="row">';
-                                        inspstr += '<div class="col-40">' + (inspTable[i]["APPROVALCODE"] == null ? "" : inspTable[i]["APPROVALCODE"]) + '</div>';
-                                        inspstr += '<div class="col-40">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
-                                        inspstr += '<div class="col-20">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
+                                        inspstr += '<div class="col-50">' + (inspTable[i]["INSPECTIONCODE"] == null ? "" : inspTable[i]["INSPECTIONCODE"]) + '</div>';
+                                        inspstr += '<div class="col-50">' + (inspTable[i]["APPROVALCODE"] == null ? "" : inspTable[i]["APPROVALCODE"]) + '</div>';
+                                        
                                         inspstr += '</div>';
                                         inspstr += '<div class="row">';
-                                        inspstr += '<div class="col-40">' + (inspTable[i]["INSPECTIONCODE"] == null ? "" : inspTable[i]["INSPECTIONCODE"]) + '</div>';
-                                        inspstr += '<div class="col-40">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
-                                        inspstr += '<div class="col-20"></div>';
+                                        inspstr += '<div class="col-50">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
+                                        inspstr += '<div class="col-25">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
+                                        inspstr += '<div class="col-25">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
+                                        //inspstr += '<div class="col-20"></div>';
                                         inspstr += '</div>';
-                                        inspstr += '</div>';
+                                        inspstr += '</div>'; 
                                     }
                                 }
                                 inspstr += '</div>';

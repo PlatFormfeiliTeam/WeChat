@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <title>业务订阅</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css" />
@@ -155,54 +155,89 @@
                 contentType: "application/json; charset=utf-8",
                 type: 'post',
                 dataType: 'json',
-                data: "{'starttime':'" + $("#txt_startdate").val() +
-                        "','endtime':'" + $("#txt_enddate").val() +
-                        "','istigger':'" + $("#picker_tigger").val() +
-                        "','cusno':'" + $("#txt_code").val() +
-                        "','pagesize':" + pagesize +
-                        ",'lastnum':" + lastnum + "}",
+                data: "{'starttime':'" +
+                    $("#txt_startdate").val() +
+                    "','endtime':'" +
+                    $("#txt_enddate").val() +
+                    "','istigger':'" +
+                    $("#picker_tigger").val() +
+                    "','cusno':'" +
+                    $("#txt_code").val() +
+                    "','pagesize':" +
+                    pagesize +
+                    ",'lastnum':" +
+                    lastnum +
+                    "}",
                 cache: false,
-                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
-                success: function (data) {
-                    var obj = eval("(" + data.d + ")");//将字符串转为json
+                async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
+                success: function(data) {
+                    var obj = eval("(" + data.d + ")"); //将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
-                        var obj = eval("(" + data.d + ")");//将字符串转为json
-                        var str = '<div class="list-block" id="' + obj[i]["CODE"] + '">' +
-                                    '<ul>' +
-                                        '<li class="item-content">' +
-                                            '<div class="item-inner">' +
-                                                '<div class="my-title">' + (obj[i]["BUSIUNITNAME"] == null ? "" : obj[i]["BUSIUNITNAME"]) + '</div>' +
-                                                '<div class="my-after">' + (obj[i]["BUSINAME"] == null ? "" : obj[i]["BUSINAME"]) + '</div>' +
-                                                '<div class="my-after">' + (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) + '</div>' +
-                                            '</div>' +
-                                        '</li>' +
-                                        '<li class="item-content">' +
-                                            '<div class="item-inner">' +
-                                                '<div class="my-title">' + (obj[i]["DIVIDENO"] == null ? "" : obj[i]["DIVIDENO"]) + '</div>' +
-                                                '<div class="my-after">' + (obj[i]["REPWAYNAME"] == null ? "" : obj[i]["REPWAYNAME"]) + '</div>' +
-                                                '<div class="my-after">' + (obj[i]["CONTRACTNO"] == null ? "" : obj[i]["CONTRACTNO"]) + '</div>' +
-                                            '</div>' +
-                                        '</li>' +
-                                        '<li class="item-content">' +
-                                            '<div class="item-inner">' +
-                                                '<div class="my-title">' + (obj[i]["GOODSNUM"] == null ? "" : obj[i]["GOODSNUM"]) + '/' + (obj[i]["GOODSGW"] == null ? "" : obj[i]["GOODSGW"]) + '</div>' +
-                                                '<div class="my-after">' + (obj[i]["DECLSTATUS"] == null ? "" : obj[i]["DECLSTATUS"]) + '</div>' +
-                                                '<div class="my-after">' + (obj[i]["INSPSTATUS"] == null ? "" : obj[i]["INSPSTATUS"]) + '</div>' +
-                                            '</div>' +
-                                        '</li>' +
-                                        '<li class="item-content">' +
-                                            '<div class="item-inner">' +
-                                                '<div class="my-title">' + (obj[i]["SUBLOGSTATUS"] == null ? "" : obj[i]["SUBLOGSTATUS"]) + '</div>' +
-                                                '<div class="my-after">' + (obj[i]["SUBSTATUS"] == null ? "" : obj[i]["SUBSTATUS"]) + '</div>' +
-                                                '<div class="my-after">' + (obj[i]["LOGISTICSNAME"] == null ? "" : obj[i]["LOGISTICSNAME"]) + '</div>' +
-                                            '</div>' +
-                                        '</li>' +
-                                    '</ul>' +
-                                    '</div>';
+                        var obj = eval("(" + data.d + ")"); //将字符串转为json
+                        var str = '<div class="list-block" id="' +
+                            obj[i]["CODE"] +
+                            '">' +
+                            '<ul>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">' +
+                            (obj[i]["BUSIUNITNAME"] == null ? "" : obj[i]["BUSIUNITNAME"]) +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            (obj[i]["BUSINAME"] == null ? "" : obj[i]["BUSINAME"]) +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) +
+                            '</div>' +
+                            '</div>' +
+                            '</li>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">' +
+                            (obj[i]["DIVIDENO"] == null ? "" : obj[i]["DIVIDENO"]) +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            (obj[i]["REPWAYNAME"] == null ? "" : obj[i]["REPWAYNAME"]) +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            (obj[i]["CONTRACTNO"] == null ? "" : obj[i]["CONTRACTNO"]) +
+                            '</div>' +
+                            '</div>' +
+                            '</li>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">' +
+                            (obj[i]["GOODSNUM"] == null ? "" : obj[i]["GOODSNUM"]) +
+                            '/' +
+                            (obj[i]["GOODSGW"] == null ? "" : obj[i]["GOODSGW"]) +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            (obj[i]["DECLSTATUS"] == null ? "" : obj[i]["DECLSTATUS"]) +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            (obj[i]["INSPSTATUS"] == null ? "" : obj[i]["INSPSTATUS"]) +
+                            '</div>' +
+                            '</div>' +
+                            '</li>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">' +
+                            (obj[i]["SUBLOGSTATUS"] == null ? "" : obj[i]["SUBLOGSTATUS"]) +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            (obj[i]["SUBSTATUS"] == null ? "" : obj[i]["SUBSTATUS"]) +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            (obj[i]["LOGISTICSNAME"] == null ? "" : obj[i]["LOGISTICSNAME"]) +
+                            '</div>' +
+                            '</div>' +
+                            '</li>' +
+                            '</ul>' +
+                            '</div>';
                         $("#subcontent").append(str);
                     }
                 }
-            })
+            });
         }
     </script>
 </head>
