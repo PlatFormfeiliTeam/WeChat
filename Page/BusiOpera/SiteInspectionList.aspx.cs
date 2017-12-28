@@ -28,12 +28,12 @@ namespace WeChat.Page.BusiOpera
 
         //查询绑定
         [WebMethod]
-        public static string BindList(string inout_type, string issiterep, string lawflag, string isneedclearance, string busitype, string ispass, string startdate, string enddate
+        public static string BindList(string inout_type, string issiterep, string lawflag, string isneedclearance, string isfumigation, string busitype, string ispass, string startdate, string enddate
             , string radiotype, string morecon, int start, int itemsPerLoad)
         {
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            DataTable dt = SiteInspection.getSiteInspectionInfo(inout_type, issiterep, lawflag, isneedclearance, busitype, ispass, startdate, enddate, radiotype, morecon, start, itemsPerLoad);
+            DataTable dt = SiteInspection.getSiteInspectionInfo(inout_type, issiterep, lawflag, isneedclearance, isfumigation, busitype, ispass, startdate, enddate, radiotype, morecon, start, itemsPerLoad);
             var json = JsonConvert.SerializeObject(dt, iso);
             return json;
         }
@@ -89,9 +89,9 @@ namespace WeChat.Page.BusiOpera
         }
 
         [WebMethod]
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid)
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string isfumigation)
         {
-            return SiteInspection.checksave(ordercode, checktime, checkname, checkid);
+            return SiteInspection.checksave(ordercode, checktime, checkname, checkid, isfumigation);
         }
 
         [WebMethod]

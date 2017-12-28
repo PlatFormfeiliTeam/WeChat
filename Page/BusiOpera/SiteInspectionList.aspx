@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SiteInspectionList.aspx.cs" Inherits="WeChat.Page.BusiOpera.SiteInspectionList" %>
+<%@ Import Namespace="System.Configuration" %>
 
 <!DOCTYPE html>
 
@@ -8,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <title>现场报检</title>
-    <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
+    <link href="/css/iconfont/iconfont.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" rel="stylesheet" />
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
@@ -461,9 +462,13 @@
                                         '<div class="col-33">查验维护时间：</div>' +
                                         '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_inspchecktime" readonly /></div>' +
                                     '</div> ' +
-                                        '<div class="row"> ' +
+                                    '<div class="row"> ' +
                                         '<div class="col-33">查验维护人员：<input type="hidden" id="txt_inspcheckid" readonly /></div>' +
                                         '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_inspcheckname" readonly /></div>' +
+                                    '</div> ' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">熏蒸：</div>' +
+                                        '<div class="col-66"><input type="checkbox" id="chk_isfumigation" style="width:18px;height:18px;" /></div>' +
                                     '</div> ' +
                                 '</div>';
                 strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
@@ -519,8 +524,8 @@
 
                 var strconButton = '<div class="content-block">' +
                                         '<div class="row"> ' +
-                                            '<div class="col-33"><a href="#" id="checkcancel" class="button button-fill button-warning">撤销标志</a></div>' +
-                                            '<div class="col-33"><a href="#" id="checksave" class="button button-fill">查验标志</a></div>' +
+                                            '<div class="col-33"><a href="#" id="checkcancel" class="button button-fill button-warning">撤销</a></div>' +
+                                            '<div class="col-33"><a href="#" id="checksave" class="button button-fill">查验</a></div>' +
                                             '<div class="col-33"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
                                         '</div>' +
                                     '</div>';
@@ -552,9 +557,16 @@
                 $("#txt_inspcheckid").val("763");//当前登录人id
                 $("#txt_inspcheckname").val("昆山吉时报关有限公司");//当前登录人name
 
+                var inicheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
+                if (inicheck == getname2("INSPISCHECK", 0, 1) || inicheck == getname2("INSPISCHECK", 1, 1)) {
+                    $("#chk_isfumigation").prop("checked", true);//熏蒸赋值
+                }
+
                 $("#checkcancel").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
 
-                    if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() == getname("INSPISCHECK", 0)) {
+                    var concheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
+
+                    if (concheck == getname2("INSPISCHECK", 0, 0) || concheck == getname2("INSPISCHECK", 0, 1)) {
                         $.toast("还未查验，无需撤销");
                         return;
                     }
@@ -573,7 +585,7 @@
                                      if (data.d == "sucess") {
                                          $.toast("撤销成功");
                                          $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text("");//更新查验时间
-                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("INSPISCHECK", 0));
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("INSPISCHECK", 0, 0));
                                          $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text(getname("INSPCHECKPIC", 0));
                                      } else {
                                          $.toast("撤销失败");
@@ -592,6 +604,8 @@
                 });
 
                 $("#checksave").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
+                    var chksave_isfumigation = $("#chk_isfumigation").prop('checked') == true ? 1 : 0;
+
                     $.confirm('请确认是否需要<font color=blue>查验</font>?',
                         function () {//OK事件
                             $.ajax({
@@ -600,14 +614,15 @@
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json",
                                 data: "{'ordercode':'" + divid.substring(6) + "','checktime':'" + $("#txt_inspchecktime").val()
-                                    + "','checkname':'" + $("#txt_inspcheckname").val() + "','checkid':'" + $("#txt_inspcheckid").val() + "'}",
+                                    + "','checkname':'" + $("#txt_inspcheckname").val() + "','checkid':'" + $("#txt_inspcheckid").val()
+                                    + "','isfumigation':'" + chksave_isfumigation + "'}",
                                 cache: false,
                                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                                 success: function (data) {
                                     if (data.d != "") {
                                         $.toast("查验成功");
                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(data.d);//更新查验时间
-                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("INSPISCHECK", 1));
+                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("INSPISCHECK", 1, chksave_isfumigation));
                                     } else {
                                         $.toast("查验失败");
                                     }
@@ -639,7 +654,9 @@
                     return;
                 }
 
-                if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() != getname("INSPISCHECK", 1)) {
+                var concheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
+
+                if (concheck != getname2("INSPISCHECK", 1, 0) && concheck != getname2("INSPISCHECK", 1, 1)) {
                     $.toast("无查验标志，不能使用查验图片功能");
                     return;
                 }
@@ -752,6 +769,7 @@
 
                 var chk_lawflag = $("input[name='checkbox_lawflag']").prop('checked') == true ? "1" : "0";
                 var chk_isneedclearance = $("input[name='checkbox_isneedclearance']").prop('checked') == true ? "1" : "0";
+                var chk_isfumigation = $("input[name='checkbox_isfumigation']").prop('checked') == true ? "1" : "0";
 
                 $.ajax({
                     type: "post", //要用post方式                 
@@ -759,7 +777,7 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: "{'inout_type':'" + $("#picker_inout_type").val() + "','issiterep':'" + $("#picker_is_siterep").val()
-                        + "','lawflag':'" + chk_lawflag + "','isneedclearance':'" + chk_isneedclearance
+                        + "','lawflag':'" + chk_lawflag + "','isneedclearance':'" + chk_isneedclearance + "','isfumigation':'" + chk_isfumigation
                         + "','busitype':'" + $("#picker_busitype").val() + "','ispass':'" + $("#picker_is_pass").val() 
                         + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
                         + "','radiotype':'" + $("#txt_radio_type_hidden").val() + "','morecon':'" + $("#txt_morecon_hidden").val()
@@ -768,8 +786,6 @@
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
                         var obj = eval("(" + data.d + ")");//将字符串转为json
-
-
 
                         var tb = "";
                         var blno_busi = "";//分提单号
@@ -828,7 +844,7 @@
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-40">' + (obj[i]["INSPCHECKTIME"] == null ? "" : obj[i]["INSPCHECKTIME"]) + '</div>'
-                                                + '<div class="item-title col-25">' + getname("INSPISCHECK", obj[i]["INSPISCHECK"]) + '</div>'
+                                                + '<div class="item-title col-25">' + getname2("INSPISCHECK", obj[i]["INSPISCHECK"], obj[i]["ISFUMIGATION"]) + '</div>'
                                                 + '<div class="item-title col-33">' + getname("INSPCHECKPIC", obj[i]["INSPCHECKPIC"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
@@ -843,7 +859,7 @@
                              + '</div>';
 
                             $('#div_list').append(tb);
-                            tb = ""; objname = "";
+                            tb = ""; 
                         }
 
                     },
@@ -874,32 +890,32 @@
                     case "51": str = "特殊进口"; break;
                 }
             }
-            if (key == "INSPISCHECK") {
-                switch (value) {
-                    case 0: str = "未查验"; break;
-                    case 1: str = "已查验"; break;
-                    default: str = "未查验"; break;
-                }
-            }
+            //if (key == "INSPISCHECK") {
+            //    switch (value) {
+            //        case 0: str = ""; break;//未查验
+            //        case 1: str = "查验"; break;//已查验
+            //        default: str = ""; break;//未查验
+            //    }
+            //}
             if (key == "INSPCHECKPIC") {
                 switch (value) {
-                    case 0: str = "无查验图"; break;
+                    case 0: str = ""; break;//无查验图
                     case 1: str = "有查验图"; break;
-                    default: str = "无查验图"; break;
+                    default: str = ""; break;//无查验图
                 }
             }
             if (key == "LAWFLAG") {
                 switch (value) {
-                    case 0: str = "不含法检"; break;
+                    case 0: str = ""; break;//不含法检
                     case 1: str = "含法检"; break;
-                    default: str = "不含法检"; break;
+                    default: str = ""; break;//不含法检
                 }
             }
             if (key == "ISNEEDCLEARANCE") {
                 switch (value) {
-                    case 0: str = "不需通关"; break;
+                    case 0: str = ""; break;//不需通关
                     case 1: str = "需通关"; break;
-                    default: str = "不需通关"; break;
+                    default: str = ""; break;//不需通关
                 }
             }
             if (key == "MODIFYFLAG") {
@@ -911,6 +927,31 @@
                 }
             }
             return str;
+        }
+
+        function getname2(key, value, value2) {
+            var restr = "";var str = ""; var str2 = "";
+            if (key == "INSPISCHECK") {
+
+                switch (value) {
+                    case 0: str = ""; break;//未查验
+                    case 1: str = "查验"; break;//已查验
+                    default: str = ""; break;//未查验
+                }
+
+                switch (value2) {
+                    case 0: str2 = ""; break;//未熏蒸
+                    case 1: str2 = "熏蒸"; break;//已熏蒸
+                    default: str2 = ""; break;//未熏蒸
+                }
+
+                if (str == "" && str2 == "") { restr = ""; }
+                if (str == "" && str2 != "") { restr = "/" + str2; }
+                if (str != "" && str2 == "") { restr = str; }
+                if (str != "" && str2 != "") { restr = str + "/" + str2; }
+
+            }
+            return restr;
         }
 
         function initsearch_condition() {
@@ -1080,15 +1121,19 @@
     <div class="page-group">
         <div id="page-infinite-scroll-bottom" class="page page-current">
             <%--search --%>
-            <header class="bar bar-nav"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
+            <header class="bar bar-nav" style="height:7rem;"> <%--style="height:7rem;"--%><%--就是查询背景色第二行--%>
                 <div class="search-input">                    
                     <div class="row"> 
                         <div class="col-25"><input type="search" id='picker_inout_type' placeholder='进出口'/></div> <%--value="全部"--%>
                         <div class="col-25"><input type="search" id='picker_is_siterep' placeholder='现场报检'/></div><%--value="仅现场"--%>
-                        <div class="col-50">
+                        <div class="col-25"><input type="search" id='picker_busitype' placeholder='业务类型'/></div> <%--value="全部"--%>
+                        <div class="col-25"><input type="search" id='picker_is_pass' placeholder='放行情况'/></div> <%--value="未放行"--%>                        
+                    </div>
+                    <div class="row">
+                       <div class="col-100">
                             <div class="list-block" style="margin:0;">
                                 <ul>
-                                    <li style="float:left; width:50%;">
+                                    <li style="float:left; width:33%;">
                                         <label class="label-checkbox item-content" style="padding-left:0px;min-height:0rem;">
                                             <input type="checkbox" name="checkbox_lawflag" value="法检">
                                             <div class="item-media" style="padding-top:.8rem;padding-bottom:0rem;"><i class="icon icon-form-checkbox"></i></div>
@@ -1097,7 +1142,7 @@
                                             </div>
                                         </label>
                                     </li>
-                                    <li style="float:left; width:50%;">
+                                    <li style="float:left; width:34%;">
                                         <label class="label-checkbox item-content" style="padding-left:0px;min-height:0rem;">
                                             <input type="checkbox" name="checkbox_isneedclearance" value="通关单">
                                             <div class="item-media" style="padding-top:.8rem;padding-bottom:0rem;"><i class="icon icon-form-checkbox"></i></div>
@@ -1106,13 +1151,18 @@
                                            </div>
                                         </label>
                                    </li>
+                                    <li style="float:left; width:33%;">
+                                        <label class="label-checkbox item-content" style="padding-left:0px;min-height:0rem;">
+                                            <input type="checkbox" name="checkbox_isfumigation" value="熏蒸">
+                                            <div class="item-media" style="padding-top:.8rem;padding-bottom:0rem;"><i class="icon icon-form-checkbox"></i></div>
+                                            <div class="item-inner" style="margin-left:.5rem;padding-right:0px;padding-top:0rem;padding-bottom:0rem;min-height:0rem;">
+                                                <div class="item-text" style="height:1.3rem;">熏蒸</div>
+                                           </div>
+                                        </label>
+                                   </li>
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-50"><input type="search" id='picker_busitype' placeholder='业务类型'/></div> <%--value="全部"--%>
-                        <div class="col-50"><input type="search" id='picker_is_pass' placeholder='放行情况'/></div> <%--value="未放行"--%>
                     </div>        
                     <div class="row">
                         <div class="col-40"><input type="search" id='txt_startdate' placeholder='委托起始日期'/></div>
@@ -1148,7 +1198,7 @@
                 <a class="tab-item external" href="#" id="Picture_a">
                     <span class="icon icon-picture"></span>
                     <span class="tab-label">查验图片<input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' /></span>
-                </a>
+                </a>                
             </nav>
 
            <%--body --%>
