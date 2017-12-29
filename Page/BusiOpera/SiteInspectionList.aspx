@@ -1085,6 +1085,7 @@
                          onClick: function () {
                              $("#picker_inout_type").picker("setValue", ["全部"]); $("#picker_is_siterep").picker("setValue", ["仅现场"]);
                              $("input[name='checkbox_lawflag']").prop('checked', false); $("input[name='checkbox_isneedclearance']").prop('checked', false);
+                             $("input[name='checkbox_isfumigation']").prop('checked', false);
                              $("#picker_busitype").picker("setValue", ["全部"]); $("#picker_is_pass").picker("setValue", ["未放行"]);
                              $("#txt_startdate").val(""); $("#txt_enddate").val("");
                              $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
