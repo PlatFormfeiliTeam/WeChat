@@ -13,7 +13,7 @@ namespace WeChat.ModelBusi
 {
     public class SiteInspection
     {
-        public static DataTable getSiteInspectionInfo(string inout_type, string issiterep, string lawflag, string isneedclearance, string busitype, string ispass, string startdate, string enddate
+        public static DataTable getSiteInspectionInfo(string inout_type, string issiterep, string lawflag, string isneedclearance, string isfumigation, string busitype, string ispass, string startdate, string enddate
             , string radiotype, string morecon, int start, int itemsPerLoad)
         {
             using (DBSession db = new DBSession())
@@ -41,12 +41,17 @@ namespace WeChat.ModelBusi
 
                 if (lawflag == "1")//法检
                 {
-                    where += " and ort.lawflag='" + lawflag + "'";
+                    where += " and ort.lawflag=1";
                 }
 
                 if (isneedclearance == "1")//通关单
                 {
-                    where += " and ort.isneedclearance='" + isneedclearance + "'";
+                    where += " and ort.isneedclearance=1";
+                }
+
+                if (isfumigation == "1")//熏蒸
+                {
+                    where += " and ort.isfumigation=1";
                 }
 
                 if (!string.IsNullOrEmpty(busitype))//业务类型
@@ -121,7 +126,7 @@ namespace WeChat.ModelBusi
                                     ,ort.totalno,ort.divideno,ort.secondladingbillno,ort.landladingno,ort.associatepedeclno,ort.repwayid
                                     ,(select name from cusdoc.sys_repway where enabled=1 and code=ort.repwayid and rownum=1) repwayname,ort.cusno
                                     ,to_char(ort.inspsiteapplytime,'yyyyMMdd HH24:mi') inspsiteapplytime,ort.goodsnum,ort.goodsgw,ort.contractno
-                                    ,to_char(ort.inspchecktime,'yyyyMMdd HH24:mi') inspchecktime,ort.inspischeck,ort.inspcheckpic
+                                    ,to_char(ort.inspchecktime,'yyyyMMdd HH24:mi') inspchecktime,ort.inspischeck,ort.isfumigation,ort.inspcheckpic
                                     ,to_char(ort.inspsitepasstime,'yyyyMMdd HH24:mi') inspsitepasstime,ort.lawflag,ort.isneedclearance 
                                 from list_order ort
                                     left join list_inspection li on ort.code=li.ordercode 
@@ -243,12 +248,13 @@ namespace WeChat.ModelBusi
             }
         }
 
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid)
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string isfumigation)
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "update list_order set inspischeck=1,inspcheckid='{1}',inspcheckname='{2}',inspchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
-                sql = string.Format(sql, ordercode, checkid, checkname, checktime);
+                string sql = @"update list_order set inspischeck=1,inspcheckid='{1}',inspcheckname='{2}',inspchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
+                                    ,fumigationname='{2}',fumigationtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),isfumigation='{4}' where code='{0}'";
+                sql = string.Format(sql, ordercode, checkid, checkname, checktime, isfumigation);
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
                 {
@@ -277,7 +283,8 @@ namespace WeChat.ModelBusi
                 }
 
                 List<string> sqls = new List<string>();
-                string sql = "update list_order set inspischeck=0,inspcheckid=null,inspcheckname=null,inspchecktime=null,inspcheckpic=0 where code='" + ordercode + "'";
+                string sql = @"update list_order set inspischeck=0,inspcheckid=null,inspcheckname=null,inspchecktime=null,inspcheckpic=0
+                                ,fumigationname=null,fumigationtime=null,isfumigation=0 where code='" + ordercode + "'";
                 string sql2 = "delete LIST_ATTACHMENT where ordercode='" + ordercode + "' and filetype='68'";
 
                 sqls.Add(sql); sqls.Add(sql2);

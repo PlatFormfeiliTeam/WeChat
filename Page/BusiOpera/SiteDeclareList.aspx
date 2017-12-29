@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SiteDeclareList.aspx.cs" Inherits="WeChat.Page.BusiOpera.SiteDeclareList" %>
+<%@ Import Namespace="System.Configuration" %>
 
 <!DOCTYPE html>
 
@@ -8,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <title>现场报关</title>
-    <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
+    <link href="/css/iconfont/iconfont.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" rel="stylesheet" />
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
@@ -983,16 +984,16 @@
             }
             if (key == "ISCHECK") {
                 switch (value) {
-                    case 0: str = "未查验"; break;
-                    case 1: str = "已查验"; break;
-                    default: str = "未查验"; break;
+                    case 0: str = ""; break;//未查验
+                    case 1: str = "查验"; break;//已查验
+                    default: str = ""; break;//未查验
                 }
             }
             if (key == "CHECKPIC") {
                 switch (value) {
-                    case 0: str = "无查验图"; break;
+                    case 0: str = ""; break;//无查验图
                     case 1: str = "有查验图"; break;
-                    default: str = "无查验图"; break;
+                    default: str = ""; break;//无查验图
                 }
             }
             if (key == "MODIFYFLAG") {
@@ -1162,7 +1163,7 @@
     <div class="page-group">
         <div id="page-infinite-scroll-bottom" class="page page-current">
             <%--search --%>
-            <header class="bar bar-nav"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
+            <header class="bar bar-nav" style="height:5rem;"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
                 <div class="search-input">                    
                     <div class="row"> 
                         <div class="col-25"><input type="search" id='picker_inout_type' placeholder='进出口'/></div> <%--value="全部"--%>
