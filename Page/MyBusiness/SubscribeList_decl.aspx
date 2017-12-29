@@ -79,74 +79,83 @@
         var maxItems = 100;
         // 每次加载添加多少条目
         var pagesize = 8;
-        $(function () {
+        $(function() {
             //----------------------------------------------------------------------------------------------------------------查询条件
             $("#txt_startdate").calendar({});
             $("#txt_enddate").calendar({});
 
             $('.infinite-scroll-preloader').hide();
             //查询
-            $(document).on('click', '#search_a', function (e) {
-                $("#subcontent").html("");
-                $.showPreloader('加载中...');
-                lastnum = 0;
-                $('.infinite-scroll-preloader').show();
-                $.attachInfiniteScroll($('.infinite-scroll'));
-                setTimeout(function () {
-                    $.closeModal();
-                    loadData(pagesize, lastnum);//加载数据
-                    lastnum = $('#subcontent .list-block').length;//获取数据条数
-                    $.refreshScroller();//刷新滚动条
-                    $('.infinite-scroll-bottom').scrollTop(0);//滚动条置顶
+            $(document).on('click',
+                '#search_a',
+                function(e) {
+                    $("#subcontent").html("");
+                    $.showPreloader('加载中...');
+                    lastnum = 0;
+                    $('.infinite-scroll-preloader').show();
+                    $.attachInfiniteScroll($('.infinite-scroll'));
+                    setTimeout(function() {
+                            $.closeModal();
+                            loadData(pagesize, lastnum); //加载数据
+                            lastnum = $('#subcontent .list-block').length; //获取数据条数
+                            $.refreshScroller(); //刷新滚动条
+                            $('.infinite-scroll-bottom').scrollTop(0); //滚动条置顶
 
-                    if (lastnum < pagesize) {
-                        $.detachInfiniteScroll($('.infinite-scroll-bottom'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
-                        $('.infinite-scroll-preloader').hide();
-                        if (lastnum == 0) { $.toast("没有符合的数据！"); }
-                        else { $.toast("已经加载到最后"); }
-                    }
-                    $.hidePreloader();
-                }, 500);
-                
-            })
+                            if (lastnum < pagesize) {
+                                $.detachInfiniteScroll($('.infinite-scroll-bottom')); // 加载完毕，则注销无限加载事件，以防不必要的加载     
+                                $('.infinite-scroll-preloader').hide();
+                                if (lastnum == 0) {
+                                    $.toast("没有符合的数据！");
+                                } else {
+                                    $.toast("已经加载到最后");
+                                }
+                            }
+                            $.hidePreloader();
+                        },
+                        500);
+
+                });
             //无限滚动 注册'infinite'事件处理函数
-            $(document).on('infinite', "#pageone", function () {
-                // 如果正在加载，则退出
-                if (loading) return;
-                // 设置flag
-                loading = true;
-                //显示加载栏
-                $('.infinite-scroll-preloader').show();
-                // 模拟1s的加载过程
-                setTimeout(function () {
-                    // 重置加载flag
-                    loading = false;
-                    if (lastnum >= maxItems || lastnum % pagesize != 0) {
-                        // 加载完毕，则注销无限加载事件，以防不必要的加载
-                        $.detachInfiniteScroll($('.infinite-scroll'));
-                        // 删除加载提示符
-                        $('.infinite-scroll-preloader').hide();
-                        $.toast("已经加载到最后");
-                        return;
-                    }
-                    // 添加新条目
-                    loadData(pagesize, lastnum);
+            $(document).on('infinite',
+                "#pageone",
+                function() {
+                    // 如果正在加载，则退出
+                    if (loading) return;
+                    // 设置flag
+                    loading = true;
+                    //显示加载栏
+                    $('.infinite-scroll-preloader').show();
+                    // 模拟1s的加载过程
+                    setTimeout(function() {
+                            // 重置加载flag
+                            loading = false;
+                            if (lastnum >= maxItems || lastnum % pagesize != 0) {
+                                // 加载完毕，则注销无限加载事件，以防不必要的加载
+                                $.detachInfiniteScroll($('.infinite-scroll'));
+                                // 删除加载提示符
+                                $('.infinite-scroll-preloader').hide();
+                                $.toast("已经加载到最后");
+                                return;
+                            }
+                            // 添加新条目
+                            loadData(pagesize, lastnum);
 
-                    if (lastnum == $('#subcontent .list-block').length) {
-                        $.detachInfiniteScroll($('.infinite-scroll'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
-                        $('.infinite-scroll-preloader').hide();
+                            if (lastnum == $('#subcontent .list-block').length) {
+                                $.detachInfiniteScroll($('.infinite-scroll')); // 加载完毕，则注销无限加载事件，以防不必要的加载     
+                                $('.infinite-scroll-preloader').hide();
 
-                        $.toast("已经加载到最后");
-                        return;
-                    }
-                    // 更新最后加载的序号
-                    lastnum = $('#subcontent .list-block').length;
-                    //容器发生改变,如果是js滚动，需要刷新滚动
-                    $.refreshScroller();
-                }, 500);
-            });
+                                $.toast("已经加载到最后");
+                                return;
+                            }
+                            // 更新最后加载的序号
+                            lastnum = $('#subcontent .list-block').length;
+                            //容器发生改变,如果是js滚动，需要刷新滚动
+                            $.refreshScroller();
+                        },
+                        500);
+                });
             $.init();
-        })
+        });
         
 
         function loadData(pagesize, lastnum) {
@@ -155,47 +164,72 @@
                 contentType: "application/json; charset=utf-8",
                 type: 'post',
                 dataType: 'json',
-                data: "{'starttime':'" + $("#txt_startdate").val() +
-                        "','endtime':'" + $("#txt_enddate").val() +
-                        "','istigger':'" + $("#picker_tigger").val() +
-                        "','declarationcode':'" + $("#txt_code").val() +
-                        "','pagesize':" + pagesize +
-                        ",'lastnum':" + lastnum + "}",
+                data: "{'starttime':'" +
+                    $("#txt_startdate").val() +
+                    "','endtime':'" +
+                    $("#txt_enddate").val() +
+                    "','istigger':'" +
+                    $("#picker_tigger").val() +
+                    "','declarationcode':'" +
+                    $("#txt_code").val() +
+                    "','pagesize':" +
+                    pagesize +
+                    ",'lastnum':" +
+                    lastnum +
+                    "}",
                 cache: false,
-                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
-                success: function (data) {
-                    var obj = eval("(" + data.d + ")");//将字符串转为json
+                async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
+                success: function(data) {
+                    var obj = eval("(" + data.d + ")"); //将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
-                        var obj = eval("(" + data.d + ")");//将字符串转为json
-                        var str = '<div class="list-block" id="' + obj[i]["DECLARATIONCODE"] + '" >' +
-                                    '<ul>' +
-                                        '<li class="item-content">' +
-                                            '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["DECLARATIONCODE"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["GOODSNUM"] + '/' + obj[i]["GOODSGW"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["MODIFYFLAG"] + '</div>' +
-                                            '</div>' +
-                                        '</li>' +
-                                        '<li class="item-content">' +
-                                            '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["TRANSNAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["TRADENAME"] + '</div>' +
-                                                '<div class="my-after">' + obj[i]["CUSTOMSSTATUS"] + '</div>' +
-                                            '</div>' +
-                                        '</li>' +
-                                        '<li class="item-content">' +
-                                            '<div class="item-inner">' +
-                                                '<div class="my-title">' + obj[i]["SUBSTATUS"] +  '</div>' +
-                                                '<div class="my-after"></div>' +
-                                                '<div class="my-after"></div>' +
-                                            '</div>' +
-                                        '</li>' +
-                                    '</ul>' +
-                                  '</div>';
+                        var obj = eval("(" + data.d + ")"); //将字符串转为json
+                        var str = '<div class="list-block" id="' +
+                            obj[i]["DECLARATIONCODE"] +
+                            '" >' +
+                            '<ul>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">' +
+                            obj[i]["DECLARATIONCODE"] +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            obj[i]["GOODSNUM"] +
+                            '/' +
+                            obj[i]["GOODSGW"] +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            obj[i]["MODIFYFLAG"] +
+                            '</div>' +
+                            '</div>' +
+                            '</li>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">' +
+                            obj[i]["TRANSNAME"] +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            obj[i]["TRADENAME"] +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            obj[i]["CUSTOMSSTATUS"] +
+                            '</div>' +
+                            '</div>' +
+                            '</li>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">' +
+                            obj[i]["SUBSTATUS"] +
+                            '</div>' +
+                            '<div class="my-after"></div>' +
+                            '<div class="my-after"></div>' +
+                            '</div>' +
+                            '</li>' +
+                            '</ul>' +
+                            '</div>';
                         $("#subcontent").append(str);
                     }
                 }
-            })
+            });
         }
     </script>
 </head>
