@@ -43,6 +43,18 @@
         {
            width: 100%;
         }
+         /************************************************ 查询列表名称*********************************/
+        .girdnamediv {
+            width: 98%;
+            left: 1%;
+            right: 1%;
+            margin-left: 0px;
+            text-align: left;
+            top: 10.5%;
+        } 
+        .girdnamediv .modal-inner{
+           padding:0px;
+        }  
         /************************************************ 更多查询*********************************/
         .morediv{
             width: 98%;
@@ -94,6 +106,53 @@
         var userid = "763", username = "昆山吉时报关有限公司", openid = "ohNOmwZOt0tNr9WN7s1i7dHqOQnU";
 
         $(function () {
+            //---------------------------------------------------------------------------------------------------------------列表名称
+            function showGridName() {
+                var strname = '<div class="list-block" style="margin:0;font-size:12px;color:black;">'
+                            + '<ul>'
+                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                        + '<div class="item-title col-50">报关单号</div>'
+                                        + '<div class="item-title col-33">业务类型</div>'
+                                        + '<div class="item-title col-20">监管方式</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                        + '<div class="item-title col-50">收发货人</div>'
+                                        + '<div class="item-title col-33">合同号</div>'
+                                        + '<div class="item-title col-20">申报日期</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                        + '<div class="item-title col-50">运输工具</div>'
+                                        + '<div class="item-title col-33">件数/毛重</div>'
+                                        + '<div class="item-title col-20">删改单</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border:2px solid #0894EC;">'
+                                        + '<div class="item-title col-50">提运单号</div>'
+                                        + '<div class="item-title col-33">企业编号</div>'
+                                        + '<div class="item-title col-20">海关状态</div>'
+                                    + '</div>'
+                                + '</li>'
+                            + '</ul>'
+                        + '</div>';
+                $.modal({
+                    //title: '<b>更多查询</b>',
+                    text: strname,
+                    //buttons: [{ text: '取消', bold: true, onClick: function () { } }],
+                    extraClass: 'girdnamediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $(document).on('click', '.girdnamediv', function () {
+                    $.closeModal(".girdnamediv");
+                });
+
+            }
+
             //----------------------------------------------------------------------------------------------------------------查询条件
             $("#txt_startdate").calendar({});
             $("#txt_enddate").calendar({});          
@@ -225,7 +284,7 @@
             var lastIndex = 0;//$('.list-block').length;//.list-container li       
 
             $(document).on('click', '.open-preloader-title', function () {
-                select();
+                select(); showGridName();
             });
 
             function select() {
@@ -647,7 +706,7 @@
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
                         var obj = eval("(" + data.d + ")");//将字符串转为json
-
+                        
                         var tb = ""; 
                         for (var i = 0; i < obj.length; i++) {
                             tb = '<div class="list-block" id="' + (obj[i]["CODE"] == null ? "" : obj[i]["CODE"]) + '">'
@@ -767,7 +826,7 @@
         <div id="page-infinite-scroll-bottom" class="page page-current">
             <%--search --%>
             <header class="bar bar-nav">
-                <div class="search-input">                    
+                <div class="search-input">                 
                     <div class="row"> 
                         <div class="col-85"><input type="search" id='txt_declcode' placeholder='请输入18位或后9位报关单号...'/></div>
                         <div class="col-15"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
@@ -777,10 +836,10 @@
                         <div class="col-5">~</div>
                         <div class="col-40"><input type="search" id='txt_enddate' placeholder='申报结束日期'/></div>
                         <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
-                    </div>                    
+                    </div> 
                 </div>  
                 <input type="hidden" id='txt_inout_type'/><input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/>  <input type="hidden" id='txt_customsstatus'/>                
-                <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>   
+                <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>                           
             </header>
 
             <%--工具栏 --%>

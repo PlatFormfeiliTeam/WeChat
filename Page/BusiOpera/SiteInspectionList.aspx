@@ -43,6 +43,18 @@
         {
            width: 100%;
         }
+        /************************************************ 查询列表名称*********************************/
+        .girdnamediv {
+            width: 98%;
+            left: 1%;
+            right: 1%;
+            margin-left: 0px;
+            text-align: left;
+            top: 14%;
+        } 
+        .girdnamediv .modal-inner{
+           padding:0px;
+        }  
         /************************************************ 更多查询*********************************/
         .morediv{
             width: 98%;
@@ -85,6 +97,59 @@
 
     <script type="text/javascript">
         $(function () {
+            //---------------------------------------------------------------------------------------------------------------列表名称
+            function showGridName() {
+                var strname = '<div class="list-block" style="margin:0;font-size:12px;color:black;">'
+                            + '<ul>'
+                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                        + '<div class="item-title col-40">收发货人</div>'
+                                        + '<div class="item-title col-25">业务类型</div>'
+                                        + '<div class="item-title col-33">订单编号</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                        + '<div class="item-title col-40">总分单号</div>'
+                                        + '<div class="item-title col-25">申报方式</div>'
+                                        + '<div class="item-title col-33">企业编号</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                        + '<div class="item-title col-40">现场交接</div>'
+                                        + '<div class="item-title col-25">件数/毛重</div>'
+                                        + '<div class="item-title col-33">合同号</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                        + '<div class="item-title col-40">查验维护</div>'
+                                        + '<div class="item-title col-25">查验标志</div>'
+                                        + '<div class="item-title col-33">查验图片</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border:2px solid #0894EC;">'
+                                        + '<div class="item-title col-40">现场放行</div>'
+                                        + '<div class="item-title col-25">法检标志</div>'
+                                        + '<div class="item-title col-33">通关单否</div>'
+                                    + '</div>'
+                                + '</li>'
+                            + '</ul>'
+                        + '</div>';
+                $.modal({
+                    //title: '<b>更多查询</b>',
+                    text: strname,
+                    //buttons: [{ text: '取消', bold: true, onClick: function () { } }],
+                    extraClass: 'girdnamediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $(document).on('click', '.girdnamediv', function () {
+                    $.closeModal(".girdnamediv");
+                });
+
+            }
 
             initsearch_condition();
            
@@ -94,7 +159,7 @@
             var lastIndex = 0;//$('.list-block').length;//.list-container li       
 
             $(document).on('click', '.open-preloader-title', function () {
-                select();
+                select(); showGridName();
             });
 
             function select() {
