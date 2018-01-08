@@ -89,9 +89,9 @@ namespace WeChat.Page.BusiOpera
         }
 
         [WebMethod]
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string isfumigation)
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string isfumigation, string inspcheckremark)
         {
-            return SiteInspection.checksave(ordercode, checktime, checkname, checkid, isfumigation);
+            return SiteInspection.checksave(ordercode, checktime, checkname, checkid, isfumigation, inspcheckremark);
         }
 
         [WebMethod]

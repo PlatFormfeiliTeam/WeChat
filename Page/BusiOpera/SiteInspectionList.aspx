@@ -82,17 +82,6 @@
         .morediv .modal-inner .list-block:first-child label .item-inner{
            margin-left:.2rem;padding-right:2px;
         }
-        /************************************************ 查验标志*********************************/
-        .checkdiv{
-            width: 98%;
-            left: 1%;
-            right: 1%;
-            margin-left: 0px;
-        }  
-        .checkdiv .modal-inner{
-            height:15rem;
-        } 
-
     </style>
 
     <script type="text/javascript">
@@ -125,7 +114,7 @@
                                 + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
                                     + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
                                         + '<div class="item-title col-40">查验维护</div>'
-                                        + '<div class="item-title col-25">查验标志</div>'
+                                        + '<div class="item-title col-25">查验/熏蒸</div>'
                                         + '<div class="item-title col-33">查验图片</div>'
                                     + '</div>'
                                 + '</li>'
@@ -535,9 +524,13 @@
                                         '<div class="col-33">熏蒸：</div>' +
                                         '<div class="col-66"><input type="checkbox" id="chk_isfumigation" style="width:18px;height:18px;" /></div>' +
                                     '</div> ' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">查验备注：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#ffffff;height:1.2rem;font-size:.7rem" id="txt_inspcheckremark" /></div>' +
+                                    '</div> ' +
                                 '</div>';
                 strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
-                                 '<ul>' +
+                                 '<ul style="background:#e8e8e8;">' +
                                    '<li>' +
                                        '<div class="row" style="height:2rem"> ' +
                                            '<div class="col-50" style="margin-top:.5rem;">箱号</div>' +
@@ -561,7 +554,7 @@
 
                         for (var i = 0; i < obj.length; i++) {
                             strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
-                                              '<ul>' +
+                                              '<ul style="background:#e8e8e8;">' +
                                                 '<li>' +
                                                     '<div class="row"> ' +
                                                        '<div class="col-50" style="margin-top:.5rem;">' + (obj[i]["CONTAINERNO"] == null ? "" : obj[i]["CONTAINERNO"]) + '</div>' +
@@ -595,7 +588,7 @@
                                         '</div>' +
                                     '</div>';
 
-                var popupHTML = '<div class="popup">' +
+                var popupHTML = '<div class="popup" style="background:#e8e8e8;">' +
                                  '<div class="content">' +//data-type='native'                                                                               
                                         strconHTML +
                                         strconButton +
@@ -626,6 +619,10 @@
                 if (inicheck == getname2("INSPISCHECK", 0, 1) || inicheck == getname2("INSPISCHECK", 1, 1)) {
                     $("#chk_isfumigation").prop("checked", true);//熏蒸赋值
                 }
+
+                $("#txt_inspcheckremark").val($("#div_list #" + divid).children("input").eq(0).val());//查验备注赋值
+
+
 
                 $("#checkcancel").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
 
@@ -680,14 +677,16 @@
                                 dataType: "json",
                                 data: "{'ordercode':'" + divid.substring(6) + "','checktime':'" + $("#txt_inspchecktime").val()
                                     + "','checkname':'" + $("#txt_inspcheckname").val() + "','checkid':'" + $("#txt_inspcheckid").val()
-                                    + "','isfumigation':'" + chksave_isfumigation + "'}",
+                                    + "','isfumigation':'" + chksave_isfumigation + "','inspcheckremark':'" + $("#txt_inspcheckremark").val() + "'}",
                                 cache: false,
                                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                                 success: function (data) {
                                     if (data.d != "") {
                                         $.toast("查验成功");
                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(data.d);//更新查验时间
-                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("INSPISCHECK", 1, chksave_isfumigation));
+                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("INSPISCHECK", 1, chksave_isfumigation));//更新查验/熏蒸标志
+                                        $("#div_list #" + divid).children("input").eq(0).val($("#txt_inspcheckremark").val());//更新查验备注
+
                                     } else {
                                         $.toast("查验失败");
                                     }
@@ -884,6 +883,7 @@
                             }
 
                             tb = '<div class="list-block" id="order_' + (obj[i]["CODE"] == null ? "" : obj[i]["CODE"]) + '">'
+                                    + '<input type="hidden" value="' + (obj[i]["INSPCHECKREMARK"] == null ? "" : obj[i]["INSPCHECKREMARK"]) + '" readonly />'
                                     + '<ul>'
                                         + '<li class="item-content">'
                                              + '<div class="item-inner row">'

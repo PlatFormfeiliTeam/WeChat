@@ -127,7 +127,8 @@ namespace WeChat.ModelBusi
                                     ,(select name from cusdoc.sys_repway where enabled=1 and code=ort.repwayid and rownum=1) repwayname,ort.cusno
                                     ,to_char(ort.inspsiteapplytime,'yyyyMMdd HH24:mi') inspsiteapplytime,ort.goodsnum,ort.goodsgw,ort.contractno
                                     ,to_char(ort.inspchecktime,'yyyyMMdd HH24:mi') inspchecktime,ort.inspischeck,ort.isfumigation,ort.inspcheckpic
-                                    ,to_char(ort.inspsitepasstime,'yyyyMMdd HH24:mi') inspsitepasstime,ort.lawflag,ort.isneedclearance 
+                                    ,to_char(ort.inspsitepasstime,'yyyyMMdd HH24:mi') inspsitepasstime,ort.lawflag,ort.isneedclearance
+                                    ,ort.inspcheckremark 
                                 from list_order ort
                                     left join list_inspection li on ort.code=li.ordercode 
                                 where ort.entrusttype in('02','03') and ort.isinvalid=0 and li.isinvalid=0" + where;
@@ -248,13 +249,14 @@ namespace WeChat.ModelBusi
             }
         }
 
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string isfumigation)
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string isfumigation, string inspcheckremark)
         {
             using (DBSession db = new DBSession())
             {
                 string sql = @"update list_order set inspischeck=1,inspcheckid='{1}',inspcheckname='{2}',inspchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
-                                    ,fumigationname='{2}',fumigationtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),isfumigation='{4}' where code='{0}'";
-                sql = string.Format(sql, ordercode, checkid, checkname, checktime, isfumigation);
+                                    ,fumigationname='{2}',fumigationtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),isfumigation='{4}',inspcheckremark='{5}' 
+                                where code='{0}'";
+                sql = string.Format(sql, ordercode, checkid, checkname, checktime, isfumigation, inspcheckremark);
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
                 {
@@ -284,7 +286,7 @@ namespace WeChat.ModelBusi
 
                 List<string> sqls = new List<string>();
                 string sql = @"update list_order set inspischeck=0,inspcheckid=null,inspcheckname=null,inspchecktime=null,inspcheckpic=0
-                                ,fumigationname=null,fumigationtime=null,isfumigation=0 where code='" + ordercode + "'";
+                                ,fumigationname=null,fumigationtime=null,isfumigation=0,inspcheckremark='' where code='" + ordercode + "'";
                 string sql2 = "delete LIST_ATTACHMENT where ordercode='" + ordercode + "' and filetype='68'";
 
                 sqls.Add(sql); sqls.Add(sql2);
