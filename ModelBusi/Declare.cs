@@ -196,7 +196,14 @@ namespace WeChat.ModelBusi
 
 
                     //修改删改单标志
-                    sql = @"update list_declaration set modifyflag=" + modifyflag + " where code='" + predelcode + "'";
+                    //sql = @"update list_declaration set modifyflag=" + modifyflag + " where code='" + predelcode + "'";
+
+                    sql = @"update list_declaration set modifyflag=" + modifyflag;
+                    if (modifyflag == 1) { sql += ",delorderuserid='{1}',delorderusername='{2}',delordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+                    else { sql += ",modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+                    sql += " where code='{0}'";
+                    sql = string.Format(sql, predelcode, "763", "昆山吉时报关有限公司", DateTime.Now);
+
                     db.ExecuteSignle(sql);
 
                     //保存操作记录list_times
