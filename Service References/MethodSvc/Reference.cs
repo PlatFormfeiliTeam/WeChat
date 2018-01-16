@@ -206,6 +206,14 @@ namespace WeChat.MethodSvc {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMethodService/Invalid_Offline_OrderAndDecl", ReplyAction="http://tempuri.org/IMethodService/Invalid_Offline_OrderAndDeclResponse")]
         System.Threading.Tasks.Task<WeChat.MethodSvc.Invalid_Offline_OrderAndDeclResponse> Invalid_Offline_OrderAndDeclAsync(WeChat.MethodSvc.Invalid_Offline_OrderAndDeclRequest request);
+        
+        // CODEGEN: 参数“orderCode”需要其他方案信息，使用参数模式无法捕获这些信息。特定特性为“System.Xml.Serialization.XmlElementAttribute”。
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMethodService/FinanceExceptionOrder", ReplyAction="http://tempuri.org/IMethodService/FinanceExceptionOrderResponse")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
+        WeChat.MethodSvc.FinanceExceptionOrderResponse FinanceExceptionOrder(WeChat.MethodSvc.FinanceExceptionOrderRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMethodService/FinanceExceptionOrder", ReplyAction="http://tempuri.org/IMethodService/FinanceExceptionOrderResponse")]
+        System.Threading.Tasks.Task<WeChat.MethodSvc.FinanceExceptionOrderResponse> FinanceExceptionOrderAsync(WeChat.MethodSvc.FinanceExceptionOrderRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -1605,6 +1613,8 @@ namespace WeChat.MethodSvc {
         
         private string aSSOCIATEPEDECLNOk__BackingFieldField;
         
+        private System.Nullable<decimal> aUTOCHANNELk__BackingFieldField;
+        
         private string bLNOk__BackingFieldField;
         
         private string bUSITYPEk__BackingFieldField;
@@ -1683,6 +1693,12 @@ namespace WeChat.MethodSvc {
         
         private string dECLWAYk__BackingFieldField;
         
+        private System.Nullable<System.DateTime> dELORDERTIMEk__BackingFieldField;
+        
+        private System.Nullable<decimal> dELORDERUSERIDk__BackingFieldField;
+        
+        private string dELORDERUSERNAMEk__BackingFieldField;
+        
         private string eXEMPTIONCODEk__BackingFieldField;
         
         private string fGCODEk__BackingFieldField;
@@ -1736,6 +1752,12 @@ namespace WeChat.MethodSvc {
         private string mOCURRENTNAMEk__BackingFieldField;
         
         private System.Nullable<decimal> mODIFYFLAGk__BackingFieldField;
+        
+        private System.Nullable<System.DateTime> mODORDERTIMEk__BackingFieldField;
+        
+        private System.Nullable<decimal> mODORDERUSERIDk__BackingFieldField;
+        
+        private string mODORDERUSERNAMEk__BackingFieldField;
         
         private System.Nullable<decimal> mOEDITk__BackingFieldField;
         
@@ -1960,7 +1982,19 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BLNO>k__BackingField", IsNullable=true, Order=5)]
+        [System.Xml.Serialization.XmlElementAttribute("<AUTOCHANNEL>k__BackingField", IsNullable=true, Order=5)]
+        public System.Nullable<decimal> AUTOCHANNELk__BackingField {
+            get {
+                return this.aUTOCHANNELk__BackingFieldField;
+            }
+            set {
+                this.aUTOCHANNELk__BackingFieldField = value;
+                this.RaisePropertyChanged("AUTOCHANNELk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<BLNO>k__BackingField", IsNullable=true, Order=6)]
         public string BLNOk__BackingField {
             get {
                 return this.bLNOk__BackingFieldField;
@@ -1972,7 +2006,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BUSITYPE>k__BackingField", IsNullable=true, Order=6)]
+        [System.Xml.Serialization.XmlElementAttribute("<BUSITYPE>k__BackingField", IsNullable=true, Order=7)]
         public string BUSITYPEk__BackingField {
             get {
                 return this.bUSITYPEk__BackingFieldField;
@@ -1984,7 +2018,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITCODE>k__BackingField", IsNullable=true, Order=7)]
+        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITCODE>k__BackingField", IsNullable=true, Order=8)]
         public string BUSIUNITCODEk__BackingField {
             get {
                 return this.bUSIUNITCODEk__BackingFieldField;
@@ -1996,7 +2030,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITNAME>k__BackingField", IsNullable=true, Order=8)]
+        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITNAME>k__BackingField", IsNullable=true, Order=9)]
         public string BUSIUNITNAMEk__BackingField {
             get {
                 return this.bUSIUNITNAMEk__BackingFieldField;
@@ -2008,7 +2042,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITNUM>k__BackingField", IsNullable=true, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITNUM>k__BackingField", IsNullable=true, Order=10)]
         public string BUSIUNITNUMk__BackingField {
             get {
                 return this.bUSIUNITNUMk__BackingFieldField;
@@ -2020,7 +2054,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CHANNEL>k__BackingField", IsNullable=true, Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute("<CHANNEL>k__BackingField", IsNullable=true, Order=11)]
         public string CHANNELk__BackingField {
             get {
                 return this.cHANNELk__BackingFieldField;
@@ -2032,7 +2066,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CHECKFLAG>k__BackingField", IsNullable=true, Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute("<CHECKFLAG>k__BackingField", IsNullable=true, Order=12)]
         public System.Nullable<decimal> CHECKFLAGk__BackingField {
             get {
                 return this.cHECKFLAGk__BackingFieldField;
@@ -2044,7 +2078,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CKFINISHTIME>k__BackingField", IsNullable=true, Order=12)]
+        [System.Xml.Serialization.XmlElementAttribute("<CKFINISHTIME>k__BackingField", IsNullable=true, Order=13)]
         public System.Nullable<System.DateTime> CKFINISHTIMEk__BackingField {
             get {
                 return this.cKFINISHTIMEk__BackingFieldField;
@@ -2056,7 +2090,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CKID>k__BackingField", IsNullable=true, Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute("<CKID>k__BackingField", IsNullable=true, Order=14)]
         public System.Nullable<decimal> CKIDk__BackingField {
             get {
                 return this.cKIDk__BackingFieldField;
@@ -2068,7 +2102,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CKNAME>k__BackingField", IsNullable=true, Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute("<CKNAME>k__BackingField", IsNullable=true, Order=15)]
         public string CKNAMEk__BackingField {
             get {
                 return this.cKNAMEk__BackingFieldField;
@@ -2080,7 +2114,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COCURRENTID>k__BackingField", IsNullable=true, Order=15)]
+        [System.Xml.Serialization.XmlElementAttribute("<COCURRENTID>k__BackingField", IsNullable=true, Order=16)]
         public System.Nullable<decimal> COCURRENTIDk__BackingField {
             get {
                 return this.cOCURRENTIDk__BackingFieldField;
@@ -2092,7 +2126,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COCURRENTNAME>k__BackingField", IsNullable=true, Order=16)]
+        [System.Xml.Serialization.XmlElementAttribute("<COCURRENTNAME>k__BackingField", IsNullable=true, Order=17)]
         public string COCURRENTNAMEk__BackingField {
             get {
                 return this.cOCURRENTNAMEk__BackingFieldField;
@@ -2104,7 +2138,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CODETYPE>k__BackingField", IsNullable=true, Order=17)]
+        [System.Xml.Serialization.XmlElementAttribute("<CODETYPE>k__BackingField", IsNullable=true, Order=18)]
         public string CODETYPEk__BackingField {
             get {
                 return this.cODETYPEk__BackingFieldField;
@@ -2116,7 +2150,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CODE>k__BackingField", IsNullable=true, Order=18)]
+        [System.Xml.Serialization.XmlElementAttribute("<CODE>k__BackingField", IsNullable=true, Order=19)]
         public string CODEk__BackingField {
             get {
                 return this.cODEk__BackingFieldField;
@@ -2128,7 +2162,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COEDIT>k__BackingField", IsNullable=true, Order=19)]
+        [System.Xml.Serialization.XmlElementAttribute("<COEDIT>k__BackingField", IsNullable=true, Order=20)]
         public System.Nullable<decimal> COEDITk__BackingField {
             get {
                 return this.cOEDITk__BackingFieldField;
@@ -2140,7 +2174,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COENDID>k__BackingField", IsNullable=true, Order=20)]
+        [System.Xml.Serialization.XmlElementAttribute("<COENDID>k__BackingField", IsNullable=true, Order=21)]
         public System.Nullable<decimal> COENDIDk__BackingField {
             get {
                 return this.cOENDIDk__BackingFieldField;
@@ -2152,7 +2186,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COENDNAME>k__BackingField", IsNullable=true, Order=21)]
+        [System.Xml.Serialization.XmlElementAttribute("<COENDNAME>k__BackingField", IsNullable=true, Order=22)]
         public string COENDNAMEk__BackingField {
             get {
                 return this.cOENDNAMEk__BackingFieldField;
@@ -2164,7 +2198,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COENDTIME>k__BackingField", IsNullable=true, Order=22)]
+        [System.Xml.Serialization.XmlElementAttribute("<COENDTIME>k__BackingField", IsNullable=true, Order=23)]
         public System.Nullable<System.DateTime> COENDTIMEk__BackingField {
             get {
                 return this.cOENDTIMEk__BackingFieldField;
@@ -2176,7 +2210,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COMMODITYNUM>k__BackingField", IsNullable=true, Order=23)]
+        [System.Xml.Serialization.XmlElementAttribute("<COMMODITYNUM>k__BackingField", IsNullable=true, Order=24)]
         public System.Nullable<decimal> COMMODITYNUMk__BackingField {
             get {
                 return this.cOMMODITYNUMk__BackingFieldField;
@@ -2188,7 +2222,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CONSHIPPERCODE>k__BackingField", IsNullable=true, Order=24)]
+        [System.Xml.Serialization.XmlElementAttribute("<CONSHIPPERCODE>k__BackingField", IsNullable=true, Order=25)]
         public string CONSHIPPERCODEk__BackingField {
             get {
                 return this.cONSHIPPERCODEk__BackingFieldField;
@@ -2200,7 +2234,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CONSHIPPERNAME>k__BackingField", IsNullable=true, Order=25)]
+        [System.Xml.Serialization.XmlElementAttribute("<CONSHIPPERNAME>k__BackingField", IsNullable=true, Order=26)]
         public string CONSHIPPERNAMEk__BackingField {
             get {
                 return this.cONSHIPPERNAMEk__BackingFieldField;
@@ -2212,7 +2246,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CONSHIPPERNUM>k__BackingField", IsNullable=true, Order=26)]
+        [System.Xml.Serialization.XmlElementAttribute("<CONSHIPPERNUM>k__BackingField", IsNullable=true, Order=27)]
         public string CONSHIPPERNUMk__BackingField {
             get {
                 return this.cONSHIPPERNUMk__BackingFieldField;
@@ -2224,7 +2258,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CONTRACTNO>k__BackingField", IsNullable=true, Order=27)]
+        [System.Xml.Serialization.XmlElementAttribute("<CONTRACTNO>k__BackingField", IsNullable=true, Order=28)]
         public string CONTRACTNOk__BackingField {
             get {
                 return this.cONTRACTNOk__BackingFieldField;
@@ -2236,7 +2270,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COSTARTID>k__BackingField", IsNullable=true, Order=28)]
+        [System.Xml.Serialization.XmlElementAttribute("<COSTARTID>k__BackingField", IsNullable=true, Order=29)]
         public System.Nullable<decimal> COSTARTIDk__BackingField {
             get {
                 return this.cOSTARTIDk__BackingFieldField;
@@ -2248,7 +2282,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COSTARTNAME>k__BackingField", IsNullable=true, Order=29)]
+        [System.Xml.Serialization.XmlElementAttribute("<COSTARTNAME>k__BackingField", IsNullable=true, Order=30)]
         public string COSTARTNAMEk__BackingField {
             get {
                 return this.cOSTARTNAMEk__BackingFieldField;
@@ -2260,7 +2294,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COSTARTTIME>k__BackingField", IsNullable=true, Order=30)]
+        [System.Xml.Serialization.XmlElementAttribute("<COSTARTTIME>k__BackingField", IsNullable=true, Order=31)]
         public System.Nullable<System.DateTime> COSTARTTIMEk__BackingField {
             get {
                 return this.cOSTARTTIMEk__BackingFieldField;
@@ -2272,7 +2306,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CURRENTCODE>k__BackingField", IsNullable=true, Order=31)]
+        [System.Xml.Serialization.XmlElementAttribute("<CURRENTCODE>k__BackingField", IsNullable=true, Order=32)]
         public string CURRENTCODEk__BackingField {
             get {
                 return this.cURRENTCODEk__BackingFieldField;
@@ -2284,7 +2318,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CUSNO>k__BackingField", IsNullable=true, Order=32)]
+        [System.Xml.Serialization.XmlElementAttribute("<CUSNO>k__BackingField", IsNullable=true, Order=33)]
         public string CUSNOk__BackingField {
             get {
                 return this.cUSNOk__BackingFieldField;
@@ -2296,7 +2330,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMAREACODE>k__BackingField", IsNullable=true, Order=33)]
+        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMAREACODE>k__BackingField", IsNullable=true, Order=34)]
         public string CUSTOMAREACODEk__BackingField {
             get {
                 return this.cUSTOMAREACODEk__BackingFieldField;
@@ -2308,7 +2342,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMSSTATUS>k__BackingField", IsNullable=true, Order=34)]
+        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMSSTATUS>k__BackingField", IsNullable=true, Order=35)]
         public string CUSTOMSSTATUSk__BackingField {
             get {
                 return this.cUSTOMSSTATUSk__BackingFieldField;
@@ -2320,7 +2354,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DATACONFIRMUSERID>k__BackingField", IsNullable=true, Order=35)]
+        [System.Xml.Serialization.XmlElementAttribute("<DATACONFIRMUSERID>k__BackingField", IsNullable=true, Order=36)]
         public System.Nullable<decimal> DATACONFIRMUSERIDk__BackingField {
             get {
                 return this.dATACONFIRMUSERIDk__BackingFieldField;
@@ -2332,7 +2366,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DATACONFIRMUSERNAME>k__BackingField", IsNullable=true, Order=36)]
+        [System.Xml.Serialization.XmlElementAttribute("<DATACONFIRMUSERNAME>k__BackingField", IsNullable=true, Order=37)]
         public string DATACONFIRMUSERNAMEk__BackingField {
             get {
                 return this.dATACONFIRMUSERNAMEk__BackingFieldField;
@@ -2344,7 +2378,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DATACONFIRMUSERTIME>k__BackingField", IsNullable=true, Order=37)]
+        [System.Xml.Serialization.XmlElementAttribute("<DATACONFIRMUSERTIME>k__BackingField", IsNullable=true, Order=38)]
         public System.Nullable<System.DateTime> DATACONFIRMUSERTIMEk__BackingField {
             get {
                 return this.dATACONFIRMUSERTIMEk__BackingFieldField;
@@ -2356,7 +2390,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DATACONFIRM>k__BackingField", IsNullable=true, Order=38)]
+        [System.Xml.Serialization.XmlElementAttribute("<DATACONFIRM>k__BackingField", IsNullable=true, Order=39)]
         public System.Nullable<decimal> DATACONFIRMk__BackingField {
             get {
                 return this.dATACONFIRMk__BackingFieldField;
@@ -2368,7 +2402,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DECLARATIONCODE>k__BackingField", IsNullable=true, Order=39)]
+        [System.Xml.Serialization.XmlElementAttribute("<DECLARATIONCODE>k__BackingField", IsNullable=true, Order=40)]
         public string DECLARATIONCODEk__BackingField {
             get {
                 return this.dECLARATIONCODEk__BackingFieldField;
@@ -2380,7 +2414,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DECLCODESOURCE>k__BackingField", IsNullable=true, Order=40)]
+        [System.Xml.Serialization.XmlElementAttribute("<DECLCODESOURCE>k__BackingField", IsNullable=true, Order=41)]
         public System.Nullable<decimal> DECLCODESOURCEk__BackingField {
             get {
                 return this.dECLCODESOURCEk__BackingFieldField;
@@ -2392,7 +2426,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DECLREMARK>k__BackingField", IsNullable=true, Order=41)]
+        [System.Xml.Serialization.XmlElementAttribute("<DECLREMARK>k__BackingField", IsNullable=true, Order=42)]
         public string DECLREMARKk__BackingField {
             get {
                 return this.dECLREMARKk__BackingFieldField;
@@ -2404,7 +2438,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DECLTYPE>k__BackingField", IsNullable=true, Order=42)]
+        [System.Xml.Serialization.XmlElementAttribute("<DECLTYPE>k__BackingField", IsNullable=true, Order=43)]
         public string DECLTYPEk__BackingField {
             get {
                 return this.dECLTYPEk__BackingFieldField;
@@ -2416,7 +2450,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DECLWAY>k__BackingField", IsNullable=true, Order=43)]
+        [System.Xml.Serialization.XmlElementAttribute("<DECLWAY>k__BackingField", IsNullable=true, Order=44)]
         public string DECLWAYk__BackingField {
             get {
                 return this.dECLWAYk__BackingFieldField;
@@ -2428,7 +2462,43 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<EXEMPTIONCODE>k__BackingField", IsNullable=true, Order=44)]
+        [System.Xml.Serialization.XmlElementAttribute("<DELORDERTIME>k__BackingField", IsNullable=true, Order=45)]
+        public System.Nullable<System.DateTime> DELORDERTIMEk__BackingField {
+            get {
+                return this.dELORDERTIMEk__BackingFieldField;
+            }
+            set {
+                this.dELORDERTIMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("DELORDERTIMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<DELORDERUSERID>k__BackingField", IsNullable=true, Order=46)]
+        public System.Nullable<decimal> DELORDERUSERIDk__BackingField {
+            get {
+                return this.dELORDERUSERIDk__BackingFieldField;
+            }
+            set {
+                this.dELORDERUSERIDk__BackingFieldField = value;
+                this.RaisePropertyChanged("DELORDERUSERIDk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<DELORDERUSERNAME>k__BackingField", IsNullable=true, Order=47)]
+        public string DELORDERUSERNAMEk__BackingField {
+            get {
+                return this.dELORDERUSERNAMEk__BackingFieldField;
+            }
+            set {
+                this.dELORDERUSERNAMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("DELORDERUSERNAMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<EXEMPTIONCODE>k__BackingField", IsNullable=true, Order=48)]
         public string EXEMPTIONCODEk__BackingField {
             get {
                 return this.eXEMPTIONCODEk__BackingFieldField;
@@ -2440,7 +2510,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FGCODE>k__BackingField", IsNullable=true, Order=45)]
+        [System.Xml.Serialization.XmlElementAttribute("<FGCODE>k__BackingField", IsNullable=true, Order=49)]
         public string FGCODEk__BackingField {
             get {
                 return this.fGCODEk__BackingFieldField;
@@ -2452,7 +2522,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FGUNITCODE>k__BackingField", IsNullable=true, Order=46)]
+        [System.Xml.Serialization.XmlElementAttribute("<FGUNITCODE>k__BackingField", IsNullable=true, Order=50)]
         public string FGUNITCODEk__BackingField {
             get {
                 return this.fGUNITCODEk__BackingFieldField;
@@ -2464,7 +2534,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FORMATAUTO>k__BackingField", IsNullable=true, Order=47)]
+        [System.Xml.Serialization.XmlElementAttribute("<FORMATAUTO>k__BackingField", IsNullable=true, Order=51)]
         public System.Nullable<decimal> FORMATAUTOk__BackingField {
             get {
                 return this.fORMATAUTOk__BackingFieldField;
@@ -2476,7 +2546,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FREIGHT>k__BackingField", IsNullable=true, Order=48)]
+        [System.Xml.Serialization.XmlElementAttribute("<FREIGHT>k__BackingField", IsNullable=true, Order=52)]
         public System.Nullable<decimal> FREIGHTk__BackingField {
             get {
                 return this.fREIGHTk__BackingFieldField;
@@ -2488,7 +2558,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<GOODSGW>k__BackingField", IsNullable=true, Order=49)]
+        [System.Xml.Serialization.XmlElementAttribute("<GOODSGW>k__BackingField", IsNullable=true, Order=53)]
         public System.Nullable<decimal> GOODSGWk__BackingField {
             get {
                 return this.gOODSGWk__BackingFieldField;
@@ -2500,7 +2570,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<GOODSNUM>k__BackingField", IsNullable=true, Order=50)]
+        [System.Xml.Serialization.XmlElementAttribute("<GOODSNUM>k__BackingField", IsNullable=true, Order=54)]
         public System.Nullable<decimal> GOODSNUMk__BackingField {
             get {
                 return this.gOODSNUMk__BackingFieldField;
@@ -2512,7 +2582,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<GOODSNW>k__BackingField", IsNullable=true, Order=51)]
+        [System.Xml.Serialization.XmlElementAttribute("<GOODSNW>k__BackingField", IsNullable=true, Order=55)]
         public System.Nullable<decimal> GOODSNWk__BackingField {
             get {
                 return this.gOODSNWk__BackingFieldField;
@@ -2524,7 +2594,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ID>k__BackingField", Order=52)]
+        [System.Xml.Serialization.XmlElementAttribute("<ID>k__BackingField", Order=56)]
         public int IDk__BackingField {
             get {
                 return this.iDk__BackingFieldField;
@@ -2536,7 +2606,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSURANCEPREMIUM>k__BackingField", IsNullable=true, Order=53)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSURANCEPREMIUM>k__BackingField", IsNullable=true, Order=57)]
         public System.Nullable<decimal> INSURANCEPREMIUMk__BackingField {
             get {
                 return this.iNSURANCEPREMIUMk__BackingFieldField;
@@ -2548,7 +2618,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INVALIDREASON>k__BackingField", IsNullable=true, Order=54)]
+        [System.Xml.Serialization.XmlElementAttribute("<INVALIDREASON>k__BackingField", IsNullable=true, Order=58)]
         public string INVALIDREASONk__BackingField {
             get {
                 return this.iNVALIDREASONk__BackingFieldField;
@@ -2560,7 +2630,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<IPCODE>k__BackingField", IsNullable=true, Order=55)]
+        [System.Xml.Serialization.XmlElementAttribute("<IPCODE>k__BackingField", IsNullable=true, Order=59)]
         public string IPCODEk__BackingField {
             get {
                 return this.iPCODEk__BackingFieldField;
@@ -2572,7 +2642,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<IPUNITCODE>k__BackingField", IsNullable=true, Order=56)]
+        [System.Xml.Serialization.XmlElementAttribute("<IPUNITCODE>k__BackingField", IsNullable=true, Order=60)]
         public string IPUNITCODEk__BackingField {
             get {
                 return this.iPUNITCODEk__BackingFieldField;
@@ -2584,7 +2654,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISACCEPT>k__BackingField", IsNullable=true, Order=57)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISACCEPT>k__BackingField", IsNullable=true, Order=61)]
         public System.Nullable<decimal> ISACCEPTk__BackingField {
             get {
                 return this.iSACCEPTk__BackingFieldField;
@@ -2596,7 +2666,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISFORCELAW>k__BackingField", IsNullable=true, Order=58)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISFORCELAW>k__BackingField", IsNullable=true, Order=62)]
         public System.Nullable<decimal> ISFORCELAWk__BackingField {
             get {
                 return this.iSFORCELAWk__BackingFieldField;
@@ -2608,7 +2678,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISHAVECLEARANCE>k__BackingField", IsNullable=true, Order=59)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISHAVECLEARANCE>k__BackingField", IsNullable=true, Order=63)]
         public System.Nullable<decimal> ISHAVECLEARANCEk__BackingField {
             get {
                 return this.iSHAVECLEARANCEk__BackingFieldField;
@@ -2620,7 +2690,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISINVALID>k__BackingField", IsNullable=true, Order=60)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISINVALID>k__BackingField", IsNullable=true, Order=64)]
         public System.Nullable<decimal> ISINVALIDk__BackingField {
             get {
                 return this.iSINVALIDk__BackingFieldField;
@@ -2632,7 +2702,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISNEEDCLEARANCE>k__BackingField", IsNullable=true, Order=61)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISNEEDCLEARANCE>k__BackingField", IsNullable=true, Order=65)]
         public System.Nullable<decimal> ISNEEDCLEARANCEk__BackingField {
             get {
                 return this.iSNEEDCLEARANCEk__BackingFieldField;
@@ -2644,7 +2714,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISPAUSE>k__BackingField", IsNullable=true, Order=62)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISPAUSE>k__BackingField", IsNullable=true, Order=66)]
         public System.Nullable<decimal> ISPAUSEk__BackingField {
             get {
                 return this.iSPAUSEk__BackingFieldField;
@@ -2656,7 +2726,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISPRINT>k__BackingField", IsNullable=true, Order=63)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISPRINT>k__BackingField", IsNullable=true, Order=67)]
         public System.Nullable<decimal> ISPRINTk__BackingField {
             get {
                 return this.iSPRINTk__BackingFieldField;
@@ -2668,7 +2738,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISSPLIT>k__BackingField", IsNullable=true, Order=64)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISSPLIT>k__BackingField", IsNullable=true, Order=68)]
         public System.Nullable<decimal> ISSPLITk__BackingField {
             get {
                 return this.iSSPLITk__BackingFieldField;
@@ -2680,7 +2750,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<LICENSENO>k__BackingField", IsNullable=true, Order=65)]
+        [System.Xml.Serialization.XmlElementAttribute("<LICENSENO>k__BackingField", IsNullable=true, Order=69)]
         public string LICENSENOk__BackingField {
             get {
                 return this.lICENSENOk__BackingFieldField;
@@ -2692,7 +2762,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<LISTINFO>k__BackingField", IsNullable=true, Order=66)]
+        [System.Xml.Serialization.XmlElementAttribute("<LISTINFO>k__BackingField", IsNullable=true, Order=70)]
         public string LISTINFOk__BackingField {
             get {
                 return this.lISTINFOk__BackingFieldField;
@@ -2704,7 +2774,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<LISTTYPE>k__BackingField", IsNullable=true, Order=67)]
+        [System.Xml.Serialization.XmlElementAttribute("<LISTTYPE>k__BackingField", IsNullable=true, Order=71)]
         public string LISTTYPEk__BackingField {
             get {
                 return this.lISTTYPEk__BackingFieldField;
@@ -2716,7 +2786,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOCURRENTID>k__BackingField", IsNullable=true, Order=68)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOCURRENTID>k__BackingField", IsNullable=true, Order=72)]
         public System.Nullable<decimal> MOCURRENTIDk__BackingField {
             get {
                 return this.mOCURRENTIDk__BackingFieldField;
@@ -2728,7 +2798,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOCURRENTNAME>k__BackingField", IsNullable=true, Order=69)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOCURRENTNAME>k__BackingField", IsNullable=true, Order=73)]
         public string MOCURRENTNAMEk__BackingField {
             get {
                 return this.mOCURRENTNAMEk__BackingFieldField;
@@ -2740,7 +2810,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MODIFYFLAG>k__BackingField", IsNullable=true, Order=70)]
+        [System.Xml.Serialization.XmlElementAttribute("<MODIFYFLAG>k__BackingField", IsNullable=true, Order=74)]
         public System.Nullable<decimal> MODIFYFLAGk__BackingField {
             get {
                 return this.mODIFYFLAGk__BackingFieldField;
@@ -2752,7 +2822,43 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOEDIT>k__BackingField", IsNullable=true, Order=71)]
+        [System.Xml.Serialization.XmlElementAttribute("<MODORDERTIME>k__BackingField", IsNullable=true, Order=75)]
+        public System.Nullable<System.DateTime> MODORDERTIMEk__BackingField {
+            get {
+                return this.mODORDERTIMEk__BackingFieldField;
+            }
+            set {
+                this.mODORDERTIMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("MODORDERTIMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<MODORDERUSERID>k__BackingField", IsNullable=true, Order=76)]
+        public System.Nullable<decimal> MODORDERUSERIDk__BackingField {
+            get {
+                return this.mODORDERUSERIDk__BackingFieldField;
+            }
+            set {
+                this.mODORDERUSERIDk__BackingFieldField = value;
+                this.RaisePropertyChanged("MODORDERUSERIDk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<MODORDERUSERNAME>k__BackingField", IsNullable=true, Order=77)]
+        public string MODORDERUSERNAMEk__BackingField {
+            get {
+                return this.mODORDERUSERNAMEk__BackingFieldField;
+            }
+            set {
+                this.mODORDERUSERNAMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("MODORDERUSERNAMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<MOEDIT>k__BackingField", IsNullable=true, Order=78)]
         public System.Nullable<decimal> MOEDITk__BackingField {
             get {
                 return this.mOEDITk__BackingFieldField;
@@ -2764,7 +2870,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOENDID>k__BackingField", IsNullable=true, Order=72)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOENDID>k__BackingField", IsNullable=true, Order=79)]
         public System.Nullable<decimal> MOENDIDk__BackingField {
             get {
                 return this.mOENDIDk__BackingFieldField;
@@ -2776,7 +2882,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOENDNAME>k__BackingField", IsNullable=true, Order=73)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOENDNAME>k__BackingField", IsNullable=true, Order=80)]
         public string MOENDNAMEk__BackingField {
             get {
                 return this.mOENDNAMEk__BackingFieldField;
@@ -2788,7 +2894,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOENDTIME>k__BackingField", IsNullable=true, Order=74)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOENDTIME>k__BackingField", IsNullable=true, Order=81)]
         public System.Nullable<System.DateTime> MOENDTIMEk__BackingField {
             get {
                 return this.mOENDTIMEk__BackingFieldField;
@@ -2800,7 +2906,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTID>k__BackingField", IsNullable=true, Order=75)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTID>k__BackingField", IsNullable=true, Order=82)]
         public System.Nullable<decimal> MOSTARTIDk__BackingField {
             get {
                 return this.mOSTARTIDk__BackingFieldField;
@@ -2812,7 +2918,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTNAME>k__BackingField", IsNullable=true, Order=76)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTNAME>k__BackingField", IsNullable=true, Order=83)]
         public string MOSTARTNAMEk__BackingField {
             get {
                 return this.mOSTARTNAMEk__BackingFieldField;
@@ -2824,7 +2930,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTTIME>k__BackingField", IsNullable=true, Order=77)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTTIME>k__BackingField", IsNullable=true, Order=84)]
         public System.Nullable<System.DateTime> MOSTARTTIMEk__BackingField {
             get {
                 return this.mOSTARTTIMEk__BackingFieldField;
@@ -2836,7 +2942,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ORDERCODE>k__BackingField", IsNullable=true, Order=78)]
+        [System.Xml.Serialization.XmlElementAttribute("<ORDERCODE>k__BackingField", IsNullable=true, Order=85)]
         public string ORDERCODEk__BackingField {
             get {
                 return this.oRDERCODEk__BackingFieldField;
@@ -2848,7 +2954,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PACKAGECODE>k__BackingField", IsNullable=true, Order=79)]
+        [System.Xml.Serialization.XmlElementAttribute("<PACKAGECODE>k__BackingField", IsNullable=true, Order=86)]
         public string PACKAGECODEk__BackingField {
             get {
                 return this.pACKAGECODEk__BackingFieldField;
@@ -2860,7 +2966,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PAUSEUSERID>k__BackingField", IsNullable=true, Order=80)]
+        [System.Xml.Serialization.XmlElementAttribute("<PAUSEUSERID>k__BackingField", IsNullable=true, Order=87)]
         public System.Nullable<decimal> PAUSEUSERIDk__BackingField {
             get {
                 return this.pAUSEUSERIDk__BackingFieldField;
@@ -2872,7 +2978,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PAUSEUSERNAME>k__BackingField", IsNullable=true, Order=81)]
+        [System.Xml.Serialization.XmlElementAttribute("<PAUSEUSERNAME>k__BackingField", IsNullable=true, Order=88)]
         public string PAUSEUSERNAMEk__BackingField {
             get {
                 return this.pAUSEUSERNAMEk__BackingFieldField;
@@ -2884,7 +2990,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PAYPOYALTIES>k__BackingField", IsNullable=true, Order=82)]
+        [System.Xml.Serialization.XmlElementAttribute("<PAYPOYALTIES>k__BackingField", IsNullable=true, Order=89)]
         public System.Nullable<decimal> PAYPOYALTIESk__BackingField {
             get {
                 return this.pAYPOYALTIESk__BackingFieldField;
@@ -2896,7 +3002,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PORTCODE>k__BackingField", IsNullable=true, Order=83)]
+        [System.Xml.Serialization.XmlElementAttribute("<PORTCODE>k__BackingField", IsNullable=true, Order=90)]
         public string PORTCODEk__BackingField {
             get {
                 return this.pORTCODEk__BackingFieldField;
@@ -2908,7 +3014,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREACCTIME>k__BackingField", IsNullable=true, Order=84)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREACCTIME>k__BackingField", IsNullable=true, Order=91)]
         public System.Nullable<System.DateTime> PREACCTIMEk__BackingField {
             get {
                 return this.pREACCTIMEk__BackingFieldField;
@@ -2920,7 +3026,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREACCUSERID>k__BackingField", IsNullable=true, Order=85)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREACCUSERID>k__BackingField", IsNullable=true, Order=92)]
         public System.Nullable<decimal> PREACCUSERIDk__BackingField {
             get {
                 return this.pREACCUSERIDk__BackingFieldField;
@@ -2932,7 +3038,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREACCUSERNAME>k__BackingField", IsNullable=true, Order=86)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREACCUSERNAME>k__BackingField", IsNullable=true, Order=93)]
         public string PREACCUSERNAMEk__BackingField {
             get {
                 return this.pREACCUSERNAMEk__BackingFieldField;
@@ -2944,7 +3050,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREEDITTIME>k__BackingField", IsNullable=true, Order=87)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREEDITTIME>k__BackingField", IsNullable=true, Order=94)]
         public System.Nullable<System.DateTime> PREEDITTIMEk__BackingField {
             get {
                 return this.pREEDITTIMEk__BackingFieldField;
@@ -2956,7 +3062,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREEDITUSERID>k__BackingField", IsNullable=true, Order=88)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREEDITUSERID>k__BackingField", IsNullable=true, Order=95)]
         public System.Nullable<decimal> PREEDITUSERIDk__BackingField {
             get {
                 return this.pREEDITUSERIDk__BackingFieldField;
@@ -2968,7 +3074,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREEDITUSERNAME>k__BackingField", IsNullable=true, Order=89)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREEDITUSERNAME>k__BackingField", IsNullable=true, Order=96)]
         public string PREEDITUSERNAMEk__BackingField {
             get {
                 return this.pREEDITUSERNAMEk__BackingFieldField;
@@ -2980,7 +3086,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREEDIT>k__BackingField", IsNullable=true, Order=90)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREEDIT>k__BackingField", IsNullable=true, Order=97)]
         public System.Nullable<decimal> PREEDITk__BackingField {
             get {
                 return this.pREEDITk__BackingFieldField;
@@ -2992,7 +3098,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREENDID>k__BackingField", IsNullable=true, Order=91)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREENDID>k__BackingField", IsNullable=true, Order=98)]
         public System.Nullable<decimal> PREENDIDk__BackingField {
             get {
                 return this.pREENDIDk__BackingFieldField;
@@ -3004,7 +3110,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREENDNAME>k__BackingField", IsNullable=true, Order=92)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREENDNAME>k__BackingField", IsNullable=true, Order=99)]
         public string PREENDNAMEk__BackingField {
             get {
                 return this.pREENDNAMEk__BackingFieldField;
@@ -3016,7 +3122,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREENDTIME>k__BackingField", IsNullable=true, Order=93)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREENDTIME>k__BackingField", IsNullable=true, Order=100)]
         public System.Nullable<System.DateTime> PREENDTIMEk__BackingField {
             get {
                 return this.pREENDTIMEk__BackingFieldField;
@@ -3028,7 +3134,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREPENDTIME>k__BackingField", IsNullable=true, Order=94)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREPENDTIME>k__BackingField", IsNullable=true, Order=101)]
         public System.Nullable<System.DateTime> PREPENDTIMEk__BackingField {
             get {
                 return this.pREPENDTIMEk__BackingFieldField;
@@ -3040,7 +3146,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREPENDUSERID>k__BackingField", IsNullable=true, Order=95)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREPENDUSERID>k__BackingField", IsNullable=true, Order=102)]
         public System.Nullable<decimal> PREPENDUSERIDk__BackingField {
             get {
                 return this.pREPENDUSERIDk__BackingFieldField;
@@ -3052,7 +3158,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREPENDUSERNAME>k__BackingField", IsNullable=true, Order=96)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREPENDUSERNAME>k__BackingField", IsNullable=true, Order=103)]
         public string PREPENDUSERNAMEk__BackingField {
             get {
                 return this.pREPENDUSERNAMEk__BackingFieldField;
@@ -3064,7 +3170,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRESHEETNUM>k__BackingField", IsNullable=true, Order=97)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRESHEETNUM>k__BackingField", IsNullable=true, Order=104)]
         public System.Nullable<decimal> PRESHEETNUMk__BackingField {
             get {
                 return this.pRESHEETNUMk__BackingFieldField;
@@ -3076,7 +3182,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTID>k__BackingField", IsNullable=true, Order=98)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTID>k__BackingField", IsNullable=true, Order=105)]
         public System.Nullable<decimal> PRESTARTIDk__BackingField {
             get {
                 return this.pRESTARTIDk__BackingFieldField;
@@ -3088,7 +3194,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTNAME>k__BackingField", IsNullable=true, Order=99)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTNAME>k__BackingField", IsNullable=true, Order=106)]
         public string PRESTARTNAMEk__BackingField {
             get {
                 return this.pRESTARTNAMEk__BackingFieldField;
@@ -3100,7 +3206,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTTIME>k__BackingField", IsNullable=true, Order=100)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTTIME>k__BackingField", IsNullable=true, Order=107)]
         public System.Nullable<System.DateTime> PRESTARTTIMEk__BackingField {
             get {
                 return this.pRESTARTTIMEk__BackingFieldField;
@@ -3112,7 +3218,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRICEIMPACT>k__BackingField", IsNullable=true, Order=101)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRICEIMPACT>k__BackingField", IsNullable=true, Order=108)]
         public System.Nullable<decimal> PRICEIMPACTk__BackingField {
             get {
                 return this.pRICEIMPACTk__BackingFieldField;
@@ -3124,7 +3230,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRINTNUM>k__BackingField", IsNullable=true, Order=102)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRINTNUM>k__BackingField", IsNullable=true, Order=109)]
         public System.Nullable<decimal> PRINTNUMk__BackingField {
             get {
                 return this.pRINTNUMk__BackingFieldField;
@@ -3136,7 +3242,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRINTTIME>k__BackingField", IsNullable=true, Order=103)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRINTTIME>k__BackingField", IsNullable=true, Order=110)]
         public System.Nullable<System.DateTime> PRINTTIMEk__BackingField {
             get {
                 return this.pRINTTIMEk__BackingFieldField;
@@ -3148,7 +3254,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RECHECKID>k__BackingField", IsNullable=true, Order=104)]
+        [System.Xml.Serialization.XmlElementAttribute("<RECHECKID>k__BackingField", IsNullable=true, Order=111)]
         public System.Nullable<decimal> RECHECKIDk__BackingField {
             get {
                 return this.rECHECKIDk__BackingFieldField;
@@ -3160,7 +3266,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RECHECKNAME>k__BackingField", IsNullable=true, Order=105)]
+        [System.Xml.Serialization.XmlElementAttribute("<RECHECKNAME>k__BackingField", IsNullable=true, Order=112)]
         public string RECHECKNAMEk__BackingField {
             get {
                 return this.rECHECKNAMEk__BackingFieldField;
@@ -3172,7 +3278,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RECHECKTIME>k__BackingField", IsNullable=true, Order=106)]
+        [System.Xml.Serialization.XmlElementAttribute("<RECHECKTIME>k__BackingField", IsNullable=true, Order=113)]
         public System.Nullable<System.DateTime> RECHECKTIMEk__BackingField {
             get {
                 return this.rECHECKTIMEk__BackingFieldField;
@@ -3184,7 +3290,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RECORDCODE>k__BackingField", IsNullable=true, Order=107)]
+        [System.Xml.Serialization.XmlElementAttribute("<RECORDCODE>k__BackingField", IsNullable=true, Order=114)]
         public string RECORDCODEk__BackingField {
             get {
                 return this.rECORDCODEk__BackingFieldField;
@@ -3196,7 +3302,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RELATEDFLAG>k__BackingField", IsNullable=true, Order=108)]
+        [System.Xml.Serialization.XmlElementAttribute("<RELATEDFLAG>k__BackingField", IsNullable=true, Order=115)]
         public System.Nullable<decimal> RELATEDFLAGk__BackingField {
             get {
                 return this.rELATEDFLAGk__BackingFieldField;
@@ -3208,7 +3314,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RELATEDTIME>k__BackingField", IsNullable=true, Order=109)]
+        [System.Xml.Serialization.XmlElementAttribute("<RELATEDTIME>k__BackingField", IsNullable=true, Order=116)]
         public System.Nullable<System.DateTime> RELATEDTIMEk__BackingField {
             get {
                 return this.rELATEDTIMEk__BackingFieldField;
@@ -3220,7 +3326,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RELATEDUSERID>k__BackingField", IsNullable=true, Order=110)]
+        [System.Xml.Serialization.XmlElementAttribute("<RELATEDUSERID>k__BackingField", IsNullable=true, Order=117)]
         public System.Nullable<decimal> RELATEDUSERIDk__BackingField {
             get {
                 return this.rELATEDUSERIDk__BackingFieldField;
@@ -3232,7 +3338,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RELATEDUSERNAME>k__BackingField", IsNullable=true, Order=111)]
+        [System.Xml.Serialization.XmlElementAttribute("<RELATEDUSERNAME>k__BackingField", IsNullable=true, Order=118)]
         public string RELATEDUSERNAMEk__BackingField {
             get {
                 return this.rELATEDUSERNAMEk__BackingFieldField;
@@ -3244,7 +3350,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REMARK>k__BackingField", IsNullable=true, Order=112)]
+        [System.Xml.Serialization.XmlElementAttribute("<REMARK>k__BackingField", IsNullable=true, Order=119)]
         public string REMARKk__BackingField {
             get {
                 return this.rEMARKk__BackingFieldField;
@@ -3256,7 +3362,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPENDID>k__BackingField", IsNullable=true, Order=113)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPENDID>k__BackingField", IsNullable=true, Order=120)]
         public System.Nullable<decimal> REPENDIDk__BackingField {
             get {
                 return this.rEPENDIDk__BackingFieldField;
@@ -3268,7 +3374,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPENDNAME>k__BackingField", IsNullable=true, Order=114)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPENDNAME>k__BackingField", IsNullable=true, Order=121)]
         public string REPENDNAMEk__BackingField {
             get {
                 return this.rEPENDNAMEk__BackingFieldField;
@@ -3280,7 +3386,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPENDTIME>k__BackingField", IsNullable=true, Order=115)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPENDTIME>k__BackingField", IsNullable=true, Order=122)]
         public System.Nullable<System.DateTime> REPENDTIMEk__BackingField {
             get {
                 return this.rEPENDTIMEk__BackingFieldField;
@@ -3292,7 +3398,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPID>k__BackingField", IsNullable=true, Order=116)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPID>k__BackingField", IsNullable=true, Order=123)]
         public System.Nullable<decimal> REPIDk__BackingField {
             get {
                 return this.rEPIDk__BackingFieldField;
@@ -3304,7 +3410,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPNAME>k__BackingField", IsNullable=true, Order=117)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPNAME>k__BackingField", IsNullable=true, Order=124)]
         public string REPNAMEk__BackingField {
             get {
                 return this.rEPNAMEk__BackingFieldField;
@@ -3316,7 +3422,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPOVERFLAG>k__BackingField", IsNullable=true, Order=118)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPOVERFLAG>k__BackingField", IsNullable=true, Order=125)]
         public System.Nullable<decimal> REPOVERFLAGk__BackingField {
             get {
                 return this.rEPOVERFLAGk__BackingFieldField;
@@ -3328,7 +3434,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPOVERID>k__BackingField", IsNullable=true, Order=119)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPOVERID>k__BackingField", IsNullable=true, Order=126)]
         public System.Nullable<decimal> REPOVERIDk__BackingField {
             get {
                 return this.rEPOVERIDk__BackingFieldField;
@@ -3340,7 +3446,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPOVERNAME>k__BackingField", IsNullable=true, Order=120)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPOVERNAME>k__BackingField", IsNullable=true, Order=127)]
         public string REPOVERNAMEk__BackingField {
             get {
                 return this.rEPOVERNAMEk__BackingFieldField;
@@ -3352,7 +3458,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPOVERTIME>k__BackingField", IsNullable=true, Order=121)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPOVERTIME>k__BackingField", IsNullable=true, Order=128)]
         public System.Nullable<System.DateTime> REPOVERTIMEk__BackingField {
             get {
                 return this.rEPOVERTIMEk__BackingFieldField;
@@ -3364,7 +3470,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPSTARTTIME>k__BackingField", IsNullable=true, Order=122)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPSTARTTIME>k__BackingField", IsNullable=true, Order=129)]
         public System.Nullable<System.DateTime> REPSTARTTIMEk__BackingField {
             get {
                 return this.rEPSTARTTIMEk__BackingFieldField;
@@ -3376,7 +3482,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPUNITCODE>k__BackingField", IsNullable=true, Order=123)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPUNITCODE>k__BackingField", IsNullable=true, Order=130)]
         public string REPUNITCODEk__BackingField {
             get {
                 return this.rEPUNITCODEk__BackingFieldField;
@@ -3388,7 +3494,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPUNITNAME>k__BackingField", IsNullable=true, Order=124)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPUNITNAME>k__BackingField", IsNullable=true, Order=131)]
         public string REPUNITNAMEk__BackingField {
             get {
                 return this.rEPUNITNAMEk__BackingFieldField;
@@ -3400,7 +3506,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPUNITNUM>k__BackingField", IsNullable=true, Order=125)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPUNITNUM>k__BackingField", IsNullable=true, Order=132)]
         public string REPUNITNUMk__BackingField {
             get {
                 return this.rEPUNITNUMk__BackingFieldField;
@@ -3412,7 +3518,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPWAYID>k__BackingField", IsNullable=true, Order=126)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPWAYID>k__BackingField", IsNullable=true, Order=133)]
         public string REPWAYIDk__BackingField {
             get {
                 return this.rEPWAYIDk__BackingFieldField;
@@ -3424,7 +3530,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SECOUNTRYCODE>k__BackingField", IsNullable=true, Order=127)]
+        [System.Xml.Serialization.XmlElementAttribute("<SECOUNTRYCODE>k__BackingField", IsNullable=true, Order=134)]
         public string SECOUNTRYCODEk__BackingField {
             get {
                 return this.sECOUNTRYCODEk__BackingFieldField;
@@ -3436,7 +3542,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SEPLACECODE>k__BackingField", IsNullable=true, Order=128)]
+        [System.Xml.Serialization.XmlElementAttribute("<SEPLACECODE>k__BackingField", IsNullable=true, Order=135)]
         public string SEPLACECODEk__BackingField {
             get {
                 return this.sEPLACECODEk__BackingFieldField;
@@ -3448,7 +3554,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SEPORTCODE>k__BackingField", IsNullable=true, Order=129)]
+        [System.Xml.Serialization.XmlElementAttribute("<SEPORTCODE>k__BackingField", IsNullable=true, Order=136)]
         public string SEPORTCODEk__BackingField {
             get {
                 return this.sEPORTCODEk__BackingFieldField;
@@ -3460,7 +3566,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SHEETNUM>k__BackingField", IsNullable=true, Order=130)]
+        [System.Xml.Serialization.XmlElementAttribute("<SHEETNUM>k__BackingField", IsNullable=true, Order=137)]
         public System.Nullable<decimal> SHEETNUMk__BackingField {
             get {
                 return this.sHEETNUMk__BackingFieldField;
@@ -3472,7 +3578,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SPECIALDECL>k__BackingField", IsNullable=true, Order=131)]
+        [System.Xml.Serialization.XmlElementAttribute("<SPECIALDECL>k__BackingField", IsNullable=true, Order=138)]
         public System.Nullable<decimal> SPECIALDECLk__BackingField {
             get {
                 return this.sPECIALDECLk__BackingFieldField;
@@ -3484,7 +3590,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SPECIALRELATION>k__BackingField", IsNullable=true, Order=132)]
+        [System.Xml.Serialization.XmlElementAttribute("<SPECIALRELATION>k__BackingField", IsNullable=true, Order=139)]
         public System.Nullable<decimal> SPECIALRELATIONk__BackingField {
             get {
                 return this.sPECIALRELATIONk__BackingFieldField;
@@ -3496,7 +3602,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<STATUS>k__BackingField", IsNullable=true, Order=133)]
+        [System.Xml.Serialization.XmlElementAttribute("<STATUS>k__BackingField", IsNullable=true, Order=140)]
         public System.Nullable<decimal> STATUSk__BackingField {
             get {
                 return this.sTATUSk__BackingFieldField;
@@ -3508,7 +3614,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TAXRATE>k__BackingField", IsNullable=true, Order=134)]
+        [System.Xml.Serialization.XmlElementAttribute("<TAXRATE>k__BackingField", IsNullable=true, Order=141)]
         public System.Nullable<decimal> TAXRATEk__BackingField {
             get {
                 return this.tAXRATEk__BackingFieldField;
@@ -3520,7 +3626,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TAXUNITCODE>k__BackingField", IsNullable=true, Order=135)]
+        [System.Xml.Serialization.XmlElementAttribute("<TAXUNITCODE>k__BackingField", IsNullable=true, Order=142)]
         public string TAXUNITCODEk__BackingField {
             get {
                 return this.tAXUNITCODEk__BackingFieldField;
@@ -3532,7 +3638,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TAXUNITNAME>k__BackingField", IsNullable=true, Order=136)]
+        [System.Xml.Serialization.XmlElementAttribute("<TAXUNITNAME>k__BackingField", IsNullable=true, Order=143)]
         public string TAXUNITNAMEk__BackingField {
             get {
                 return this.tAXUNITNAMEk__BackingFieldField;
@@ -3544,7 +3650,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TOTALMONEY>k__BackingField", IsNullable=true, Order=137)]
+        [System.Xml.Serialization.XmlElementAttribute("<TOTALMONEY>k__BackingField", IsNullable=true, Order=144)]
         public System.Nullable<decimal> TOTALMONEYk__BackingField {
             get {
                 return this.tOTALMONEYk__BackingFieldField;
@@ -3556,7 +3662,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TOTALNUM>k__BackingField", IsNullable=true, Order=138)]
+        [System.Xml.Serialization.XmlElementAttribute("<TOTALNUM>k__BackingField", IsNullable=true, Order=145)]
         public System.Nullable<decimal> TOTALNUMk__BackingField {
             get {
                 return this.tOTALNUMk__BackingFieldField;
@@ -3568,7 +3674,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TOTALNW>k__BackingField", IsNullable=true, Order=139)]
+        [System.Xml.Serialization.XmlElementAttribute("<TOTALNW>k__BackingField", IsNullable=true, Order=146)]
         public System.Nullable<decimal> TOTALNWk__BackingField {
             get {
                 return this.tOTALNWk__BackingFieldField;
@@ -3580,7 +3686,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TRADECODE>k__BackingField", IsNullable=true, Order=140)]
+        [System.Xml.Serialization.XmlElementAttribute("<TRADECODE>k__BackingField", IsNullable=true, Order=147)]
         public string TRADECODEk__BackingField {
             get {
                 return this.tRADECODEk__BackingFieldField;
@@ -3592,7 +3698,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TRADECOUNTRYCODE>k__BackingField", IsNullable=true, Order=141)]
+        [System.Xml.Serialization.XmlElementAttribute("<TRADECOUNTRYCODE>k__BackingField", IsNullable=true, Order=148)]
         public string TRADECOUNTRYCODEk__BackingField {
             get {
                 return this.tRADECOUNTRYCODEk__BackingFieldField;
@@ -3604,7 +3710,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TRADETERMSCODE>k__BackingField", IsNullable=true, Order=142)]
+        [System.Xml.Serialization.XmlElementAttribute("<TRADETERMSCODE>k__BackingField", IsNullable=true, Order=149)]
         public string TRADETERMSCODEk__BackingField {
             get {
                 return this.tRADETERMSCODEk__BackingFieldField;
@@ -3616,7 +3722,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TRANSMODEL>k__BackingField", IsNullable=true, Order=143)]
+        [System.Xml.Serialization.XmlElementAttribute("<TRANSMODEL>k__BackingField", IsNullable=true, Order=150)]
         public string TRANSMODELk__BackingField {
             get {
                 return this.tRANSMODELk__BackingFieldField;
@@ -3628,7 +3734,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TRANSNAME>k__BackingField", IsNullable=true, Order=144)]
+        [System.Xml.Serialization.XmlElementAttribute("<TRANSNAME>k__BackingField", IsNullable=true, Order=151)]
         public string TRANSNAMEk__BackingField {
             get {
                 return this.tRANSNAMEk__BackingFieldField;
@@ -3640,7 +3746,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<UNITYCODE>k__BackingField", IsNullable=true, Order=145)]
+        [System.Xml.Serialization.XmlElementAttribute("<UNITYCODE>k__BackingField", IsNullable=true, Order=152)]
         public string UNITYCODEk__BackingField {
             get {
                 return this.uNITYCODEk__BackingFieldField;
@@ -3652,7 +3758,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<VOYAGENO>k__BackingField", IsNullable=true, Order=146)]
+        [System.Xml.Serialization.XmlElementAttribute("<VOYAGENO>k__BackingField", IsNullable=true, Order=153)]
         public string VOYAGENOk__BackingField {
             get {
                 return this.vOYAGENOk__BackingFieldField;
@@ -3664,7 +3770,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<WAREHOUSENO>k__BackingField", IsNullable=true, Order=147)]
+        [System.Xml.Serialization.XmlElementAttribute("<WAREHOUSENO>k__BackingField", IsNullable=true, Order=154)]
         public string WAREHOUSENOk__BackingField {
             get {
                 return this.wAREHOUSENOk__BackingFieldField;
@@ -3676,7 +3782,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<WPID>k__BackingField", IsNullable=true, Order=148)]
+        [System.Xml.Serialization.XmlElementAttribute("<WPID>k__BackingField", IsNullable=true, Order=155)]
         public System.Nullable<decimal> WPIDk__BackingField {
             get {
                 return this.wPIDk__BackingFieldField;
@@ -3688,7 +3794,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<WPNAME>k__BackingField", IsNullable=true, Order=149)]
+        [System.Xml.Serialization.XmlElementAttribute("<WPNAME>k__BackingField", IsNullable=true, Order=156)]
         public string WPNAMEk__BackingField {
             get {
                 return this.wPNAMEk__BackingFieldField;
@@ -3700,7 +3806,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<WPTIME>k__BackingField", IsNullable=true, Order=150)]
+        [System.Xml.Serialization.XmlElementAttribute("<WPTIME>k__BackingField", IsNullable=true, Order=157)]
         public System.Nullable<System.DateTime> WPTIMEk__BackingField {
             get {
                 return this.wPTIMEk__BackingFieldField;
@@ -3712,7 +3818,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<YARDCODE>k__BackingField", IsNullable=true, Order=151)]
+        [System.Xml.Serialization.XmlElementAttribute("<YARDCODE>k__BackingField", IsNullable=true, Order=158)]
         public string YARDCODEk__BackingField {
             get {
                 return this.yARDCODEk__BackingFieldField;
@@ -3759,6 +3865,10 @@ namespace WeChat.MethodSvc {
         
         private string aSSOCIATETRADEWAYk__BackingFieldField;
         
+        private string aUDITCONTENTk__BackingFieldField;
+        
+        private System.Nullable<decimal> aUDITFLAGk__BackingFieldField;
+        
         private string bELONGCUSTOMSk__BackingFieldField;
         
         private System.Nullable<decimal> bONUSk__BackingFieldField;
@@ -3775,6 +3885,8 @@ namespace WeChat.MethodSvc {
         
         private System.Nullable<decimal> cHECKNUMSk__BackingFieldField;
         
+        private System.Nullable<decimal> cHECKPICk__BackingFieldField;
+        
         private System.Nullable<System.DateTime> cKFINISHTIMEk__BackingFieldField;
         
         private System.Nullable<decimal> cKIDk__BackingFieldField;
@@ -3782,6 +3894,8 @@ namespace WeChat.MethodSvc {
         private string cKNAMEk__BackingFieldField;
         
         private string cLEARANCENOk__BackingFieldField;
+        
+        private string cLEARREMARKk__BackingFieldField;
         
         private string cLEARUNITNAMEk__BackingFieldField;
         
@@ -3815,6 +3929,12 @@ namespace WeChat.MethodSvc {
         
         private System.Nullable<System.DateTime> cOSTARTTIMEk__BackingFieldField;
         
+        private System.Nullable<decimal> cOSTECPFLAGk__BackingFieldField;
+        
+        private System.Nullable<decimal> cOSTFLAGk__BackingFieldField;
+        
+        private System.Nullable<decimal> cOSTSTATUSk__BackingFieldField;
+        
         private System.Nullable<System.DateTime> cREATETIMEk__BackingFieldField;
         
         private System.Nullable<decimal> cREATEUSERIDk__BackingFieldField;
@@ -3842,6 +3962,12 @@ namespace WeChat.MethodSvc {
         private string cUSTOMERNAMEk__BackingFieldField;
         
         private string dECLCARNOk__BackingFieldField;
+        
+        private System.Nullable<decimal> dECLCHECKIDk__BackingFieldField;
+        
+        private string dECLCHECKNAMEk__BackingFieldField;
+        
+        private System.Nullable<System.DateTime> dECLCHECKTIMEk__BackingFieldField;
         
         private System.Nullable<decimal> dECLPDFk__BackingFieldField;
         
@@ -3883,6 +4009,12 @@ namespace WeChat.MethodSvc {
         
         private string fIRSTLADINGBILLNOk__BackingFieldField;
         
+        private System.Nullable<decimal> fUMIGATIONIDk__BackingFieldField;
+        
+        private string fUMIGATIONNAMEk__BackingFieldField;
+        
+        private System.Nullable<System.DateTime> fUMIGATIONTIMEk__BackingFieldField;
+        
         private System.Nullable<decimal> gOODSGWk__BackingFieldField;
         
         private System.Nullable<decimal> gOODSNUMk__BackingFieldField;
@@ -3895,7 +4027,19 @@ namespace WeChat.MethodSvc {
         
         private string iETYPEk__BackingFieldField;
         
+        private System.Nullable<decimal> iNSPCHECKIDk__BackingFieldField;
+        
+        private string iNSPCHECKNAMEk__BackingFieldField;
+        
         private System.Nullable<decimal> iNSPCHECKNUMSk__BackingFieldField;
+        
+        private System.Nullable<decimal> iNSPCHECKPICk__BackingFieldField;
+        
+        private string iNSPCHECKREMARKk__BackingFieldField;
+        
+        private System.Nullable<System.DateTime> iNSPCHECKTIMEk__BackingFieldField;
+        
+        private System.Nullable<decimal> iNSPCHECKk__BackingFieldField;
         
         private System.Nullable<decimal> iNSPCOENDIDk__BackingFieldField;
         
@@ -4003,6 +4147,8 @@ namespace WeChat.MethodSvc {
         
         private System.Nullable<decimal> iSCHECKk__BackingFieldField;
         
+        private System.Nullable<decimal> iSFUMIGATIONk__BackingFieldField;
+        
         private System.Nullable<decimal> iSINVALIDk__BackingFieldField;
         
         private System.Nullable<decimal> iSNEEDCLEARANCEk__BackingFieldField;
@@ -4082,6 +4228,10 @@ namespace WeChat.MethodSvc {
         private decimal pRINTSTATUSk__BackingFieldField;
         
         private System.Nullable<decimal> pRODUCTNUMk__BackingFieldField;
+        
+        private string rECEIVERUNITCODEk__BackingFieldField;
+        
+        private string rECEIVERUNITNAMEk__BackingFieldField;
         
         private System.Nullable<System.DateTime> rECEIVETIMEk__BackingFieldField;
         
@@ -4280,7 +4430,31 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BELONGCUSTOMS>k__BackingField", IsNullable=true, Order=9)]
+        [System.Xml.Serialization.XmlElementAttribute("<AUDITCONTENT>k__BackingField", IsNullable=true, Order=9)]
+        public string AUDITCONTENTk__BackingField {
+            get {
+                return this.aUDITCONTENTk__BackingFieldField;
+            }
+            set {
+                this.aUDITCONTENTk__BackingFieldField = value;
+                this.RaisePropertyChanged("AUDITCONTENTk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<AUDITFLAG>k__BackingField", IsNullable=true, Order=10)]
+        public System.Nullable<decimal> AUDITFLAGk__BackingField {
+            get {
+                return this.aUDITFLAGk__BackingFieldField;
+            }
+            set {
+                this.aUDITFLAGk__BackingFieldField = value;
+                this.RaisePropertyChanged("AUDITFLAGk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<BELONGCUSTOMS>k__BackingField", IsNullable=true, Order=11)]
         public string BELONGCUSTOMSk__BackingField {
             get {
                 return this.bELONGCUSTOMSk__BackingFieldField;
@@ -4292,7 +4466,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BONUS>k__BackingField", IsNullable=true, Order=10)]
+        [System.Xml.Serialization.XmlElementAttribute("<BONUS>k__BackingField", IsNullable=true, Order=12)]
         public System.Nullable<decimal> BONUSk__BackingField {
             get {
                 return this.bONUSk__BackingFieldField;
@@ -4304,7 +4478,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BUSIKIND>k__BackingField", IsNullable=true, Order=11)]
+        [System.Xml.Serialization.XmlElementAttribute("<BUSIKIND>k__BackingField", IsNullable=true, Order=13)]
         public string BUSIKINDk__BackingField {
             get {
                 return this.bUSIKINDk__BackingFieldField;
@@ -4316,7 +4490,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BUSITYPE>k__BackingField", IsNullable=true, Order=12)]
+        [System.Xml.Serialization.XmlElementAttribute("<BUSITYPE>k__BackingField", IsNullable=true, Order=14)]
         public string BUSITYPEk__BackingField {
             get {
                 return this.bUSITYPEk__BackingFieldField;
@@ -4328,7 +4502,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITCODE>k__BackingField", IsNullable=true, Order=13)]
+        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITCODE>k__BackingField", IsNullable=true, Order=15)]
         public string BUSIUNITCODEk__BackingField {
             get {
                 return this.bUSIUNITCODEk__BackingFieldField;
@@ -4340,7 +4514,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITNAME>k__BackingField", IsNullable=true, Order=14)]
+        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITNAME>k__BackingField", IsNullable=true, Order=16)]
         public string BUSIUNITNAMEk__BackingField {
             get {
                 return this.bUSIUNITNAMEk__BackingFieldField;
@@ -4352,7 +4526,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITNUM>k__BackingField", IsNullable=true, Order=15)]
+        [System.Xml.Serialization.XmlElementAttribute("<BUSIUNITNUM>k__BackingField", IsNullable=true, Order=17)]
         public string BUSIUNITNUMk__BackingField {
             get {
                 return this.bUSIUNITNUMk__BackingFieldField;
@@ -4364,7 +4538,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CHECKNUMS>k__BackingField", IsNullable=true, Order=16)]
+        [System.Xml.Serialization.XmlElementAttribute("<CHECKNUMS>k__BackingField", IsNullable=true, Order=18)]
         public System.Nullable<decimal> CHECKNUMSk__BackingField {
             get {
                 return this.cHECKNUMSk__BackingFieldField;
@@ -4376,7 +4550,19 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CKFINISHTIME>k__BackingField", IsNullable=true, Order=17)]
+        [System.Xml.Serialization.XmlElementAttribute("<CHECKPIC>k__BackingField", IsNullable=true, Order=19)]
+        public System.Nullable<decimal> CHECKPICk__BackingField {
+            get {
+                return this.cHECKPICk__BackingFieldField;
+            }
+            set {
+                this.cHECKPICk__BackingFieldField = value;
+                this.RaisePropertyChanged("CHECKPICk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<CKFINISHTIME>k__BackingField", IsNullable=true, Order=20)]
         public System.Nullable<System.DateTime> CKFINISHTIMEk__BackingField {
             get {
                 return this.cKFINISHTIMEk__BackingFieldField;
@@ -4388,7 +4574,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CKID>k__BackingField", IsNullable=true, Order=18)]
+        [System.Xml.Serialization.XmlElementAttribute("<CKID>k__BackingField", IsNullable=true, Order=21)]
         public System.Nullable<decimal> CKIDk__BackingField {
             get {
                 return this.cKIDk__BackingFieldField;
@@ -4400,7 +4586,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CKNAME>k__BackingField", IsNullable=true, Order=19)]
+        [System.Xml.Serialization.XmlElementAttribute("<CKNAME>k__BackingField", IsNullable=true, Order=22)]
         public string CKNAMEk__BackingField {
             get {
                 return this.cKNAMEk__BackingFieldField;
@@ -4412,7 +4598,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CLEARANCENO>k__BackingField", IsNullable=true, Order=20)]
+        [System.Xml.Serialization.XmlElementAttribute("<CLEARANCENO>k__BackingField", IsNullable=true, Order=23)]
         public string CLEARANCENOk__BackingField {
             get {
                 return this.cLEARANCENOk__BackingFieldField;
@@ -4424,7 +4610,19 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CLEARUNITNAME>k__BackingField", IsNullable=true, Order=21)]
+        [System.Xml.Serialization.XmlElementAttribute("<CLEARREMARK>k__BackingField", IsNullable=true, Order=24)]
+        public string CLEARREMARKk__BackingField {
+            get {
+                return this.cLEARREMARKk__BackingFieldField;
+            }
+            set {
+                this.cLEARREMARKk__BackingFieldField = value;
+                this.RaisePropertyChanged("CLEARREMARKk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<CLEARUNITNAME>k__BackingField", IsNullable=true, Order=25)]
         public string CLEARUNITNAMEk__BackingField {
             get {
                 return this.cLEARUNITNAMEk__BackingFieldField;
@@ -4436,7 +4634,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CLEARUNIT>k__BackingField", IsNullable=true, Order=22)]
+        [System.Xml.Serialization.XmlElementAttribute("<CLEARUNIT>k__BackingField", IsNullable=true, Order=26)]
         public string CLEARUNITk__BackingField {
             get {
                 return this.cLEARUNITk__BackingFieldField;
@@ -4448,7 +4646,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COCHECKID>k__BackingField", IsNullable=true, Order=23)]
+        [System.Xml.Serialization.XmlElementAttribute("<COCHECKID>k__BackingField", IsNullable=true, Order=27)]
         public System.Nullable<decimal> COCHECKIDk__BackingField {
             get {
                 return this.cOCHECKIDk__BackingFieldField;
@@ -4460,7 +4658,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COCHECKNAME>k__BackingField", IsNullable=true, Order=24)]
+        [System.Xml.Serialization.XmlElementAttribute("<COCHECKNAME>k__BackingField", IsNullable=true, Order=28)]
         public string COCHECKNAMEk__BackingField {
             get {
                 return this.cOCHECKNAMEk__BackingFieldField;
@@ -4472,7 +4670,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COCHECKTIME>k__BackingField", IsNullable=true, Order=25)]
+        [System.Xml.Serialization.XmlElementAttribute("<COCHECKTIME>k__BackingField", IsNullable=true, Order=29)]
         public System.Nullable<System.DateTime> COCHECKTIMEk__BackingField {
             get {
                 return this.cOCHECKTIMEk__BackingFieldField;
@@ -4484,7 +4682,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CODE>k__BackingField", IsNullable=true, Order=26)]
+        [System.Xml.Serialization.XmlElementAttribute("<CODE>k__BackingField", IsNullable=true, Order=30)]
         public string CODEk__BackingField {
             get {
                 return this.cODEk__BackingFieldField;
@@ -4496,7 +4694,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COEDIT>k__BackingField", IsNullable=true, Order=27)]
+        [System.Xml.Serialization.XmlElementAttribute("<COEDIT>k__BackingField", IsNullable=true, Order=31)]
         public System.Nullable<decimal> COEDITk__BackingField {
             get {
                 return this.cOEDITk__BackingFieldField;
@@ -4508,7 +4706,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COENDID>k__BackingField", IsNullable=true, Order=28)]
+        [System.Xml.Serialization.XmlElementAttribute("<COENDID>k__BackingField", IsNullable=true, Order=32)]
         public System.Nullable<decimal> COENDIDk__BackingField {
             get {
                 return this.cOENDIDk__BackingFieldField;
@@ -4520,7 +4718,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COENDNAME>k__BackingField", IsNullable=true, Order=29)]
+        [System.Xml.Serialization.XmlElementAttribute("<COENDNAME>k__BackingField", IsNullable=true, Order=33)]
         public string COENDNAMEk__BackingField {
             get {
                 return this.cOENDNAMEk__BackingFieldField;
@@ -4532,7 +4730,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COENDTIME>k__BackingField", IsNullable=true, Order=30)]
+        [System.Xml.Serialization.XmlElementAttribute("<COENDTIME>k__BackingField", IsNullable=true, Order=34)]
         public System.Nullable<System.DateTime> COENDTIMEk__BackingField {
             get {
                 return this.cOENDTIMEk__BackingFieldField;
@@ -4544,7 +4742,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CONTAINERNO>k__BackingField", IsNullable=true, Order=31)]
+        [System.Xml.Serialization.XmlElementAttribute("<CONTAINERNO>k__BackingField", IsNullable=true, Order=35)]
         public string CONTAINERNOk__BackingField {
             get {
                 return this.cONTAINERNOk__BackingFieldField;
@@ -4556,7 +4754,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CONTRACTNO>k__BackingField", IsNullable=true, Order=32)]
+        [System.Xml.Serialization.XmlElementAttribute("<CONTRACTNO>k__BackingField", IsNullable=true, Order=36)]
         public string CONTRACTNOk__BackingField {
             get {
                 return this.cONTRACTNOk__BackingFieldField;
@@ -4568,7 +4766,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CORRESPONDNO>k__BackingField", IsNullable=true, Order=33)]
+        [System.Xml.Serialization.XmlElementAttribute("<CORRESPONDNO>k__BackingField", IsNullable=true, Order=37)]
         public string CORRESPONDNOk__BackingField {
             get {
                 return this.cORRESPONDNOk__BackingFieldField;
@@ -4580,7 +4778,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COSTARTID>k__BackingField", IsNullable=true, Order=34)]
+        [System.Xml.Serialization.XmlElementAttribute("<COSTARTID>k__BackingField", IsNullable=true, Order=38)]
         public System.Nullable<decimal> COSTARTIDk__BackingField {
             get {
                 return this.cOSTARTIDk__BackingFieldField;
@@ -4592,7 +4790,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COSTARTNAME>k__BackingField", IsNullable=true, Order=35)]
+        [System.Xml.Serialization.XmlElementAttribute("<COSTARTNAME>k__BackingField", IsNullable=true, Order=39)]
         public string COSTARTNAMEk__BackingField {
             get {
                 return this.cOSTARTNAMEk__BackingFieldField;
@@ -4604,7 +4802,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<COSTARTTIME>k__BackingField", IsNullable=true, Order=36)]
+        [System.Xml.Serialization.XmlElementAttribute("<COSTARTTIME>k__BackingField", IsNullable=true, Order=40)]
         public System.Nullable<System.DateTime> COSTARTTIMEk__BackingField {
             get {
                 return this.cOSTARTTIMEk__BackingFieldField;
@@ -4616,7 +4814,43 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CREATETIME>k__BackingField", IsNullable=true, Order=37)]
+        [System.Xml.Serialization.XmlElementAttribute("<COSTECPFLAG>k__BackingField", IsNullable=true, Order=41)]
+        public System.Nullable<decimal> COSTECPFLAGk__BackingField {
+            get {
+                return this.cOSTECPFLAGk__BackingFieldField;
+            }
+            set {
+                this.cOSTECPFLAGk__BackingFieldField = value;
+                this.RaisePropertyChanged("COSTECPFLAGk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<COSTFLAG>k__BackingField", IsNullable=true, Order=42)]
+        public System.Nullable<decimal> COSTFLAGk__BackingField {
+            get {
+                return this.cOSTFLAGk__BackingFieldField;
+            }
+            set {
+                this.cOSTFLAGk__BackingFieldField = value;
+                this.RaisePropertyChanged("COSTFLAGk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<COSTSTATUS>k__BackingField", IsNullable=true, Order=43)]
+        public System.Nullable<decimal> COSTSTATUSk__BackingField {
+            get {
+                return this.cOSTSTATUSk__BackingFieldField;
+            }
+            set {
+                this.cOSTSTATUSk__BackingFieldField = value;
+                this.RaisePropertyChanged("COSTSTATUSk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<CREATETIME>k__BackingField", IsNullable=true, Order=44)]
         public System.Nullable<System.DateTime> CREATETIMEk__BackingField {
             get {
                 return this.cREATETIMEk__BackingFieldField;
@@ -4628,7 +4862,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CREATEUSERID>k__BackingField", IsNullable=true, Order=38)]
+        [System.Xml.Serialization.XmlElementAttribute("<CREATEUSERID>k__BackingField", IsNullable=true, Order=45)]
         public System.Nullable<decimal> CREATEUSERIDk__BackingField {
             get {
                 return this.cREATEUSERIDk__BackingFieldField;
@@ -4640,7 +4874,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CREATEUSERNAME>k__BackingField", IsNullable=true, Order=39)]
+        [System.Xml.Serialization.XmlElementAttribute("<CREATEUSERNAME>k__BackingField", IsNullable=true, Order=46)]
         public string CREATEUSERNAMEk__BackingField {
             get {
                 return this.cREATEUSERNAMEk__BackingFieldField;
@@ -4652,7 +4886,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CSCURRENTID>k__BackingField", IsNullable=true, Order=40)]
+        [System.Xml.Serialization.XmlElementAttribute("<CSCURRENTID>k__BackingField", IsNullable=true, Order=47)]
         public System.Nullable<decimal> CSCURRENTIDk__BackingField {
             get {
                 return this.cSCURRENTIDk__BackingFieldField;
@@ -4664,7 +4898,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CSCURRENTNAME>k__BackingField", IsNullable=true, Order=41)]
+        [System.Xml.Serialization.XmlElementAttribute("<CSCURRENTNAME>k__BackingField", IsNullable=true, Order=48)]
         public string CSCURRENTNAMEk__BackingField {
             get {
                 return this.cSCURRENTNAMEk__BackingFieldField;
@@ -4676,7 +4910,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CSEDITTIME>k__BackingField", IsNullable=true, Order=42)]
+        [System.Xml.Serialization.XmlElementAttribute("<CSEDITTIME>k__BackingField", IsNullable=true, Order=49)]
         public System.Nullable<System.DateTime> CSEDITTIMEk__BackingField {
             get {
                 return this.cSEDITTIMEk__BackingFieldField;
@@ -4688,7 +4922,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CSEDITUSERID>k__BackingField", IsNullable=true, Order=43)]
+        [System.Xml.Serialization.XmlElementAttribute("<CSEDITUSERID>k__BackingField", IsNullable=true, Order=50)]
         public System.Nullable<decimal> CSEDITUSERIDk__BackingField {
             get {
                 return this.cSEDITUSERIDk__BackingFieldField;
@@ -4700,7 +4934,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CSEDITUSERNAME>k__BackingField", IsNullable=true, Order=44)]
+        [System.Xml.Serialization.XmlElementAttribute("<CSEDITUSERNAME>k__BackingField", IsNullable=true, Order=51)]
         public string CSEDITUSERNAMEk__BackingField {
             get {
                 return this.cSEDITUSERNAMEk__BackingFieldField;
@@ -4712,7 +4946,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CSEDIT>k__BackingField", IsNullable=true, Order=45)]
+        [System.Xml.Serialization.XmlElementAttribute("<CSEDIT>k__BackingField", IsNullable=true, Order=52)]
         public System.Nullable<decimal> CSEDITk__BackingField {
             get {
                 return this.cSEDITk__BackingFieldField;
@@ -4724,7 +4958,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CUSNO>k__BackingField", IsNullable=true, Order=46)]
+        [System.Xml.Serialization.XmlElementAttribute("<CUSNO>k__BackingField", IsNullable=true, Order=53)]
         public string CUSNOk__BackingField {
             get {
                 return this.cUSNOk__BackingFieldField;
@@ -4736,7 +4970,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMAREACODE>k__BackingField", IsNullable=true, Order=47)]
+        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMAREACODE>k__BackingField", IsNullable=true, Order=54)]
         public string CUSTOMAREACODEk__BackingField {
             get {
                 return this.cUSTOMAREACODEk__BackingFieldField;
@@ -4748,7 +4982,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMERCODE>k__BackingField", IsNullable=true, Order=48)]
+        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMERCODE>k__BackingField", IsNullable=true, Order=55)]
         public string CUSTOMERCODEk__BackingField {
             get {
                 return this.cUSTOMERCODEk__BackingFieldField;
@@ -4760,7 +4994,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMERNAME>k__BackingField", IsNullable=true, Order=49)]
+        [System.Xml.Serialization.XmlElementAttribute("<CUSTOMERNAME>k__BackingField", IsNullable=true, Order=56)]
         public string CUSTOMERNAMEk__BackingField {
             get {
                 return this.cUSTOMERNAMEk__BackingFieldField;
@@ -4772,7 +5006,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DECLCARNO>k__BackingField", IsNullable=true, Order=50)]
+        [System.Xml.Serialization.XmlElementAttribute("<DECLCARNO>k__BackingField", IsNullable=true, Order=57)]
         public string DECLCARNOk__BackingField {
             get {
                 return this.dECLCARNOk__BackingFieldField;
@@ -4784,7 +5018,43 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DECLPDF>k__BackingField", IsNullable=true, Order=51)]
+        [System.Xml.Serialization.XmlElementAttribute("<DECLCHECKID>k__BackingField", IsNullable=true, Order=58)]
+        public System.Nullable<decimal> DECLCHECKIDk__BackingField {
+            get {
+                return this.dECLCHECKIDk__BackingFieldField;
+            }
+            set {
+                this.dECLCHECKIDk__BackingFieldField = value;
+                this.RaisePropertyChanged("DECLCHECKIDk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<DECLCHECKNAME>k__BackingField", IsNullable=true, Order=59)]
+        public string DECLCHECKNAMEk__BackingField {
+            get {
+                return this.dECLCHECKNAMEk__BackingFieldField;
+            }
+            set {
+                this.dECLCHECKNAMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("DECLCHECKNAMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<DECLCHECKTIME>k__BackingField", IsNullable=true, Order=60)]
+        public System.Nullable<System.DateTime> DECLCHECKTIMEk__BackingField {
+            get {
+                return this.dECLCHECKTIMEk__BackingFieldField;
+            }
+            set {
+                this.dECLCHECKTIMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("DECLCHECKTIMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<DECLPDF>k__BackingField", IsNullable=true, Order=61)]
         public System.Nullable<decimal> DECLPDFk__BackingField {
             get {
                 return this.dECLPDFk__BackingFieldField;
@@ -4796,7 +5066,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DECLSTATUS>k__BackingField", IsNullable=true, Order=52)]
+        [System.Xml.Serialization.XmlElementAttribute("<DECLSTATUS>k__BackingField", IsNullable=true, Order=62)]
         public System.Nullable<decimal> DECLSTATUSk__BackingField {
             get {
                 return this.dECLSTATUSk__BackingFieldField;
@@ -4808,7 +5078,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DECLWAY>k__BackingField", IsNullable=true, Order=53)]
+        [System.Xml.Serialization.XmlElementAttribute("<DECLWAY>k__BackingField", IsNullable=true, Order=63)]
         public string DECLWAYk__BackingField {
             get {
                 return this.dECLWAYk__BackingFieldField;
@@ -4820,7 +5090,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DIVIDENO>k__BackingField", IsNullable=true, Order=54)]
+        [System.Xml.Serialization.XmlElementAttribute("<DIVIDENO>k__BackingField", IsNullable=true, Order=64)]
         public string DIVIDENOk__BackingField {
             get {
                 return this.dIVIDENOk__BackingFieldField;
@@ -4832,7 +5102,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DOCKIND>k__BackingField", IsNullable=true, Order=55)]
+        [System.Xml.Serialization.XmlElementAttribute("<DOCKIND>k__BackingField", IsNullable=true, Order=65)]
         public string DOCKINDk__BackingField {
             get {
                 return this.dOCKINDk__BackingFieldField;
@@ -4844,7 +5114,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DOCSERVICECODE>k__BackingField", IsNullable=true, Order=56)]
+        [System.Xml.Serialization.XmlElementAttribute("<DOCSERVICECODE>k__BackingField", IsNullable=true, Order=66)]
         public string DOCSERVICECODEk__BackingField {
             get {
                 return this.dOCSERVICECODEk__BackingFieldField;
@@ -4856,7 +5126,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DOCSERVICENAME>k__BackingField", IsNullable=true, Order=57)]
+        [System.Xml.Serialization.XmlElementAttribute("<DOCSERVICENAME>k__BackingField", IsNullable=true, Order=67)]
         public string DOCSERVICENAMEk__BackingField {
             get {
                 return this.dOCSERVICENAMEk__BackingFieldField;
@@ -4868,7 +5138,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<DOREQUEST>k__BackingField", IsNullable=true, Order=58)]
+        [System.Xml.Serialization.XmlElementAttribute("<DOREQUEST>k__BackingField", IsNullable=true, Order=68)]
         public string DOREQUESTk__BackingField {
             get {
                 return this.dOREQUESTk__BackingFieldField;
@@ -4880,7 +5150,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ENTRUSTTYPE>k__BackingField", IsNullable=true, Order=59)]
+        [System.Xml.Serialization.XmlElementAttribute("<ENTRUSTTYPE>k__BackingField", IsNullable=true, Order=69)]
         public string ENTRUSTTYPEk__BackingField {
             get {
                 return this.eNTRUSTTYPEk__BackingFieldField;
@@ -4892,7 +5162,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ENTRUSTWAY>k__BackingField", IsNullable=true, Order=60)]
+        [System.Xml.Serialization.XmlElementAttribute("<ENTRUSTWAY>k__BackingField", IsNullable=true, Order=70)]
         public string ENTRUSTWAYk__BackingField {
             get {
                 return this.eNTRUSTWAYk__BackingFieldField;
@@ -4904,7 +5174,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FILEPAGES>k__BackingField", IsNullable=true, Order=61)]
+        [System.Xml.Serialization.XmlElementAttribute("<FILEPAGES>k__BackingField", IsNullable=true, Order=71)]
         public System.Nullable<decimal> FILEPAGESk__BackingField {
             get {
                 return this.fILEPAGESk__BackingFieldField;
@@ -4916,7 +5186,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FILESORTTIME>k__BackingField", IsNullable=true, Order=62)]
+        [System.Xml.Serialization.XmlElementAttribute("<FILESORTTIME>k__BackingField", IsNullable=true, Order=72)]
         public System.Nullable<System.DateTime> FILESORTTIMEk__BackingField {
             get {
                 return this.fILESORTTIMEk__BackingFieldField;
@@ -4928,7 +5198,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FILESORTUSERID>k__BackingField", IsNullable=true, Order=63)]
+        [System.Xml.Serialization.XmlElementAttribute("<FILESORTUSERID>k__BackingField", IsNullable=true, Order=73)]
         public System.Nullable<decimal> FILESORTUSERIDk__BackingField {
             get {
                 return this.fILESORTUSERIDk__BackingFieldField;
@@ -4940,7 +5210,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FILESORTUSERNAME>k__BackingField", IsNullable=true, Order=64)]
+        [System.Xml.Serialization.XmlElementAttribute("<FILESORTUSERNAME>k__BackingField", IsNullable=true, Order=74)]
         public string FILESORTUSERNAMEk__BackingField {
             get {
                 return this.fILESORTUSERNAMEk__BackingFieldField;
@@ -4952,7 +5222,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FILESPLITEUSERID>k__BackingField", IsNullable=true, Order=65)]
+        [System.Xml.Serialization.XmlElementAttribute("<FILESPLITEUSERID>k__BackingField", IsNullable=true, Order=75)]
         public System.Nullable<decimal> FILESPLITEUSERIDk__BackingField {
             get {
                 return this.fILESPLITEUSERIDk__BackingFieldField;
@@ -4964,7 +5234,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FILESPLITEUSERNAME>k__BackingField", IsNullable=true, Order=66)]
+        [System.Xml.Serialization.XmlElementAttribute("<FILESPLITEUSERNAME>k__BackingField", IsNullable=true, Order=76)]
         public string FILESPLITEUSERNAMEk__BackingField {
             get {
                 return this.fILESPLITEUSERNAMEk__BackingFieldField;
@@ -4976,7 +5246,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FILESPLITTIME>k__BackingField", IsNullable=true, Order=67)]
+        [System.Xml.Serialization.XmlElementAttribute("<FILESPLITTIME>k__BackingField", IsNullable=true, Order=77)]
         public System.Nullable<System.DateTime> FILESPLITTIMEk__BackingField {
             get {
                 return this.fILESPLITTIMEk__BackingFieldField;
@@ -4988,7 +5258,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FILESTATUS>k__BackingField", IsNullable=true, Order=68)]
+        [System.Xml.Serialization.XmlElementAttribute("<FILESTATUS>k__BackingField", IsNullable=true, Order=78)]
         public System.Nullable<decimal> FILESTATUSk__BackingField {
             get {
                 return this.fILESTATUSk__BackingFieldField;
@@ -5000,7 +5270,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FILGHTNO>k__BackingField", IsNullable=true, Order=69)]
+        [System.Xml.Serialization.XmlElementAttribute("<FILGHTNO>k__BackingField", IsNullable=true, Order=79)]
         public string FILGHTNOk__BackingField {
             get {
                 return this.fILGHTNOk__BackingFieldField;
@@ -5012,7 +5282,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<FIRSTLADINGBILLNO>k__BackingField", IsNullable=true, Order=70)]
+        [System.Xml.Serialization.XmlElementAttribute("<FIRSTLADINGBILLNO>k__BackingField", IsNullable=true, Order=80)]
         public string FIRSTLADINGBILLNOk__BackingField {
             get {
                 return this.fIRSTLADINGBILLNOk__BackingFieldField;
@@ -5024,7 +5294,43 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<GOODSGW>k__BackingField", IsNullable=true, Order=71)]
+        [System.Xml.Serialization.XmlElementAttribute("<FUMIGATIONID>k__BackingField", IsNullable=true, Order=81)]
+        public System.Nullable<decimal> FUMIGATIONIDk__BackingField {
+            get {
+                return this.fUMIGATIONIDk__BackingFieldField;
+            }
+            set {
+                this.fUMIGATIONIDk__BackingFieldField = value;
+                this.RaisePropertyChanged("FUMIGATIONIDk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<FUMIGATIONNAME>k__BackingField", IsNullable=true, Order=82)]
+        public string FUMIGATIONNAMEk__BackingField {
+            get {
+                return this.fUMIGATIONNAMEk__BackingFieldField;
+            }
+            set {
+                this.fUMIGATIONNAMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("FUMIGATIONNAMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<FUMIGATIONTIME>k__BackingField", IsNullable=true, Order=83)]
+        public System.Nullable<System.DateTime> FUMIGATIONTIMEk__BackingField {
+            get {
+                return this.fUMIGATIONTIMEk__BackingFieldField;
+            }
+            set {
+                this.fUMIGATIONTIMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("FUMIGATIONTIMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<GOODSGW>k__BackingField", IsNullable=true, Order=84)]
         public System.Nullable<decimal> GOODSGWk__BackingField {
             get {
                 return this.gOODSGWk__BackingFieldField;
@@ -5036,7 +5342,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<GOODSNUM>k__BackingField", IsNullable=true, Order=72)]
+        [System.Xml.Serialization.XmlElementAttribute("<GOODSNUM>k__BackingField", IsNullable=true, Order=85)]
         public System.Nullable<decimal> GOODSNUMk__BackingField {
             get {
                 return this.gOODSNUMk__BackingFieldField;
@@ -5048,7 +5354,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<GOODSNW>k__BackingField", IsNullable=true, Order=73)]
+        [System.Xml.Serialization.XmlElementAttribute("<GOODSNW>k__BackingField", IsNullable=true, Order=86)]
         public System.Nullable<decimal> GOODSNWk__BackingField {
             get {
                 return this.gOODSNWk__BackingFieldField;
@@ -5060,7 +5366,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<GOODSTYPEID>k__BackingField", IsNullable=true, Order=74)]
+        [System.Xml.Serialization.XmlElementAttribute("<GOODSTYPEID>k__BackingField", IsNullable=true, Order=87)]
         public string GOODSTYPEIDk__BackingField {
             get {
                 return this.gOODSTYPEIDk__BackingFieldField;
@@ -5072,7 +5378,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ID>k__BackingField", Order=75)]
+        [System.Xml.Serialization.XmlElementAttribute("<ID>k__BackingField", Order=88)]
         public int IDk__BackingField {
             get {
                 return this.iDk__BackingFieldField;
@@ -5084,7 +5390,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<IETYPE>k__BackingField", IsNullable=true, Order=76)]
+        [System.Xml.Serialization.XmlElementAttribute("<IETYPE>k__BackingField", IsNullable=true, Order=89)]
         public string IETYPEk__BackingField {
             get {
                 return this.iETYPEk__BackingFieldField;
@@ -5096,7 +5402,31 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPCHECKNUMS>k__BackingField", IsNullable=true, Order=77)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCHECKID>k__BackingField", IsNullable=true, Order=90)]
+        public System.Nullable<decimal> INSPCHECKIDk__BackingField {
+            get {
+                return this.iNSPCHECKIDk__BackingFieldField;
+            }
+            set {
+                this.iNSPCHECKIDk__BackingFieldField = value;
+                this.RaisePropertyChanged("INSPCHECKIDk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCHECKNAME>k__BackingField", IsNullable=true, Order=91)]
+        public string INSPCHECKNAMEk__BackingField {
+            get {
+                return this.iNSPCHECKNAMEk__BackingFieldField;
+            }
+            set {
+                this.iNSPCHECKNAMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("INSPCHECKNAMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCHECKNUMS>k__BackingField", IsNullable=true, Order=92)]
         public System.Nullable<decimal> INSPCHECKNUMSk__BackingField {
             get {
                 return this.iNSPCHECKNUMSk__BackingFieldField;
@@ -5108,7 +5438,55 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPCOENDID>k__BackingField", IsNullable=true, Order=78)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCHECKPIC>k__BackingField", IsNullable=true, Order=93)]
+        public System.Nullable<decimal> INSPCHECKPICk__BackingField {
+            get {
+                return this.iNSPCHECKPICk__BackingFieldField;
+            }
+            set {
+                this.iNSPCHECKPICk__BackingFieldField = value;
+                this.RaisePropertyChanged("INSPCHECKPICk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCHECKREMARK>k__BackingField", IsNullable=true, Order=94)]
+        public string INSPCHECKREMARKk__BackingField {
+            get {
+                return this.iNSPCHECKREMARKk__BackingFieldField;
+            }
+            set {
+                this.iNSPCHECKREMARKk__BackingFieldField = value;
+                this.RaisePropertyChanged("INSPCHECKREMARKk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCHECKTIME>k__BackingField", IsNullable=true, Order=95)]
+        public System.Nullable<System.DateTime> INSPCHECKTIMEk__BackingField {
+            get {
+                return this.iNSPCHECKTIMEk__BackingFieldField;
+            }
+            set {
+                this.iNSPCHECKTIMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("INSPCHECKTIMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCHECK>k__BackingField", IsNullable=true, Order=96)]
+        public System.Nullable<decimal> INSPCHECKk__BackingField {
+            get {
+                return this.iNSPCHECKk__BackingFieldField;
+            }
+            set {
+                this.iNSPCHECKk__BackingFieldField = value;
+                this.RaisePropertyChanged("INSPCHECKk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCOENDID>k__BackingField", IsNullable=true, Order=97)]
         public System.Nullable<decimal> INSPCOENDIDk__BackingField {
             get {
                 return this.iNSPCOENDIDk__BackingFieldField;
@@ -5120,7 +5498,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPCOENDNAME>k__BackingField", IsNullable=true, Order=79)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCOENDNAME>k__BackingField", IsNullable=true, Order=98)]
         public string INSPCOENDNAMEk__BackingField {
             get {
                 return this.iNSPCOENDNAMEk__BackingFieldField;
@@ -5132,7 +5510,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPCOENDTIME>k__BackingField", IsNullable=true, Order=80)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCOENDTIME>k__BackingField", IsNullable=true, Order=99)]
         public System.Nullable<System.DateTime> INSPCOENDTIMEk__BackingField {
             get {
                 return this.iNSPCOENDTIMEk__BackingFieldField;
@@ -5144,7 +5522,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPCOSTARTID>k__BackingField", IsNullable=true, Order=81)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCOSTARTID>k__BackingField", IsNullable=true, Order=100)]
         public System.Nullable<decimal> INSPCOSTARTIDk__BackingField {
             get {
                 return this.iNSPCOSTARTIDk__BackingFieldField;
@@ -5156,7 +5534,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPCOSTARTNAME>k__BackingField", IsNullable=true, Order=82)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCOSTARTNAME>k__BackingField", IsNullable=true, Order=101)]
         public string INSPCOSTARTNAMEk__BackingField {
             get {
                 return this.iNSPCOSTARTNAMEk__BackingFieldField;
@@ -5168,7 +5546,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPCOSTARTTIME>k__BackingField", IsNullable=true, Order=83)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPCOSTARTTIME>k__BackingField", IsNullable=true, Order=102)]
         public System.Nullable<System.DateTime> INSPCOSTARTTIMEk__BackingField {
             get {
                 return this.iNSPCOSTARTTIMEk__BackingFieldField;
@@ -5180,7 +5558,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESORTTIME>k__BackingField", IsNullable=true, Order=84)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESORTTIME>k__BackingField", IsNullable=true, Order=103)]
         public System.Nullable<System.DateTime> INSPFILESORTTIMEk__BackingField {
             get {
                 return this.iNSPFILESORTTIMEk__BackingFieldField;
@@ -5192,7 +5570,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESORTUSERID>k__BackingField", IsNullable=true, Order=85)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESORTUSERID>k__BackingField", IsNullable=true, Order=104)]
         public System.Nullable<decimal> INSPFILESORTUSERIDk__BackingField {
             get {
                 return this.iNSPFILESORTUSERIDk__BackingFieldField;
@@ -5204,7 +5582,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESORTUSERNAME>k__BackingField", IsNullable=true, Order=86)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESORTUSERNAME>k__BackingField", IsNullable=true, Order=105)]
         public string INSPFILESORTUSERNAMEk__BackingField {
             get {
                 return this.iNSPFILESORTUSERNAMEk__BackingFieldField;
@@ -5216,7 +5594,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESPLITEUSERID>k__BackingField", IsNullable=true, Order=87)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESPLITEUSERID>k__BackingField", IsNullable=true, Order=106)]
         public System.Nullable<decimal> INSPFILESPLITEUSERIDk__BackingField {
             get {
                 return this.iNSPFILESPLITEUSERIDk__BackingFieldField;
@@ -5228,7 +5606,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESPLITEUSERNAME>k__BackingField", IsNullable=true, Order=88)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESPLITEUSERNAME>k__BackingField", IsNullable=true, Order=107)]
         public string INSPFILESPLITEUSERNAMEk__BackingField {
             get {
                 return this.iNSPFILESPLITEUSERNAMEk__BackingFieldField;
@@ -5240,7 +5618,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESPLITTIME>k__BackingField", IsNullable=true, Order=89)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPFILESPLITTIME>k__BackingField", IsNullable=true, Order=108)]
         public System.Nullable<System.DateTime> INSPFILESPLITTIMEk__BackingField {
             get {
                 return this.iNSPFILESPLITTIMEk__BackingFieldField;
@@ -5252,7 +5630,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPISCHECK>k__BackingField", IsNullable=true, Order=90)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPISCHECK>k__BackingField", IsNullable=true, Order=109)]
         public System.Nullable<decimal> INSPISCHECKk__BackingField {
             get {
                 return this.iNSPISCHECKk__BackingFieldField;
@@ -5264,7 +5642,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPMOENDID>k__BackingField", IsNullable=true, Order=91)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPMOENDID>k__BackingField", IsNullable=true, Order=110)]
         public System.Nullable<decimal> INSPMOENDIDk__BackingField {
             get {
                 return this.iNSPMOENDIDk__BackingFieldField;
@@ -5276,7 +5654,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPMOENDNAME>k__BackingField", IsNullable=true, Order=92)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPMOENDNAME>k__BackingField", IsNullable=true, Order=111)]
         public string INSPMOENDNAMEk__BackingField {
             get {
                 return this.iNSPMOENDNAMEk__BackingFieldField;
@@ -5288,7 +5666,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPMOENDTIME>k__BackingField", IsNullable=true, Order=93)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPMOENDTIME>k__BackingField", IsNullable=true, Order=112)]
         public System.Nullable<System.DateTime> INSPMOENDTIMEk__BackingField {
             get {
                 return this.iNSPMOENDTIMEk__BackingFieldField;
@@ -5300,7 +5678,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPMOSTARTID>k__BackingField", IsNullable=true, Order=94)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPMOSTARTID>k__BackingField", IsNullable=true, Order=113)]
         public System.Nullable<decimal> INSPMOSTARTIDk__BackingField {
             get {
                 return this.iNSPMOSTARTIDk__BackingFieldField;
@@ -5312,7 +5690,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPMOSTARTNAME>k__BackingField", IsNullable=true, Order=95)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPMOSTARTNAME>k__BackingField", IsNullable=true, Order=114)]
         public string INSPMOSTARTNAMEk__BackingField {
             get {
                 return this.iNSPMOSTARTNAMEk__BackingFieldField;
@@ -5324,7 +5702,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPMOSTARTTIME>k__BackingField", IsNullable=true, Order=96)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPMOSTARTTIME>k__BackingField", IsNullable=true, Order=115)]
         public System.Nullable<System.DateTime> INSPMOSTARTTIMEk__BackingField {
             get {
                 return this.iNSPMOSTARTTIMEk__BackingFieldField;
@@ -5336,7 +5714,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPPAUSEREASON>k__BackingField", IsNullable=true, Order=97)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPPAUSEREASON>k__BackingField", IsNullable=true, Order=116)]
         public string INSPPAUSEREASONk__BackingField {
             get {
                 return this.iNSPPAUSEREASONk__BackingFieldField;
@@ -5348,7 +5726,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPPAUSE>k__BackingField", IsNullable=true, Order=98)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPPAUSE>k__BackingField", IsNullable=true, Order=117)]
         public System.Nullable<decimal> INSPPAUSEk__BackingField {
             get {
                 return this.iNSPPAUSEk__BackingFieldField;
@@ -5360,7 +5738,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPPREENDID>k__BackingField", IsNullable=true, Order=99)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPPREENDID>k__BackingField", IsNullable=true, Order=118)]
         public System.Nullable<decimal> INSPPREENDIDk__BackingField {
             get {
                 return this.iNSPPREENDIDk__BackingFieldField;
@@ -5372,7 +5750,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPPREENDNAME>k__BackingField", IsNullable=true, Order=100)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPPREENDNAME>k__BackingField", IsNullable=true, Order=119)]
         public string INSPPREENDNAMEk__BackingField {
             get {
                 return this.iNSPPREENDNAMEk__BackingFieldField;
@@ -5384,7 +5762,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPPREENDTIME>k__BackingField", IsNullable=true, Order=101)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPPREENDTIME>k__BackingField", IsNullable=true, Order=120)]
         public System.Nullable<System.DateTime> INSPPREENDTIMEk__BackingField {
             get {
                 return this.iNSPPREENDTIMEk__BackingFieldField;
@@ -5396,7 +5774,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPPRESTARTID>k__BackingField", IsNullable=true, Order=102)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPPRESTARTID>k__BackingField", IsNullable=true, Order=121)]
         public System.Nullable<decimal> INSPPRESTARTIDk__BackingField {
             get {
                 return this.iNSPPRESTARTIDk__BackingFieldField;
@@ -5408,7 +5786,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPPRESTARTNAME>k__BackingField", IsNullable=true, Order=103)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPPRESTARTNAME>k__BackingField", IsNullable=true, Order=122)]
         public string INSPPRESTARTNAMEk__BackingField {
             get {
                 return this.iNSPPRESTARTNAMEk__BackingFieldField;
@@ -5420,7 +5798,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPPRESTARTTIME>k__BackingField", IsNullable=true, Order=104)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPPRESTARTTIME>k__BackingField", IsNullable=true, Order=123)]
         public System.Nullable<System.DateTime> INSPPRESTARTTIMEk__BackingField {
             get {
                 return this.iNSPPRESTARTTIMEk__BackingFieldField;
@@ -5432,7 +5810,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPRELATEDTIME>k__BackingField", IsNullable=true, Order=105)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPRELATEDTIME>k__BackingField", IsNullable=true, Order=124)]
         public System.Nullable<System.DateTime> INSPRELATEDTIMEk__BackingField {
             get {
                 return this.iNSPRELATEDTIMEk__BackingFieldField;
@@ -5444,7 +5822,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPRELATEDUSERID>k__BackingField", IsNullable=true, Order=106)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPRELATEDUSERID>k__BackingField", IsNullable=true, Order=125)]
         public System.Nullable<decimal> INSPRELATEDUSERIDk__BackingField {
             get {
                 return this.iNSPRELATEDUSERIDk__BackingFieldField;
@@ -5456,7 +5834,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPRELATEDUSERNAME>k__BackingField", IsNullable=true, Order=107)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPRELATEDUSERNAME>k__BackingField", IsNullable=true, Order=126)]
         public string INSPRELATEDUSERNAMEk__BackingField {
             get {
                 return this.iNSPRELATEDUSERNAMEk__BackingFieldField;
@@ -5468,7 +5846,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPREPENDID>k__BackingField", IsNullable=true, Order=108)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPREPENDID>k__BackingField", IsNullable=true, Order=127)]
         public System.Nullable<decimal> INSPREPENDIDk__BackingField {
             get {
                 return this.iNSPREPENDIDk__BackingFieldField;
@@ -5480,7 +5858,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPREPENDNAME>k__BackingField", IsNullable=true, Order=109)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPREPENDNAME>k__BackingField", IsNullable=true, Order=128)]
         public string INSPREPENDNAMEk__BackingField {
             get {
                 return this.iNSPREPENDNAMEk__BackingFieldField;
@@ -5492,7 +5870,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPREPENDTIME>k__BackingField", IsNullable=true, Order=110)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPREPENDTIME>k__BackingField", IsNullable=true, Order=129)]
         public System.Nullable<System.DateTime> INSPREPENDTIMEk__BackingField {
             get {
                 return this.iNSPREPENDTIMEk__BackingFieldField;
@@ -5504,7 +5882,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPREPID>k__BackingField", IsNullable=true, Order=111)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPREPID>k__BackingField", IsNullable=true, Order=130)]
         public System.Nullable<decimal> INSPREPIDk__BackingField {
             get {
                 return this.iNSPREPIDk__BackingFieldField;
@@ -5516,7 +5894,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPREPNAME>k__BackingField", IsNullable=true, Order=112)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPREPNAME>k__BackingField", IsNullable=true, Order=131)]
         public string INSPREPNAMEk__BackingField {
             get {
                 return this.iNSPREPNAMEk__BackingFieldField;
@@ -5528,7 +5906,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPREPOVERID>k__BackingField", IsNullable=true, Order=113)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPREPOVERID>k__BackingField", IsNullable=true, Order=132)]
         public System.Nullable<decimal> INSPREPOVERIDk__BackingField {
             get {
                 return this.iNSPREPOVERIDk__BackingFieldField;
@@ -5540,7 +5918,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPREPOVERNAME>k__BackingField", IsNullable=true, Order=114)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPREPOVERNAME>k__BackingField", IsNullable=true, Order=133)]
         public string INSPREPOVERNAMEk__BackingField {
             get {
                 return this.iNSPREPOVERNAMEk__BackingFieldField;
@@ -5552,7 +5930,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPREPOVERTIME>k__BackingField", IsNullable=true, Order=115)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPREPOVERTIME>k__BackingField", IsNullable=true, Order=134)]
         public System.Nullable<System.DateTime> INSPREPOVERTIMEk__BackingField {
             get {
                 return this.iNSPREPOVERTIMEk__BackingFieldField;
@@ -5564,7 +5942,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPREPSTARTTIME>k__BackingField", IsNullable=true, Order=116)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPREPSTARTTIME>k__BackingField", IsNullable=true, Order=135)]
         public System.Nullable<System.DateTime> INSPREPSTARTTIMEk__BackingField {
             get {
                 return this.iNSPREPSTARTTIMEk__BackingFieldField;
@@ -5576,7 +5954,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEAPPLYTIME>k__BackingField", IsNullable=true, Order=117)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEAPPLYTIME>k__BackingField", IsNullable=true, Order=136)]
         public System.Nullable<System.DateTime> INSPSITEAPPLYTIMEk__BackingField {
             get {
                 return this.iNSPSITEAPPLYTIMEk__BackingFieldField;
@@ -5588,7 +5966,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEAPPLYUSERID>k__BackingField", IsNullable=true, Order=118)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEAPPLYUSERID>k__BackingField", IsNullable=true, Order=137)]
         public System.Nullable<decimal> INSPSITEAPPLYUSERIDk__BackingField {
             get {
                 return this.iNSPSITEAPPLYUSERIDk__BackingFieldField;
@@ -5600,7 +5978,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEAPPLYUSERNAME>k__BackingField", IsNullable=true, Order=119)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEAPPLYUSERNAME>k__BackingField", IsNullable=true, Order=138)]
         public string INSPSITEAPPLYUSERNAMEk__BackingField {
             get {
                 return this.iNSPSITEAPPLYUSERNAMEk__BackingFieldField;
@@ -5612,7 +5990,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEPASSTIME>k__BackingField", IsNullable=true, Order=120)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEPASSTIME>k__BackingField", IsNullable=true, Order=139)]
         public System.Nullable<System.DateTime> INSPSITEPASSTIMEk__BackingField {
             get {
                 return this.iNSPSITEPASSTIMEk__BackingFieldField;
@@ -5624,7 +6002,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEPASSUSERID>k__BackingField", IsNullable=true, Order=121)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEPASSUSERID>k__BackingField", IsNullable=true, Order=140)]
         public System.Nullable<decimal> INSPSITEPASSUSERIDk__BackingField {
             get {
                 return this.iNSPSITEPASSUSERIDk__BackingFieldField;
@@ -5636,7 +6014,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEPASSUSERNAME>k__BackingField", IsNullable=true, Order=122)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSITEPASSUSERNAME>k__BackingField", IsNullable=true, Order=141)]
         public string INSPSITEPASSUSERNAMEk__BackingField {
             get {
                 return this.iNSPSITEPASSUSERNAMEk__BackingFieldField;
@@ -5648,7 +6026,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSTATUS>k__BackingField", IsNullable=true, Order=123)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSTATUS>k__BackingField", IsNullable=true, Order=142)]
         public System.Nullable<decimal> INSPSTATUSk__BackingField {
             get {
                 return this.iNSPSTATUSk__BackingFieldField;
@@ -5660,7 +6038,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSUBMITTIME>k__BackingField", IsNullable=true, Order=124)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSUBMITTIME>k__BackingField", IsNullable=true, Order=143)]
         public System.Nullable<System.DateTime> INSPSUBMITTIMEk__BackingField {
             get {
                 return this.iNSPSUBMITTIMEk__BackingFieldField;
@@ -5672,7 +6050,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSUBMITUSERID>k__BackingField", IsNullable=true, Order=125)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSUBMITUSERID>k__BackingField", IsNullable=true, Order=144)]
         public System.Nullable<decimal> INSPSUBMITUSERIDk__BackingField {
             get {
                 return this.iNSPSUBMITUSERIDk__BackingFieldField;
@@ -5684,7 +6062,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPSUBMITUSERNAME>k__BackingField", IsNullable=true, Order=126)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPSUBMITUSERNAME>k__BackingField", IsNullable=true, Order=145)]
         public string INSPSUBMITUSERNAMEk__BackingField {
             get {
                 return this.iNSPSUBMITUSERNAMEk__BackingFieldField;
@@ -5696,7 +6074,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPUNITCODE>k__BackingField", IsNullable=true, Order=127)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPUNITCODE>k__BackingField", IsNullable=true, Order=146)]
         public string INSPUNITCODEk__BackingField {
             get {
                 return this.iNSPUNITCODEk__BackingFieldField;
@@ -5708,7 +6086,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INSPUNITNAME>k__BackingField", IsNullable=true, Order=128)]
+        [System.Xml.Serialization.XmlElementAttribute("<INSPUNITNAME>k__BackingField", IsNullable=true, Order=147)]
         public string INSPUNITNAMEk__BackingField {
             get {
                 return this.iNSPUNITNAMEk__BackingFieldField;
@@ -5720,7 +6098,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<INVALIDREASON>k__BackingField", IsNullable=true, Order=129)]
+        [System.Xml.Serialization.XmlElementAttribute("<INVALIDREASON>k__BackingField", IsNullable=true, Order=148)]
         public string INVALIDREASONk__BackingField {
             get {
                 return this.iNVALIDREASONk__BackingFieldField;
@@ -5732,7 +6110,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISCHECK>k__BackingField", IsNullable=true, Order=130)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISCHECK>k__BackingField", IsNullable=true, Order=149)]
         public System.Nullable<decimal> ISCHECKk__BackingField {
             get {
                 return this.iSCHECKk__BackingFieldField;
@@ -5744,7 +6122,19 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISINVALID>k__BackingField", IsNullable=true, Order=131)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISFUMIGATION>k__BackingField", IsNullable=true, Order=150)]
+        public System.Nullable<decimal> ISFUMIGATIONk__BackingField {
+            get {
+                return this.iSFUMIGATIONk__BackingFieldField;
+            }
+            set {
+                this.iSFUMIGATIONk__BackingFieldField = value;
+                this.RaisePropertyChanged("ISFUMIGATIONk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<ISINVALID>k__BackingField", IsNullable=true, Order=151)]
         public System.Nullable<decimal> ISINVALIDk__BackingField {
             get {
                 return this.iSINVALIDk__BackingFieldField;
@@ -5756,7 +6146,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISNEEDCLEARANCE>k__BackingField", IsNullable=true, Order=132)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISNEEDCLEARANCE>k__BackingField", IsNullable=true, Order=152)]
         public System.Nullable<decimal> ISNEEDCLEARANCEk__BackingField {
             get {
                 return this.iSNEEDCLEARANCEk__BackingFieldField;
@@ -5768,7 +6158,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISPAUSE>k__BackingField", IsNullable=true, Order=133)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISPAUSE>k__BackingField", IsNullable=true, Order=153)]
         public System.Nullable<decimal> ISPAUSEk__BackingField {
             get {
                 return this.iSPAUSEk__BackingFieldField;
@@ -5780,7 +6170,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ISWEIGHTCHECK>k__BackingField", IsNullable=true, Order=134)]
+        [System.Xml.Serialization.XmlElementAttribute("<ISWEIGHTCHECK>k__BackingField", IsNullable=true, Order=154)]
         public System.Nullable<decimal> ISWEIGHTCHECKk__BackingField {
             get {
                 return this.iSWEIGHTCHECKk__BackingFieldField;
@@ -5792,7 +6182,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<LANDLADINGNO>k__BackingField", IsNullable=true, Order=135)]
+        [System.Xml.Serialization.XmlElementAttribute("<LANDLADINGNO>k__BackingField", IsNullable=true, Order=155)]
         public string LANDLADINGNOk__BackingField {
             get {
                 return this.lANDLADINGNOk__BackingFieldField;
@@ -5804,7 +6194,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<LAWFLAG>k__BackingField", IsNullable=true, Order=136)]
+        [System.Xml.Serialization.XmlElementAttribute("<LAWFLAG>k__BackingField", IsNullable=true, Order=156)]
         public System.Nullable<decimal> LAWFLAGk__BackingField {
             get {
                 return this.lAWFLAGk__BackingFieldField;
@@ -5816,7 +6206,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<LOGISTICSNAME>k__BackingField", IsNullable=true, Order=137)]
+        [System.Xml.Serialization.XmlElementAttribute("<LOGISTICSNAME>k__BackingField", IsNullable=true, Order=157)]
         public string LOGISTICSNAMEk__BackingField {
             get {
                 return this.lOGISTICSNAMEk__BackingFieldField;
@@ -5828,7 +6218,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<LOGISTICSSTATUS>k__BackingField", IsNullable=true, Order=138)]
+        [System.Xml.Serialization.XmlElementAttribute("<LOGISTICSSTATUS>k__BackingField", IsNullable=true, Order=158)]
         public string LOGISTICSSTATUSk__BackingField {
             get {
                 return this.lOGISTICSSTATUSk__BackingFieldField;
@@ -5840,7 +6230,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<LOGISTICSTYPE>k__BackingField", IsNullable=true, Order=139)]
+        [System.Xml.Serialization.XmlElementAttribute("<LOGISTICSTYPE>k__BackingField", IsNullable=true, Order=159)]
         public string LOGISTICSTYPEk__BackingField {
             get {
                 return this.lOGISTICSTYPEk__BackingFieldField;
@@ -5852,7 +6242,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MANIFEST>k__BackingField", IsNullable=true, Order=140)]
+        [System.Xml.Serialization.XmlElementAttribute("<MANIFEST>k__BackingField", IsNullable=true, Order=160)]
         public string MANIFESTk__BackingField {
             get {
                 return this.mANIFESTk__BackingFieldField;
@@ -5864,7 +6254,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOEDIT>k__BackingField", IsNullable=true, Order=141)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOEDIT>k__BackingField", IsNullable=true, Order=161)]
         public System.Nullable<decimal> MOEDITk__BackingField {
             get {
                 return this.mOEDITk__BackingFieldField;
@@ -5876,7 +6266,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOENDID>k__BackingField", IsNullable=true, Order=142)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOENDID>k__BackingField", IsNullable=true, Order=162)]
         public System.Nullable<decimal> MOENDIDk__BackingField {
             get {
                 return this.mOENDIDk__BackingFieldField;
@@ -5888,7 +6278,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOENDNAME>k__BackingField", IsNullable=true, Order=143)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOENDNAME>k__BackingField", IsNullable=true, Order=163)]
         public string MOENDNAMEk__BackingField {
             get {
                 return this.mOENDNAMEk__BackingFieldField;
@@ -5900,7 +6290,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOENDTIME>k__BackingField", IsNullable=true, Order=144)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOENDTIME>k__BackingField", IsNullable=true, Order=164)]
         public System.Nullable<System.DateTime> MOENDTIMEk__BackingField {
             get {
                 return this.mOENDTIMEk__BackingFieldField;
@@ -5912,7 +6302,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTID>k__BackingField", IsNullable=true, Order=145)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTID>k__BackingField", IsNullable=true, Order=165)]
         public System.Nullable<decimal> MOSTARTIDk__BackingField {
             get {
                 return this.mOSTARTIDk__BackingFieldField;
@@ -5924,7 +6314,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTNAME>k__BackingField", IsNullable=true, Order=146)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTNAME>k__BackingField", IsNullable=true, Order=166)]
         public string MOSTARTNAMEk__BackingField {
             get {
                 return this.mOSTARTNAMEk__BackingFieldField;
@@ -5936,7 +6326,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTTIME>k__BackingField", IsNullable=true, Order=147)]
+        [System.Xml.Serialization.XmlElementAttribute("<MOSTARTTIME>k__BackingField", IsNullable=true, Order=167)]
         public System.Nullable<System.DateTime> MOSTARTTIMEk__BackingField {
             get {
                 return this.mOSTARTTIMEk__BackingFieldField;
@@ -5948,7 +6338,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ORDERREQUEST>k__BackingField", IsNullable=true, Order=148)]
+        [System.Xml.Serialization.XmlElementAttribute("<ORDERREQUEST>k__BackingField", IsNullable=true, Order=168)]
         public string ORDERREQUESTk__BackingField {
             get {
                 return this.oRDERREQUESTk__BackingFieldField;
@@ -5960,7 +6350,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ORDERWAY>k__BackingField", IsNullable=true, Order=149)]
+        [System.Xml.Serialization.XmlElementAttribute("<ORDERWAY>k__BackingField", IsNullable=true, Order=169)]
         public string ORDERWAYk__BackingField {
             get {
                 return this.oRDERWAYk__BackingFieldField;
@@ -5972,7 +6362,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<OUTREQUEST>k__BackingField", IsNullable=true, Order=150)]
+        [System.Xml.Serialization.XmlElementAttribute("<OUTREQUEST>k__BackingField", IsNullable=true, Order=170)]
         public string OUTREQUESTk__BackingField {
             get {
                 return this.oUTREQUESTk__BackingFieldField;
@@ -5984,7 +6374,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<OUTSTATUS>k__BackingField", IsNullable=true, Order=151)]
+        [System.Xml.Serialization.XmlElementAttribute("<OUTSTATUS>k__BackingField", IsNullable=true, Order=171)]
         public System.Nullable<decimal> OUTSTATUSk__BackingField {
             get {
                 return this.oUTSTATUSk__BackingFieldField;
@@ -5996,7 +6386,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PACKKIND>k__BackingField", IsNullable=true, Order=152)]
+        [System.Xml.Serialization.XmlElementAttribute("<PACKKIND>k__BackingField", IsNullable=true, Order=172)]
         public string PACKKINDk__BackingField {
             get {
                 return this.pACKKINDk__BackingFieldField;
@@ -6008,7 +6398,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PAUSEREASON>k__BackingField", IsNullable=true, Order=153)]
+        [System.Xml.Serialization.XmlElementAttribute("<PAUSEREASON>k__BackingField", IsNullable=true, Order=173)]
         public string PAUSEREASONk__BackingField {
             get {
                 return this.pAUSEREASONk__BackingFieldField;
@@ -6020,7 +6410,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PAUSEUSERID>k__BackingField", IsNullable=true, Order=154)]
+        [System.Xml.Serialization.XmlElementAttribute("<PAUSEUSERID>k__BackingField", IsNullable=true, Order=174)]
         public System.Nullable<decimal> PAUSEUSERIDk__BackingField {
             get {
                 return this.pAUSEUSERIDk__BackingFieldField;
@@ -6032,7 +6422,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PAUSEUSERNAME>k__BackingField", IsNullable=true, Order=155)]
+        [System.Xml.Serialization.XmlElementAttribute("<PAUSEUSERNAME>k__BackingField", IsNullable=true, Order=175)]
         public string PAUSEUSERNAMEk__BackingField {
             get {
                 return this.pAUSEUSERNAMEk__BackingFieldField;
@@ -6044,7 +6434,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PAYPOYALTIES>k__BackingField", IsNullable=true, Order=156)]
+        [System.Xml.Serialization.XmlElementAttribute("<PAYPOYALTIES>k__BackingField", IsNullable=true, Order=176)]
         public System.Nullable<decimal> PAYPOYALTIESk__BackingField {
             get {
                 return this.pAYPOYALTIESk__BackingFieldField;
@@ -6056,7 +6446,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PLATFORMCODE>k__BackingField", IsNullable=true, Order=157)]
+        [System.Xml.Serialization.XmlElementAttribute("<PLATFORMCODE>k__BackingField", IsNullable=true, Order=177)]
         public string PLATFORMCODEk__BackingField {
             get {
                 return this.pLATFORMCODEk__BackingFieldField;
@@ -6068,7 +6458,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PORTCODE>k__BackingField", IsNullable=true, Order=158)]
+        [System.Xml.Serialization.XmlElementAttribute("<PORTCODE>k__BackingField", IsNullable=true, Order=178)]
         public string PORTCODEk__BackingField {
             get {
                 return this.pORTCODEk__BackingFieldField;
@@ -6080,7 +6470,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREEDIT>k__BackingField", IsNullable=true, Order=159)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREEDIT>k__BackingField", IsNullable=true, Order=179)]
         public System.Nullable<decimal> PREEDITk__BackingField {
             get {
                 return this.pREEDITk__BackingFieldField;
@@ -6092,7 +6482,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREENDID>k__BackingField", IsNullable=true, Order=160)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREENDID>k__BackingField", IsNullable=true, Order=180)]
         public System.Nullable<decimal> PREENDIDk__BackingField {
             get {
                 return this.pREENDIDk__BackingFieldField;
@@ -6104,7 +6494,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREENDNAME>k__BackingField", IsNullable=true, Order=161)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREENDNAME>k__BackingField", IsNullable=true, Order=181)]
         public string PREENDNAMEk__BackingField {
             get {
                 return this.pREENDNAMEk__BackingFieldField;
@@ -6116,7 +6506,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREENDTIME>k__BackingField", IsNullable=true, Order=162)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREENDTIME>k__BackingField", IsNullable=true, Order=182)]
         public System.Nullable<System.DateTime> PREENDTIMEk__BackingField {
             get {
                 return this.pREENDTIMEk__BackingFieldField;
@@ -6128,7 +6518,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PREPDF>k__BackingField", IsNullable=true, Order=163)]
+        [System.Xml.Serialization.XmlElementAttribute("<PREPDF>k__BackingField", IsNullable=true, Order=183)]
         public System.Nullable<decimal> PREPDFk__BackingField {
             get {
                 return this.pREPDFk__BackingFieldField;
@@ -6140,7 +6530,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTID>k__BackingField", IsNullable=true, Order=164)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTID>k__BackingField", IsNullable=true, Order=184)]
         public System.Nullable<decimal> PRESTARTIDk__BackingField {
             get {
                 return this.pRESTARTIDk__BackingFieldField;
@@ -6152,7 +6542,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTNAME>k__BackingField", IsNullable=true, Order=165)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTNAME>k__BackingField", IsNullable=true, Order=185)]
         public string PRESTARTNAMEk__BackingField {
             get {
                 return this.pRESTARTNAMEk__BackingFieldField;
@@ -6164,7 +6554,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTTIME>k__BackingField", IsNullable=true, Order=166)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRESTARTTIME>k__BackingField", IsNullable=true, Order=186)]
         public System.Nullable<System.DateTime> PRESTARTTIMEk__BackingField {
             get {
                 return this.pRESTARTTIMEk__BackingFieldField;
@@ -6176,7 +6566,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRETRANSTIME>k__BackingField", IsNullable=true, Order=167)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRETRANSTIME>k__BackingField", IsNullable=true, Order=187)]
         public System.Nullable<System.DateTime> PRETRANSTIMEk__BackingField {
             get {
                 return this.pRETRANSTIMEk__BackingFieldField;
@@ -6188,7 +6578,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRICEIMPACT>k__BackingField", IsNullable=true, Order=168)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRICEIMPACT>k__BackingField", IsNullable=true, Order=188)]
         public System.Nullable<decimal> PRICEIMPACTk__BackingField {
             get {
                 return this.pRICEIMPACTk__BackingFieldField;
@@ -6200,7 +6590,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRINTSTATUS>k__BackingField", Order=169)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRINTSTATUS>k__BackingField", Order=189)]
         public decimal PRINTSTATUSk__BackingField {
             get {
                 return this.pRINTSTATUSk__BackingFieldField;
@@ -6212,7 +6602,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<PRODUCTNUM>k__BackingField", IsNullable=true, Order=170)]
+        [System.Xml.Serialization.XmlElementAttribute("<PRODUCTNUM>k__BackingField", IsNullable=true, Order=190)]
         public System.Nullable<decimal> PRODUCTNUMk__BackingField {
             get {
                 return this.pRODUCTNUMk__BackingFieldField;
@@ -6224,7 +6614,31 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RECEIVETIME>k__BackingField", IsNullable=true, Order=171)]
+        [System.Xml.Serialization.XmlElementAttribute("<RECEIVERUNITCODE>k__BackingField", IsNullable=true, Order=191)]
+        public string RECEIVERUNITCODEk__BackingField {
+            get {
+                return this.rECEIVERUNITCODEk__BackingFieldField;
+            }
+            set {
+                this.rECEIVERUNITCODEk__BackingFieldField = value;
+                this.RaisePropertyChanged("RECEIVERUNITCODEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<RECEIVERUNITNAME>k__BackingField", IsNullable=true, Order=192)]
+        public string RECEIVERUNITNAMEk__BackingField {
+            get {
+                return this.rECEIVERUNITNAMEk__BackingFieldField;
+            }
+            set {
+                this.rECEIVERUNITNAMEk__BackingFieldField = value;
+                this.RaisePropertyChanged("RECEIVERUNITNAMEk__BackingField");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("<RECEIVETIME>k__BackingField", IsNullable=true, Order=193)]
         public System.Nullable<System.DateTime> RECEIVETIMEk__BackingField {
             get {
                 return this.rECEIVETIMEk__BackingFieldField;
@@ -6236,7 +6650,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RECEIVEUSERID>k__BackingField", IsNullable=true, Order=172)]
+        [System.Xml.Serialization.XmlElementAttribute("<RECEIVEUSERID>k__BackingField", IsNullable=true, Order=194)]
         public System.Nullable<decimal> RECEIVEUSERIDk__BackingField {
             get {
                 return this.rECEIVEUSERIDk__BackingFieldField;
@@ -6248,7 +6662,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RECEIVEUSERNAME>k__BackingField", IsNullable=true, Order=173)]
+        [System.Xml.Serialization.XmlElementAttribute("<RECEIVEUSERNAME>k__BackingField", IsNullable=true, Order=195)]
         public string RECEIVEUSERNAMEk__BackingField {
             get {
                 return this.rECEIVEUSERNAMEk__BackingFieldField;
@@ -6260,7 +6674,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RECORDCODE>k__BackingField", IsNullable=true, Order=174)]
+        [System.Xml.Serialization.XmlElementAttribute("<RECORDCODE>k__BackingField", IsNullable=true, Order=196)]
         public string RECORDCODEk__BackingField {
             get {
                 return this.rECORDCODEk__BackingFieldField;
@@ -6272,7 +6686,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RELATEDTIME>k__BackingField", IsNullable=true, Order=175)]
+        [System.Xml.Serialization.XmlElementAttribute("<RELATEDTIME>k__BackingField", IsNullable=true, Order=197)]
         public System.Nullable<System.DateTime> RELATEDTIMEk__BackingField {
             get {
                 return this.rELATEDTIMEk__BackingFieldField;
@@ -6284,7 +6698,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RELATEDUSERID>k__BackingField", IsNullable=true, Order=176)]
+        [System.Xml.Serialization.XmlElementAttribute("<RELATEDUSERID>k__BackingField", IsNullable=true, Order=198)]
         public System.Nullable<decimal> RELATEDUSERIDk__BackingField {
             get {
                 return this.rELATEDUSERIDk__BackingFieldField;
@@ -6296,7 +6710,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<RELATEDUSERNAME>k__BackingField", IsNullable=true, Order=177)]
+        [System.Xml.Serialization.XmlElementAttribute("<RELATEDUSERNAME>k__BackingField", IsNullable=true, Order=199)]
         public string RELATEDUSERNAMEk__BackingField {
             get {
                 return this.rELATEDUSERNAMEk__BackingFieldField;
@@ -6308,7 +6722,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPENDID>k__BackingField", IsNullable=true, Order=178)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPENDID>k__BackingField", IsNullable=true, Order=200)]
         public System.Nullable<decimal> REPENDIDk__BackingField {
             get {
                 return this.rEPENDIDk__BackingFieldField;
@@ -6320,7 +6734,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPENDNAME>k__BackingField", IsNullable=true, Order=179)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPENDNAME>k__BackingField", IsNullable=true, Order=201)]
         public string REPENDNAMEk__BackingField {
             get {
                 return this.rEPENDNAMEk__BackingFieldField;
@@ -6332,7 +6746,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPENDTIME>k__BackingField", IsNullable=true, Order=180)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPENDTIME>k__BackingField", IsNullable=true, Order=202)]
         public System.Nullable<System.DateTime> REPENDTIMEk__BackingField {
             get {
                 return this.rEPENDTIMEk__BackingFieldField;
@@ -6344,7 +6758,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPID>k__BackingField", IsNullable=true, Order=181)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPID>k__BackingField", IsNullable=true, Order=203)]
         public System.Nullable<decimal> REPIDk__BackingField {
             get {
                 return this.rEPIDk__BackingFieldField;
@@ -6356,7 +6770,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPLYCONTENT>k__BackingField", IsNullable=true, Order=182)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPLYCONTENT>k__BackingField", IsNullable=true, Order=204)]
         public string REPLYCONTENTk__BackingField {
             get {
                 return this.rEPLYCONTENTk__BackingFieldField;
@@ -6368,7 +6782,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPNAME>k__BackingField", IsNullable=true, Order=183)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPNAME>k__BackingField", IsNullable=true, Order=205)]
         public string REPNAMEk__BackingField {
             get {
                 return this.rEPNAMEk__BackingFieldField;
@@ -6380,7 +6794,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPNO>k__BackingField", IsNullable=true, Order=184)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPNO>k__BackingField", IsNullable=true, Order=206)]
         public string REPNOk__BackingField {
             get {
                 return this.rEPNOk__BackingFieldField;
@@ -6392,7 +6806,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPOVERID>k__BackingField", IsNullable=true, Order=185)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPOVERID>k__BackingField", IsNullable=true, Order=207)]
         public System.Nullable<decimal> REPOVERIDk__BackingField {
             get {
                 return this.rEPOVERIDk__BackingFieldField;
@@ -6404,7 +6818,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPOVERNAME>k__BackingField", IsNullable=true, Order=186)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPOVERNAME>k__BackingField", IsNullable=true, Order=208)]
         public string REPOVERNAMEk__BackingField {
             get {
                 return this.rEPOVERNAMEk__BackingFieldField;
@@ -6416,7 +6830,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPOVERTIME>k__BackingField", IsNullable=true, Order=187)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPOVERTIME>k__BackingField", IsNullable=true, Order=209)]
         public System.Nullable<System.DateTime> REPOVERTIMEk__BackingField {
             get {
                 return this.rEPOVERTIMEk__BackingFieldField;
@@ -6428,7 +6842,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPSTARTTIME>k__BackingField", IsNullable=true, Order=188)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPSTARTTIME>k__BackingField", IsNullable=true, Order=210)]
         public System.Nullable<System.DateTime> REPSTARTTIMEk__BackingField {
             get {
                 return this.rEPSTARTTIMEk__BackingFieldField;
@@ -6440,7 +6854,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPUNITCODE>k__BackingField", IsNullable=true, Order=189)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPUNITCODE>k__BackingField", IsNullable=true, Order=211)]
         public string REPUNITCODEk__BackingField {
             get {
                 return this.rEPUNITCODEk__BackingFieldField;
@@ -6452,7 +6866,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPUNITNAME>k__BackingField", IsNullable=true, Order=190)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPUNITNAME>k__BackingField", IsNullable=true, Order=212)]
         public string REPUNITNAMEk__BackingField {
             get {
                 return this.rEPUNITNAMEk__BackingFieldField;
@@ -6464,7 +6878,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<REPWAYID>k__BackingField", IsNullable=true, Order=191)]
+        [System.Xml.Serialization.XmlElementAttribute("<REPWAYID>k__BackingField", IsNullable=true, Order=213)]
         public string REPWAYIDk__BackingField {
             get {
                 return this.rEPWAYIDk__BackingFieldField;
@@ -6476,7 +6890,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SECONDLADINGBILLNO>k__BackingField", IsNullable=true, Order=192)]
+        [System.Xml.Serialization.XmlElementAttribute("<SECONDLADINGBILLNO>k__BackingField", IsNullable=true, Order=214)]
         public string SECONDLADINGBILLNOk__BackingField {
             get {
                 return this.sECONDLADINGBILLNOk__BackingFieldField;
@@ -6488,7 +6902,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SHIPNAME>k__BackingField", IsNullable=true, Order=193)]
+        [System.Xml.Serialization.XmlElementAttribute("<SHIPNAME>k__BackingField", IsNullable=true, Order=215)]
         public string SHIPNAMEk__BackingField {
             get {
                 return this.sHIPNAMEk__BackingFieldField;
@@ -6500,7 +6914,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SITEAPPLYTIME>k__BackingField", IsNullable=true, Order=194)]
+        [System.Xml.Serialization.XmlElementAttribute("<SITEAPPLYTIME>k__BackingField", IsNullable=true, Order=216)]
         public System.Nullable<System.DateTime> SITEAPPLYTIMEk__BackingField {
             get {
                 return this.sITEAPPLYTIMEk__BackingFieldField;
@@ -6512,7 +6926,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SITEAPPLYUSERID>k__BackingField", IsNullable=true, Order=195)]
+        [System.Xml.Serialization.XmlElementAttribute("<SITEAPPLYUSERID>k__BackingField", IsNullable=true, Order=217)]
         public System.Nullable<decimal> SITEAPPLYUSERIDk__BackingField {
             get {
                 return this.sITEAPPLYUSERIDk__BackingFieldField;
@@ -6524,7 +6938,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SITEAPPLYUSERNAME>k__BackingField", IsNullable=true, Order=196)]
+        [System.Xml.Serialization.XmlElementAttribute("<SITEAPPLYUSERNAME>k__BackingField", IsNullable=true, Order=218)]
         public string SITEAPPLYUSERNAMEk__BackingField {
             get {
                 return this.sITEAPPLYUSERNAMEk__BackingFieldField;
@@ -6536,7 +6950,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SITEPASSTIME>k__BackingField", IsNullable=true, Order=197)]
+        [System.Xml.Serialization.XmlElementAttribute("<SITEPASSTIME>k__BackingField", IsNullable=true, Order=219)]
         public System.Nullable<System.DateTime> SITEPASSTIMEk__BackingField {
             get {
                 return this.sITEPASSTIMEk__BackingFieldField;
@@ -6548,7 +6962,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SITEPASSUSERID>k__BackingField", IsNullable=true, Order=198)]
+        [System.Xml.Serialization.XmlElementAttribute("<SITEPASSUSERID>k__BackingField", IsNullable=true, Order=220)]
         public System.Nullable<decimal> SITEPASSUSERIDk__BackingField {
             get {
                 return this.sITEPASSUSERIDk__BackingFieldField;
@@ -6560,7 +6974,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SITEPASSUSERNAME>k__BackingField", IsNullable=true, Order=199)]
+        [System.Xml.Serialization.XmlElementAttribute("<SITEPASSUSERNAME>k__BackingField", IsNullable=true, Order=221)]
         public string SITEPASSUSERNAMEk__BackingField {
             get {
                 return this.sITEPASSUSERNAMEk__BackingFieldField;
@@ -6572,7 +6986,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SPECIALRELATIONSHIP>k__BackingField", IsNullable=true, Order=200)]
+        [System.Xml.Serialization.XmlElementAttribute("<SPECIALRELATIONSHIP>k__BackingField", IsNullable=true, Order=222)]
         public System.Nullable<decimal> SPECIALRELATIONSHIPk__BackingField {
             get {
                 return this.sPECIALRELATIONSHIPk__BackingFieldField;
@@ -6584,7 +6998,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<STATUS>k__BackingField", IsNullable=true, Order=201)]
+        [System.Xml.Serialization.XmlElementAttribute("<STATUS>k__BackingField", IsNullable=true, Order=223)]
         public System.Nullable<decimal> STATUSk__BackingField {
             get {
                 return this.sTATUSk__BackingFieldField;
@@ -6596,7 +7010,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<STOWAGENO>k__BackingField", IsNullable=true, Order=202)]
+        [System.Xml.Serialization.XmlElementAttribute("<STOWAGENO>k__BackingField", IsNullable=true, Order=224)]
         public string STOWAGENOk__BackingField {
             get {
                 return this.sTOWAGENOk__BackingFieldField;
@@ -6608,7 +7022,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SUBMITTIME>k__BackingField", IsNullable=true, Order=203)]
+        [System.Xml.Serialization.XmlElementAttribute("<SUBMITTIME>k__BackingField", IsNullable=true, Order=225)]
         public System.Nullable<System.DateTime> SUBMITTIMEk__BackingField {
             get {
                 return this.sUBMITTIMEk__BackingFieldField;
@@ -6620,7 +7034,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SUBMITUSERID>k__BackingField", IsNullable=true, Order=204)]
+        [System.Xml.Serialization.XmlElementAttribute("<SUBMITUSERID>k__BackingField", IsNullable=true, Order=226)]
         public System.Nullable<decimal> SUBMITUSERIDk__BackingField {
             get {
                 return this.sUBMITUSERIDk__BackingFieldField;
@@ -6632,7 +7046,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<SUBMITUSERNAME>k__BackingField", IsNullable=true, Order=205)]
+        [System.Xml.Serialization.XmlElementAttribute("<SUBMITUSERNAME>k__BackingField", IsNullable=true, Order=227)]
         public string SUBMITUSERNAMEk__BackingField {
             get {
                 return this.sUBMITUSERNAMEk__BackingFieldField;
@@ -6644,7 +7058,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TOTALNO>k__BackingField", IsNullable=true, Order=206)]
+        [System.Xml.Serialization.XmlElementAttribute("<TOTALNO>k__BackingField", IsNullable=true, Order=228)]
         public string TOTALNOk__BackingField {
             get {
                 return this.tOTALNOk__BackingFieldField;
@@ -6656,7 +7070,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TRADEWAYCODES>k__BackingField", IsNullable=true, Order=207)]
+        [System.Xml.Serialization.XmlElementAttribute("<TRADEWAYCODES>k__BackingField", IsNullable=true, Order=229)]
         public string TRADEWAYCODESk__BackingField {
             get {
                 return this.tRADEWAYCODESk__BackingFieldField;
@@ -6668,7 +7082,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<TURNPRENO>k__BackingField", IsNullable=true, Order=208)]
+        [System.Xml.Serialization.XmlElementAttribute("<TURNPRENO>k__BackingField", IsNullable=true, Order=230)]
         public string TURNPRENOk__BackingField {
             get {
                 return this.tURNPRENOk__BackingFieldField;
@@ -6680,7 +7094,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<WEIGHTCHECK>k__BackingField", IsNullable=true, Order=209)]
+        [System.Xml.Serialization.XmlElementAttribute("<WEIGHTCHECK>k__BackingField", IsNullable=true, Order=231)]
         public System.Nullable<decimal> WEIGHTCHECKk__BackingField {
             get {
                 return this.wEIGHTCHECKk__BackingFieldField;
@@ -6692,7 +7106,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<WOODPACKINGID>k__BackingField", IsNullable=true, Order=210)]
+        [System.Xml.Serialization.XmlElementAttribute("<WOODPACKINGID>k__BackingField", IsNullable=true, Order=232)]
         public string WOODPACKINGIDk__BackingField {
             get {
                 return this.wOODPACKINGIDk__BackingFieldField;
@@ -6704,7 +7118,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<WPID>k__BackingField", IsNullable=true, Order=211)]
+        [System.Xml.Serialization.XmlElementAttribute("<WPID>k__BackingField", IsNullable=true, Order=233)]
         public System.Nullable<decimal> WPIDk__BackingField {
             get {
                 return this.wPIDk__BackingFieldField;
@@ -6716,7 +7130,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<WPNAME>k__BackingField", IsNullable=true, Order=212)]
+        [System.Xml.Serialization.XmlElementAttribute("<WPNAME>k__BackingField", IsNullable=true, Order=234)]
         public string WPNAMEk__BackingField {
             get {
                 return this.wPNAMEk__BackingFieldField;
@@ -6728,7 +7142,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<WPTIME>k__BackingField", IsNullable=true, Order=213)]
+        [System.Xml.Serialization.XmlElementAttribute("<WPTIME>k__BackingField", IsNullable=true, Order=235)]
         public System.Nullable<System.DateTime> WPTIMEk__BackingField {
             get {
                 return this.wPTIMEk__BackingFieldField;
@@ -6740,7 +7154,7 @@ namespace WeChat.MethodSvc {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("<ZGDPDF>k__BackingField", Order=214)]
+        [System.Xml.Serialization.XmlElementAttribute("<ZGDPDF>k__BackingField", Order=236)]
         public decimal ZGDPDFk__BackingField {
             get {
                 return this.zGDPDFk__BackingFieldField;
@@ -8107,6 +8521,51 @@ namespace WeChat.MethodSvc {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="FinanceExceptionOrder", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class FinanceExceptionOrderRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string orderCode;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=1)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string modifyUser;
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
+        public string modifyFiled;
+        
+        public FinanceExceptionOrderRequest() {
+        }
+        
+        public FinanceExceptionOrderRequest(string orderCode, string modifyUser, string modifyFiled) {
+            this.orderCode = orderCode;
+            this.modifyUser = modifyUser;
+            this.modifyFiled = modifyFiled;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(WrapperName="FinanceExceptionOrderResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
+    public partial class FinanceExceptionOrderResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
+        public bool FinanceExceptionOrderResult;
+        
+        public FinanceExceptionOrderResponse() {
+        }
+        
+        public FinanceExceptionOrderResponse(bool FinanceExceptionOrderResult) {
+            this.FinanceExceptionOrderResult = FinanceExceptionOrderResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IMethodServiceChannel : WeChat.MethodSvc.IMethodService, System.ServiceModel.IClientChannel {
     }
@@ -8748,6 +9207,33 @@ namespace WeChat.MethodSvc {
             WeChat.MethodSvc.Invalid_Offline_OrderAndDeclRequest inValue = new WeChat.MethodSvc.Invalid_Offline_OrderAndDeclRequest();
             inValue.declarationCode = declarationCode;
             return ((WeChat.MethodSvc.IMethodService)(this)).Invalid_Offline_OrderAndDeclAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        WeChat.MethodSvc.FinanceExceptionOrderResponse WeChat.MethodSvc.IMethodService.FinanceExceptionOrder(WeChat.MethodSvc.FinanceExceptionOrderRequest request) {
+            return base.Channel.FinanceExceptionOrder(request);
+        }
+        
+        public bool FinanceExceptionOrder(string orderCode, string modifyUser, string modifyFiled) {
+            WeChat.MethodSvc.FinanceExceptionOrderRequest inValue = new WeChat.MethodSvc.FinanceExceptionOrderRequest();
+            inValue.orderCode = orderCode;
+            inValue.modifyUser = modifyUser;
+            inValue.modifyFiled = modifyFiled;
+            WeChat.MethodSvc.FinanceExceptionOrderResponse retVal = ((WeChat.MethodSvc.IMethodService)(this)).FinanceExceptionOrder(inValue);
+            return retVal.FinanceExceptionOrderResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<WeChat.MethodSvc.FinanceExceptionOrderResponse> WeChat.MethodSvc.IMethodService.FinanceExceptionOrderAsync(WeChat.MethodSvc.FinanceExceptionOrderRequest request) {
+            return base.Channel.FinanceExceptionOrderAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<WeChat.MethodSvc.FinanceExceptionOrderResponse> FinanceExceptionOrderAsync(string orderCode, string modifyUser, string modifyFiled) {
+            WeChat.MethodSvc.FinanceExceptionOrderRequest inValue = new WeChat.MethodSvc.FinanceExceptionOrderRequest();
+            inValue.orderCode = orderCode;
+            inValue.modifyUser = modifyUser;
+            inValue.modifyFiled = modifyFiled;
+            return ((WeChat.MethodSvc.IMethodService)(this)).FinanceExceptionOrderAsync(inValue);
         }
     }
 }

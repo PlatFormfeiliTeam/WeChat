@@ -156,6 +156,12 @@
   <wsdl:message name="IMethodService_Invalid_Offline_OrderAndDecl_OutputMessage">
     <wsdl:part name="parameters" element="tns:Invalid_Offline_OrderAndDeclResponse" />
   </wsdl:message>
+  <wsdl:message name="IMethodService_FinanceExceptionOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:FinanceExceptionOrder" />
+  </wsdl:message>
+  <wsdl:message name="IMethodService_FinanceExceptionOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FinanceExceptionOrderResponse" />
+  </wsdl:message>
   <wsdl:portType name="IMethodService">
     <wsdl:operation name="ExecuteSignle">
       <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/ExecuteSignle" message="tns:IMethodService_ExecuteSignle_InputMessage" />
@@ -252,6 +258,10 @@
     <wsdl:operation name="Invalid_Offline_OrderAndDecl">
       <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/Invalid_Offline_OrderAndDecl" message="tns:IMethodService_Invalid_Offline_OrderAndDecl_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/Invalid_Offline_OrderAndDeclResponse" message="tns:IMethodService_Invalid_Offline_OrderAndDecl_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FinanceExceptionOrder">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMethodService/FinanceExceptionOrder" message="tns:IMethodService_FinanceExceptionOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMethodService/FinanceExceptionOrderResponse" message="tns:IMethodService_FinanceExceptionOrder_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IMethodService" type="tns:IMethodService">
@@ -465,6 +475,15 @@
     </wsdl:operation>
     <wsdl:operation name="Invalid_Offline_OrderAndDecl">
       <soap:operation soapAction="http://tempuri.org/IMethodService/Invalid_Offline_OrderAndDecl" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FinanceExceptionOrder">
+      <soap:operation soapAction="http://tempuri.org/IMethodService/FinanceExceptionOrder" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

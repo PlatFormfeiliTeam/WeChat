@@ -160,6 +160,7 @@ namespace WeChat.ModelBusi
             bool bf = false;
             try
             {
+                string userid = "763"; string realname = "昆山吉时报关有限公司";
                 using (DBSession db = new DBSession())
                 {
                     string sql = "";
@@ -196,27 +197,48 @@ namespace WeChat.ModelBusi
 
 
                     //修改删改单标志
-                    //sql = @"update list_declaration set modifyflag=" + modifyflag + " where code='" + predelcode + "'";
-
                     sql = @"update list_declaration set modifyflag=" + modifyflag;
                     if (modifyflag == 1) { sql += ",delorderuserid='{1}',delorderusername='{2}',delordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
-                    else { sql += ",modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+                    if (modifyflag == 2) { sql += ",modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+                    //if (modifyflag == 3) { sql += ",modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
                     sql += " where code='{0}'";
-                    sql = string.Format(sql, predelcode, "763", "昆山吉时报关有限公司", DateTime.Now);
+                    sql = string.Format(sql, predelcode, userid, realname, DateTime.Now);
 
                     db.ExecuteSignle(sql);
 
+                    //---------------------------------------------------------------------------------------------------------------
                     //保存操作记录list_times
                     sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-                        values(list_times_id.nextval,'" + predelcode + "','763','昆山吉时报关有限公司',sysdate,'1'," + modifyflag + ")";
+                        values(list_times_id.nextval,'" + predelcode + "','" + userid + "','" + realname + "',sysdate,'1'," + modifyflag + ")";
                     db.ExecuteSignle(sql);
 
-                    //调用缓存接口redis_DeclarationLog
                     sql = @"select code,ordercode,declarationcode from list_declaration ld where ld.code='" + predelcode + "'";
                     DataTable dt_decl = db.QuerySignle(sql);
 
+                    //调用缓存接口redis_DeclarationLog
                     MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
                     msc.redis_DeclarationLog(dt_decl.Rows[0]["ordercode"].ToString(), predelcode, dt_decl.Rows[0]["declarationcode"].ToString(), "", "0");
+
+
+                    sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + dt_decl.Rows[0]["ordercode"].ToString() + "'";
+                    DataTable dt_order = db.QuerySignle(sql);
+
+                    if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
+                        {
+                            //add 20180115 费用异常接口
+                            msc.FinanceExceptionOrder(dt_decl.Rows[0]["ordercode"].ToString(), realname, "list_declaration.modifyflag修改为" + modifyflag.ToString());
+                        }
+                    }
+                    else
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
+                        {
+                            //add 20180115 费用异常接口
+                            msc.FinanceExceptionOrder(dt_decl.Rows[0]["ordercode"].ToString(), realname, "list_declaration.modifyflag修改为" + modifyflag.ToString());
+                        }
+                    }
 
                     bf = true;
                 }

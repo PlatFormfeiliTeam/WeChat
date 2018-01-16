@@ -123,6 +123,8 @@ namespace WeChat.ModelBusi
 
         public static string Siteapply(string ordercode)
         {
+            string userid = "763"; string realname = "昆山吉时报关有限公司";
+
             using (DBSession db = new DBSession())
             {
                 string sql = "select to_char(siteapplytime,'yyyy/mm/dd hh24:mi:ss') as siteapplytime from list_order where code='" + ordercode + "'";
@@ -135,12 +137,36 @@ namespace WeChat.ModelBusi
 
                 curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                 sql = "update list_order set siteapplyuserid='{1}',siteapplyusername='{2}',siteapplytime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=150 where code='{0}'";
-                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
+                sql = string.Format(sql, ordercode, userid, realname, curtime);
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
                 {
                     MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
                     msc.redis_OrderStatusLog(ordercode);
+
+                    //add 20180115 保存操作记录list_times
+                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+                    db.ExecuteSignle(sql);
+
+                    sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + ordercode + "'";
+                    DataTable dt_order = db.QuerySignle(sql);
+
+                    //add 20180115 费用异常接口
+                    if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, realname, "list_order.siteapplytime现场报关");
+                        }
+                    }
+                    else
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, realname, "list_order.siteapplytime现场报关");
+                        }
+                    }   
 
                     return curtime.Left(curtime.Length - 3).Replace("/", "");
                 }
@@ -167,6 +193,8 @@ namespace WeChat.ModelBusi
 
         public static string Pass(string ordercode)
         {
+            string userid = "763"; string realname = "昆山吉时报关有限公司";
+
             using (DBSession db = new DBSession())
             {
                 string sql = "select to_char(sitepasstime,'yyyy/mm/dd hh24:mi:ss') as sitepasstime from list_order where code='" + ordercode + "'";
@@ -179,12 +207,17 @@ namespace WeChat.ModelBusi
 
                 curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                 sql = "update list_order set sitepassuserid='{1}',sitepassusername='{2}',sitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=160 where code='{0}'";
-                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
+                sql = string.Format(sql, ordercode, userid, realname, curtime);
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
                 {
                     MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
                     msc.redis_OrderStatusLog(ordercode);
+
+                    //add 20180115 保存操作记录list_times
+                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+                    db.ExecuteSignle(sql);
 
                     return curtime.Left(curtime.Length - 3).Replace("/", "");
                 }
@@ -295,6 +328,32 @@ namespace WeChat.ModelBusi
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
                 {
+                    //add 20180115 保存操作记录list_times
+                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+                        values(list_times_id.nextval,'" + ordercode + "','" + checkid + "','" + checkname + "',sysdate,'0',0)";
+                    db.ExecuteSignle(sql);
+
+                    sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + ordercode + "'";
+                    DataTable dt_order = db.QuerySignle(sql);
+
+                    //add 20180115 费用异常接口
+                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
+
+                    if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, checkname, "list_order.ischeck查验标志修改为1");
+                        }
+                    }
+                    else
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, checkname, "list_order.ischeck查验标志修改为1");
+                        }
+                    }
+
                     return checktime.Replace("-", "");
                 }
                 else
