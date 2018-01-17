@@ -160,7 +160,7 @@ namespace WeChat.ModelBusi
             bool bf = false;
             try
             {
-                string userid = "763"; string realname = "昆山吉时报关有限公司";
+                string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
                 using (DBSession db = new DBSession())
                 {
                     string sql = "";
@@ -228,7 +228,7 @@ namespace WeChat.ModelBusi
                         if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
                         {
                             //add 20180115 费用异常接口
-                            msc.FinanceExceptionOrder(dt_decl.Rows[0]["ordercode"].ToString(), realname, "list_declaration.modifyflag修改为" + modifyflag.ToString());
+                            msc.FinanceExceptionOrder(dt_decl.Rows[0]["ordercode"].ToString(), username, "list_declaration.modifyflag修改为" + modifyflag.ToString());
                         }
                     }
                     else
@@ -236,7 +236,7 @@ namespace WeChat.ModelBusi
                         if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
                         {
                             //add 20180115 费用异常接口
-                            msc.FinanceExceptionOrder(dt_decl.Rows[0]["ordercode"].ToString(), realname, "list_declaration.modifyflag修改为" + modifyflag.ToString());
+                            msc.FinanceExceptionOrder(dt_decl.Rows[0]["ordercode"].ToString(), username, "list_declaration.modifyflag修改为" + modifyflag.ToString());
                         }
                     }
 

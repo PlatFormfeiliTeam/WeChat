@@ -281,6 +281,7 @@ namespace WeChat.ModelBusi
 
         public static string checksave(string ordercode, string checktime, string checkname, string checkid, string isfumigation, string inspcheckremark)
         {
+            string username = "ksjgbg";
             using (DBSession db = new DBSession())
             {
                 string sql = @"update list_order set inspischeck=1,inspcheckid='{1}',inspcheckname='{2}',inspchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
@@ -305,14 +306,14 @@ namespace WeChat.ModelBusi
                     {
                         if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
                         {
-                            msc.FinanceExceptionOrder(ordercode, checkname, "list_order.inspischeck查验标志修改为1");
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.inspischeck查验标志修改为1");
                         }
                     }
                     else
                     {
                         if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
                         {
-                            msc.FinanceExceptionOrder(ordercode, checkname, "list_order.inspischeck查验标志修改为1");
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.inspischeck查验标志修改为1");
                         }
                     }                   
 

@@ -123,7 +123,7 @@ namespace WeChat.ModelBusi
 
         public static string Siteapply(string ordercode)
         {
-            string userid = "763"; string realname = "昆山吉时报关有限公司";
+            string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
 
             using (DBSession db = new DBSession())
             {
@@ -157,14 +157,14 @@ namespace WeChat.ModelBusi
                     {
                         if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
                         {
-                            msc.FinanceExceptionOrder(ordercode, realname, "list_order.siteapplytime现场报关");
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.siteapplytime现场报关");
                         }
                     }
                     else
                     {
                         if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
                         {
-                            msc.FinanceExceptionOrder(ordercode, realname, "list_order.siteapplytime现场报关");
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.siteapplytime现场报关");
                         }
                     }   
 
@@ -321,6 +321,7 @@ namespace WeChat.ModelBusi
 
         public static string checksave(string ordercode, string checktime, string checkname, string checkid)
         {
+            string username = "ksjsbg";
             using (DBSession db = new DBSession())
             {
                 string sql = "update list_order set ischeck=1,declcheckid='{1}',declcheckname='{2}',declchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
@@ -343,14 +344,14 @@ namespace WeChat.ModelBusi
                     {
                         if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
                         {
-                            msc.FinanceExceptionOrder(ordercode, checkname, "list_order.ischeck查验标志修改为1");
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.ischeck查验标志修改为1");
                         }
                     }
                     else
                     {
                         if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
                         {
-                            msc.FinanceExceptionOrder(ordercode, checkname, "list_order.ischeck查验标志修改为1");
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.ischeck查验标志修改为1");
                         }
                     }
 
