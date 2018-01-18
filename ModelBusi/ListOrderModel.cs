@@ -35,7 +35,7 @@ namespace WeChat.ModelBusi
                             ( select * from ( select rownum as rown ,tab.* from 
                             (select code,submittime,busiunitname,busitype,cusno,divideno,repwayid,contractno,goodsnum,goodsgw,to_char(ischeck) as ischeck,
                             to_char(checkpic) as checkpic,to_char(declstatus) as declstatus,to_char(inspstatus) as inspstatus,to_char(lawflag) as lawflag,
-                            to_char(inspcheck) as inspcheck,logisticsstatus,logisticsname,customareacode 
+                            to_char(inspischeck) as inspischeck,logisticsstatus,logisticsname,customareacode 
                             from list_order {0} order by submittime) tab where rownum<={1}) t1 where t1.rown>{2}）
                             select nt.*,sb.name as busitypename,sr.name as repwayname from newtab nt 
                             left join cusdoc.sys_busitype sb on nt.busitype=sb.code 

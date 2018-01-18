@@ -194,7 +194,7 @@
                                         '<li class="item-content">' +
                                             '<div class="item-inner">' +
                                                 '<div class="my-title">' + (obj[i]["DECLSTATUS"] == null ? "" : obj[i]["DECLSTATUS"]) + '</div>' +
-                                                '<div class="my-after">' + (obj[i]["INSPCHECK"] == null ? "" : obj[i]["INSPCHECK"]) + '</div>' +
+                                                '<div class="my-after">' + (obj[i]["INSPISCHECK"] == null ? "" : obj[i]["INSPISCHECK"]) + '</div>' +
                                                 '<div class="my-after">' + (obj[i]["LAWFLAG"] == null ? "" : obj[i]["LAWFLAG"]) + '</div>' +
                                             '</div>' +
                                         '</li>' +

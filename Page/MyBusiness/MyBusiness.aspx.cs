@@ -53,7 +53,7 @@ namespace WeChat.Page.MyBusiness
                 {
                     dr["ischeck"] = dr["ischeck"].ToString2() == "1" ? "海关查验" : "";
                     dr["checkpic"] = dr["checkpic"].ToString2() == "1" ? "含查验图片" : "";
-                    dr["inspcheck"] = dr["inspcheck"].ToString2() == "1" ? "国检查验" : "";
+                    dr["inspischeck"] = dr["inspischeck"].ToString2() == "1" ? "国检查验" : "";
                     dr["lawflag"] = dr["lawflag"].ToString2() == "1" ? "含法检" : "";
                     dr["declstatus"] = SwitchHelper.switchValue("declstatus", dr["declstatus"].ToString2());
                     dr["inspstatus"] = SwitchHelper.switchValue("inspstatus", dr["inspstatus"].ToString2());
