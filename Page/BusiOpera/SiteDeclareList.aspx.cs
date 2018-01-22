@@ -89,9 +89,9 @@ namespace WeChat.Page.BusiOpera
         }
 
         [WebMethod]
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid)
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string checkremark)
         {
-            return SiteDeclare.checksave(ordercode, checktime, checkname, checkid);
+            return SiteDeclare.checksave(ordercode, checktime, checkname, checkid, checkremark);
         }
 
         [WebMethod]
@@ -116,5 +116,16 @@ namespace WeChat.Page.BusiOpera
             return json;
         }
 
+        [WebMethod]
+        public static string auditsave(string ordercode, string auditflagtime, string auditflagname, string auditflagid, string auditcontent)
+        {
+            return SiteDeclare.auditsave(ordercode, auditflagtime, auditflagname, auditflagid, auditcontent);
+        }
+
+        [WebMethod]
+        public static string auditcancel(string ordercode)
+        {
+            return SiteDeclare.auditcancel(ordercode);
+        }
     }
 }

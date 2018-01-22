@@ -164,8 +164,16 @@ namespace WeChat.ModelBusi
                     msc.redis_OrderStatusLog(ordercode);
 
                     //add 20180115 保存操作记录list_times
-                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+//                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+//                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+//                    db.ExecuteSignle(sql);
+
+                    //add 20180119 保存历史记录
+                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                    sql = string.Format(sql, ordercode, userid, curtime, realname, ordercode, "INSPSITEAPPLYTIME", "现场报检");
                     db.ExecuteSignle(sql);
 
                     return curtime.Left(curtime.Length - 3).Replace("/", "");
@@ -201,8 +209,16 @@ namespace WeChat.ModelBusi
                     msc.redis_OrderStatusLog(ordercode);
 
                     //add 20180115 保存操作记录list_times
-                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+//                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+//                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+//                    db.ExecuteSignle(sql);
+
+                    //add 20180119 保存历史记录
+                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                    sql = string.Format(sql, ordercode, userid, curtime, realname, ordercode, "INSPSITEPASSTIME", "报检放行");
                     db.ExecuteSignle(sql);
 
                     return curtime.Left(curtime.Length - 3).Replace("/", "");
@@ -292,9 +308,18 @@ namespace WeChat.ModelBusi
                 if (i > 0)
                 {
                     //add 20180115 保存操作记录list_times
-                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-                        values(list_times_id.nextval,'" + ordercode + "','" + checkid + "','" + checkname + "',sysdate,'0',0)";
+//                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+//                        values(list_times_id.nextval,'" + ordercode + "','" + checkid + "','" + checkname + "',sysdate,'0',0)";
+//                    db.ExecuteSignle(sql);
+
+                    //add 20180119 保存历史记录
+                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                    sql = string.Format(sql, ordercode, checkid, "1", checkname, ordercode, "INSPISCHECK", "报检查验");
                     db.ExecuteSignle(sql);
+
 
                     sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + ordercode + "'";
                     DataTable dt_order = db.QuerySignle(sql);
@@ -328,6 +353,8 @@ namespace WeChat.ModelBusi
 
         public static string checkcancel(string ordercode)
         {
+            string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
+
             using (DBSession db = new DBSession())
             {
                 System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
@@ -346,7 +373,19 @@ namespace WeChat.ModelBusi
                                 ,fumigationname=null,fumigationtime=null,isfumigation=0,inspcheckremark='' where code='" + ordercode + "'";
                 string sql2 = "delete LIST_ATTACHMENT where ordercode='" + ordercode + "' and filetype='68'";
 
-                sqls.Add(sql); sqls.Add(sql2);
+                //add 20180115 保存操作记录list_times
+//                string sql3 = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+//                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+
+                //add 20180119 保存历史记录
+                string sql3 = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                sql3 = string.Format(sql3, ordercode, userid, "0", realname, ordercode, "INSPISCHECK", "报检查验");
+
+
+                sqls.Add(sql); sqls.Add(sql2); sqls.Add(sql3);
 
                 int i = db.ExecuteBatch(sqls);
                 if (i > 0)

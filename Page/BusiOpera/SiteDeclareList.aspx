@@ -164,7 +164,7 @@
                                 + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
                                     + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
                                         + '<div class="item-title col-40">查验维护</div>'
-                                        + '<div class="item-title col-25">查验标志</div>'
+                                        + '<div class="item-title col-25">查验/稽核</div>'
                                         + '<div class="item-title col-33">两单关联</div>'
                                     + '</div>'
                                 + '</li>'
@@ -554,9 +554,9 @@
                     $.toast("请选择需要查验标志的记录");
                     return;
                 }
-               
+
                 var strconHTML = "";
-                strconHTML = '<font class="title"><b>报关查验维护</b></font>';
+                strconHTML = '<font class="title"><b>报关查验稽核维护</b></font>';
 
                 strconHTML += '<div class="list-block" style="margin:0; margin-top:2rem;margin-buttom:2rem;margin-left:4%;margin-right:4%;line-height:1.5rem;font-size:.7rem">' +
                                     '<div class="row"> ' +
@@ -575,9 +575,13 @@
                                         '<div class="col-33">查验维护人员：<input type="hidden" id="txt_declcheckid" readonly /></div>' +
                                         '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declcheckname" readonly /></div>' +
                                     '</div> ' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">查验备注：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#ffffff;height:1.2rem;font-size:.7rem" id="txt_declcheckremark" /></div>' +
+                                    '</div> ' +
                                 '</div>';
                 strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
-                                 '<ul>' +
+                                 '<ul style="background:#e8e8e8;">' +
                                    '<li>' +
                                        '<div class="row" style="height:2rem"> ' +
                                            '<div class="col-50" style="margin-top:.5rem;">箱号</div>' +
@@ -601,7 +605,7 @@
 
                         for (var i = 0; i < obj.length; i++) {
                             strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
-                                              '<ul>' +
+                                              '<ul style="background:#e8e8e8;">' +
                                                 '<li>' +
                                                     '<div class="row"> ' +
                                                        '<div class="col-50" style="margin-top:.5rem;">' + (obj[i]["CONTAINERNO"] == null ? "" : obj[i]["CONTAINERNO"]) + '</div>' +
@@ -629,21 +633,44 @@
 
                 var strconButton = '<div class="content-block">' +
                                         '<div class="row"> ' +
-                                            '<div class="col-33"><a href="#" id="checkcancel" class="button button-fill button-warning">撤销标志</a></div>' +
-                                            '<div class="col-33"><a href="#" id="checksave" class="button button-fill">查验标志</a></div>' +
-                                            '<div class="col-33"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
+                                            '<div class="col-50"><a href="#" id="checkcancel" class="button button-fill button-warning">撤销标志</a></div>' +
+                                            '<div class="col-50"><a href="#" id="checksave" class="button button-fill">查验标志</a></div>' +
                                         '</div>' +
                                     '</div>';
 
-                var popupHTML = '<div class="popup">' +
+                var strconHTML2 = '<div class="list-block" style="margin:0; margin-top:2rem;margin-buttom:2rem;margin-left:4%;margin-right:4%;line-height:1.5rem;font-size:.7rem">' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">稽核维护时间：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_auditflagtime" readonly /></div>' +
+                                    '</div> ' +
+                                        '<div class="row"> ' +
+                                        '<div class="col-33">稽核维护人员：<input type="hidden" id="txt_auditflagid" readonly /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_auditflagname" readonly /></div>' +
+                                    '</div> ' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">稽核内容：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#ffffff;height:1.2rem;font-size:.7rem" id="txt_auditcontent" /></div>' +
+                                    '</div> ' +
+                                '</div>';
+
+                var strconButton2 = '<div class="content-block">' +
+                                        '<div class="row"> ' +
+                                            '<div class="col-50"><a href="#" id="auditcancel" class="button button-fill button-warning">撤销稽核</a></div>' +
+                                            '<div class="col-50"><a href="#" id="auditsave" class="button button-fill">稽核标志</a></div>' +
+                                        '</div>' +
+                                    '</div>';
+                var popupHTML = '<div class="popup" style="background:#e8e8e8;">' +
                                  '<div class="content">' +//data-type='native'                                                                               
                                         strconHTML +
                                         strconButton +
+                                        strconHTML2 +
+                                        strconButton2 +
+                                        '<div class="col-33"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
                                  '</div>' +
                              '</div>';
 
                 $.popup(popupHTML);
-                
+
                 var nd = new Date();
                 var y = nd.getFullYear();
                 var m = nd.getMonth() + 1;
@@ -655,16 +682,23 @@
                 if (d <= 9) d = "0" + d;
                 if (h <= 9) h = "0" + h;
                 if (mi <= 9) mi = "0" + mi;
-                
+
                 //$("#txt_declchecktime").datetimePicker({ value: [y, m, d, h, mi] });//此行不用 ，用下一行代码，因为是只读，不允许操作
                 $("#txt_declchecktime").val(y + "" + m + "" + d + " " + h + ":" + mi);//初始化日期时间
-
                 $("#txt_declcheckid").val("763");//当前登录人id
                 $("#txt_declcheckname").val("昆山吉时报关有限公司");//当前登录人name
+                $("#txt_declcheckremark").val($("#div_list #" + divid).children("input").eq(0).val());//查验备注赋值
+
+                //$("#txt_auditflagtime").datetimePicker({ value: [y, m, d, h, mi] });//此行不用 ，用下一行代码，因为是只读，不允许操作
+                $("#txt_auditflagtime").val(y + "" + m + "" + d + " " + h + ":" + mi);//初始化日期时间
+                $("#txt_auditflagid").val("763");//当前登录人id
+                $("#txt_auditflagname").val("昆山吉时报关有限公司");//当前登录人name
+                $("#txt_auditcontent").val($("#div_list #" + divid).children("input").eq(1).val());//稽核内容赋值
 
                 $("#checkcancel").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
+                    var concheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
 
-                    if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() == getname("ISCHECK", 0)) {
+                    if (concheck == getname2("ISCHECK", 0, 0) || concheck == getname2("ISCHECK", 0, 1)) {
                         $.toast("还未查验，无需撤销");
                         return;
                     }
@@ -680,11 +714,14 @@
                                  cache: false,
                                  async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                                  success: function (data) {
-                                     if (data.d == "sucess") {
+                                     var obj = eval("(" + data.d + ")");
+                                     if (obj.length == 1) {
                                          $.toast("撤销成功");
                                          $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text("");//更新查验时间
-                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("ISCHECK", 0));
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("ISCHECK", obj[0]["ISCHECK"], obj[0]["AUDITFLAG"]));
                                          $("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(1).text(getname("CHECKPIC", 0));
+
+                                         $("#div_list #" + divid).children("input").eq(0).val('');//更新查验备注
                                      } else {
                                          $.toast("撤销失败");
                                      }
@@ -710,16 +747,101 @@
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json",
                                 data: "{'ordercode':'" + divid.substring(6) + "','checktime':'" + $("#txt_declchecktime").val()
-                                    + "','checkname':'" + $("#txt_declcheckname").val() + "','checkid':'" + $("#txt_declcheckid").val() + "'}",
+                                    + "','checkname':'" + $("#txt_declcheckname").val() + "','checkid':'" + $("#txt_declcheckid").val()
+                                    + "','checkremark':'" + $("#txt_declcheckremark").val() + "'}",
                                 cache: false,
                                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                                 success: function (data) {
-                                    if (data.d != "") {
+                                    var obj = eval("(" + data.d + ")");
+                                    if (obj.length == 1) {
                                         $.toast("查验成功");
-                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(data.d);//更新查验时间
-                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("ISCHECK", 1));
+                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(obj[0]["DECLCHECKTIME"]);//更新查验时间
+                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("ISCHECK", obj[0]["ISCHECK"], obj[0]["AUDITFLAG"]));
+
+                                        $("#div_list #" + divid).children("input").eq(0).val($("#txt_declcheckremark").val());//更新查验备注
                                     } else {
                                         $.toast("查验失败");
+                                    }
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                                    //alert(XMLHttpRequest.status);
+                                    //alert(XMLHttpRequest.readyState);
+                                    //alert(textStatus);
+                                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                                }
+                            });
+                        },
+                        function () { }//cancel事件
+                      );
+                });
+
+                //------------------------------------------------------------------------------------------------------------------------------
+                $("#auditcancel").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
+                    var concheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
+
+                    if (concheck == getname2("ISCHECK", 0, 0) || concheck == getname2("ISCHECK", 1, 0)) {
+                        $.toast("还未稽核，无需稽核");
+                        return;
+                    }
+
+                    $.confirm('请确认是否需要<font color=blue>撤销稽核</font>?',
+                         function () {//OK事件
+                             $.ajax({
+                                 type: "post", //要用post方式                 
+                                 url: "SiteDeclareList.aspx/auditcancel",//方法所在页面和方法名
+                                 contentType: "application/json; charset=utf-8",
+                                 dataType: "json",
+                                 data: "{'ordercode':'" + divid.substring(6) + "'}",
+                                 cache: false,
+                                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                                 success: function (data) {
+                                     var obj = eval("(" + data.d + ")");
+                                     if (obj.length == 1) {
+                                         $.toast("撤销成功");
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text("");//更新查验时间
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("ISCHECK", obj[0]["ISCHECK"], obj[0]["AUDITFLAG"]));
+                                         $("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(1).text(getname("CHECKPIC", 0));
+
+                                         $("#div_list #" + divid).children("input").eq(1).val('');//更新稽核内容
+                                     } else {
+                                         $.toast("撤销失败");
+                                     }
+                                 },
+                                 error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                                     //alert(XMLHttpRequest.status);
+                                     //alert(XMLHttpRequest.readyState);
+                                     //alert(textStatus);
+                                     alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                                 }
+                             });
+                         },
+                         function () { }//cancel事件
+                       );
+                });
+
+                $("#auditsave").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
+                    $.confirm('请确认是否需要<font color=blue>稽核</font>?',
+                        function () {//OK事件
+                            $.ajax({
+                                type: "post", //要用post方式                 
+                                url: "SiteDeclareList.aspx/auditsave",//方法所在页面和方法名
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: "{'ordercode':'" + divid.substring(6) + "','auditflagtime':'" + $("#txt_auditflagtime").val()
+                                    + "','auditflagname':'" + $("#txt_auditflagname").val() + "','auditflagid':'" + $("#txt_auditflagid").val()
+                                    + "','auditcontent':'" + $("#txt_auditcontent").val() + "'}",
+                                cache: false,
+                                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                                success: function (data) {
+                                    var obj = eval("(" + data.d + ")");
+                                    if (obj.length == 1) {
+                                        $.toast("稽核成功");
+                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(obj[0]["AUDITFLAGTIME"]);//更新稽核时间
+                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("ISCHECK", obj[0]["ISCHECK"], obj[0]["AUDITFLAG"]));
+
+                                        $("#div_list #" + divid).children("input").eq(1).val($("#txt_auditcontent").val());//更新稽核内容
+                                    } else {
+                                        $.toast("稽核失败");
                                     }
                                 },
                                 error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
@@ -749,10 +871,13 @@
                     return;
                 }
 
-                if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() != getname("ISCHECK", 1)) {
+                var concheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
+
+                if (concheck != getname2("ISCHECK", 1, 0) && concheck != getname2("ISCHECK", 1, 1)) {
                     $.toast("无查验标志，不能使用查验图片功能");
                     return;
-                }                
+                }
+
 
                 $.modal({
                     title: '查验图片',
@@ -977,6 +1102,8 @@
                             }
 
                             tb = '<div class="list-block" id="order_' + obj[i]["CODE"] + '">'
+                                    + '<input type="hidden" value="' + (obj[i]["DECLCHECKREMARK"] == null ? "" : obj[i]["DECLCHECKREMARK"]) + '" readonly />'
+                                    + '<input type="hidden" value="' + (obj[i]["AUDITCONTENT"] == null ? "" : obj[i]["AUDITCONTENT"]) + '" readonly />'
                                     + '<ul>'
                                         + '<li class="item-content">'
                                              + '<div class="item-inner row">'
@@ -1002,7 +1129,7 @@
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-40">' + (obj[i]["DECLCHECKTIME"] == null ? "" : obj[i]["DECLCHECKTIME"]) + '</div>'
-                                                + '<div class="item-title col-25">' + getname("ISCHECK", obj[i]["ISCHECK"]) + '</div>'
+                                                + '<div class="item-title col-25">' + getname2("ISCHECK", obj[i]["ISCHECK"], obj[i]["AUDITFLAG"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["ASSOCIATENO"] == null ? "" : obj[i]["ASSOCIATENO"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
@@ -1048,13 +1175,6 @@
                     case "51": str = "特殊进口"; break;
                 }
             }
-            if (key == "ISCHECK") {
-                switch (value) {
-                    case 0: str = ""; break;//未查验
-                    case 1: str = "查验"; break;//已查验
-                    default: str = ""; break;//未查验
-                }
-            }
             if (key == "CHECKPIC") {
                 switch (value) {
                     case 0: str = ""; break;//无查验图
@@ -1071,6 +1191,31 @@
                 }
             }
             return str;
+        }
+
+        function getname2(key, value, value2) {
+            var restr = ""; var str = ""; var str2 = "";
+            if (key == "ISCHECK") {
+
+                switch (value) {
+                    case 0: str = ""; break;//未查验
+                    case 1: str = "查验"; break;//已查验
+                    default: str = ""; break;//未查验
+                }
+
+                switch (value2) {
+                    case 0: str2 = ""; break;//未稽核
+                    case 1: str2 = "稽核"; break;//已稽核
+                    default: str2 = ""; break;//未稽核
+                }
+
+                if (str == "" && str2 == "") { restr = ""; }
+                if (str == "" && str2 != "") { restr = "/" + str2; }
+                if (str != "" && str2 == "") { restr = str; }
+                if (str != "" && str2 != "") { restr = str + "/" + str2; }
+
+            }
+            return restr;
         }
         
         function initsearch_condition() {
@@ -1265,7 +1410,7 @@
                 </a>
                 <a class="tab-item external" href="#" id="Check_a">
                     <span class="icon icon-check"></span>
-                    <span class="tab-label">查验标志</span>
+                    <span class="tab-label">查验稽核</span>
                 </a>
                 <a class="tab-item external" href="#" id="Picture_a">
                     <span class="icon icon-picture"></span>

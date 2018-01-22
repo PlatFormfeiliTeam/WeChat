@@ -647,8 +647,10 @@
                                      if (data.d == "sucess") {
                                          $.toast("撤销成功");
                                          $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text("");//更新查验时间
-                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("INSPISCHECK", 0, 0));
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("INSPISCHECK", 0, 0));
                                          $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text(getname("INSPCHECKPIC", 0));
+
+                                         $("#div_list #" + divid).children("input").eq(0).val('');//更新查验备注
                                      } else {
                                          $.toast("撤销失败");
                                      }
@@ -685,6 +687,7 @@
                                         $.toast("查验成功");
                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(data.d);//更新查验时间
                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("INSPISCHECK", 1, chksave_isfumigation));//更新查验/熏蒸标志
+
                                         $("#div_list #" + divid).children("input").eq(0).val($("#txt_inspcheckremark").val());//更新查验备注
 
                                     } else {

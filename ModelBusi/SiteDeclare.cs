@@ -110,6 +110,7 @@ namespace WeChat.ModelBusi
                                     ,to_char(ort.siteapplytime,'yyyyMMdd HH24:mi') siteapplytime,ort.goodsnum,ort.goodsgw,ort.contractno
                                     ,to_char(ort.declchecktime,'yyyyMMdd HH24:mi') declchecktime,ort.ischeck,ort.associateno
                                     ,to_char(ort.sitepasstime,'yyyyMMdd HH24:mi') sitepasstime,ort.checkpic,ort.correspondno 
+                                    ,ort.checkremark declcheckremark,ort.auditflag,ort.auditcontent 
                                 from list_order ort
                                     left join list_declaration det on ort.code=det.ordercode   
                                 where ort.entrusttype in('01','03') and ort.isinvalid=0 and det.isinvalid=0" + where;
@@ -145,9 +146,18 @@ namespace WeChat.ModelBusi
                     msc.redis_OrderStatusLog(ordercode);
 
                     //add 20180115 保存操作记录list_times
-                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+                    //sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+                        //values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+                    //db.ExecuteSignle(sql);
+
+                    //add 20180119 保存历史记录
+                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                    sql = string.Format(sql, ordercode, userid, curtime, realname, ordercode, "SITEAPPLYTIME", "现场报关");
                     db.ExecuteSignle(sql);
+
 
                     sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + ordercode + "'";
                     DataTable dt_order = db.QuerySignle(sql);
@@ -215,9 +225,18 @@ namespace WeChat.ModelBusi
                     msc.redis_OrderStatusLog(ordercode);
 
                     //add 20180115 保存操作记录list_times
-                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+//                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+//                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+//                    db.ExecuteSignle(sql);
+
+                    //add 20180119 保存历史记录
+                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                    sql = string.Format(sql, ordercode, userid, curtime, realname, ordercode, "SITEPASSTIME", "报关放行");
                     db.ExecuteSignle(sql);
+
 
                     return curtime.Left(curtime.Length - 3).Replace("/", "");
                 }
@@ -319,22 +338,31 @@ namespace WeChat.ModelBusi
             }
         }
 
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid)
+        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string checkremark)
         {
             string username = "ksjsbg";
             using (DBSession db = new DBSession())
             {
-                string sql = "update list_order set ischeck=1,declcheckid='{1}',declcheckname='{2}',declchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
-                sql = string.Format(sql, ordercode, checkid, checkname, checktime);
+                string sql = "update list_order set ischeck=1,declcheckid='{1}',declcheckname='{2}',declchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),checkremark='{4}'  where code='{0}'";
+                sql = string.Format(sql, ordercode, checkid, checkname, checktime, checkremark);
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
                 {
                     //add 20180115 保存操作记录list_times
-                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-                        values(list_times_id.nextval,'" + ordercode + "','" + checkid + "','" + checkname + "',sysdate,'0',0)";
+//                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+//                        values(list_times_id.nextval,'" + ordercode + "','" + checkid + "','" + checkname + "',sysdate,'0',0)";
+//                    db.ExecuteSignle(sql);
+
+                    //add 20180119 保存历史记录
+                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                    sql = string.Format(sql, ordercode, checkid, "1", checkname, ordercode, "ISCHECK", "报关查验");
                     db.ExecuteSignle(sql);
 
-                    sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + ordercode + "'";
+
+                    sql = @"select code,entrusttype,declstatus,inspstatus,auditflag from list_order lo where lo.code='" + ordercode + "'";
                     DataTable dt_order = db.QuerySignle(sql);
 
                     //add 20180115 费用异常接口
@@ -355,17 +383,19 @@ namespace WeChat.ModelBusi
                         }
                     }
 
-                    return checktime.Replace("-", "");
+                    return "[{\"SUCCESS\":true,\"DECLCHECKTIME\":'" + checktime.Replace("-", "") + "',\"ISCHECK\":1,\"AUDITFLAG\":" + dt_order.Rows[0]["auditflag"].ToString() + "}]";
                 }
                 else
                 {
-                    return "";
+                    return "[]";
                 }
             }
         }
 
         public static string checkcancel(string ordercode)
         {
+            string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
+
             using (DBSession db = new DBSession())
             {
                 System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
@@ -381,15 +411,166 @@ namespace WeChat.ModelBusi
 
                 List<string> sqls = new List<string>();
 
-                string sql = "update list_order set ischeck=0,declcheckid=null,declcheckname=null,declchecktime=null,checkpic=0 where code='" + ordercode + "'";
+                string sql = @"update list_order 
+                                set ischeck=0,declcheckid=null,declcheckname=null,declchecktime=null,checkpic=0,checkremark='' 
+                                where code='" + ordercode + "'";
                 string sql2 = "delete LIST_ATTACHMENT where ordercode='" + ordercode + "' and filetype='67'";
+
+                //add 20180115 保存操作记录list_times
+//                string sql3 = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+//                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+
+                //add 20180119 保存历史记录
+                string sql3 = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                sql3 = string.Format(sql3, ordercode, userid, "0", realname, ordercode, "ISCHECK", "报关查验");
+
+
+                sqls.Add(sql); sqls.Add(sql2); sqls.Add(sql3);
+
+                int i = db.ExecuteBatch(sqls);
+                if (i > 0)
+                {
+                    sql = @"select code,entrusttype,declstatus,inspstatus,auditflag from list_order lo where lo.code='" + ordercode + "'";
+                    DataTable dt_order = db.QuerySignle(sql);
+
+                    //add 20180115 费用异常接口
+                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
+
+                    if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.ischeck查验标志修改为0");
+                        }
+                    }
+                    else
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.ischeck查验标志修改为0");
+                        }
+                    }
+
+                    return "[{\"SUCCESS\":true,\"DECLCHECKTIME\":'',\"ISCHECK\":0,\"AUDITFLAG\":" + dt_order.Rows[0]["auditflag"].ToString() + "}]";
+                }
+                else
+                {
+                    return "[]";
+                }
+            }
+        }
+
+        public static string auditsave(string ordercode, string auditflagtime, string auditflagname, string auditflagid, string auditcontent)
+        {
+            string username = "ksjsbg";
+            using (DBSession db = new DBSession())
+            {
+                string sql = "update list_order set auditflag=1,auditflagid='{1}',auditflagname='{2}',auditflagtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),auditcontent='{4}'  where code='{0}'";
+                sql = string.Format(sql, ordercode, auditflagid, auditflagname, auditflagtime, auditcontent);
+                int i = db.ExecuteSignle(sql);
+                if (i > 0)
+                {
+                    //add 20180115 保存操作记录list_times
+                    //                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+                    //                        values(list_times_id.nextval,'" + ordercode + "','" + checkid + "','" + checkname + "',sysdate,'0',0)";
+                    //                    db.ExecuteSignle(sql);
+
+                    //add 20180119 保存历史记录
+                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                    sql = string.Format(sql, ordercode, auditflagid, "1", auditflagname, ordercode, "AUDITFLAG", "稽核标志");
+                    db.ExecuteSignle(sql);
+
+
+                    sql = @"select code,entrusttype,declstatus,inspstatus,ischeck from list_order lo where lo.code='" + ordercode + "'";
+                    DataTable dt_order = db.QuerySignle(sql);
+
+                    //add 20180115 费用异常接口
+                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
+
+                    if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.auditflag稽核标志修改为1");
+                        }
+                    }
+                    else
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.auditflag稽核标志修改为1");
+                        }
+                    }
+
+                    //return auditflagtime.Replace("-", "");
+                    return "[{\"SUCCESS\":true,\"AUDITFLAGTIME\":'" + auditflagtime.Replace("-", "") + "',\"ISCHECK\":" + dt_order.Rows[0]["ischeck"].ToString() + ",\"AUDITFLAG\":1}]";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
+        public static string auditcancel(string ordercode)
+        {
+            string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
+
+            using (DBSession db = new DBSession())
+            {
+
+                List<string> sqls = new List<string>();
+
+                string sql = @"update list_order 
+                                set auditflag=0,auditflagid=null,auditflagname=null,auditflagtime=null,auditcontent=''  
+                                where code='" + ordercode + "'";
+
+                //add 20180115 保存操作记录list_times
+                //                string sql3 = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+                //                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+
+                //add 20180119 保存历史记录
+                string sql2 = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+                sql2 = string.Format(sql2, ordercode, userid, "0", realname, ordercode, "AUDITFLAG", "稽核标志");
+
 
                 sqls.Add(sql); sqls.Add(sql2);
 
                 int i = db.ExecuteBatch(sqls);
                 if (i > 0)
                 {
-                    return "sucess";
+                    sql = @"select code,entrusttype,declstatus,inspstatus,ischeck from list_order lo where lo.code='" + ordercode + "'";
+                    DataTable dt_order = db.QuerySignle(sql);
+
+                    //add 20180115 费用异常接口
+                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
+
+                    if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.auditflag稽核标志修改为0");
+                        }
+                    }
+                    else
+                    {
+                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
+                        {
+                            msc.FinanceExceptionOrder(ordercode, username, "list_order.auditflag稽核标志修改为0");
+                        }
+                    }
+
+                    //return "sucess";
+                    return "[{\"SUCCESS\":true,\"AUDITFLAGTIME\":'',\"ISCHECK\":" + dt_order.Rows[0]["ischeck"].ToString() + ",\"AUDITFLAG\":0}]";
                 }
                 else
                 {

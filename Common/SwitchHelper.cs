@@ -60,6 +60,9 @@ namespace WeChat.Common
                         case "2":
                             value = "改单";
                             break;
+                        case "3":
+                            value = "改单完成";
+                            break;
                     }
                     break;
                 case "busitype":
