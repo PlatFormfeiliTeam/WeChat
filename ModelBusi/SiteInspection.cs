@@ -301,7 +301,7 @@ namespace WeChat.ModelBusi
             using (DBSession db = new DBSession())
             {
                 string sql = @"update list_order set inspischeck=1,inspcheckid='{1}',inspcheckname='{2}',inspchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
-                                    ,fumigationname='{2}',fumigationtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),isfumigation='{4}',inspcheckremark='{5}' 
+                                    ,fumigationid='{1}',fumigationname='{2}',fumigationtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),isfumigation='{4}',inspcheckremark='{5}' 
                                 where code='{0}'";
                 sql = string.Format(sql, ordercode, checkid, checkname, checktime, isfumigation, inspcheckremark);
                 int i = db.ExecuteSignle(sql);
@@ -370,7 +370,7 @@ namespace WeChat.ModelBusi
 
                 List<string> sqls = new List<string>();
                 string sql = @"update list_order set inspischeck=0,inspcheckid=null,inspcheckname=null,inspchecktime=null,inspcheckpic=0
-                                ,fumigationname=null,fumigationtime=null,isfumigation=0,inspcheckremark='' where code='" + ordercode + "'";
+                                ,fumigationid=null,fumigationname=null,fumigationtime=null,isfumigation=0,inspcheckremark='' where code='" + ordercode + "'";
                 string sql2 = "delete LIST_ATTACHMENT where ordercode='" + ordercode + "' and filetype='68'";
 
                 //add 20180115 保存操作记录list_times
