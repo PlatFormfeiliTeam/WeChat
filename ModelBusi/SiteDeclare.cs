@@ -403,7 +403,7 @@ namespace WeChat.ModelBusi
                 string Password = ConfigurationManager.AppSettings["FTPPassword"];
                 FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
 
-                DataTable dt = db.QuerySignle("select * from list_attachment where ordercode='" + ordercode + "'");
+                DataTable dt = db.QuerySignle("select * from list_attachment where ordercode='" + ordercode + "' and filetype='67'");
                 foreach (DataRow dr in dt.Rows)
                 {
                     ftp.DeleteFile(dr["FILENAME"] + "");
