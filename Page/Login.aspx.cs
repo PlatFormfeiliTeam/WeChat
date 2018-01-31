@@ -30,6 +30,24 @@ namespace WeChat.Page
             WGUserEn user = UserModel.Login(name, pwd, customer,wcopenid,wcnickname);
             if (user != null && !string.IsNullOrEmpty(user.GwyUserCode))
             {
+                //1、判断权限
+                if (transferUrl == "DeclareList" || transferUrl == "SiteDeclareList" || transferUrl == "SiteInspectionList")
+                {
+                    if (user.IsCompany != 1 && user.IsCustomer != 1)
+                    {
+                        return "{'flag':'false','url':'登录失败！该账号不属于生产企业或委托单位'}";
+                    }
+                }
+                if (transferUrl == "MyBusiness" || transferUrl == "SubscribeList_busi" || transferUrl == "SubscribeList_decl")
+                {
+                    if (user.IsReceiver != 1)
+                    {
+                        return "{'flag':'false','url':'登录失败！该账号不属于接单单位'}";
+                    }
+                }
+                //2、保存当前账号
+                UserModel.SaveUser(user);
+                //3、页面跳转
                 switch(transferUrl)
                 {
                     case "DeclareList":
@@ -37,6 +55,9 @@ namespace WeChat.Page
                         break;
                     case "SiteDeclareList":
                         transferUrl = "http://gwy.jishiks.com/Page/BusiOpera/SiteDeclareList.aspx";
+                        break;
+                    case "SiteInspectionList":
+                        transferUrl = "http://gwy.jishiks.com/Page/MyBusiness/SiteInspectionList.aspx";
                         break;
                     case "MyBusiness":
                         transferUrl = "http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx";
@@ -47,6 +68,7 @@ namespace WeChat.Page
                     case "SubscribeList_decl":
                         transferUrl = "http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_decl.aspx";
                         break;
+
                     
                 }
                 return "{'flag':'true','url':'" + transferUrl + "'}";

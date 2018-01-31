@@ -29,7 +29,7 @@ namespace WeChat.Page.BusiOpera
                     LogHelper.Write("第10步：" + userInfo.OpenID);
                     System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SiteDeclareList");
                 }
-                else if (wuser.IsReceiver != 1)
+                else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
                 {//不是接单单位，无此权限
                     LogHelper.Write("第11步：" + userInfo.OpenID);
                     System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SiteDeclareList");

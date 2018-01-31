@@ -21,22 +21,31 @@ namespace WeChat.ModelBusi
         {
             using(DBSession db=new DBSession())
             {
-                pwd = pwd.ToSHA1();
+                pwd = pwd.Trim2().ToSHA1();
                 string sql = @"select su.id as GWYUSERID,su.name GWYUSERCODE,su.realname as GWYUSERNAME,csc.code as CUSTOMERCODE,csc.iscompany,csc.iscustomer,csc.isreceiver from sys_user su 
                             left join cusdoc.sys_customer csc on su.customerid=csc.id where su.name='{0}' and su.password='{1}' and csc.code='{2}' and su.enabled=1";
-                sql = string.Format(sql, name, pwd, customer.ToUpper());
+                sql = string.Format(sql, name.Trim2(), pwd, customer.Trim2().ToUpper());
                 WGUserEn user = db.QuerySignleEntity<WGUserEn>(sql);
-                if(user!=null && !string.IsNullOrEmpty(user.GwyUserCode))
+                if (user != null)
                 {
                     user.WCOpenID = openid;
                     user.WCNickName = nickname;
-                    sql = @"insert into wechat_user(id,GWYUSERCODE,GWYUSERNAME,WCOpenID,WCNickName,iscompany,iscustomer,isreceiver,customercode,createdate,gwyuserid) 
-                        values(wechat_user_id.nextval,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',sysdate,{8})";
-                    sql = string.Format(sql, user.GwyUserCode, user.GwyUserName, user.WCOpenID, user.WCNickName, user.IsCompany, user.IsCustomer, user.IsReceiver,
-                        user.CustomerCode, user.GwyUserID);
-                    db.ExecuteSignle(sql);
                 }
                 return user;
+            }
+        }
+
+        public static bool SaveUser(WGUserEn user)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "delete from wechat_user where WCOpenID='" + user.WCOpenID + "'";
+                db.ExecuteSignle(sql);
+                sql = @"insert into wechat_user(id,GWYUSERCODE,GWYUSERNAME,WCOpenID,WCNickName,iscompany,iscustomer,isreceiver,customercode,createdate,gwyuserid) 
+                    values(wechat_user_id.nextval,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',sysdate,{8})";
+                sql = string.Format(sql, user.GwyUserCode, user.GwyUserName, user.WCOpenID, user.WCNickName, user.IsCompany, user.IsCustomer, user.IsReceiver,
+                    user.CustomerCode, user.GwyUserID);
+                return db.ExecuteSignle(sql) == 0 ? false : true;
             }
         }
 
@@ -49,7 +58,7 @@ namespace WeChat.ModelBusi
         {
             using(DBSession db=new DBSession())
             {
-                string sql = "select * from wechat_user where wcopenid='" + openid + "'";
+                string sql = "select * from wechat_user where wcopenid='" + openid + "' and rownum=1";
                 WGUserEn wuser= db.QuerySignleEntity<WGUserEn>(sql);
                 return wuser;
             }
