@@ -175,7 +175,7 @@ namespace WeChat.ModelBusi
         /// <param name="openid"></param>
         /// <param name="codetype"></param>
         /// <returns></returns>
-        public static bool insertSubscribe(string type, string[] status, string cusno, string declarationcode, string userid, string username, string openid, string codetype)
+        public static bool insertSubscribe(string type, string[] status, string cusno, string declarationcode, int userid, string username, string openid, string codetype)
         {
             try
             {

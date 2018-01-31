@@ -13,7 +13,9 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using WeChat.Common;
+using WeChat.Entity;
 using WeChat.ModelBusi;
+using WeChat.ModelWeChat;
 
 namespace WeChat.Page.MyBusiness
 {
@@ -23,8 +25,33 @@ namespace WeChat.Page.MyBusiness
         {
             string action = Request["action"];
             string data = Request["data"];
-            
+            WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+            if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
+            {//授权成功
+                LogHelper.Write("第9步：" + userInfo.OpenID);
+                WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
+                if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
+                {//账号未关联，跳转至登录界面
+                    LogHelper.Write("第10步：" + userInfo.OpenID);
+                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+                }
+                else if (wuser.IsReceiver != 1)
+                {//不是接单单位，无此权限
+                    LogHelper.Write("第11步：" + userInfo.OpenID);
+                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+                }
+                else
+                {//不需登录，保存当前用户
+                    HttpContext.Current.Session["user"] = wuser;
+                }
+                LogHelper.Write("第12步：" + wuser.WCOpenID);
+            }
+            else
+            {//获取授权失败，也跳转至登录页面
+                System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+            }
         }
+       
         /// <summary>
         /// 获取业务信息
         /// </summary>
@@ -114,7 +141,7 @@ namespace WeChat.Page.MyBusiness
         /// <param name="orderCode"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string SubscribeStatus(string type, string status, string cusno, string declarationcode, string userid, string username, string openid)
+        public static string SubscribeStatus(string type, string status, string cusno, string declarationcode)
         {
             try
             {
@@ -163,11 +190,6 @@ namespace WeChat.Page.MyBusiness
                     }
                     codetype = "1";
                 }
-                //订阅
-                //if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
-                //    return "订阅成功";
-                //else
-                //    return "订阅失败：系统异常";
                 //防止重复订阅
                 for (int i = 0; i < st.Length; i++)
                 {
@@ -177,20 +199,14 @@ namespace WeChat.Page.MyBusiness
                         orderData.Add(st[i]);
                         //return st[i] + "已订阅请勿重复订阅";
                     }
-                    //else if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
-                    //{
-                    //    return "订阅成功";
-                    //}
-                    //else
-                    //{
-                    //    return "订阅失败：系统异常";
-                    //}
+                    
                 }
                 if (orderData.Count == 0)
                 {
                     try
                     {
-                        SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, userid, username, openid, codetype);
+                        WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+                        SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, user.GwyUserID, user.GwyUserName, user.WCOpenID, codetype);
                         return "订阅成功";
                     }
                     catch (Exception e)

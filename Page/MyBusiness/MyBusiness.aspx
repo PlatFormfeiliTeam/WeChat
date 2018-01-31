@@ -135,7 +135,6 @@
     </style>
 
     <script type="text/javascript">
-        var userid = "22", username = "test", openid = "oLVv71Ma9dCp5zhoJWuAHTDKAx4A";
         // 加载flag
         var loading = false;
         // 最多可加载的条目
@@ -467,7 +466,7 @@
                                 if (declTable != null) {
                                     for (var i = 0; i < declTable.length; i++) {
                                         declstr += '<div class="list-block" id="' +
-                                            (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"] == null) +
+                                            (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) +
                                             '">';
                                         declstr += '<div class="row">';
                                         declstr += '<div class="col-40">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
@@ -805,12 +804,6 @@
                     subCusno +
                     "','declarationcode':'" +
                     subDeclarationCode +
-                    "','userid':'" +
-                    userid +
-                    "','username':'" +
-                    username +
-                    "','openid':'" +
-                    openid +
                     "'}",
                 cache: false,
                 async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码

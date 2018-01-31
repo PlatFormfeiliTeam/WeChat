@@ -20,6 +20,13 @@
             </div>
         <div>&nbsp;&nbsp;<asp:Label ID="Label2" runat="server" Text="服务停止"></asp:Label></div>
     </div>
+        <div style="clear:both">
+        <div style="float:left">
+        <asp:Button ID="Button3" runat="server" Text="urlEncode" OnClick="Button3_Click" />
+            </div>
+        <div>&nbsp;&nbsp;<asp:TextBox ID="TextBox1" runat="server"></asp:TextBox><asp:TextBox ID="TextBox2" Width="300" runat="server"></asp:TextBox></div>
+            
+    </div>
     </form>
 </body>
 </html>

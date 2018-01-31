@@ -6,7 +6,7 @@
 			{
 				"type":"view",
 				"name":"报关单查询",
-				"url":"http://www.haiguan.info/OnLineSearch/Gateway/Gatewaystate.aspx"
+				"url":"http://www.customs.gov.cn/publish/portal0/tab9405/"
 			},
 			{
 				"type":"view",
@@ -26,7 +26,7 @@
 			{
 				"type":"view",
 				"name":"HS编码查询",
-				"url":"http://v.qq.com/"
+				"url":"http://gwy.jishiks.com/Page/FrequentSearch/HsCodeList.aspx"
 			}]
       },
       {
@@ -35,52 +35,53 @@
            {	
                "type":"view",
                "name":"现场报关",
-               "url":"http://www.soso.com/"
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteDeclareList.aspx"
             },
 			{	
                "type":"view",
                "name":"报关单查询",
-               "url":"http://www.soso.com/"
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/DeclareList.aspx"
             },
 			{	
                "type":"view",
                "name":"现场报检",
-               "url":"http://www.soso.com/"
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteInspectionList.aspx"
             },
 			{	
                "type":"view",
                "name":"报检单查询",
-               "url":"http://www.soso.com/"
-            },
-            {
-               "type":"click",
-               "name":"图文信息",
-               "key":"VIEW"
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/InspectionList.aspx"
             }]
        },
       {
 			
-		   "name":"我的业务",
+		   "name":"我的业务1",
            "sub_button":[
            {	
                "type":"view",
-               "name":"报关单调阅",
-               "url":"http://www.soso.com/"
-            },
-			{	
-               "type":"view",
-               "name":"订阅清单",
-               "url":"http://www.soso.com/"
-            },
-			{	
-               "type":"view",
                "name":"详细界面",
-               "url":"http://www.soso.com/"
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx"
             },
+           {	
+               "type":"view",
+               "name":"报关单调阅",
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx"
+            },
+			
             {
                "type":"view",
-			   "name":"My业务",
-			   "url":"http://1w838262n7.imwork.net/page/tt.aspx"
+			   "name":"查验图片",
+			   "url":"http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"业务订阅",
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_busi.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"报关单订阅",
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_decl.aspx"
             }]
        }]
  }

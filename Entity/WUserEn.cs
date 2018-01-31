@@ -8,7 +8,7 @@ namespace WeChat.Entity
     /// <summary>
     /// 微信用户实体
     /// </summary>
-    public class UserInfoEn
+    public class WUserEn
     {
         /// <summary>
         /// 全局凭证唯一Id
@@ -19,10 +19,6 @@ namespace WeChat.Entity
         /// 公众号Id
         /// </summary>
         public string PublicId { get; set; }
-        /// <summary>
-        /// 用户Id
-        /// </summary>
-        public string UserID { get; set; }
         /// <summary>
         /// 昵称
         /// </summary>
@@ -65,6 +61,6 @@ namespace WeChat.Entity
         /// <summary>
         /// 用户取消关注时间
         /// </summary>
-        public DateTime Un_Subscribe_Time { get; set; }
+        public DateTime? Un_Subscribe_Time { get; set; }
     }
 }

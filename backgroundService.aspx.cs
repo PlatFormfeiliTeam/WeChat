@@ -54,6 +54,12 @@ namespace WeChat
                 
             }
         }
+        protected void Button3_Click(object sender, EventArgs e)
+        {
+            //创建菜单
+            this.TextBox2.Text = MyHttpHelper.UrlEncode(this.TextBox1.Text);
+
+        }
         /// <summary>
         /// 创建菜单
         /// </summary>
