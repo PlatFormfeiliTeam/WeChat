@@ -231,6 +231,45 @@
                 }
             });
         }
+
+        function showGridName() {
+            var strname = '<div class="list-block">' +
+                            '<ul>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">报关单号</div>' +
+                            '<div class="my-after">件数/毛重</div>' +
+                            '<div class="my-after">删改单</div>' +
+                            '</div>' +
+                            '</li>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">运输工具</div>' +
+                            '<div class="my-after">贸易方式</div>' +
+                            '<div class="my-after">海关状态</div>' +
+                            '</div>' +
+                            '</li>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">订阅状态</div>' +
+                            '<div class="my-after"></div>' +
+                            '<div class="my-after"></div>' +
+                            '</div>' +
+                            '</li>' +
+                            '</ul>' +
+                            '</div>';
+            $.modal({
+                //title: '<b>更多查询</b>',
+                text: strname,
+                //buttons: [{ text: '取消', bold: true, onClick: function () { } }],
+                extraClass: 'girdnamediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+            });
+
+            $(document).on('click', '.girdnamediv', function () {
+                $.closeModal(".girdnamediv");
+            });
+
+        }
     </script>
 </head>
 <body>
@@ -247,8 +286,9 @@
                         <div class="col-50"><input type="text" id='picker_tigger' placeholder='是否触发'/></div>
                         <div class="col-50"><input type="text" id='txt_code' placeholder='报关单号'/></div>
                     </div> 
-                    <div class="row"> 
-                        <div class="col-100"><a href="#" id="search_a" class="open-preloader-title button button-fill">查  询</a> </div>
+                    <div class="row" style="height:35px;">
+                        <div class="col-80"><a href="#" id="search_a" class="open-preloader-title button button-fill">查  询</a> </div>
+                        <div class="col-20"><a href="javascript:showGridName()"  class="button  ">列名</a></div>
                     </div>                
                 </div>  
             </header>

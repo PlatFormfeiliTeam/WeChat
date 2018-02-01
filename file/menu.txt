@@ -30,32 +30,8 @@
 			}]
       },
       {
-           "name":"业务操作",
-           "sub_button":[
-           {	
-               "type":"view",
-               "name":"现场报关",
-               "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteDeclareList.aspx"
-            },
-			{	
-               "type":"view",
-               "name":"报关单查询",
-               "url":"http://gwy.jishiks.com/Page/BusiOpera/DeclareList.aspx"
-            },
-			{	
-               "type":"view",
-               "name":"现场报检",
-               "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteInspectionList.aspx"
-            },
-			{	
-               "type":"view",
-               "name":"报检单查询",
-               "url":"http://gwy.jishiks.com/Page/BusiOpera/InspectionList.aspx"
-            }]
-       },
-      {
 			
-		   "name":"我的业务1",
+		   "name":"我的业务",
            "sub_button":[
            {	
                "type":"view",
@@ -83,5 +59,34 @@
                "name":"报关单订阅",
                "url":"http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_decl.aspx"
             }]
+       },
+	   {
+           "name":"业务操作",
+           "sub_button":[
+           {	
+               "type":"view",
+               "name":"现场报关",
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteDeclareList.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"报关单查询",
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/DeclareList.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"现场报检",
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteInspectionList.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"报检单查询",
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/InspectionList.aspx"
+            },
+			{
+				"type":"click",
+				"name":"账号注销",
+				"key":"V1001_GOOD"
+			}]
        }]
  }

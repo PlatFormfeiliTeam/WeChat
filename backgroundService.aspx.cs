@@ -72,7 +72,7 @@ namespace WeChat
             if (error.errcode == "0")
                 this.Label1.Text = "创建成功";
             else
-                this.Label1.Text = "创建失败";
+                this.Label1.Text = "创建失败:" + error.errcode + "," + error.errmsg;
         }
         /// <summary>
         /// 获取菜单数据

@@ -78,24 +78,22 @@ namespace WeChat.ModelWeChat
                     if (req.EventKey.Equals("V1001_GOOD", StringComparison.OrdinalIgnoreCase))//click_one
                     {
                         //ReGetOpenId();
-                    }
-
-                    else if (req.EventKey.Equals("VIEW", StringComparison.OrdinalIgnoreCase))
-                    {
-                        responseContent = string.Format(ReplyType.Message_News_Main,
-                            req.FromUserName,
-                            req.ToUserName,
-                            DateTime.Now.Ticks,
-                            "3",
-                             string.Format(ReplyType.Message_News_Item, "我要寄件", "少时诵诗书所所所所所所",
-                             "http://www.soso.com/orderPlace.jpg",
-                             "http://www.soso.com/") +
-                             string.Format(ReplyType.Message_News_Item, "订单管理", "",
-                             "http://www.soso.com/orderManage.jpg",
-                             "http://www.soso.com/") +
-                             string.Format(ReplyType.Message_News_Item, "则是测试", "",
-                             "http://www.soso.com/orderManage.jpg",
-                             "http://www.soso.com/"));
+                        if(UserModel.DeleteUser(req.FromUserName))
+                        {
+                            responseContent = string.Format(ReplyType.Message_Text,
+                                req.FromUserName,
+                                req.ToUserName,
+                                DateTime.Now.Ticks,
+                                "注销成功");
+                        }
+                        else
+                        {
+                            responseContent = string.Format(ReplyType.Message_Text,
+                                req.FromUserName,
+                                req.ToUserName,
+                                DateTime.Now.Ticks,
+                                "注销失败");
+                        }
                     }
                 }
                 else if (req.Event.Equals("subscribe", StringComparison.OrdinalIgnoreCase))
@@ -119,7 +117,7 @@ namespace WeChat.ModelWeChat
                 }
                 else if (req.Event.Equals("unsubscribe", StringComparison.OrdinalIgnoreCase))
                 {
-
+                    UserModel.DeleteUser(req.FromUserName);
                 }
             }
             return responseContent;

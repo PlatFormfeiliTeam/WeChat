@@ -60,7 +60,7 @@ namespace WeChat.Page.MyBusiness
                     DataRow[] resultrow = infodt.Select("declarationcode='" + dr["declarationcode"] + "' and substype='报关状态' and TRIGGERSTATUS=0", " statusvalue");//找到未触发的最小状态
                     if (resultrow.Length > 0)
                     {
-                        resultrow[0]["substatus"] = resultrow[0]["declarationcode"] + "/未触发";
+                        resultrow[0]["substatus"] = resultrow[0]["substatus"] + "/未触发";
                     }
                     else
                     {//否则找触发里最大的状态

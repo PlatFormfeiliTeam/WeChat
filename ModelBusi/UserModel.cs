@@ -34,7 +34,11 @@ namespace WeChat.ModelBusi
                 return user;
             }
         }
-
+        /// <summary>
+        /// 新增账号
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public static bool SaveUser(WGUserEn user)
         {
             using (DBSession db = new DBSession())
@@ -45,6 +49,20 @@ namespace WeChat.ModelBusi
                     values(wechat_user_id.nextval,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',sysdate,{8})";
                 sql = string.Format(sql, user.GwyUserCode, user.GwyUserName, user.WCOpenID, user.WCNickName, user.IsCompany, user.IsCustomer, user.IsReceiver,
                     user.CustomerCode, user.GwyUserID);
+                return db.ExecuteSignle(sql) == 0 ? false : true;
+            }
+        }
+
+        /// <summary>
+        /// 注销账号
+        /// </summary>
+        /// <param name="openid"></param>
+        /// <returns></returns>
+        public static bool DeleteUser(string openid)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "delete from wechat_user where WCOpenID='" + openid + "'";
                 return db.ExecuteSignle(sql) == 0 ? false : true;
             }
         }
