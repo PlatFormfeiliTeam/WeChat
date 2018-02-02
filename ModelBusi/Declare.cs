@@ -198,29 +198,9 @@ namespace WeChat.ModelBusi
 
                     //修改删改单标志
                     sql = @"update list_declaration set modifyflag=" + modifyflag;
-                    //if (modifyflag == 1) { sql += ",delorderuserid='{1}',delorderusername='{2}',delordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
-                    //if (modifyflag == 2) { sql += ",modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
-                    //if (modifyflag == 3) { sql += ",modfinishuserid='{1}',modfinishusername='{2}',modfinishtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
-
-                    if (modifyflag == 1)
-                    {
-                        sql += @",delorderuserid='{1}',delorderusername='{2}',delordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
-                            ,modorderuserid=null,modorderusername=null,modordertime=null
-                            ,modfinishuserid=null,modfinishusername=null,modfinishtime=null";
-                    }
-                    if (modifyflag == 2)
-                    {
-                        sql += @",delorderuserid=null,delorderusername=null,delordertime=null
-                            ,modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
-                            ,modfinishuserid=null,modfinishusername=null,modfinishtime=null";
-                    }
-                    if (modifyflag == 3)
-                    {
-                        sql += @",delorderuserid=null,delorderusername=null,delordertime=null
-                            ,modorderuserid=null,modorderusername=null,modordertime=null
-                            ,modfinishuserid='{1}',modfinishusername='{2}',modfinishtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')";
-                    }
-
+                    if (modifyflag == 1) { sql += ",delorderuserid='{1}',delorderusername='{2}',delordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+                    if (modifyflag == 2) { sql += ",modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+                    if (modifyflag == 3) { sql += ",modfinishuserid='{1}',modfinishusername='{2}',modfinishtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
                     sql += " where code='{0}'";
                     sql = string.Format(sql, predelcode, userid, realname, DateTime.Now);
                     db.ExecuteSignle(sql);
