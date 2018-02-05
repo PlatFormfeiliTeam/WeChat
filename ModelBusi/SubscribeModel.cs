@@ -26,7 +26,7 @@ namespace WeChat.ModelBusi
         /// 订单_获取最新的N条订阅条信息
         /// </summary>
         /// <returns></returns>
-        public static DataTable getSubscribeInfo_Order(string starttime, string endtime, string flag, int pagesize, int lastnum, string cusno)
+        public static DataTable getSubscribeInfo_Order(string starttime, string endtime, string flag, int pagesize, int lastnum, string cusno, int userId)
         {
             try
             {
@@ -52,6 +52,10 @@ namespace WeChat.ModelBusi
                     else if (flag == "未触发")
                     {
                         strWhere += " subws.TRIGGERSTATUS=0 and";
+                    }
+                    if (userId > 0)
+                    {
+                        strWhere += " subws.userid=" + userId + " and";
                     }
                     strWhere += " subws.isinvalid=0";
                     string sql = @"select lo.busiunitname,lo.busitype,lo.divideno,lo.repwayid,lo.contractno,lo.goodsnum,lo.goodsgw,to_char(lo.declstatus) as declstatus,to_char(lo.inspstatus) as inspstatus,lo.logisticsname, 
@@ -80,13 +84,13 @@ namespace WeChat.ModelBusi
         /// 预制单_获取最新的N条订阅条信息
         /// </summary>
         /// <returns></returns>
-        public static DataTable getSubscribeInfo_Decl(string starttime, string endtime, string flag, int pagesize, int lastnum, string declarationcode)
+        public static DataTable getSubscribeInfo_Decl(string starttime, string endtime, string flag, int pagesize, int lastnum, string declarationcode,int userId)
         {
             try
             {
                 using (DBSession db = new DBSession())
                 {
-                    string strWhere = " codetype=3 and ";
+                    string strWhere = " subws.codetype=3 and ";
                     if (!string.IsNullOrEmpty(declarationcode))
                     {
                         strWhere += " subws.declarationcode='" + declarationcode + "' and ";
@@ -106,6 +110,10 @@ namespace WeChat.ModelBusi
                     else if (flag == "未触发")
                     {
                         strWhere += " subws.TRIGGERSTATUS=0 and";
+                    }
+                    if (userId >= 0)
+                    {
+                        strWhere += " subws.userid=" + userId + " and ";
                     }
                     strWhere += " subws.isinvalid=0";
                     string sql = @"select ld.declarationcode,ld.goodsnum,ld.goodsgw,ld.tradecode,ld.modifyflag,ld.customsstatus,ld.transname,ws.declarationcode,

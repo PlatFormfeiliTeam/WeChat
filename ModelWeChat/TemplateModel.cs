@@ -14,7 +14,44 @@ namespace WeChat.ModelWeChat
     public static class TemplateModel
     {
         public static bool taskFlag = false;
-        public static void ExcuteSubcirbePush()
+
+        public static void ExcuteSubcirbePush_single()
+        {
+            LogHelper.Write("进入订阅执行...");
+            List<SubcribeInfoEn> sublist = SubscribeModel.getSubscribeTask();
+            foreach (SubcribeInfoEn sub in sublist)
+            {
+                var data = new
+                {
+                    type = new TemplateDataItem(sub.SubsType, "#ff0000"),
+                    cusno = new TemplateDataItem(sub.Cusno),
+                    tiggertime = new TemplateDataItem(sub.TriggerTime.ToString()),
+                    status = new TemplateDataItem(sub.Status)
+                };
+                //var obj = JsonHelper.SerializeObject(data);
+
+                if (sub.SubsType == "物流状态")
+                {
+                    sub.TemplateId = "2W7nYI371TSk18pLLubXelXz59wA3yMxoWq6o9uLYXY";
+                }
+                if (sub.SubsType == "报关状态")
+                {
+                    sub.TemplateId = "PDpzPNCQdKFyyxTXCxZphl9Vor2mkgfUf-CLqPlLk8E";
+                }
+                if (sub.SubsType == "业务状态")
+                {
+                    sub.TemplateId = "82bKjSd9Iyxdi0JPZMvUZ3zwmuleev6PfXimPfyb7aE";
+                }
+
+                SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.Openid, sub.TemplateId, data, "http://weixin.qq.com/download");
+                if (msg.errcode == "0")
+                {
+                    SubscribeModel.updateSubscirbeInfo(sub.Id);
+                }
+            }
+            LogHelper.Write("订阅推送完成...");
+        }
+        public static void ExcuteSubcirbePush_batch()
         {
             if (taskFlag)
                 return;

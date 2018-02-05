@@ -35,7 +35,7 @@ namespace WeChat.Page.MyBusiness
                     LogHelper.Write("第10步：" + userInfo.OpenID);
                     System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
                 }
-                else if (wuser.IsReceiver != 1)
+                else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
                 {//不是接单单位，无此权限
                     LogHelper.Write("第11步：" + userInfo.OpenID);
                     System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
@@ -71,8 +71,11 @@ namespace WeChat.Page.MyBusiness
         public static string QueryData(string declstatus,string inspstatus,string inout,string busitype,string customs,string sitedeclare,string logisticsstatus,
             string starttime, string endtime, int itemsperload, int lastindex)
         {
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user != null || string.IsNullOrEmpty(user.CustomerCode))
+                return "";
             ListOrderModel orderModel = new ListOrderModel();
-            DataTable dt = orderModel.getOrder(declstatus, inspstatus, inout, busitype, customs, sitedeclare, logisticsstatus, starttime, endtime, itemsperload, lastindex);
+            DataTable dt = orderModel.getOrder(declstatus, inspstatus, inout, busitype, customs, sitedeclare, logisticsstatus, starttime, endtime, itemsperload, lastindex, user.CustomerCode);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             try
             {

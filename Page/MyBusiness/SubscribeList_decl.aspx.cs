@@ -29,7 +29,7 @@ namespace WeChat.Page.MyBusiness
                     LogHelper.Write("第10步：" + userInfo.OpenID);
                     System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SubscribeList_decl");
                 }
-                else if (wuser.IsReceiver != 1)
+                else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
                 {//不是接单单位，无此权限
                     LogHelper.Write("第11步：" + userInfo.OpenID);
                     System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SubscribeList_decl");
@@ -48,7 +48,10 @@ namespace WeChat.Page.MyBusiness
         [WebMethod]
         public static string QuerySubscribeInfo(string starttime, string endtime, string istigger, int pagesize, int lastnum, string declarationcode)
         {
-            DataTable infodt = SubscribeModel.getSubscribeInfo_Decl(starttime, endtime, istigger, pagesize, lastnum, declarationcode);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || user.GwyUserID <= 0)
+                return "";
+            DataTable infodt = SubscribeModel.getSubscribeInfo_Decl(starttime, endtime, istigger, pagesize, lastnum, declarationcode, user.GwyUserID);
             if (infodt == null || infodt.Rows.Count == 0)
                 return "";
             DataTable resultdt=infodt.Clone();

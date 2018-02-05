@@ -24,7 +24,7 @@ namespace WeChat.ModelBusi
         /// <param name="endtime"></param>
         /// <returns></returns>
         public DataTable getOrder(string declstatus,string inspstatus,string inout,string busitype,string customs,string sitedeclare,string logisticsstatus,
-            string starttime, string endtime, int itemsperLoad, int lastIndex)
+            string starttime, string endtime, int itemsperLoad, int lastIndex, string customerCode)
         {
             DataTable dt = new DataTable();
             try
@@ -36,11 +36,11 @@ namespace WeChat.ModelBusi
                             (select code,submittime,busiunitname,busitype,cusno,divideno,repwayid,contractno,goodsnum,goodsgw,to_char(ischeck) as ischeck,
                             to_char(checkpic) as checkpic,to_char(declstatus) as declstatus,to_char(inspstatus) as inspstatus,to_char(lawflag) as lawflag,
                             to_char(inspischeck) as inspischeck,logisticsstatus,logisticsname,customareacode 
-                            from list_order {0} order by submittime) tab where rownum<={1}) t1 where t1.rown>{2}）
+                            from list_order {0} order by submittime desc) tab where rownum<={1}) t1 where t1.rown>{2}）
                             select nt.*,sb.name as busitypename,sr.name as repwayname from newtab nt 
                             left join cusdoc.sys_busitype sb on nt.busitype=sb.code 
                             left join cusdoc.sys_repway sr on nt.repwayid=sr.code";
-                    string strWhere = " where 1=1";
+                    string strWhere = " where submittime is not null";
                     strWhere += switchValue("报关状态", declstatus);
                     strWhere += switchValue("报检状态", inspstatus);
                     strWhere += switchValue("进出口", inout);
@@ -58,6 +58,10 @@ namespace WeChat.ModelBusi
                     if (!string.IsNullOrEmpty(endtime))
                     {
                         strWhere += " and submittime<to_date('" + endtime + " 23:59:59','yyyy-mm-dd hh24:mi:ss')";
+                    }
+                    if(!string.IsNullOrEmpty(customerCode))
+                    {
+                        strWhere += " and (busiunitcode='" + customerCode + "' or customercode='" + customerCode + "')";
                     }
                     sql = string.Format(sql, strWhere, lastIndex + itemsperLoad, lastIndex);
                     dt = db.QuerySignle(sql);

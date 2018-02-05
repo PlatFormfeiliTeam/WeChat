@@ -33,16 +33,16 @@ namespace WeChat.Page
                 //1、判断权限
                 if (transferUrl == "DeclareList" || transferUrl == "SiteDeclareList" || transferUrl == "SiteInspectionList")
                 {
-                    if (user.IsCompany != 1 && user.IsCustomer != 1)
+                    if (user.IsReceiver != 1)
                     {
-                        return "{'flag':'false','url':'登录失败！该账号不属于生产企业或委托单位'}";
+                        return "{'flag':'false','url':'登录失败！该账号不属于接单单位'}";
                     }
                 }
                 if (transferUrl == "MyBusiness" || transferUrl == "SubscribeList_busi" || transferUrl == "SubscribeList_decl")
                 {
-                    if (user.IsReceiver != 1)
+                    if (user.IsCompany != 1 && user.IsCustomer != 1)
                     {
-                        return "{'flag':'false','url':'登录失败！该账号不属于接单单位'}";
+                        return "{'flag':'false','url':'登录失败！该账号不属于生产企业或委托单位'}";
                     }
                 }
                 //2、保存当前账号
