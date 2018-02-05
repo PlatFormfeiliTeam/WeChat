@@ -25,31 +25,31 @@ namespace WeChat.Page.MyBusiness
         {
             string action = Request["action"];
             string data = Request["data"];
-            WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
-            if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
-            {//授权成功
-                LogHelper.Write("第9步：" + userInfo.OpenID);
-                WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
-                if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
-                {//账号未关联，跳转至登录界面
-                    LogHelper.Write("第10步：" + userInfo.OpenID);
-                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
-                }
-                else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
-                {//不是接单单位，无此权限
-                    LogHelper.Write("第11步：" + userInfo.OpenID);
-                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
-                }
-                else
-                {//不需登录，保存当前用户
-                    HttpContext.Current.Session["user"] = wuser;
-                }
-                LogHelper.Write("第12步：" + wuser.WCOpenID);
-            }
-            else
-            {//获取授权失败，也跳转至登录页面
-                System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
-            }
+            //WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+            //if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
+            //{//授权成功
+            //    LogHelper.Write("第9步：" + userInfo.OpenID);
+            //    WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
+            //    if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
+            //    {//账号未关联，跳转至登录界面
+            //        LogHelper.Write("第10步：" + userInfo.OpenID);
+            //        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+            //    }
+            //    else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
+            //    {//不是接单单位，无此权限
+            //        LogHelper.Write("第11步：" + userInfo.OpenID);
+            //        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+            //    }
+            //    else
+            //    {//不需登录，保存当前用户
+            //        HttpContext.Current.Session["user"] = wuser;
+            //    }
+            //    LogHelper.Write("第12步：" + wuser.WCOpenID);
+            //}
+            //else
+            //{//获取授权失败，也跳转至登录页面
+            //    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+            //}
         }
        
         /// <summary>
@@ -71,11 +71,11 @@ namespace WeChat.Page.MyBusiness
         public static string QueryData(string declstatus,string inspstatus,string inout,string busitype,string customs,string sitedeclare,string logisticsstatus,
             string starttime, string endtime, int itemsperload, int lastindex)
         {
-            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
-            if (user != null || string.IsNullOrEmpty(user.CustomerCode))
-                return "";
+            //WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            //if (user != null || string.IsNullOrEmpty(user.CustomerCode))
+            //    return "";
             ListOrderModel orderModel = new ListOrderModel();
-            DataTable dt = orderModel.getOrder(declstatus, inspstatus, inout, busitype, customs, sitedeclare, logisticsstatus, starttime, endtime, itemsperload, lastindex, user.CustomerCode);
+            DataTable dt = orderModel.getOrder(declstatus, inspstatus, inout, busitype, customs, sitedeclare, logisticsstatus, starttime, endtime, itemsperload, lastindex, "FLDKSB");
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             try
             {
@@ -117,10 +117,10 @@ namespace WeChat.Page.MyBusiness
                 
                 //ds.Tables[2].Rows[0]["modifyflag"] = SwitchHelper.switchValue("modifyflag", ds.Tables[2].Rows[0]["modifyflag"].ToString2());
                 
-                    foreach (DataRow dr in ds.Tables[1].Rows)
-                    {
-                        dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
-                    }
+                foreach (DataRow dr in ds.Tables[1].Rows)
+                {
+                    dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
+                }
                 foreach (DataRow dr in ds.Tables[2].Rows)
                 {
                     dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
