@@ -161,24 +161,26 @@ namespace WeChat.ModelBusi
             try
             {
                 string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
+
                 using (DBSession db = new DBSession())
                 {
                     string sql = "";
 
+                    sql = @"select code,ordercode,declarationcode from list_declaration ld where ld.code='" + predelcode + "'";
+                    DataTable dt_decl = db.QuerySignle(sql);
+                    string ordercode = dt_decl.Rows[0]["ordercode"].ToString();
+
                     if (modifyflag == 1)//删单1
                     {
-                        sql = @"select ld.code,ld.ordercode 
-                            from list_declaration ld 
-                                inner join config_filesplit cfs on ld.busiunitcode=cfs.busiunitcode and cfs.filetype='53' and ld.code='" + predelcode + "'";
+                        sql = @"select ld.code,ld.ordercode from list_declaration ld inner join config_filesplit cfs on ld.busiunitcode=cfs.busiunitcode and cfs.filetype='53' and ld.code='" + predelcode + "'";
                         DataTable dt = db.QuerySignle(sql);
                         if (dt != null)
                         {
                             if (dt.Rows.Count > 0)
                             {
-                                string ordercode = dt.Rows[0]["ordercode"].ToString();
                                 if (!string.IsNullOrEmpty(ordercode))
                                 {
-                                    sql = @"update list_attachmentdetail t1 set t1.filetypeid='162' and t1.ordercode='" + ordercode + "' and t1.filetypeid='53'";
+                                    sql = @"update list_attachmentdetail t1 set t1.filetypeid='162' where t1.ordercode='" + ordercode + "' and t1.filetypeid='53'";
                                     db.ExecuteSignle(sql);
                                 }
                             }
@@ -188,23 +190,65 @@ namespace WeChat.ModelBusi
                     if (modifyflag == 2)//改单2
                     {
                         DateTime time = DateTime.Now;
-                        sql = @"update list_declaration_after set dataconfirm='1'
-                                ,dataconfirmusertime=to_date('" + time + "','yyyy-MM-dd HH24:mi:ss') where code='" + predelcode + "' and xzlb like '报关单%'";
+                        sql = @"update list_declaration_after set dataconfirm='1',dataconfirmusertime=to_date('" + time + "','yyyy-MM-dd HH24:mi:ss') where code='" + predelcode + "' and xzlb like '报关单%'";
                         db.ExecuteSignle(sql);
                     }
 
                     //改单完成3
 
-
                     //修改删改单标志
                     sql = @"update list_declaration set modifyflag=" + modifyflag;
-                    if (modifyflag == 1) { sql += ",delorderuserid='{1}',delorderusername='{2}',delordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
-                    if (modifyflag == 2) { sql += ",modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
-                    if (modifyflag == 3) { sql += ",modfinishuserid='{1}',modfinishusername='{2}',modfinishtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+                    //if (modifyflag == 1) { sql += ",delorderuserid='{1}',delorderusername='{2}',delordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+                    //if (modifyflag == 2) { sql += ",modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+                    //if (modifyflag == 3) { sql += ",modfinishuserid='{1}',modfinishusername='{2}',modfinishtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')"; }
+
+                    if (modifyflag == 1)
+                    {
+                        sql += @",delorderuserid='{1}',delorderusername='{2}',delordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
+                            ,modorderuserid=null,modorderusername=null,modordertime=null
+                            ,modfinishuserid=null,modfinishusername=null,modfinishtime=null";
+                    }
+                    if (modifyflag == 2)
+                    {
+                        sql += @",delorderuserid=null,delorderusername=null,delordertime=null
+                            ,modorderuserid='{1}',modorderusername='{2}',modordertime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
+                            ,modfinishuserid=null,modfinishusername=null,modfinishtime=null";
+                    }
+                    if (modifyflag == 3)
+                    {
+                        sql += @",delorderuserid=null,delorderusername=null,delordertime=null
+                            ,modorderuserid=null,modorderusername=null,modordertime=null
+                            ,modfinishuserid='{1}',modfinishusername='{2}',modfinishtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')";
+                    }
+
                     sql += " where code='{0}'";
                     sql = string.Format(sql, predelcode, userid, realname, DateTime.Now);
-
                     db.ExecuteSignle(sql);
+
+
+                    //修改订单的报关状态
+                    sql = "select customsstatus from list_declaration where ordercode='" + ordercode + "'  and isinvalid=0 and modifyflag<>1";
+                    bool flag = true;
+                    DataTable dt_order_status = db.QuerySignle(sql);
+                    if (dt_order_status != null)
+                    {
+                        if (dt_order_status.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in dt_order_status.Rows)
+                            {
+                                if (dr["customsstatus"].ToString2() == "" || (dr["customsstatus"].ToString2() != "已结关" && dr["customsstatus"].ToString2() != "已放行"))
+                                {
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (flag)
+                    {
+                        sql = "update list_order set declstatus=160,sitepassusername='system_tool_modify',sitepasstime=sysdate,siteapplyuserid=-2 where code='" + ordercode + "'";
+                        db.ExecuteSignle(sql);
+                    }
 
                     //---------------------------------------------------------------------------------------------------------------
                     //保存操作记录list_times
@@ -212,15 +256,14 @@ namespace WeChat.ModelBusi
                         //values(list_times_id.nextval,'" + predelcode + "','" + userid + "','" + realname + "',sysdate,'1'," + modifyflag + ")";
                     //db.ExecuteSignle(sql);
 
-                    sql = @"select code,ordercode,declarationcode from list_declaration ld where ld.code='" + predelcode + "'";
-                    DataTable dt_decl = db.QuerySignle(sql);
+                   
 
                     //调用缓存接口redis_DeclarationLog
                     MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
-                    msc.redis_DeclarationLog(dt_decl.Rows[0]["ordercode"].ToString(), predelcode, dt_decl.Rows[0]["declarationcode"].ToString(), "", "0");
+                    msc.redis_DeclarationLog(ordercode, predelcode, dt_decl.Rows[0]["declarationcode"].ToString(), "", "0");
 
 
-                    sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + dt_decl.Rows[0]["ordercode"].ToString() + "'";
+                    sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + ordercode + "'";
                     DataTable dt_order = db.QuerySignle(sql);
 
                     if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
@@ -228,7 +271,7 @@ namespace WeChat.ModelBusi
                         if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
                         {
                             //add 20180115 费用异常接口
-                            msc.FinanceExceptionOrder(dt_decl.Rows[0]["ordercode"].ToString(), username, "list_declaration.modifyflag修改为" + modifyflag.ToString());
+                            msc.FinanceExceptionOrder(ordercode, username, "list_declaration.modifyflag修改为" + modifyflag.ToString());
                         }
                     }
                     else
