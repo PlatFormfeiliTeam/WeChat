@@ -10,18 +10,18 @@
 			},
 			{
 				"type":"view",
-				"name":"通关单查询",
-				"url":"http://epassq.eciq.cn/"
+				"name":"空运货物查询",
+				"url":"http://air.wx.igenzong.com/trace/cn/search?tenantid=37F037B5A6384393837F671657DB4C41"
 			},
 			{
 				"type":"view",
-				"name":"空运货物查询",
-				"url":"http://query.customs.gov.cn/mnftq/MRoadTransportQuery.aspx"
+				"name":"港口货物查询",
+				"url":"http://ocean.wx.igenzong.com/trace/portcn/search?tenantid=37F037B5A6384393837F671657DB4C41"
 			},
 			 {
                "type":"view",
-               "name":"海运货物查询",
-               "url":"http://query.customs.gov.cn/mnftq/MRoadTransportQuery.aspx "
+               "name":"船公司货物查询",
+               "url":"http://ocean.wx.igenzong.com/trace/oceancn/search?tenantid=37F037B5A6384393837F671657DB4C41"
             },
 			{
 				"type":"view",
