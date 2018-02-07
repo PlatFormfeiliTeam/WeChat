@@ -116,17 +116,20 @@ namespace WeChat.Page.BusiOpera
         }
 
         [WebMethod]
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string isfumigation, string inspcheckremark)
+        public static string loadcheckdata(string ordercode)
         {
-            return SiteInspection.checksave(ordercode, checktime, checkname, checkid, isfumigation, inspcheckremark);
+            DataTable dt = SiteInspection.getloadcheckdata(ordercode);
+            var json = JsonConvert.SerializeObject(dt);
+            return json;
         }
 
         [WebMethod]
-        public static string checkcancel(string ordercode)
+        public static string check_fumigation_save(string ordercode, string inspchecktime, string inspcheckname, string inspcheckid, string inspcheckremark
+            , string fumigationtime, string fumigationname, string fumigationid)
         {
-            return SiteInspection.checkcancel(ordercode);
+            return SiteInspection.check_fumigation_save(ordercode, inspchecktime, inspcheckname, inspcheckid, inspcheckremark
+                , fumigationtime, fumigationname, fumigationid);
         }
-
 
         //查验图片
         [WebMethod]

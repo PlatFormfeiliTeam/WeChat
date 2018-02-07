@@ -55,6 +55,17 @@
         .girdnamediv .modal-inner{
            padding:0px;
         }  
+         /************************************************ 查验图片*********************************/
+        /*.picdiv{
+            width: 98%;
+            left: 1%;
+            right: 1%;
+            margin-left: 0px;
+        }*/  
+        .picdiv .row .col-33{
+             /*margin-left: 0px;*/
+        } 
+
         /************************************************ 更多查询*********************************/
         .morediv{
             width: 98%;
@@ -355,6 +366,13 @@
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">报检熏蒸</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["FUMIGATIONTIME"] == null ? "" : jsonorder[0]["FUMIGATIONTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["FUMIGATIONNAME"] == null ? "" : jsonorder[0]["FUMIGATIONNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-25">现场报检</div>'
                                                     + '<div class="item-title col-50">' + (jsonorder[0]["INSPSITEAPPLYTIME"] == null ? "" : jsonorder[0]["INSPSITEAPPLYTIME"]) + '</div>'
                                                     + '<div class="item-title col-25">' + (jsonorder[0]["INSPSITEAPPLYUSERNAME"] == null ? "" : jsonorder[0]["INSPSITEAPPLYUSERNAME"]) + '</div>'
@@ -505,6 +523,10 @@
 
                 strconHTML += '<div class="list-block" style="margin:0; margin-top:2rem;margin-buttom:2rem;margin-left:4%;margin-right:4%;line-height:1.5rem;font-size:.7rem">' +
                                     '<div class="row"> ' +
+                                           '<div class="col-50"><a href="#" class="close-popup button button-fill button-danger">返回</div>' +
+                                           '<div class="col-50"><a href="#" id="check_fumigation_save" class="button button-fill">保存</a></div>' +
+                                    '</div>' +
+                                    '<div class="row"> ' +
                                         '<div class="col-33">订单编号：</div>' +
                                         '<div class="col-66">' + divid.substring(6) + '</div>' +
                                     '</div> ' +
@@ -512,17 +534,14 @@
                                         '<div class="col-33">企业编号：</div>' +
                                         '<div class="col-66">' + $("#div_list #" + divid).children("ul").children().eq(1).children("div").children().eq(2).text() + '</div>' +
                                     '</div> ' +
+                                    '<hr style="height:1px;border:none;border-top:1px dashed black;"/>' +
                                     '<div class="row"> ' +
-                                        '<div class="col-33">查验维护时间：</div>' +
+                                        '<div class="col-33">查验时间：</div>' +
                                         '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_inspchecktime" readonly /></div>' +
                                     '</div> ' +
                                     '<div class="row"> ' +
-                                        '<div class="col-33">查验维护人员：<input type="hidden" id="txt_inspcheckid" readonly /></div>' +
+                                        '<div class="col-33">查验人员：<input type="hidden" id="txt_inspcheckid" readonly /></div>' +
                                         '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_inspcheckname" readonly /></div>' +
-                                    '</div> ' +
-                                    '<div class="row"> ' +
-                                        '<div class="col-33">熏蒸：</div>' +
-                                        '<div class="col-66"><input type="checkbox" id="chk_isfumigation" style="width:18px;height:18px;" /></div>' +
                                     '</div> ' +
                                     '<div class="row"> ' +
                                         '<div class="col-33">查验备注：</div>' +
@@ -580,79 +599,122 @@
                     }
                 });
 
-                var strconButton = '<div class="content-block">' +
+                var strconHTML2 = '<div class="list-block" style="margin:0; margin-top:2rem;margin-buttom:2rem;margin-left:4%;margin-right:4%;line-height:1.5rem;font-size:.7rem">' +
+                                    '<hr style="height:1px;border:none;border-top:1px dashed black;"/>' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">熏蒸时间：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_fumigationtime" readonly /></div>' +
+                                    '</div> ' +
                                         '<div class="row"> ' +
-                                            '<div class="col-33"><a href="#" id="checkcancel" class="button button-fill button-warning">撤销</a></div>' +
-                                            '<div class="col-33"><a href="#" id="checksave" class="button button-fill">查验</a></div>' +
-                                            '<div class="col-33"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
-                                        '</div>' +
-                                    '</div>';
-
+                                        '<div class="col-33">熏蒸人员：<input type="hidden" id="txt_fumigationid" readonly /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_fumigationname" readonly /></div>' +
+                                    '</div> ' +
+                                '</div>';
+                //var ButtonHTML = '<div class="content-block">' +
+                //                        '<div class="row"> ' +
+                //                            '<div class="col-50"><a href="#" class="close-popup button button-fill button-danger">返回</div>' +
+                //                            '<div class="col-50"><a href="#" id="check_fumigation_save" class="button button-fill">保存</a></div>' +
+                //                        '</div>' +
+                //                    '</div>';
                 var popupHTML = '<div class="popup" style="background:#e8e8e8;">' +
                                  '<div class="content">' +//data-type='native'                                                                               
                                         strconHTML +
-                                        strconButton +
+                                        strconHTML2 +
+                                        //ButtonHTML +
                                  '</div>' +
                              '</div>';
 
                 $.popup(popupHTML);
 
-                var nd = new Date();
-                var y = nd.getFullYear();
-                var m = nd.getMonth() + 1;
-                var d = nd.getDate();
-                var h = nd.getHours();
-                var mi = nd.getMinutes();
+                $.ajax({
+                    type: "post", //要用post方式                 
+                    url: "SiteInspectionList.aspx/loadcheckdata",//方法所在页面和方法名
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'ordercode':'" + divid.substring(6) + "'}",
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        var obj = eval("(" + data.d + ")");//将字符串转为json
 
-                if (m <= 9) m = "0" + m;
-                if (d <= 9) d = "0" + d;
-                if (h <= 9) h = "0" + h;
-                if (mi <= 9) mi = "0" + mi;
+                        if (obj.length > 0) {
+                            $("#txt_inspchecktime").val(obj[0]["INSPCHECKTIME"] == null ? "" : obj[0]["INSPCHECKTIME"]);//初始化日期时间
+                            $("#txt_inspcheckid").val(obj[0]["INSPCHECKID"] == null ? "" : obj[0]["INSPCHECKID"]);//当前登录人id
+                            $("#txt_inspcheckname").val(obj[0]["INSPCHECKNAME"] == null ? "" : obj[0]["INSPCHECKNAME"]);//当前登录人name
+                            $("#txt_inspcheckremark").val(obj[0]["INSPCHECKREMARK"] == null ? "" : obj[0]["INSPCHECKREMARK"]);//查验备注赋值
 
-                //$("#txt_inspchecktime").datetimePicker({ value: [y, m, d, h, mi] });//此行不用 ，用下一行代码，因为是只读，不允许操作
-                $("#txt_inspchecktime").val(y + "" + m + "" + d + " " + h + ":" + mi);//初始化日期时间
+                            $("#txt_fumigationtime").val(obj[0]["FUMIGATIONTIME"] == null ? "" : obj[0]["FUMIGATIONTIME"]);//初始化日期时间
+                            $("#txt_fumigationid").val(obj[0]["FUMIGATIONID"] == null ? "" : obj[0]["FUMIGATIONID"]);//当前登录人id
+                            $("#txt_fumigationname").val(obj[0]["FUMIGATIONNAME"] == null ? "" : obj[0]["FUMIGATIONNAME"]);//当前登录人name
+                        }
 
-                $("#txt_inspcheckid").val("763");//当前登录人id
-                $("#txt_inspcheckname").val("昆山吉时报关有限公司");//当前登录人name
-
-                var inicheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
-                if (inicheck == getname2("INSPISCHECK", 0, 1) || inicheck == getname2("INSPISCHECK", 1, 1)) {
-                    $("#chk_isfumigation").prop("checked", true);//熏蒸赋值
-                }
-
-                $("#txt_inspcheckremark").val($("#div_list #" + divid).children("input").eq(0).val());//查验备注赋值
-
-
-
-                $("#checkcancel").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
-
-                    var concheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
-
-                    if (concheck == getname2("INSPISCHECK", 0, 0) || concheck == getname2("INSPISCHECK", 0, 1)) {
-                        $.toast("还未查验，无需撤销");
-                        return;
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                        //alert(XMLHttpRequest.status);
+                        //alert(XMLHttpRequest.readyState);
+                        //alert(textStatus);
+                        alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
                     }
+                });
 
-                    $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
+                $("#txt_inspchecktime").click(function () {
+                    if ($("#txt_inspchecktime").val() == "") {
+                        $("#txt_inspchecktime").val(getNowDate());//当前时间
+                        $("#txt_inspcheckid").val("763");//当前登录人id
+                        $("#txt_inspcheckname").val("昆山吉时报关有限公司");//当前登录人name
+                    } else {
+                        $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
+                        function () {//OK事件
+                            $("#txt_inspchecktime").val("");
+                            $("#txt_inspcheckid").val("");
+                            $("#txt_inspcheckname").val("");
+                            $("#txt_inspcheckremark").val("");
+                        });
+                    }
+                });
+
+                $("#txt_fumigationtime").click(function () {
+                    if ($("#txt_fumigationtime").val() == "") {
+                        $("#txt_fumigationtime").val(getNowDate());
+                        $("#txt_fumigationid").val("763");//当前登录人id
+                        $("#txt_fumigationname").val("昆山吉时报关有限公司");//当前登录人name
+                    } else {
+                        $.confirm('请确认是否需要<font color=blue>撤销熏蒸</font>?',
+                        function () {//OK事件
+                            $("#txt_fumigationtime").val("");
+                            $("#txt_fumigationid").val("");
+                            $("#txt_fumigationname").val("");
+                        });
+                    }
+                });
+
+                $("#check_fumigation_save").click(function () {
+                    $.confirm('请确认是否<font color=blue>保存</font>?',
                          function () {//OK事件
                              $.ajax({
                                  type: "post", //要用post方式                 
-                                 url: "SiteInspectionList.aspx/checkcancel",//方法所在页面和方法名
+                                 url: "SiteInspectionList.aspx/check_fumigation_save",//方法所在页面和方法名
                                  contentType: "application/json; charset=utf-8",
                                  dataType: "json",
-                                 data: "{'ordercode':'" + divid.substring(6) + "'}",
+                                 data: "{'ordercode':'" + divid.substring(6)
+                                     + "','inspchecktime':'" + $("#txt_inspchecktime").val() + "','inspcheckname':'" + $("#txt_inspcheckname").val()
+                                     + "','inspcheckid':'" + $("#txt_inspcheckid").val() + "','inspcheckremark':'" + $("#txt_inspcheckremark").val()
+                                     + "','fumigationtime':'" + $("#txt_fumigationtime").val() + "','fumigationname':'" + $("#txt_fumigationname").val()
+                                     + "','fumigationid':'" + $("#txt_fumigationid").val()
+                                     + "'}",
                                  cache: false,
                                  async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                                  success: function (data) {
-                                     if (data.d == "sucess") {
-                                         $.toast("撤销成功");
-                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text("");//更新查验时间
-                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("INSPISCHECK", 0, 0));
-                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text(getname("INSPCHECKPIC", 0));
+                                     var obj = eval("(" + data.d + ")");
+                                     if (obj.length == 1) {
+                                         $.toast("保存成功");
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(obj[0]["INSPCHECKTIME"]);//更新查验时间
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("INSPISCHECK", obj[0]["INSPISCHECK"], obj[0]["ISFUMIGATION"]));
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(2).text(getname("INSPCHECKPIC", obj[0]["INSPCHECKPIC"]));
 
-                                         $("#div_list #" + divid).children("input").eq(0).val('');//更新查验备注
+                                         //obj[0]["FUMIGATIONTIME"]//更新熏蒸时间
                                      } else {
-                                         $.toast("撤销失败");
+                                         $.toast("保存失败");
                                      }
                                  },
                                  error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
@@ -662,50 +724,9 @@
                                      alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
                                  }
                              });
-                         },
-                         function () { }//cancel事件
-                       );
+                         });
                 });
-
-                $("#checksave").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
-                    var chksave_isfumigation = $("#chk_isfumigation").prop('checked') == true ? 1 : 0;
-
-                    $.confirm('请确认是否需要<font color=blue>查验</font>?',
-                        function () {//OK事件
-                            $.ajax({
-                                type: "post", //要用post方式                 
-                                url: "SiteInspectionList.aspx/checksave",//方法所在页面和方法名
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                data: "{'ordercode':'" + divid.substring(6) + "','checktime':'" + $("#txt_inspchecktime").val()
-                                    + "','checkname':'" + $("#txt_inspcheckname").val() + "','checkid':'" + $("#txt_inspcheckid").val()
-                                    + "','isfumigation':'" + chksave_isfumigation + "','inspcheckremark':'" + $("#txt_inspcheckremark").val() + "'}",
-                                cache: false,
-                                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
-                                success: function (data) {
-                                    if (data.d != "") {
-                                        $.toast("查验成功");
-                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(data.d);//更新查验时间
-                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("INSPISCHECK", 1, chksave_isfumigation));//更新查验/熏蒸标志
-
-                                        $("#div_list #" + divid).children("input").eq(0).val($("#txt_inspcheckremark").val());//更新查验备注
-
-                                    } else {
-                                        $.toast("查验失败");
-                                    }
-                                },
-                                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
-                                    //alert(XMLHttpRequest.status);
-                                    //alert(XMLHttpRequest.readyState);
-                                    //alert(textStatus);
-                                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
-                                }
-                            });
-                        },
-                        function () { }//cancel事件
-                      );
-                });
-
+                
             });
            
             //查验图片
@@ -731,10 +752,15 @@
                 $.modal({
                     title: '查验图片',
                     text: '<div class="content-block row">' +
-                                '<div class="col-50"><a href="#" id="picfileupload" class="button button-fill">上传</a></div>' +
-                                '<div class="col-50"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
+                                '<div class="col-33"><a href="#" id="picfilecancel" class="button button-fill">返回</div>' +
+                                '<div class="col-33"><a href="#" id="picfileupload" class="button button-fill">上传</a></div>' +
+                                '<div class="col-33"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
                             '</div>',
                     extraClass: 'picdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $("#picfilecancel").click(function () {
+                    $.closeModal(".picdiv");
                 });
 
                 $("#picfileupload").click(function () {
@@ -886,7 +912,6 @@
                             }
 
                             tb = '<div class="list-block" id="order_' + (obj[i]["CODE"] == null ? "" : obj[i]["CODE"]) + '">'
-                                    + '<input type="hidden" value="' + (obj[i]["INSPCHECKREMARK"] == null ? "" : obj[i]["INSPCHECKREMARK"]) + '" readonly />'
                                     + '<ul>'
                                         + '<li class="item-content">'
                                              + '<div class="item-inner row">'
@@ -982,7 +1007,7 @@
             if (key == "ISNEEDCLEARANCE") {
                 switch (value) {
                     case 0: str = ""; break;//不需通关
-                    case 1: str = "需通关"; break;
+                    case 1: str = "需通关单"; break;
                     default: str = ""; break;//不需通关
                 }
             }
@@ -1184,6 +1209,22 @@
             });
         }
 
+        function getNowDate() {
+            var nd = new Date();
+            var y = nd.getFullYear();
+            var m = nd.getMonth() + 1;
+            var d = nd.getDate();
+            var h = nd.getHours();
+            var mi = nd.getMinutes();
+
+            if (m <= 9) m = "0" + m;
+            if (d <= 9) d = "0" + d;
+            if (h <= 9) h = "0" + h;
+            if (mi <= 9) mi = "0" + mi;
+
+            return y + "" + m + "" + d + " " + h + ":" + mi;
+        }
+
     </script>
 </head>
 <body>
@@ -1262,7 +1303,7 @@
                 </a>
                 <a class="tab-item external" href="#" id="Check_a">
                     <span class="icon icon-check"></span>
-                    <span class="tab-label">查验标志</span>
+                    <span class="tab-label">查验熏蒸</span>
                 </a>
                 <a class="tab-item external" href="#" id="Picture_a">
                     <span class="icon icon-picture"></span>

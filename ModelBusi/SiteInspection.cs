@@ -242,7 +242,7 @@ namespace WeChat.ModelBusi
                             ,ort.inspsiteapplytime,ort.inspsiteapplyusername,ort.inspcoendtime,ort.inspcoendname 
                             ,ort.inspchecktime,ort.inspcheckname,ort.insppreendtime,ort.insppreendname
                             ,ort.inspsitepasstime,ort.inspsitepassusername,ort.insprependtime,ort.insprependname
-                            ,ort.inspcheckpic
+                            ,ort.inspcheckpic,ort.fumigationtime,ort.fumigationname 
                         from list_order ort where ort.isinvalid=0 and code='" + ordercode + "'";
                 dt_order = db.QuerySignle(sql);
 
@@ -295,108 +295,177 @@ namespace WeChat.ModelBusi
             }
         }
 
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string isfumigation, string inspcheckremark)
+        public static DataTable getloadcheckdata(string ordercode)
         {
-            string username = "ksjgbg";
             using (DBSession db = new DBSession())
             {
-                string sql = @"update list_order set inspischeck=1,inspcheckid='{1}',inspcheckname='{2}',inspchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
-                                    ,fumigationid='{1}',fumigationname='{2}',fumigationtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),isfumigation='{4}',inspcheckremark='{5}' 
-                                where code='{0}'";
-                sql = string.Format(sql, ordercode, checkid, checkname, checktime, isfumigation, inspcheckremark);
-                int i = db.ExecuteSignle(sql);
-                if (i > 0)
-                {
-                    //add 20180115 保存操作记录list_times
-//                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-//                        values(list_times_id.nextval,'" + ordercode + "','" + checkid + "','" + checkname + "',sysdate,'0',0)";
-//                    db.ExecuteSignle(sql);
-
-                    //add 20180119 保存历史记录
-                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
-                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
-                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
-                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
-                    sql = string.Format(sql, ordercode, checkid, "1", checkname, ordercode, "INSPISCHECK", "报检查验");
-                    db.ExecuteSignle(sql);
-
-
-                    sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + ordercode + "'";
-                    DataTable dt_order = db.QuerySignle(sql);
-
-                    //add 20180115 费用异常接口
-                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
-
-                    if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
-                    {
-                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
-                        {
-                            msc.FinanceExceptionOrder(ordercode, username, "list_order.inspischeck查验标志修改为1");
-                        }
-                    }
-                    else
-                    {
-                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
-                        {
-                            msc.FinanceExceptionOrder(ordercode, username, "list_order.inspischeck查验标志修改为1");
-                        }
-                    }                   
-
-                    return checktime.Replace("-", "");
-                }
-                else
-                {
-                    return "";
-                }
+                string sql = @"select ort.inspischeck,to_char(ort.inspchecktime,'yyyyMMdd HH24:mi') inspchecktime,ort.inspcheckid,ort.inspcheckname,ort.inspcheckremark inspcheckremark
+                                   ,ort.isfumigation,to_char(ort.fumigationtime,'yyyyMMdd HH24:mi') fumigationtime,ort.fumigationid,ort.fumigationname
+                                from list_order ort   
+                                where ort.isinvalid=0 and code='" + ordercode + "'";
+                return db.QuerySignle(sql);
             }
         }
 
-        public static string checkcancel(string ordercode)
+        public static string check_fumigation_save(string ordercode, string inspchecktime, string inspcheckname, string inspcheckid, string inspcheckremark
+            , string fumigationtime, string fumigationname, string fumigationid)
         {
-            string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
+            MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
 
-            using (DBSession db = new DBSession())
+            System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
+            string UserName = ConfigurationManager.AppSettings["FTPUserName"];
+            string Password = ConfigurationManager.AppSettings["FTPPassword"];
+            FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+
+            string username = "ksjsbg"; string userid = "763"; string realname = "昆山吉时报关有限公司";
+            string sql = ""; string resultmsg = "[]";
+            string feoremark = "";//记录是否需要调用费用接口
+            List<string> delfile = new List<string>();
+
+            DBSession db = new DBSession();
+            sql = @"select code,entrusttype,declstatus,inspstatus,inspischeck,isfumigation,inspcheckpic      
+                    from list_order lo where lo.code='" + ordercode + "'";
+            DataTable dt_order = db.QuerySignle(sql);
+            string db_inspischeck = dt_order.Rows[0]["INSPISCHECK"].ToString();
+            string db_isfumigation = dt_order.Rows[0]["ISFUMIGATION"].ToString();
+            string db_inspcheckpic = dt_order.Rows[0]["INSPCHECKPIC"].ToString();
+            int inspischeck = 0; int isfumigation = 0; int inspcheckpic = db_inspcheckpic == "1" ? 1 : 0;
+
+            DataTable dt = db.QuerySignle("select * from list_attachment where ordercode='" + ordercode + "' and filetype='68'");
+            foreach (DataRow dr in dt.Rows)
             {
-                System.Uri Uri = new Uri("ftp://" + ConfigurationManager.AppSettings["FTPServer"] + ":" + ConfigurationManager.AppSettings["FTPPortNO"]);
-                string UserName = ConfigurationManager.AppSettings["FTPUserName"];
-                string Password = ConfigurationManager.AppSettings["FTPPassword"];
-                FtpHelper ftp = new FtpHelper(Uri, UserName, Password);
+                delfile.Add(dr["FILENAME"] + "");
+            }
 
-                DataTable dt = db.QuerySignle("select * from list_attachment where ordercode='" + ordercode + "' and filetype='68'");
-                foreach (DataRow dr in dt.Rows)
+            db.Dispose();
+
+            try
+            {
+                db = new DBSession();
+                db.BeginTransaction();
+
+                if (inspchecktime != "")
                 {
-                    ftp.DeleteFile(dr["FILENAME"] + "");
-                }
+                    inspischeck = 1;
+                    if (db_inspischeck != "1")
+                    {
+                        feoremark += "list_order.inspischeck查验标志为1";
 
-                List<string> sqls = new List<string>();
-                string sql = @"update list_order set inspischeck=0,inspcheckid=null,inspcheckname=null,inspchecktime=null,inspcheckpic=0
-                                ,fumigationid=null,fumigationname=null,fumigationtime=null,isfumigation=0,inspcheckremark='' where code='" + ordercode + "'";
-                string sql2 = "delete LIST_ATTACHMENT where ordercode='" + ordercode + "' and filetype='68'";
+                        sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                            ,'" + ordercode + "','" + userid + "','1','" + realname + "','" + ordercode + "','INSPISCHECK','报检查验'"
+                                            + ")";
+                        db.QuerySignle(sql);
+                    }
 
-                //add 20180115 保存操作记录list_times
-//                string sql3 = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-//                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
-
-                //add 20180119 保存历史记录
-                string sql3 = @"insert into list_updatehistory(id,UPDATETIME,TYPE
-                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
-                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
-                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
-                sql3 = string.Format(sql3, ordercode, userid, "0", realname, ordercode, "INSPISCHECK", "报检查验");
-
-
-                sqls.Add(sql); sqls.Add(sql2); sqls.Add(sql3);
-
-                int i = db.ExecuteBatch(sqls);
-                if (i > 0)
-                {
-                    return "sucess";
+                    sql = @"update list_order 
+                            set inspischeck=1,inspcheckid='{1}',inspcheckname='{2}',inspchecktime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),inspcheckremark='{4}'  
+                            where code='{0}'";
+                    sql = string.Format(sql, ordercode, inspcheckid, inspcheckname, inspchecktime, inspcheckremark);
+                    db.QuerySignle(sql);  
                 }
                 else
                 {
-                    return "";
+                    inspcheckpic = 0;
+                    if (db_inspischeck == "1")
+                    {
+                        feoremark += "list_order.inspischeck查验标志为0";
+
+                        sql = @"update list_order 
+                            set inspischeck=0,inspcheckid=null,inspcheckname=null,inspchecktime=null,inspcheckpic=0,inspcheckremark='' 
+                            where code='" + ordercode + "'";
+                        db.QuerySignle(sql);
+
+                        sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                            ,'" + ordercode + "','" + userid + "','0','" + realname + "','" + ordercode + "','INSPISCHECK','报检查验'"
+                                            + ")";
+                        db.QuerySignle(sql);
+                    }
+
+                    sql = "delete LIST_ATTACHMENT where ordercode='" + ordercode + "' and filetype='68'";
+                    db.QuerySignle(sql);
+                }
+
+                if (fumigationtime != "")
+                {
+                    isfumigation = 1;
+                    if (db_isfumigation != "1")
+                    {
+                        sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                            ,'" + ordercode + "','" + userid + "','1','" + realname + "','" + ordercode + "','ISFUMIGATION','熏蒸标志'"
+                                           + ")";
+                        db.QuerySignle(sql);
+                    }
+
+                    sql = @"update list_order 
+                            set isfumigation=1,fumigationid='{1}',fumigationname='{2}',fumigationtime=to_date('{3}','yyyy-MM-dd HH24:mi:ss')
+                            where code='{0}'";
+                    sql = string.Format(sql, ordercode, fumigationid, fumigationname, fumigationtime);
+                    db.QuerySignle(sql);
+                }
+                else
+                {
+                    if (db_isfumigation == "1")
+                    {
+                        sql = @"update list_order 
+                            set isfumigation=0,fumigationid=null,fumigationname=null,fumigationtime=null  
+                            where code='" + ordercode + "'";
+                        db.QuerySignle(sql);
+
+                        sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+                                            ,'" + ordercode + "','" + userid + "','0','" + realname + "','" + ordercode + "','ISFUMIGATION','熏蒸标志'"
+                                                + ")";
+                        db.QuerySignle(sql);
+                    }
+                }
+
+                db.Commit();
+                foreach (string item in delfile)//提交之后删除文件
+                {
+                    ftp.DeleteFile(item);
+                }
+
+                resultmsg = "[{\"INSPISCHECK\":" + inspischeck + ",\"INSPCHECKTIME\":'" + inspchecktime + "',\"INSPCHECKPIC\":" + inspcheckpic
+                    + ",\"ISFUMIGATION\":" + isfumigation + ",\"FUMIGATIONTIME\":'" + fumigationtime + "'}]";
+            }
+            catch (Exception ex)
+            {
+                db.Rollback();
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+
+            //============================================================================================================费用接口
+            if (feoremark != "")
+            {
+                //add 20180115 费用异常接口
+                if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
+                {
+                    if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
+                    {
+                        msc.FinanceExceptionOrder(ordercode, username, feoremark);
+                    }
+                }
+                else
+                {
+                    if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
+                    {
+                        msc.FinanceExceptionOrder(ordercode, username, feoremark);
+                    }
                 }
             }
+            //============================================================================================================
+            return resultmsg;
         }
 
         public static string SaveFile(string mediaIds, string ordercode)

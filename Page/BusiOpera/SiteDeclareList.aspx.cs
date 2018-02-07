@@ -116,17 +116,20 @@ namespace WeChat.Page.BusiOpera
         }
 
         [WebMethod]
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid, string checkremark)
+        public static string loadcheckdata(string ordercode)
         {
-            return SiteDeclare.checksave(ordercode, checktime, checkname, checkid, checkremark);
+            DataTable dt = SiteDeclare.getloadcheckdata(ordercode);
+            var json = JsonConvert.SerializeObject(dt);
+            return json;
         }
 
         [WebMethod]
-        public static string checkcancel(string ordercode)
+        public static string check_audit_save(string ordercode, string checktime, string checkname, string checkid, string checkremark
+            , string auditflagtime, string auditflagname, string auditflagid, string auditcontent)
         {
-            return SiteDeclare.checkcancel(ordercode);
+            return SiteDeclare.check_audit_save(ordercode, checktime, checkname, checkid, checkremark
+                , auditflagtime, auditflagname, auditflagid, auditcontent);
         }
-
 
         //查验图片
         [WebMethod]
@@ -143,16 +146,5 @@ namespace WeChat.Page.BusiOpera
             return json;
         }
 
-        [WebMethod]
-        public static string auditsave(string ordercode, string auditflagtime, string auditflagname, string auditflagid, string auditcontent)
-        {
-            return SiteDeclare.auditsave(ordercode, auditflagtime, auditflagname, auditflagid, auditcontent);
-        }
-
-        [WebMethod]
-        public static string auditcancel(string ordercode)
-        {
-            return SiteDeclare.auditcancel(ordercode);
-        }
     }
 }
