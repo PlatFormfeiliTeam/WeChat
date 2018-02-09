@@ -24,7 +24,7 @@ namespace WeChat.ModelBusi
         /// <param name="endtime"></param>
         /// <returns></returns>
         public DataTable getOrder(string declstatus,string inspstatus,string inout,string busitype,string customs,string sitedeclare,string logisticsstatus,
-            string starttime, string endtime, int itemsperLoad, int lastIndex, string customerCode)
+            string starttime, string endtime, int itemsperLoad, int lastIndex, string customerCode,string hscode)
         {
             DataTable dt = new DataTable();
             try
@@ -59,9 +59,17 @@ namespace WeChat.ModelBusi
                     {
                         strWhere += " and submittime<to_date('" + endtime + " 23:59:59','yyyy-mm-dd hh24:mi:ss')";
                     }
-                    if(!string.IsNullOrEmpty(customerCode))
+                    if (!string.IsNullOrEmpty(customerCode) && !string.IsNullOrEmpty(hscode))
                     {
-                        strWhere += " and (busiunitcode='" + customerCode + "' or customercode='" + customerCode + "')";
+                        strWhere += " and (busiunitcode='" + hscode + "' or customercode='" + customerCode + "')";
+                    }
+                    else if (!string.IsNullOrEmpty(customerCode))
+                    {
+                        strWhere += " and customercode='" + customerCode + "'";
+                    }
+                    else if (!string.IsNullOrEmpty(hscode))
+                    {
+                        strWhere += " and busiunitcode='" + hscode + "'";
                     }
                     sql = string.Format(sql, strWhere, lastIndex + itemsperLoad, lastIndex);
                     dt = db.QuerySignle(sql);

@@ -29,6 +29,15 @@
         {
             margin:0.2rem;
         }
+        .button
+        {
+            border-radius:0;
+            background-color:gray;
+            color:white;
+            border:0;
+            vertical-align:middle;
+            padding-top: 0.1rem;
+        }
         input
         {
             font-family:"微软雅黑";
@@ -42,7 +51,6 @@
         {
             font-size:small;
             overflow:hidden;
-            margin-top:0.3rem;
             margin-left:-2%;
         }
         
@@ -73,27 +81,11 @@
             text-overflow:ellipsis;
             text-align:center;
         }
-        .lab
-        {
-            color:white;
-            font-family:"微软雅黑";
-            font-size:initial;
-        }
         .picker-items-col-wrapper
         {
             width:12rem;
         }
-        .button
-        {
-            font-size:15px;
-            height:25px;
-            line-height:1.35rem;
-            vertical-align:middle;
-        }
-        .button.button-fill
-        {
-            line-height:28px;
-        }
+        
         .popup .list-block
         {
             margin:0.1rem 0 0 0;
@@ -211,19 +203,6 @@
                 }
             });
         }
-        //自定义长按事件——可用
-        //$.fn.longPress = function (fn) {
-        //    var timeout = undefined;
-        //    var $this = this;
-        //    for (var i = 0; i < $this.length; i++) {
-        //        $this[i].addEventListener('touchstart', function (event) {
-        //            timeout = setTimeout(fn, 800);  //长按时间超过800ms，则执行传入的方法
-        //        }, false);
-        //        $this[i].addEventListener('touchend', function (event) {
-        //            clearTimeout(timeout);  //长按时间少于800ms，不会执行传入的方法
-        //        }, false);
-        //    }
-        //}
        
         //查询
         $(function() {
@@ -1094,10 +1073,6 @@
                     <span class="tab-label">查验图片调阅</span>
                 </a>
                 <input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' />
-                <%--<a class="tab-item " href="SubscribeList.aspx">
-                    <span class="icon icon-menu"></span>
-                    <span class="tab-label">订阅清单</span>
-                </a>--%>                
             </nav>
             
             
@@ -1113,44 +1088,6 @@
             </div>
         </div>
     </div>
-<%--    <!-- popup, 右侧弹出的查询条件 -->
-    <div class="panel-overlay"></div>
-    <!-- Left Panel with Reveal effect -->
-    <div style="background-color:#2C2C37" class="panel panel-right panel-reveal">
-        <div class="content-block">
-            <div class="content-padded">
-                <div class="row">
-                    <div class="col-95"><span class="lab">报关状态：</span><input type="text" id='picker_declstatus'/></div>
-                </div>
-                <div class="row">
-                    <div class="col-95"><span class="lab">报检状态：</span><input type="text" id='picker_inspstatus'/></div>                    
-                </div>
-                <div class="row">
-                    <div class="col-95"><span class="lab">进口出口：</span><input type="text" id='picker_inout'/></div>
-                </div>
-                <div class="row">
-                    <div class="col-95"><span class="lab">业务类型：</span><input type="text" id='picker_busitype'/></div>                    
-                </div>
-                <div class="row">
-                    <div class="col-95"><span class="lab">申报现场：</span><input type="text" id='picker_customs'/></div>
-                </div>
-                <div class="row">
-                    <div class="col-95"><span class="lab">现场报关：</span><input type="text" id='picker_sitedeclare'/></div>                    
-                </div>
-                <div class="row">
-                    <div class="col-95"><span class="lab">物流状态：</span><input type="text" id='picker_logisticsstatus'/></div>
-                </div>
-                <div class="row">
-                    <div class="col-95"><span class="lab">委托时间：</span><input type="text"  id='picker_starttime'/></div>
-                </div>
-                <div class="row">
-                    <div class="col-95"><span class="lab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;至：</span><input type="text"  id='picker_endtime'/></div>
-                </div>
-            </div>
-            <p><a href="#" class="open-preloader-title button  button-fill" id="button_one">查&nbsp;&nbsp;询</a></p>
-            <%--<p><a href="#" class="button button-round">重&nbsp;&nbsp;&nbsp;&nbsp;置</a></p>--%>
-        </div>
-    </div>--%>
 
     <!--popup 详情弹出页-->
     <div class="popup popup-detail" >
@@ -1164,7 +1101,7 @@
             <div class="tabs">
               <div id="tab1" class="tab active">
                 <div class="content-block " id="pop_tab_decl"></div>
-                <div style="margin-left:25%;width:50%;" ><a href="#" id="btn-subs-decl" style="font-size:30px;" class="button button-success button-fill">报关订阅</a></div>
+                <div style="margin-left:25%;width:50%;" ><a href="#" id="btn-subs-decl"  class="button">报关订阅</a></div>
               </div>
               <div id="tab2" class="tab">
                 <div class="content-block" id="pop_tab_insp"></div>
@@ -1175,7 +1112,7 @@
             </div>
           </div>
         </div>
-       <div style="bottom:0.2rem; position:absolute;width:96%;margin-left:2%"><a href="#" class="close-popup button button-fill">返  回</a></div>
+       <div style="bottom:0.2rem; position:absolute;width:96%;margin-left:2%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
     </div>
     <!--popup 订阅弹出页-->
     <div class="popup popup-subscribe" id="popup-subscribe-decl" >
@@ -1276,72 +1213,6 @@
         </div>
     </div>   
 
-
-    <%--<div class="popup popup-subscribe" >
-        <div class="content" >
-          <div class="buttons-tab">
-            <a href="#sub_tab1" class="tab-link active button">报关状态</a>
-            <a href="#sub_tab2" class="tab-link button">物流状态</a>
-          </div>
-          <div class="content-block">
-            <div class="tabs">
-              <div id="sub_tab1" class="tab active">
-                <div class="content-block" id="pop_sub_decl">
-                    <div class="myrow">报关状态订阅</div>
-                    <div class="row">
-                        <div class="col-66">申报完成</div>
-                        <div class="col-33"><input type="checkbox" value="申报完成"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">已放行</div>
-                        <div class="col-33"><input type="checkbox" value="已放行"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">已结关</div>
-                        <div class="col-33"><input type="checkbox" value="已结关"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">改单完成</div>
-                        <div class="col-33"><input type="checkbox" value="改单完成"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">删单完成</div>
-                        <div class="col-33"><input type="checkbox" value="删单完成"/></div>
-                    </div>
-                </div>
-              </div>
-              <div id="sub_tab2" class="tab">
-                <div class="content-block" id="pop_sub_log">
-                    <div class="myrow">物流状态订阅</div>
-                    <div class="row">
-                        <div class="col-66">抽单完成</div>
-                        <div class="col-33"><input type="checkbox" value="抽单完成"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">已派车</div>
-                        <div class="col-33"><input type="checkbox" value="已派车"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">运输完成</div>
-                        <div class="col-33"><input type="checkbox" value="运输完成"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">送货完成</div>
-                        <div class="col-33"><input type="checkbox" value="送货完成"/></div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="content-block">
-            <div class="row" style="background-color:white">
-                <div class="col-50"><a href="javascript:subscribe()" class="button button-fill">确  认</a></div>
-                <div class="col-50"><a href="#" class="close-popup button button-fill">返  回</a></div>
-            </div>
-              </div>
-        </div>
-    </div>--%>
-   
 
     <!-- 默认必须要执行$.init(),实际业务里一般不会在HTML文档里执行，通常是在业务页面代码的最后执行 -->
     
@@ -1465,92 +1336,6 @@
         //util.picker_customs();
         util.picker_sitedeclare();
         util.picker_logisticsstatus();
-        
-  //      $("#picker_declstatus").picker({
-  //          toolbarTemplate: '<header class="bar bar-nav">\
-  //<button class="button button-link pull-right close-picker">确定</button>\
-  //<h1 class="title">请选择</h1>\
-  //</header>', 
-  //          cols: [
-  //            {
-  //                textAlign: 'center',
-  //                values: ['全部', '申报完结', '现场申报', '现场放行']
-  //            }
-  //          ]
-            
-  //      });
-  //      $("#picker_inspstatus").picker({
-  //          toolbarTemplate: '<header class="bar bar-nav">\
-  //<button class="button button-link pull-right close-picker">确定</button>\
-  //<h1 class="title">请选择</h1>\
-  //</header>',
-  //          cols: [
-  //            {
-  //                textAlign: 'center',
-  //                values: ['全部', '申报完结', '现场报检','现场放行']
-  //            }
-  //          ]
-  //      });
-  //      $("#picker_inout").picker({
-  //          toolbarTemplate: '<header class="bar bar-nav">\
-  //<button class="button button-link pull-right close-picker">确定</button>\
-  //<h1 class="title">请选择</h1>\
-  //</header>',
-  //          cols: [
-  //            {
-  //                textAlign: 'center',
-  //                values: ['全部', '进口', '出口']
-  //            }
-  //          ]
-  //      });
-  //      $("#picker_busitype").picker({
-  //          toolbarTemplate: '<header class="bar bar-nav">\
-  //<button class="button button-link pull-right close-picker">确定</button>\
-  //<h1 class="title">请选择</h1>\
-  //</header>',
-  //          cols: [
-  //            {
-  //                textAlign: 'center',
-  //                values: ['全部（不含国内）', '国内业务', '特殊区域','空运业务','陆运业务','海运业务']
-  //            }
-  //          ]
-  //      });
-  //      $("#picker_customs").picker({
-  //          toolbarTemplate: '<header class="bar bar-nav">\
-  //<button class="button button-link pull-right close-picker">确定</button>\
-  //<h1 class="title">请选择</h1>\
-  //</header>',
-  //          cols: [
-  //            {
-  //                textAlign: 'center',
-  //                values: ['全部', '2369']
-  //            }
-  //          ]
-  //      });
-  //      $("#picker_sitedeclare").picker({
-  //          toolbarTemplate: '<header class="bar bar-nav">\
-  //<button class="button button-link pull-right close-picker">确定</button>\
-  //<h1 class="title">请选择</h1>\
-  //</header>',
-  //          cols: [
-  //            {
-  //                textAlign: 'center',
-  //                values: ['全部', '需现场申报']
-  //            }
-  //          ]
-  //      });
-  //      $("#picker_logisticsstatus").picker({
-  //          toolbarTemplate: '<header class="bar bar-nav">\
-  //<button class="button button-link pull-right close-picker">确定</button>\
-  //<h1 class="title">请选择</h1>\
-  //</header>',
-  //          cols: [
-  //            {
-  //                textAlign: 'center',
-  //                values: ['全部', '待抽单', '抽单完成', '未派车', '已派车', '未运抵', '运输完成', '未送货', '送货完成']
-  //            }
-  //          ]
-  //      });
         
         $("#picker_starttime").calendar({
             value: [nowDate],

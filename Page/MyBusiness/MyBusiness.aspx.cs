@@ -75,7 +75,13 @@ namespace WeChat.Page.MyBusiness
             if (user != null || string.IsNullOrEmpty(user.CustomerCode))
                 return "";
             ListOrderModel orderModel = new ListOrderModel();
-            DataTable dt = orderModel.getOrder(declstatus, inspstatus, inout, busitype, customs, sitedeclare, logisticsstatus, starttime, endtime, itemsperload, lastindex, user.CustomerCode);
+            string customerCode = user.CustomerCode;
+            string hsCode = user.HSCode;
+            if (user.IsCompany != 1)//如果不是企业角色，不能查出其对应经营单位的订单
+                hsCode = "";
+            if (user.IsCustomer != 1)//如果不是委托单位角色，不能查出其对应委托单位的订单
+                customerCode = "";
+            DataTable dt = orderModel.getOrder(declstatus, inspstatus, inout, busitype, customs, sitedeclare, logisticsstatus, starttime, endtime, itemsperload, lastindex, customerCode, hsCode);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             try
             {

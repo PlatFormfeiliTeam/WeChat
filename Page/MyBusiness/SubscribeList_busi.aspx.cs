@@ -51,7 +51,7 @@ namespace WeChat.Page.MyBusiness
             WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
             if (user == null || user.GwyUserID <= 0)
                 return "";
-            DataTable infodt = SubscribeModel.getSubscribeInfo_Order(starttime, endtime, istigger, pagesize, lastnum, cusno,user.GwyUserID);
+            DataTable infodt = SubscribeModel.getSubscribeInfo_Order(starttime, endtime, istigger, pagesize, lastnum, cusno, user.GwyUserID);
             if (infodt == null || infodt.Rows.Count == 0)
                 return "";
             DataTable resultdt=infodt.Clone();

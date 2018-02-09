@@ -50,6 +50,10 @@ namespace WeChat.Entity
         /// 客商代码
         /// </summary>
         public string CustomerCode { get; set; }
+        /// <summary>
+        /// 客商对应的HS编码
+        /// </summary>
+        public string HSCode { get; set; }
 
     }
 }
