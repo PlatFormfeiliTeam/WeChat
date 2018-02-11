@@ -166,13 +166,13 @@ function initSerach_SiteDeclare() {
         $("#divideno").val($("#txt_divideno").val());
         $("#contractno").val($("#txt_contractno").val());
 
-        //初始化时间控件
-        var before = new Date();
-        before.setDate(before.getDate() - 3);
-        var beforeday = before.Format("yyyy-MM-dd");
+        ////初始化时间控件
+        //var before = new Date();
+        //before.setDate(before.getDate() - 3);
+        //var beforeday = before.Format("yyyy-MM-dd");
 
-        var now = new Date();
-        var today = now.Format("yyyy-MM-dd");
+        //var now = new Date();
+        //var today = now.Format("yyyy-MM-dd");
 
         if ($("#txt_submittime_s").val() != "" || $("#txt_submittime_e").val() != "") {
 
@@ -186,11 +186,17 @@ function initSerach_SiteDeclare() {
             }
 
         } else {
-            $("#subdatestart").val(beforeday);
-            $("#subdatestart").calendar({ value: [beforeday] });
+            //$("#subdatestart").val(beforeday);
+            //$("#subdatestart").calendar({ value: [beforeday] });
 
-            $("#subdateend").val(today);
-            $("#subdateend").calendar({ value: [today] });
+            //$("#subdateend").val(today);
+            //$("#subdateend").calendar({ value: [today] });
+
+            $("#subdatestart").val("");
+            $("#subdatestart").calendar({ });
+
+            $("#subdateend").val("");
+            $("#subdateend").calendar({ });
         }
 
         if ($("#txt_sitepasstime_s").val() != "" || $("#txt_sitepasstime_e").val() != "") {
@@ -205,11 +211,18 @@ function initSerach_SiteDeclare() {
             }
 
         } else {
-            $("#passdatestart").val(beforeday);
-            $("#passdatestart").calendar({ value: [beforeday] });
+            //$("#passdatestart").val(beforeday);
+            //$("#passdatestart").calendar({ value: [beforeday] });
 
-            $("#passdateend").val(today);
-            $("#passdateend").calendar({ value: [today] });
+            //$("#passdateend").val(today);
+            //$("#passdateend").calendar({ value: [today] });
+
+            $("#passdatestart").val("");
+            $("#passdatestart").calendar({ });
+
+            $("#passdateend").val("");
+            $("#passdateend").calendar({ });
+
         }
 
         //----------------------------------------------------------------------------------------------------------------------按钮事件
@@ -281,10 +294,10 @@ function initSerach_SiteDeclare() {
             $("#txt_cusno").val(""); $("#cusno").val("");
             $("#txt_divideno").val(""); $("#divideno").val("");
             $("#txt_contractno").val(""); $("#contractno").val("");
-            $("#txt_submittime_s").val(""); $("#subdatestart").calendar({});
-            $("#txt_submittime_e").val(""); $("#subdateend").calendar({});
-            $("#txt_sitepasstime_s").val(""); $("#passdatestart").calendar({});
-            $("#txt_sitepasstime_e").val(""); $("#passdateend").calendar({});
+            $("#txt_submittime_s").val(""); $("#subdatestart").val(""); $("#subdatestart").calendar({});
+            $("#txt_submittime_e").val(""); $("#subdateend").val(""); $("#subdateend").calendar({});
+            $("#txt_sitepasstime_s").val(""); $("#passdatestart").val(""); $("#passdatestart").calendar({});
+            $("#txt_sitepasstime_e").val(""); $("#passdateend").val(""); $("#passdateend").calendar({});
 
             $.closeModal(".moredivsitedecl");
         });
@@ -337,6 +350,9 @@ function initSerach_SiteInspection() {
                         '<div class="row">' +
                             '<div class="col-50"><input type="text" id="divideno" placeholder="分单号"/></div>' +
                             '<div class="col-50" style="margin-left:0rem;"><input type="text" id="customarea" placeholder="申报关区"/></div>' +
+                        '</div>' +
+                         '<div class="row">' +
+                            '<div class="col-100" style="width:92%;"><input type="text" id="approvalcode" placeholder="流水号"/></div>' +
                         '</div>' +
                         '<div class="row">' +
                             '<div class="col-25">委托日期:</div>' +
@@ -468,14 +484,15 @@ function initSerach_SiteInspection() {
         $("#cusno").val($("#txt_cusno").val());
         $("#divideno").val($("#txt_divideno").val());
         $("#customarea").val($("#txt_customareacode").val());
+        $("#approvalcode").val($("#txt_approvalcode").val());
 
-        //初始化时间控件
-        var before = new Date();
-        before.setDate(before.getDate() - 3);
-        var beforeday = before.Format("yyyy-MM-dd");
+        ////初始化时间控件
+        //var before = new Date();
+        //before.setDate(before.getDate() - 3);
+        //var beforeday = before.Format("yyyy-MM-dd");
 
-        var now = new Date();
-        var today = now.Format("yyyy-MM-dd");
+        //var now = new Date();
+        //var today = now.Format("yyyy-MM-dd");
 
         if ($("#txt_submittime_s").val() != "" || $("#txt_submittime_e").val() != "") {
 
@@ -489,11 +506,17 @@ function initSerach_SiteInspection() {
             }
 
         } else {
-            $("#subdatestart").val(beforeday);
-            $("#subdatestart").calendar({ value: [beforeday] });
+            //$("#subdatestart").val(beforeday);
+            //$("#subdatestart").calendar({ value: [beforeday] });
 
-            $("#subdateend").val(today);
-            $("#subdateend").calendar({ value: [today] });
+            //$("#subdateend").val(today);
+            //$("#subdateend").calendar({ value: [today] });
+
+            $("#subdatestart").val("");
+            $("#subdatestart").calendar({ });
+
+            $("#subdateend").val("");
+            $("#subdateend").calendar({ });
         }
 
         if ($("#txt_sitepasstime_s").val() != "" || $("#txt_sitepasstime_e").val() != "") {
@@ -508,11 +531,18 @@ function initSerach_SiteInspection() {
             }
 
         } else {
-            $("#passdatestart").val(beforeday);
-            $("#passdatestart").calendar({ value: [beforeday] });
+            //$("#passdatestart").val(beforeday);
+            //$("#passdatestart").calendar({ value: [beforeday] });
 
-            $("#passdateend").val(today);
-            $("#passdateend").calendar({ value: [today] });
+            //$("#passdateend").val(today);
+            //$("#passdateend").calendar({ value: [today] });
+
+            $("#passdatestart").val("");
+            $("#passdatestart").calendar({ value: [""] });
+
+            $("#passdateend").val("");
+            $("#passdateend").calendar({ value: [""] });
+
         }
 
         //----------------------------------------------------------------------------------------------------------------------按钮事件
@@ -567,6 +597,7 @@ function initSerach_SiteInspection() {
             $("#txt_cusno").val($("#cusno").val());
             $("#txt_divideno").val($("#divideno").val());
             $("#txt_customareacode").val($("#customarea").val());
+            $("#txt_approvalcode").val($("#approvalcode").val());
 
             $("#txt_submittime_s").val($("#subdatestart").val());
             $("#txt_submittime_e").val($("#subdateend").val());
@@ -580,7 +611,7 @@ function initSerach_SiteInspection() {
             $("#txt_inspsiteapplytime_s").val(""); $("#txt_inspsiteapplytime_e").val("");
             $("#txt_inspsiteapplytime_s").calendar({}); $("#txt_inspsiteapplytime_e").calendar({});//否则之前选的那天  不能再次选中
 
-            $("#txt_inspcode").val(""); $("#txt_approvalcode").val("");
+            $("#txt_inspcode").val(""); 
             $("#picker_is_pass").picker("setValue", ["全部"]); $("#picker_ischeck").picker("setValue", ["全部"]);
 
             $("#txt_busitype").val(""); $("#txt_lawflag").val(""); $("#txt_isneedclearance").val(""); $("#txt_isfumigation").val("");
@@ -595,12 +626,13 @@ function initSerach_SiteInspection() {
             $("#txt_ordercode").val(""); $("#ordercode").val("");
             $("#txt_cusno").val(""); $("#cusno").val("");
             $("#txt_divideno").val(""); $("#divideno").val("");
-            $("#txt_customareacode").val(); $("#customarea").val("");
+            $("#txt_customareacode").val(""); $("#customarea").val("");
+            $("#txt_approvalcode").val(); $("#approvalcode").val("");
 
-            $("#txt_submittime_s").val(""); $("#subdatestart").calendar({});
-            $("#txt_submittime_e").val(""); $("#subdateend").calendar({});
-            $("#txt_sitepasstime_s").val(""); $("#passdatestart").calendar({});
-            $("#txt_sitepasstime_e").val(""); $("#passdateend").calendar({});
+            $("#txt_submittime_s").val(""); $("#subdatestart").val(""); $("#subdatestart").calendar({});
+            $("#txt_submittime_e").val(""); $("#subdateend").val(""); $("#subdateend").calendar({});
+            $("#txt_sitepasstime_s").val(""); $("#passdatestart").val(""); $("#passdatestart").calendar({});
+            $("#txt_sitepasstime_e").val(""); $("#passdateend").val(""); $("#passdateend").calendar({});
 
             $.closeModal(".moredivsiteinsp");
         });
@@ -787,13 +819,13 @@ function initSerach_Declare() {
         $("#contractno").val($("#txt_contractno").val());
         $("#blno").val($("#txt_blno").val());
         
-        //初始化时间控件
-        var before = new Date();
-        before.setDate(before.getDate() - 3);
-        var beforeday = before.Format("yyyy-MM-dd");
+        ////初始化时间控件
+        //var before = new Date();
+        //before.setDate(before.getDate() - 3);
+        //var beforeday = before.Format("yyyy-MM-dd");
 
-        var now = new Date();
-        var today = now.Format("yyyy-MM-dd");
+        //var now = new Date();
+        //var today = now.Format("yyyy-MM-dd");
 
         if ($("#txt_submittime_s").val() != "" || $("#txt_submittime_e").val() != "") {
 
@@ -807,11 +839,17 @@ function initSerach_Declare() {
             }
             
         } else {
-            $("#subdatestart").val(beforeday);
-            $("#subdatestart").calendar({ value: [beforeday] });
+            //$("#subdatestart").val(beforeday);
+            //$("#subdatestart").calendar({ value: [beforeday] });
 
-            $("#subdateend").val(today);
-            $("#subdateend").calendar({ value: [today] });
+            //$("#subdateend").val(today);
+            //$("#subdateend").calendar({ value: [today] });
+
+            $("#subdatestart").val("");
+            $("#subdatestart").calendar({ });
+
+            $("#subdateend").val("");
+            $("#subdateend").calendar({ });
         }
 
         if ($("#txt_sitepasstime_s").val() != "" || $("#txt_sitepasstime_e").val() != "") {
@@ -826,11 +864,17 @@ function initSerach_Declare() {
             }
 
         } else {
-            $("#passdatestart").val(beforeday);
-            $("#passdatestart").calendar({ value: [beforeday] });
+            //$("#passdatestart").val(beforeday);
+            //$("#passdatestart").calendar({ value: [beforeday] });
 
-            $("#passdateend").val(today);
-            $("#passdateend").calendar({ value: [today] });
+            //$("#passdateend").val(today);
+            //$("#passdateend").calendar({ value: [today] });
+
+            $("#passdatestart").val("");
+            $("#passdatestart").calendar({ });
+
+            $("#passdateend").val("");
+            $("#passdateend").calendar({ });
         }
 
         //----------------------------------------------------------------------------------------------------------------------按钮事件
@@ -904,10 +948,10 @@ function initSerach_Declare() {
             $("#txt_tradeway").val(""); $("#tradeway").val("");
             $("#txt_contractno").val(""); $("#contractno").val("");
             $("#txt_blno").val(""); $("#blno").val("");
-            $("#txt_submittime_s").val(""); $("#subdatestart").calendar({});
-            $("#txt_submittime_e").val(""); $("#subdateend").calendar({});
-            $("#txt_sitepasstime_s").val(""); $("#passdatestart").calendar({});
-            $("#txt_sitepasstime_e").val(""); $("#passdateend").calendar({});
+            $("#txt_submittime_s").val(""); $("#subdatestart").val(""); $("#subdatestart").calendar({});
+            $("#txt_submittime_e").val(""); $("#subdateend").val(""); $("#subdateend").calendar({});
+            $("#txt_sitepasstime_s").val(""); $("#passdatestart").val(""); $("#passdatestart").calendar({});
+            $("#txt_sitepasstime_e").val(""); $("#passdateend").val(""); $("#passdateend").calendar({});
 
             $.closeModal(".morediv");
         });

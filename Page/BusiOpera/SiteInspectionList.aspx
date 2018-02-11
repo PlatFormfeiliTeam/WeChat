@@ -139,7 +139,7 @@
                 $("#txt_inspsiteapplytime_s").val(""); $("#txt_inspsiteapplytime_e").val("");
                 $("#txt_inspsiteapplytime_s").calendar({}); $("#txt_inspsiteapplytime_e").calendar({});//否则之前选的那天  不能再次选中
 
-                $("#txt_inspcode").val(""); $("#txt_approvalcode").val("");
+                $("#txt_inspcode").val(""); 
                 $("#picker_is_pass").picker("setValue", ["全部"]); $("#picker_ischeck").picker("setValue", ["全部"]);
 
                 $("#txt_busitype").val(""); $("#txt_lawflag").val(""); $("#txt_isneedclearance").val(""); $("#txt_isfumigation").val("");
@@ -150,7 +150,8 @@
                 $("#txt_ordercode").val(""); 
                 $("#txt_cusno").val(""); 
                 $("#txt_divideno").val(""); 
-                $("#txt_customareacode").val(); 
+                $("#txt_customareacode").val();
+                $("#txt_approvalcode").val("");
 
                 $("#txt_submittime_s").val(""); 
                 $("#txt_submittime_e").val(""); 
@@ -1067,9 +1068,19 @@
                 ]
             });
 
+            //初始化时间控件
+            var before = new Date();
+            before.setDate(before.getDate() - 3);
+            var beforeday = before.Format("yyyy-MM-dd");
 
-            $("#txt_inspsiteapplytime_s").calendar({});
-            $("#txt_inspsiteapplytime_e").calendar({});
+            var now = new Date();
+            var today = now.Format("yyyy-MM-dd");
+
+            $("#txt_inspsiteapplytime_s").val(beforeday);
+            $("#txt_inspsiteapplytime_s").calendar({ value: [beforeday] });
+
+            $("#txt_inspsiteapplytime_e").val(today);
+            $("#txt_inspsiteapplytime_e").calendar({ value: [today] });
         }
 
         function getNowDate() {
@@ -1105,10 +1116,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-50" style="width:46%;"><input type="search" id='txt_inspcode' placeholder='报检单号'/></div>
-                        <div class="col-20" style="width:19%;margin-left:0;"><input type="search" id='txt_approvalcode' placeholder='流水号'/></div>
-                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_is_pass' placeholder='放行'/></div>
-                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_ischeck' placeholder='查验'/></div>
+                        <div class="col-50" style="width:47%;"><input type="search" id='txt_inspcode' placeholder='报检单号'/></div>
+                        <%--<div class="col-20" style="width:19%;margin-left:0;"><input type="search" id='txt_approvalcode' placeholder='流水号'/></div>--%>
+                        <div class="col-25" style="width:24%;margin-left:0;"><input type="search" id='picker_is_pass' placeholder='放行'/></div>
+                        <div class="col-25" style="width:24%;margin-left:0;"><input type="search" id='picker_ischeck' placeholder='查验'/></div>
                     </div> 
                     <div class="row">
                         <div class="col-25" style="width:21%;"><input id="btn_gridname_m" type="button" value="列名" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
@@ -1121,6 +1132,7 @@
                     <input type="hidden" id='txt_busiunit'/><input type="hidden" id='txt_contractno'/>
                     <input type="hidden" id='txt_ordercode'/> <input type="hidden" id='txt_cusno'/>  
                     <input type="hidden" id='txt_divideno'/> <input type="hidden" id='txt_customareacode'/>
+                    <input type="hidden" id='txt_approvalcode'/>
 
                     <input type="hidden" id='txt_submittime_s'/><input type="hidden" id='txt_submittime_e'/>
                     <input type="hidden" id='txt_sitepasstime_s'/><input type="hidden" id='txt_sitepasstime_e'/>                                    
