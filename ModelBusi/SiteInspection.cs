@@ -13,114 +13,47 @@ namespace WeChat.ModelBusi
 {
     public class SiteInspection
     {
-        public static DataTable getSiteInspectionInfo(string inout_type, string issiterep, string lawflag, string isneedclearance, string isfumigation, string busitype, string ispass, string startdate, string enddate
-            , string radiotype, string morecon, int start, int itemsPerLoad)
+        public static DataTable getSiteInspectionInfo(string inspsiteapplytime_s, string inspsiteapplytime_e, string inspcode, string approvalcode, string ispass, string ischeck, string busitype
+            , string lawflag, string isneedclearance, string isfumigation, string modifyflag, string busiunit, string contractno, string ordercode, string cusno, string divideno
+            , string customareacode, string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
+            , int start, int itemsPerLoad)
         {
             using (DBSession db = new DBSession())
             {
                 string where = "";
-                if (!string.IsNullOrEmpty(inout_type))//进出口
-                {
-                    switch (inout_type)
-                    {
-                        case "全部":
-                            break;
-                        case "进口":
-                            where += " and ort.busitype in ('11','21','31','41','51')";
-                            break;
-                        case "出口":
-                            where += " and ort.busitype in ('10','20','30','40','50')";
-                            break;
-                    }
 
-                }
-                if (!string.IsNullOrEmpty(issiterep))//现场报检时间是否为空
-                {
-                    if (issiterep == "仅现场") { where += " and ort.inspsiteapplytime is not null"; }
-                }
+                if (!string.IsNullOrEmpty(inspsiteapplytime_s)) { where += " and ort.inspsiteapplytime>=to_date('" + inspsiteapplytime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(inspsiteapplytime_e)) { where += " and ort.inspsiteapplytime<=to_date('" + inspsiteapplytime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(inspcode)) { where += " and li.inspectioncode like '%" + inspcode + "%'"; }
+                if (!string.IsNullOrEmpty(approvalcode)) { where += " and li.approvalcode like '%" + approvalcode + "%'"; }
 
-                if (lawflag == "1")//法检
+                if (!string.IsNullOrEmpty(ispass))
                 {
-                    where += " and ort.lawflag=1";
+                    if (ispass == "放行") { where += " and ort.inspstatus=" + (int)DeclStatusEnum.SitePass; }
+                    if (ispass == "未放行") { where += " and ort.inspstatus<" + (int)DeclStatusEnum.SitePass; }
                 }
+                if (!string.IsNullOrEmpty(ischeck))
+                {
+                    if (ispass == "查验") { where += " and ort.inspischeck=1"; }
+                    if (ispass == "未查验") { where += " and ort.inspischeck=0"; }
+                }
+                if (!string.IsNullOrEmpty(busitype)) { where += " and ort.busitype in (" + busitype + ")"; }
+                if (!string.IsNullOrEmpty(lawflag)) { where += " and ort.lawflag=1"; }
+                if (!string.IsNullOrEmpty(isneedclearance)) { where += " and ort.isneedclearance=1"; }
+                if (!string.IsNullOrEmpty(isfumigation)) { where += " and ort.isfumigation=1"; }
+                if (!string.IsNullOrEmpty(modifyflag)) { where += " and li.modifyflag='" + modifyflag + "'"; }
 
-                if (isneedclearance == "1")//通关单
-                {
-                    where += " and ort.isneedclearance=1";
-                }
+                if (!string.IsNullOrEmpty(busiunit)) { where += " and (ort.BUSIUNITCODE like '%" + busiunit + "%' or ort.BUSIUNITNAME like '%" + busiunit + "%')"; }
+                if (!string.IsNullOrEmpty(contractno)) { where += " and ort.CONTRACTNO like '%" + contractno + "%'"; }
+                if (!string.IsNullOrEmpty(ordercode)) { where += " and ort.code like '%" + ordercode + "%'"; }
+                if (!string.IsNullOrEmpty(cusno)) { where += " and ort.cusno like '%" + cusno + "%'"; }
+                if (!string.IsNullOrEmpty(divideno)) { where += " and ort.divideno like '%" + divideno + "%'"; }
+                if (!string.IsNullOrEmpty(customareacode)) { where += " and ort.customareacode like '%" + customareacode + "%'"; }
 
-                if (isfumigation == "1")//熏蒸
-                {
-                    where += " and ort.isfumigation=1";
-                }
-
-                if (!string.IsNullOrEmpty(busitype))//业务类型
-                {
-                    switch (busitype)
-                    {
-                        case "全部":
-                            break;
-                        case "空运":
-                            where += " and ort.busitype in ('10','11')";
-                            break;
-                        case "海运":
-                            where += " and ort.busitype in ('20','21')";
-                            break;
-                        case "陆运":
-                            where += " and ort.busitype in ('30','31')";
-                            break;
-                        case "国内":
-                            where += " and ort.busitype in ('40','41')";
-                            break;
-                        case "特殊区域":
-                            where += " and ort.busitype in ('50','51')";
-                            break;
-                    }
-                }
-                if (!string.IsNullOrEmpty(ispass))//放行情况
-                {
-                    switch (ispass)
-                    {
-                        case "全部":
-                            break;
-                        case "未放行":
-                            where += " and ort.inspstatus<" + (int)DeclStatusEnum.SitePass;
-                            break;
-                        case "已放行":
-                            where += " and ort.inspstatus=" + (int)DeclStatusEnum.SitePass;
-                            break;
-                    }
-                }
-                if (!string.IsNullOrEmpty(startdate))//委托日期
-                {
-                    where += " and ort.submittime>=to_date('" + startdate + " 00:00:00','yyyy-mm-dd hh24:mi:ss') ";
-                }
-                if (!string.IsNullOrEmpty(enddate))
-                {
-                    where += " and ort.submittime<=to_date('" + enddate + " 23:59:59','yyyy-mm-dd hh24:mi:ss') ";
-                }
-
-                if (!string.IsNullOrEmpty(radiotype))//更多查询
-                {
-                    switch (radiotype)
-                    {
-                        case "报检单号":
-                            where += " and li.inspectioncode like '%" + morecon + "%'";
-                            break;
-                        case "收发货人":
-                            where += " and ort.busiunitname like '%" + morecon + "%'";
-                            break;
-                        case "客户编号":
-                            where += " and ort.cusno like '%" + morecon + "%'";
-                            break;
-                        case "业务编号":
-                            where += " and ort.code like '%" + morecon + "%'";
-                            break;
-                        case "通关单号":
-                            where += " and li.clearancecode like '%" + morecon + "%'";
-                            break;
-                    }
-                }
+                if (!string.IsNullOrEmpty(submittime_s)) { where += " and ort.submittime>=to_date('" + submittime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(submittime_e)) { where += " and ort.submittime<=to_date('" + submittime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(sitepasstime_s)) { where += " and ort.inspsitepasstime>=to_date('" + sitepasstime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(sitepasstime_e)) { where += " and ort.inspsitepasstime<=to_date('" + sitepasstime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }       
 
                 string tempsql = @"select ort.busiunitname,ort.busitype,ort.code
                                     ,ort.totalno,ort.divideno,ort.secondladingbillno,ort.landladingno,ort.associatepedeclno,ort.repwayid
@@ -134,7 +67,7 @@ namespace WeChat.ModelBusi
                                 where ort.entrusttype in('02','03') and ort.isinvalid=0 and li.isinvalid=0" + where;
 
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
-                string sql = string.Format(pageSql, tempsql, "ort.inspsiteapplytime", "desc", start + 1, start + itemsPerLoad);
+                string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);
 
                 return db.QuerySignle(sql);
             }

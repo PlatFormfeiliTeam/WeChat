@@ -4,80 +4,52 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using WeChat.Common;
+using WeChat.Entity.Enum;
 
 namespace WeChat.ModelBusi
 {
     public class Declare
     {
-        public static DataTable getDeclareInfo(string declcode, string startdate, string enddate, string inouttype, string busitypeid, string modifyflag, string customsstatus, int start, int itemsPerLoad)
+        public static DataTable getDeclareInfo(string reptime_s, string reptime_e, string declcode, string customsstatus, string modifyflag, string busitype, string ischeck
+            , string ispass, string busiunit, string ordercode, string cusno, string tradeway, string contractno, string blno
+            , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
+            , int start, int itemsPerLoad)
         {
             using (DBSession db = new DBSession())
             {
                 string where = "";
-                if (!string.IsNullOrEmpty(declcode))
-                {
-                    where += " and lda.declarationcode like '%" + declcode + "%'";
-                }
-                if (!string.IsNullOrEmpty(startdate))
-                {
-                    where += " and lda.reptime>=to_date('" + startdate + " 00:00:00','yyyy-mm-dd hh24:mi:ss') ";
-                }
-                if (!string.IsNullOrEmpty(enddate))
-                {
-                    where += " and lda.reptime<=to_date('" + enddate + " 23:59:59','yyyy-mm-dd hh24:mi:ss') ";
-                }
-
-                if (!string.IsNullOrEmpty(inouttype))
-                {
-                    switch (inouttype)
-                    {
-                        case "全部":
-                            break;
-                        case "进口":
-                            where += " and ort.busitype in ('11','21','31','41','51')";
-                            break;
-                        case "出口":
-                            where += " and ort.busitype in ('10','20','30','40','50')";
-                            break;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(busitypeid))
-                {
-                    switch (busitypeid)
-                    {
-                        case "全部":
-                            break;
-                        case "空运业务":
-                            where += " and ort.busitype in ('11','10')";
-                            break;
-                        case "海运业务":
-                            where += " and ort.busitype in ('21','20')";
-                            break;
-                        case "陆运业务":
-                            where += " and ort.busitype in ('31','30')";
-                            break;
-                        case "国内业务":
-                            where += " and ort.busitype in ('41','40')";
-                            break;
-                        case "特殊区域":
-                            where += " and ort.busitype in ('51','50')";
-                            break;
-                    }                   
-                }
-                if (!string.IsNullOrEmpty(modifyflag))
-                {
-                    where += " and det.modifyflag='" + modifyflag + "' ";
-                }
+                if (!string.IsNullOrEmpty(reptime_s)) { where += " and lda.reptime>=to_date('" + reptime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(reptime_e)) { where += " and lda.reptime<=to_date('" + reptime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(declcode)) { where += " and lda.declarationcode like '%" + declcode + "%'"; }
                 if (!string.IsNullOrEmpty(customsstatus))
                 {
-                    if (customsstatus == "已结关") { where += " and det.CUSTOMSSTATUS='已结关' "; }
-                    if (customsstatus == "未结关") { where += " and det.CUSTOMSSTATUS!='已结关' and det.CUSTOMSSTATUS!='删单或异常' "; }
-
-                    if (customsstatus == "已放行") { where += " and det.CUSTOMSSTATUS='已放行' "; }
-                    if (customsstatus == "未放行") { where += " and det.CUSTOMSSTATUS!='已放行' and det.CUSTOMSSTATUS!='已结关' and det.CUSTOMSSTATUS!='删单或异常' "; }
+                    if (customsstatus == "已结关") { where += " and det.CUSTOMSSTATUS='已结关'"; }
+                    if (customsstatus == "未结关") { where += " and det.CUSTOMSSTATUS!='已结关' and det.CUSTOMSSTATUS!='删单或异常'"; }
                 }
+                if (!string.IsNullOrEmpty(modifyflag)) { where += " and det.modifyflag='" + modifyflag + "'"; }
+                if (!string.IsNullOrEmpty(busitype)) { where += " and ort.busitype in (" + busitype + ")"; }
+                if (!string.IsNullOrEmpty(ischeck))
+                {
+                    if (ispass == "查验") { where += " and ort.ischeck=1"; }
+                    if (ispass == "未查验") { where += " and ort.ischeck=0"; }
+                }
+                if (!string.IsNullOrEmpty(ispass))
+                {
+                    if (ispass == "放行") { where += " and ort.declstatus=160" + (int)DeclStatusEnum.SitePass; }
+                    if (ispass == "未放行") { where += " and ort.declstatus<160" + (int)DeclStatusEnum.SitePass; }
+                }
+                if (!string.IsNullOrEmpty(busiunit)) { where += " and (lda.BUSIUNITCODE like '%" + busiunit + "%' or lda.BUSIUNITNAME like '%" + busiunit + "%')"; }
+                if (!string.IsNullOrEmpty(ordercode)) { where += " and det.ORDERCODE like '%" + ordercode + "%'"; }
+                if (!string.IsNullOrEmpty(cusno)) { where += " and ort.CUSNO like '%" + cusno + "%'"; }
+                if (!string.IsNullOrEmpty(tradeway)) { where += " and lda.trademethod like '%" + tradeway + "%'"; }
+                if (!string.IsNullOrEmpty(contractno)) { where += " and ort.CONTRACTNO like '%" + contractno + "%'"; }
+                if (!string.IsNullOrEmpty(blno)) { where += " and lda.BLNO like '%" + blno + "%'"; }
 
+                if (!string.IsNullOrEmpty(submittime_s)) { where += " and ort.submittime>=to_date('" + submittime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(submittime_e)) { where += " and ort.submittime<=to_date('" + submittime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(sitepasstime_s)) { where += " and ort.sitepasstime>=to_date('" + sitepasstime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(sitepasstime_e)) { where += " and ort.sitepasstime<=to_date('" + sitepasstime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }               
+                
                 string tempsql = @"select det.code,det.modifyflag,det.CUSTOMSSTATUS
                                     ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,lda.reptime
                                     ,lda.GOODSNUM,lda.GOODSGW
@@ -88,7 +60,7 @@ namespace WeChat.ModelBusi
                                     left join (select ordercode from list_declaration ld where ld.isinvalid=0 and ld.STATUS!=130 and ld.STATUS!=110) a on det.ordercode=a.ordercode
                                     left join list_verification lv on lda.declarationcode=lv.declarationcode ";
 
-                if (busitypeid == "国内业务")
+                if (busitype.Contains("'40'") || busitype.Contains("'41'"))//国内业务
                 {
                     tempsql += @" left join (
                                                   select ASSOCIATENO from list_order l inner join list_declaration i on l.code=i.ordercode 
@@ -99,14 +71,14 @@ namespace WeChat.ModelBusi
                 tempsql += @" where (det.STATUS=130 or det.STATUS=110) and det.isinvalid=0 and ort.isinvalid=0" + where
                                 + @" and a.ordercode is null";
 
-                if (busitypeid == "40-41")
+                if (busitype.Contains("'40'") || busitype.Contains("'41'"))//国内业务
                 {
                     tempsql += @" and b.ASSOCIATENO is null";
                 }
 
 
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
-                string sql = string.Format(pageSql, tempsql, "lda.reptime", "desc", start + 1, start + itemsPerLoad);
+                string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);
 
                 return db.QuerySignle(sql);
             }

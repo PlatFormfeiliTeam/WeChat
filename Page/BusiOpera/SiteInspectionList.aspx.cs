@@ -19,7 +19,7 @@ namespace WeChat.Page.BusiOpera
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+            /*WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
             if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
             {//授权成功
                 LogHelper.Write("第9步：" + userInfo.OpenID);
@@ -43,7 +43,7 @@ namespace WeChat.Page.BusiOpera
             else
             {//获取授权失败，也跳转至登录页面
                 System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SiteDeclareList");
-            }
+            }*/
         }
 
         //微信接口js-sdk config
@@ -55,14 +55,36 @@ namespace WeChat.Page.BusiOpera
 
         //查询绑定
         [WebMethod]
-        public static string BindList(string inout_type, string issiterep, string lawflag, string isneedclearance, string isfumigation, string busitype, string ispass, string startdate, string enddate
-            , string radiotype, string morecon, int start, int itemsPerLoad)
+        public static string BindList(string inspsiteapplytime_s, string inspsiteapplytime_e, string inspcode, string approvalcode, string ispass, string ischeck, string busitype
+            , string lawflag, string isneedclearance, string isfumigation, string modifyflag, string busiunit, string contractno, string ordercode, string cusno, string divideno
+            , string customareacode, string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
+            , int start, int itemsPerLoad)
         {
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            DataTable dt = SiteInspection.getSiteInspectionInfo(inout_type, issiterep, lawflag, isneedclearance, isfumigation, busitype, ispass, startdate, enddate, radiotype, morecon, start, itemsPerLoad);
+            DataTable dt = SiteInspection.getSiteInspectionInfo(inspsiteapplytime_s, inspsiteapplytime_e, inspcode, approvalcode, ispass, ischeck, busitype
+                    , lawflag, isneedclearance, isfumigation, getcode("modifyflag", modifyflag), busiunit, contractno, ordercode, cusno, divideno
+                    , customareacode, submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
+                    , start, itemsPerLoad);
             var json = JsonConvert.SerializeObject(dt, iso);
             return json;
+        }
+
+        private static string getcode(string key, string value)
+        {
+            string code = "";
+            if (key == "modifyflag")
+            {
+                switch (value)
+                {
+                    case "正常": code = "0"; break;
+                    case "删单": code = "1"; break;
+                    case "改单": code = "2"; break;
+                    case "改单完成": code = "3"; break;
+                    default: code = ""; break;
+                }
+            }
+            return code;
         }
 
         //现场报检

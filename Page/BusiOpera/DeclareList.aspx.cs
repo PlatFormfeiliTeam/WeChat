@@ -22,7 +22,7 @@ namespace WeChat.Page.BusiOpera
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+            /*WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
             if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
             {//授权成功
                 LogHelper.Write("第9步：" + userInfo.OpenID);
@@ -46,7 +46,7 @@ namespace WeChat.Page.BusiOpera
             else
             {//获取授权失败，也跳转至登录页面
                 System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
-            }
+            }*/
         }
 
         //微信接口js-sdk config
@@ -58,14 +58,21 @@ namespace WeChat.Page.BusiOpera
 
         //查询绑定
         [WebMethod]
-        public static string BindList(string declcode, string startdate, string enddate, string inouttype, string busitype, string modifyflag, string customsstatus, int start, int itemsPerLoad)
+        public static string BindList(string reptime_s, string reptime_e, string declcode, string customsstatus, string modifyflag, string busitype, string ischeck
+            , string ispass, string busiunit, string ordercode, string cusno, string tradeway, string contractno, string blno
+            , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
+            , int start, int itemsPerLoad)
         {
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            DataTable dt = Declare.getDeclareInfo(declcode, startdate, enddate, inouttype, busitype, getcode("modifyflag", modifyflag), customsstatus, start, itemsPerLoad);
+            DataTable dt = Declare.getDeclareInfo(reptime_s, reptime_e, declcode, customsstatus, getcode("modifyflag", modifyflag), busitype, ischeck
+                , ischeck, busiunit, ordercode, cusno, tradeway, contractno, blno
+                , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
+                , start, itemsPerLoad);
             var json = JsonConvert.SerializeObject(dt, iso);
             return json;
         }
+
         private static string getcode(string key, string value)
         {
             string code = "";
@@ -79,8 +86,7 @@ namespace WeChat.Page.BusiOpera
                     case "改单完成": code = "3"; break;
                     default: code = ""; break;
                 }
-            }
-           
+            }           
             return code;
         }
 

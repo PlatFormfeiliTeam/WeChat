@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
+    <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />    
+    <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
+
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
              margin:.2rem 0;
@@ -23,6 +26,9 @@
         }
         #page-infinite-scroll-bottom .bar-nav ~ .content {
             top: 5rem;
+        }
+        #page-infinite-scroll-bottom .search-input input{
+            border-radius:0;font-size:13px;
         }
         #div_list .list-block{
             font-size:13px;
@@ -50,18 +56,11 @@
             right: 1%;
             margin-left: 0px;
             text-align: left;
-            top: 10.5%;
+            top: 3.1rem;
         } 
         .girdnamediv .modal-inner{
            padding:0px;
         }  
-        /************************************************ 更多查询*********************************/
-        .morediv{
-            width: 98%;
-            left: 1%;
-            right: 1%;
-            margin-left: 0px;
-        }    
 
         /************************************************ 报关订阅*********************************/
         #pop_sub_decl
@@ -108,31 +107,31 @@
         $(function () {
             //---------------------------------------------------------------------------------------------------------------列表名称
             function showGridName() {
-                var strname = '<div class="list-block" style="margin:0;font-size:12px;color:black;">'
+                var strname = '<div class="list-block" style="margin:0;font-size:small;">'
                             + '<ul>'
                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
-                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
                                         + '<div class="item-title col-50">报关单号</div>'
                                         + '<div class="item-title col-33">业务类型</div>'
                                         + '<div class="item-title col-20">监管方式</div>'
                                     + '</div>'
                                 + '</li>'
                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
-                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
                                         + '<div class="item-title col-50">收发货人</div>'
                                         + '<div class="item-title col-33">合同号</div>'
                                         + '<div class="item-title col-20">申报日期</div>'
                                     + '</div>'
                                 + '</li>'
                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
-                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
                                         + '<div class="item-title col-50">运输工具</div>'
                                         + '<div class="item-title col-33">件数/毛重</div>'
                                         + '<div class="item-title col-20">删改单</div>'
                                     + '</div>'
                                 + '</li>'
                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
-                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;border:2px solid #0894EC;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border:2px solid #0894EC;
                                         + '<div class="item-title col-50">提运单号</div>'
                                         + '<div class="item-title col-33">企业编号</div>'
                                         + '<div class="item-title col-20">海关状态</div>'
@@ -154,128 +153,8 @@
             }
 
             //----------------------------------------------------------------------------------------------------------------查询条件
-            $("#txt_startdate").calendar({});
-            $("#txt_enddate").calendar({});          
-            $(document).on('click', '.open-tabs-modal', function () {
-                $.modal({
-                    title: '<b>更多查询</b>',
-                    text: '<div class="list-block" style="margin:0;">' +
-                              '<ul>' +
-                                '<li>' +
-                                  '<div class="item-content">' +
-                                    '<div class="item-inner">' +
-                                      //'<div class="item-title label">进出口</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择进出口类型" id="picker_inout_type" value="' + $("#txt_inout_type").val() + '" readonly/></div>' +
-                                    '</div>' +
-                                  '</div>' +
-                                '</li>' +
-                                '<li>' +
-                                  '<div class="item-content">' +
-                                    '<div class="item-inner">' +
-                                      //'<div class="item-title label">业务类型</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择业务类型" id="picker_busitype" value="' + $("#txt_busitype").val() + '" readonly/></div>' +
-                                    '</div>' +
-                                  '</div>' +
-                                '</li>' +
-                                '<li>' +
-                                  '<div class="item-content">' +
-                                    '<div class="item-inner">' +
-                                     // '<div class="item-title label">删改单</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择删改单" id="picker_modifyflag" value="' + $("#txt_modifyflag").val() + '" readonly/></div>' +
-                                    '</div>' +
-                                  '</div>' +
-                                '</li>' +
-                                '<li>' +
-                                  '<div class="item-content">' +
-                                    '<div class="item-inner">' +
-                                     // '<div class="item-title label">海关状态</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择海关状态" id="picker_customsstatus" value="' + $("#txt_customsstatus").val() + '" readonly/></div>' +
-                                    '</div>' +
-                                  '</div>' +
-                                '</li>' +
-                              '</ul>' +
-                            '</div>',
-                    buttons: [
-                     {
-                         text: '确认', bold: true,
-                         onClick: function () {
-                             $("#txt_inout_type").val($("#picker_inout_type").val());
-                             $("#txt_busitype").val($("#picker_busitype").val());
-                             $("#txt_modifyflag").val($("#picker_modifyflag").val());
-                             $("#txt_customsstatus").val($("#picker_customsstatus").val());
-                             //select();//暂时不要用，默认点查询按钮才查询
-                         }
-                     },
-                     {
-                         text: '取消', bold: true,
-                         onClick: function () { }
-                     },
-                     {
-                         text: '重置', bold: true,
-                         onClick: function () {
-                             $("#txt_declcode").val(""); $("#txt_startdate").val(""); $("#txt_enddate").val("");
-                             $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
-
-                             $("#txt_inout_type").val(""); $("#picker_inout_type").val("")
-                             $("#txt_busitype").val(""); $("#picker_busitype").val("")
-                             $("#txt_modifyflag").val(""); $("#picker_modifyflag").val("");
-                             $("#txt_customsstatus").val(""); $("#picker_customsstatus").val("");
-                         }
-                     }
-                    ],
-                    extraClass: 'morediv'//避免直接设置.modal的样式，从而影响其他toast的提示
-                });
-
-                $("#picker_inout_type").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择进出口类型</h1>\
-                      </header>',
-                    cols: [
-                      {
-                          textAlign: 'center',
-                          values: ['全部', '进口', '出口']
-                      }
-                    ]
-                });
-                $("#picker_busitype").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择业务类型</h1>\
-                      </header>',
-                    cols: [
-                      {
-                          textAlign: 'center',
-                          values: ['全部', '空运业务', '海运业务', '陆运业务', '国内业务', '特殊区域']
-                      }
-                    ]
-                });
-                $("#picker_modifyflag").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择删改单</h1>\
-                      </header>',
-                    cols: [
-                      {
-                          textAlign: 'center',
-                          values: ['正常', '删单', '改单', '改单完成']
-                      }
-                    ]
-                });
-                $("#picker_customsstatus").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择海关状态</h1>\
-                      </header>',
-                    cols: [
-                      {
-                          textAlign: 'center',
-                          values: ['未结关', '已结关', '未放行', '已放行']
-                      }
-                    ]
-                });
-
-            });
+            initsearch_condition();
+            initSerach_Declare();
 
             //---------------------------------------------------------------------------------------------------------------------
             var loading = false;
@@ -283,8 +162,35 @@
             var maxItems = 100;// 最多可加载的条目
             var lastIndex = 0;//$('.list-block').length;//.list-container li       
 
-            $(document).on('click', '.open-preloader-title', function () {
-                select(); showGridName();
+            $("#btn_gridname_m").click(function () {
+                showGridName();
+            });
+
+            $("#btn_search_m").click(function () {
+                select(); 
+            });
+
+            $("#btn_reset_m").click(function () {
+                $("#txt_reptime_s").val(""); $("#txt_reptime_s").val("");
+                $("#txt_reptime_s").calendar({}); $("#txt_reptime_s").calendar({});//否则之前选的那天  不能再次选中
+
+                $("#txt_declcode").val("");
+                $("#picker_CUSTOMSSTATUS").picker("setValue", ["全部"]); $("#picker_MODIFYFLAG").picker("setValue", ["全部"]);
+
+                $("#txt_busitype").val("");
+                $("#txt_ischeck").val("");
+                $("#txt_ispass").val("");
+
+                $("#txt_busiunit").val(""); 
+                $("#txt_ordercode").val("");
+                $("#txt_cusno").val("");
+                $("#txt_tradeway").val(""); 
+                $("#txt_contractno").val(""); 
+                $("#txt_blno").val(""); 
+                $("#txt_submittime_s").val("");
+                $("#txt_submittime_e").val(""); 
+                $("#txt_sitepasstime_s").val(""); 
+                $("#txt_sitepasstime_e").val(""); 
             });
 
             function select() {
@@ -692,15 +598,18 @@
 
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
-            function loaddata(itemsPerLoad, lastIndex) {                
+            function loaddata(itemsPerLoad, lastIndex) {
                 $.ajax({
                     type: "post", //要用post方式                 
                     url: "DeclareList.aspx/BindList",//方法所在页面和方法名
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'declcode':'" + $("#txt_declcode").val() + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
-                        + "','inouttype':'" + $("#txt_inout_type").val() + "','busitype':'" + $("#txt_busitype").val() + "','modifyflag':'" + $("#txt_modifyflag").val()
-                        + "','customsstatus':'" + $("#txt_customsstatus").val()
+                    data: "{'reptime_s':'" + $("#txt_reptime_s").val() + "','reptime_e':'" + $("#txt_reptime_e").val() + "','declcode':'" + $("#txt_declcode").val() 
+                        + "','customsstatus':'" + $("#picker_CUSTOMSSTATUS").val() + "','modifyflag':'" + $("#picker_MODIFYFLAG").val() + "','busitype':\"" + $("#txt_busitype").val()
+                        + "\",'ischeck':'" + $("#txt_ischeck").val() + "','ispass':'" + $("#txt_ispass").val() + "','busiunit':'" + $("#txt_busiunit").val()
+                        + "','ordercode':'" + $("#txt_ordercode").val() + "','cusno':'" + $("#txt_cusno").val() + "','tradeway':'" + $("#txt_tradeway").val()
+                        + "','contractno':'" + $("#txt_contractno").val() + "','blno':'" + $("#txt_blno").val() + "','submittime_s':'" + $("#txt_submittime_s").val()
+                        + "','submittime_e':'" + $("#txt_submittime_e").val() + "','sitepasstime_s':'" + $("#txt_sitepasstime_s").val() + "','sitepasstime_e':'" + $("#txt_sitepasstime_e").val()
                         + "','start':" + lastIndex + ",'itemsPerLoad':" + itemsPerLoad + "}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
@@ -757,6 +666,36 @@
             }
 
         });
+        function initsearch_condition() {
+            $("#picker_CUSTOMSSTATUS").picker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择海关状态</h1>\
+                      </header>',
+                cols: [
+                  {
+                      textAlign: 'center',
+                      values: ['全部', '未结关', '已结关']
+                  }
+                ]
+            });
+            $("#picker_MODIFYFLAG").picker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择删改单</h1>\
+                      </header>',
+                cols: [
+                  {
+                      textAlign: 'center',
+                      values: ['全部', '正常', '删单', '改单', '改单完成']
+                  }
+                ]
+            });
+
+            $("#txt_reptime_s").calendar({});
+            $("#txt_reptime_e").calendar({});
+
+        }
 
         function getname(key, value) {
             var str = "";
@@ -828,6 +767,36 @@
             <header class="bar bar-nav">
                 <div class="search-input">                 
                     <div class="row"> 
+                        <div class="col-25" style="width:25%;font-size:13px;margin-top:.8rem;">报关时间始/末:</div>
+                        <div class="col-33" style="width:30%;margin-left:0;"><input type="search" id='txt_reptime_s'/></div>
+                        <div class="col-33" style="width:30%;margin-left:0;"><input type="search" id='txt_reptime_e'/></div>
+                        <div class="col-10" style="width:10%;margin-left:0;margin-top:.2rem;">
+                            <input id="btn_more_m" type="button" value="..." class="open-tabs-modal" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;"  />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-50" style="width:46%;"><input type="search" id='txt_declcode' placeholder='报关单号'/></div>
+                        <div class="col-25" style="width:21%;margin-left:0;"><input type="search" id='picker_CUSTOMSSTATUS' placeholder='海关状态'/></div>
+                        <div class="col-25" style="width:21%;margin-left:0;"><input type="search" id='picker_MODIFYFLAG' placeholder='删改单'/></div>
+                        <div class="col-15" style="width:5%;margin-left:0;"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-25" style="width:21%;"><input id="btn_gridname_m" type="button" value="列名" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-60" style="width:54%;margin-left:0;"><input id="btn_search_m" type="button" value="查询" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-25" style="width:21%;margin-left:0;"><input id="btn_reset_m" type="button" value="重置" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                    </div> 
+                    <input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_ischeck'/><input type="hidden" id='txt_ispass'/>
+                    <input type="hidden" id='txt_busiunit'/>
+                    <input type="hidden" id='txt_ordercode'/> <input type="hidden" id='txt_cusno'/>  
+                    <input type="hidden" id='txt_tradeway'/> <input type="hidden" id='txt_contractno'/>  
+                    <input type="hidden" id='txt_blno'/>
+                    <input type="hidden" id='txt_submittime_s'/><input type="hidden" id='txt_submittime_e'/>
+                    <input type="hidden" id='txt_sitepasstime_s'/><input type="hidden" id='txt_sitepasstime_e'/>
+                </div>                            
+            </header>
+            <%--<header class="bar bar-nav">
+                <div class="search-input">                 
+                    <div class="row"> 
                         <div class="col-85"><input type="search" id='txt_declcode' placeholder='请输入18位或后9位报关单号...'/></div>
                         <div class="col-15"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
                     </div>
@@ -840,7 +809,7 @@
                 </div>  
                 <input type="hidden" id='txt_inout_type'/><input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/>  <input type="hidden" id='txt_customsstatus'/>                
                 <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>                           
-            </header>
+            </header>--%>
 
             <%--工具栏 --%>
             <nav class="bar bar-tab">

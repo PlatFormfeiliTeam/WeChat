@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
+    <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />    
+    <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
+
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
              margin:.2rem 0;
@@ -22,7 +25,10 @@
             top:0;
         }
         #page-infinite-scroll-bottom .bar-nav~.content{
-            top: 7rem;
+            top: 5.5rem;
+        }
+        #page-infinite-scroll-bottom .search-input input{
+            border-radius:0;font-size:13px;
         }
         #div_list .list-block{
             font-size:13px;
@@ -50,87 +56,50 @@
             right: 1%;
             margin-left: 0px;
             text-align: left;
-            top: 14%;
+            top: 3.2rem;
         } 
         .girdnamediv .modal-inner{
            padding:0px;
         }  
-         /************************************************ 查验图片*********************************/
-        /*.picdiv{
-            width: 98%;
-            left: 1%;
-            right: 1%;
-            margin-left: 0px;
-        }*/  
-        .picdiv .row .col-33{
-             /*margin-left: 0px;*/
-        } 
-
-        /************************************************ 更多查询*********************************/
-        .morediv{
-            width: 98%;
-            left: 1%;
-            right: 1%;
-            margin-left: 0px;
-        }        
-        .morediv .modal-inner{
-            height:11rem;
-        }
-
-        /* 更多查询 第一个ul 样式*/
-        .morediv .modal-inner .list-block:first-child ul:first-child li{
-          float:left; width:25%;
-        }
-        .morediv .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
-            width:.8rem;height:.8rem;
-        }
-        .morediv .modal-inner .list-block:first-child .item-text{
-            height:1.1rem;font-size:.62rem;
-        }
-        .morediv .modal-inner .list-block:first-child label{
-          padding-left:0px;
-        }
-        .morediv .modal-inner .list-block:first-child label .item-inner{
-           margin-left:.2rem;padding-right:2px;
-        }
+        
     </style>
 
     <script type="text/javascript">
         $(function () {
             //---------------------------------------------------------------------------------------------------------------列表名称
             function showGridName() {
-                var strname = '<div class="list-block" style="margin:0;font-size:12px;color:black;">'
+                var strname = '<div class="list-block" style="margin:0;font-size:small;">'
                             + '<ul>'
-                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
-                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
                                         + '<div class="item-title col-40">收发货人</div>'
                                         + '<div class="item-title col-25">业务类型</div>'
                                         + '<div class="item-title col-33">订单编号</div>'
                                     + '</div>'
                                 + '</li>'
-                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
-                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
                                         + '<div class="item-title col-40">总分单号</div>'
                                         + '<div class="item-title col-25">申报方式</div>'
                                         + '<div class="item-title col-33">企业编号</div>'
                                     + '</div>'
                                 + '</li>'
-                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
-                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
                                         + '<div class="item-title col-40">现场交接</div>'
                                         + '<div class="item-title col-25">件数/毛重</div>'
                                         + '<div class="item-title col-33">合同号</div>'
                                     + '</div>'
                                 + '</li>'
-                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
-                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;">'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
                                         + '<div class="item-title col-40">查验维护</div>'
                                         + '<div class="item-title col-25">查验/熏蒸</div>'
                                         + '<div class="item-title col-33">查验图片</div>'
                                     + '</div>'
                                 + '</li>'
-                                + '<li class="item-content" style="min-height:1.4rem;height:1.4rem;">'
-                                    + '<div class="item-inner row" style="min-height:1.4rem;height:1.4rem;border:2px solid #0894EC;">'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border:2px solid #0894EC;
                                         + '<div class="item-title col-40">现场放行</div>'
                                         + '<div class="item-title col-25">法检标志</div>'
                                         + '<div class="item-title col-33">通关单否</div>'
@@ -152,14 +121,41 @@
             }
 
             initsearch_condition();
+            initSerach_SiteInspection();
            
             var loading = false;
             var itemsPerLoad = 10;// 每次加载添加多少条目                
             var maxItems = 100;// 最多可加载的条目
             var lastIndex = 0;//$('.list-block').length;//.list-container li       
 
-            $(document).on('click', '.open-preloader-title', function () {
-                select(); showGridName();
+            $("#btn_gridname_m").click(function () {
+                showGridName();
+            });
+
+            $("#btn_search_m").click(function () {
+                select();
+            });
+            $("#btn_reset_m").click(function () {
+                $("#txt_inspsiteapplytime_s").val(""); $("#txt_inspsiteapplytime_e").val("");
+                $("#txt_inspsiteapplytime_s").calendar({}); $("#txt_inspsiteapplytime_e").calendar({});//否则之前选的那天  不能再次选中
+
+                $("#txt_inspcode").val(""); $("#txt_approvalcode").val("");
+                $("#picker_is_pass").picker("setValue", ["全部"]); $("#picker_ischeck").picker("setValue", ["全部"]);
+
+                $("#txt_busitype").val(""); $("#txt_lawflag").val(""); $("#txt_isneedclearance").val(""); $("#txt_isfumigation").val("");
+                $("#txt_modifyflag").val("");
+
+                $("#txt_busiunit").val(""); 
+                $("#txt_contractno").val(""); 
+                $("#txt_ordercode").val(""); 
+                $("#txt_cusno").val(""); 
+                $("#txt_divideno").val(""); 
+                $("#txt_customareacode").val(); 
+
+                $("#txt_submittime_s").val(""); 
+                $("#txt_submittime_e").val(""); 
+                $("#txt_sitepasstime_s").val("");
+                $("#txt_sitepasstime_e").val("");
             });
 
             function select() {
@@ -859,21 +855,18 @@
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
             function loaddata(itemsPerLoad, lastIndex) {
-
-                var chk_lawflag = $("input[name='checkbox_lawflag']").prop('checked') == true ? "1" : "0";
-                var chk_isneedclearance = $("input[name='checkbox_isneedclearance']").prop('checked') == true ? "1" : "0";
-                var chk_isfumigation = $("input[name='checkbox_isfumigation']").prop('checked') == true ? "1" : "0";
-
                 $.ajax({
                     type: "post", //要用post方式                 
                     url: "SiteInspectionList.aspx/BindList",//方法所在页面和方法名
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'inout_type':'" + $("#picker_inout_type").val() + "','issiterep':'" + $("#picker_is_siterep").val()
-                        + "','lawflag':'" + chk_lawflag + "','isneedclearance':'" + chk_isneedclearance + "','isfumigation':'" + chk_isfumigation
-                        + "','busitype':'" + $("#picker_busitype").val() + "','ispass':'" + $("#picker_is_pass").val() 
-                        + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
-                        + "','radiotype':'" + $("#txt_radio_type_hidden").val() + "','morecon':'" + $("#txt_morecon_hidden").val()
+                    data: "{'inspsiteapplytime_s':'" + $("#txt_inspsiteapplytime_s").val() + "','inspsiteapplytime_e':'" + $("#txt_inspsiteapplytime_e").val() + "','inspcode':'" + $("#txt_inspcode").val()
+                        + "','approvalcode':'" + $("#txt_approvalcode").val() + "','ispass':'" + $("#picker_is_pass").val() + "','ischeck':'" + $("#picker_ischeck").val()
+                        + "','busitype':\"" + $("#txt_busitype").val() + "\",'lawflag':'" + $("#txt_lawflag").val() + "','isneedclearance':'" + $("#txt_isneedclearance").val()
+                        + "','isfumigation':'" + $("#txt_isfumigation").val() + "','modifyflag':'" + $("#txt_modifyflag").val() + "','busiunit':'" + $("#txt_busiunit").val()
+                        + "','contractno':'" + $("#txt_contractno").val() + "','ordercode':'" + $("#txt_ordercode").val() + "','cusno':'" + $("#txt_cusno").val()
+                        + "','divideno':'" + $("#txt_divideno").val() + "','customareacode':'" + $("#txt_customareacode").val()+ "','submittime_s':'" + $("#txt_submittime_s").val()
+                        + "','submittime_e':'" + $("#txt_submittime_e").val() + "','sitepasstime_s':'" + $("#txt_sitepasstime_s").val() + "','sitepasstime_e':'" + $("#txt_sitepasstime_e").val()
                         + "','start':" + lastIndex + ",'itemsPerLoad':" + itemsPerLoad + "}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
@@ -1048,45 +1041,6 @@
         }
 
         function initsearch_condition() {
-            $("#picker_inout_type").picker({
-                toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择进出口</h1>\
-                      </header>',
-                cols: [
-                  {
-                      textAlign: 'center',
-                      values: ['全部', '进口', '出口']
-                  }
-                ]
-            });
-
-            $("#picker_is_siterep").picker({
-                toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择现场报检</h1>\
-                      </header>',
-                cols: [
-                  {
-                      textAlign: 'center',
-                      values: ['全部', '仅现场']
-                  }
-                ]
-            });
-
-            $("#picker_busitype").picker({
-                toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择业务类型</h1>\
-                      </header>',
-                cols: [
-                  {
-                      textAlign: 'center',
-                      values: ['全部', '空运', '海运', '陆运', '国内', '特殊区域']
-                  }
-                ]
-            });
-
             $("#picker_is_pass").picker({
                 toolbarTemplate: '<header class="bar bar-nav">\
                       <button class="button button-link pull-right close-picker">确定</button>\
@@ -1099,114 +1053,23 @@
                   }
                 ]
             });
-            $("#txt_startdate").calendar({});
-            $("#txt_enddate").calendar({});
 
-            $(document).on('click', '.open-tabs-modal', function () {
-                $.modal({
-                    title: '更多查询',
-                    text: '<div class="list-block" style="margin:0;">' +
-                              '<ul>' +
-                                '<li>' +
-                                    '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="报检单号" checked>' +
-                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                        '<div class="item-inner">' +
-                                            '<div class="item-text">报检单号</div>' +
-                                        '</div>' +
-                                    '</label>' +
-                                '</li>' +
-                                '<li>' +
-                                    '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="收发货人">' +
-                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                        '<div class="item-inner">' +
-                                            '<div class="item-text">收发货人</div>' +
-                                        '</div>' +
-                                    '</label>' +
-                                '</li>' +
-                                '<li>' +
-                                    '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="客户编号">' +
-                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                        '<div class="item-inner">' +
-                                            '<div class="item-text">客户编号</div>' +
-                                        '</div>' +
-                                    '</label>' +
-                                '</li>' +
-                                '<li>' +
-                                    '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="业务编号">' +
-                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                        '<div class="item-inner">' +
-                                            '<div class="item-text">业务编号</div>' +
-                                        '</div>' +
-                                    '</label>' +
-                                '</li>' +
-                            '</ul>' +
-                            '<ul>' +
-                                '<li style="float:left;width:25%;">' +
-                                    '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="通关单号">' +
-                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                        '<div class="item-inner">' +
-                                            '<div class="item-text">通关单号</div>' +
-                                        '</div>' +
-                                    '</label>' +
-                                '</li>' +
-                            '</ul>' +
-                        '</div>' +
-                        '<div class="list-block" style="margin:0;">' +
-                            '<input type="text" style="background:#fff;height:1.5rem;font-size:.62rem" id="txt_morecon" value="' + $("#txt_morecon_hidden").val() + '" />' +
-                            '<p id="p_morecon" style="font-size:.62rem;text-align:left;">注意：请输入报关单后9位或18位报关号</p>' +
-                        '</div>',
-                    buttons: [
-                     {
-                         text: '确认', bold: true,
-                         onClick: function () {
-                             $("#txt_radio_type_hidden").val($("input[name='radio_type']:checked").val());//单选类别
-                             $("#txt_morecon_hidden").val($("#txt_morecon").val());//文本框值
-                             //select();//暂时不要用，默认点查询按钮才查询
-                         }
-                     },
-                     {
-                         text: '取消', bold: true,
-                         onClick: function () { }
-                     },
-                     {
-                         text: '重置', bold: true,
-                         onClick: function () {
-                             $("#picker_inout_type").picker("setValue", ["全部"]); $("#picker_is_siterep").picker("setValue", ["仅现场"]);
-                             $("input[name='checkbox_lawflag']").prop('checked', false); $("input[name='checkbox_isneedclearance']").prop('checked', false);
-                             $("input[name='checkbox_isfumigation']").prop('checked', false);
-                             $("#picker_busitype").picker("setValue", ["全部"]); $("#picker_is_pass").picker("setValue", ["未放行"]);
-                             $("#txt_startdate").val(""); $("#txt_enddate").val("");
-                             $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
-
-                             //$("input[name='radio_type']").prop('checked', false); $("#txt_morecon").val("");//因每次窗口都是新开的，可以不用置空，置空隐藏值即可
-                             $("#txt_radio_type_hidden").val(""); $("#txt_morecon_hidden").val("");
-                         }
-                     }
-                    ],
-                    extraClass: 'morediv'//避免直接设置.modal的样式，从而影响其他toast的提示
-                });
-
-                $('input[name="radio_type"]').change(function (e) {
-                    var radio_type_checked = $("input[name='radio_type']:checked").val();
-                    if (radio_type_checked == "报检单号") { $("#p_morecon").text("注意：请输入报检单后7位或15位报检单号"); }
-                    if (radio_type_checked == "收发货人") { $("#p_morecon").text("注意：请输入4位以上连续名称"); }
-                    if (radio_type_checked == "客户编号") { $("#p_morecon").text("注意：请输入后5位以上的号码"); }
-                    if (radio_type_checked == "业务编号") { $("#p_morecon").text("注意：请输入后5位以上的编号"); }
-                    if (radio_type_checked == "通关单号") { $("#p_morecon").text("注意：请输入报检单后7位或15位报检单号"); }
-                });
-
-                //radio 初始化上次 点击 确认后 选中的值（文本框的默认值上面直接绑定在value上了）
-                if ($("#txt_radio_type_hidden").val() != "") {
-                    $('input[name="radio_type"][value="' + $("#txt_radio_type_hidden").val() + '"]').prop("checked", true);
-                    $('input[name="radio_type"]').trigger('change');//触发change事件
-                }
-
+            $("#picker_ischeck").picker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择查验情况</h1>\
+                      </header>',
+                cols: [
+                  {
+                      textAlign: 'center',
+                      values: ['全部', '查验', '未查验']
+                  }
+                ]
             });
+
+
+            $("#txt_inspsiteapplytime_s").calendar({});
+            $("#txt_inspsiteapplytime_e").calendar({});
         }
 
         function getNowDate() {
@@ -1231,59 +1094,37 @@
     <div class="page-group">
         <div id="page-infinite-scroll-bottom" class="page page-current">
             <%--search --%>
-            <header class="bar bar-nav" style="height:7rem;"> <%--style="height:7rem;"--%><%--就是查询背景色第二行--%>
+            <header class="bar bar-nav" style="height:5.1rem;">
                 <div class="search-input">                    
                     <div class="row"> 
-                        <div class="col-25"><input type="search" id='picker_inout_type' placeholder='进出口'/></div> <%--value="全部"--%>
-                        <div class="col-25"><input type="search" id='picker_is_siterep' placeholder='现场报检'/></div><%--value="仅现场"--%>
-                        <div class="col-25"><input type="search" id='picker_busitype' placeholder='业务类型'/></div> <%--value="全部"--%>
-                        <div class="col-25"><input type="search" id='picker_is_pass' placeholder='放行情况'/></div> <%--value="未放行"--%>                        
+                        <div class="col-33" style="width:33%;font-size:13px;margin-top:.8rem;">现场报检时间始/末:</div>
+                        <div class="col-33" style="width:26%;margin-left:0;"><input type="search" id='txt_inspsiteapplytime_s'/></div>
+                        <div class="col-33" style="width:26%;margin-left:0;"><input type="search" id='txt_inspsiteapplytime_e'/></div>
+                        <div class="col-10" style="width:10%;margin-left:0;margin-top:.2rem;">
+                            <input id="btn_more_m" type="button" value="..." class="open-tabs-modal" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;"  />
+                        </div>
                     </div>
                     <div class="row">
-                       <div class="col-100">
-                            <div class="list-block" style="margin:0;">
-                                <ul>
-                                    <li style="float:left; width:33%;">
-                                        <label class="label-checkbox item-content" style="padding-left:0px;min-height:0rem;">
-                                            <input type="checkbox" name="checkbox_lawflag" value="法检">
-                                            <div class="item-media" style="padding-top:.8rem;padding-bottom:0rem;"><i class="icon icon-form-checkbox"></i></div>
-                                            <div class="item-inner" style="margin-left:.5rem;padding-right:0px;padding-top:0rem;padding-bottom:0rem;min-height:0rem;">
-                                                <div class="item-text" style="height:1.3rem;">法检</div>
-                                            </div>
-                                        </label>
-                                    </li>
-                                    <li style="float:left; width:34%;">
-                                        <label class="label-checkbox item-content" style="padding-left:0px;min-height:0rem;">
-                                            <input type="checkbox" name="checkbox_isneedclearance" value="通关单">
-                                            <div class="item-media" style="padding-top:.8rem;padding-bottom:0rem;"><i class="icon icon-form-checkbox"></i></div>
-                                            <div class="item-inner" style="margin-left:.5rem;padding-right:0px;padding-top:0rem;padding-bottom:0rem;min-height:0rem;">
-                                                <div class="item-text" style="height:1.3rem;">通关单</div>
-                                           </div>
-                                        </label>
-                                   </li>
-                                    <li style="float:left; width:33%;">
-                                        <label class="label-checkbox item-content" style="padding-left:0px;min-height:0rem;">
-                                            <input type="checkbox" name="checkbox_isfumigation" value="熏蒸">
-                                            <div class="item-media" style="padding-top:.8rem;padding-bottom:0rem;"><i class="icon icon-form-checkbox"></i></div>
-                                            <div class="item-inner" style="margin-left:.5rem;padding-right:0px;padding-top:0rem;padding-bottom:0rem;min-height:0rem;">
-                                                <div class="item-text" style="height:1.3rem;">熏蒸</div>
-                                           </div>
-                                        </label>
-                                   </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>        
+                        <div class="col-50" style="width:46%;"><input type="search" id='txt_inspcode' placeholder='报检单号'/></div>
+                        <div class="col-20" style="width:19%;margin-left:0;"><input type="search" id='txt_approvalcode' placeholder='流水号'/></div>
+                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_is_pass' placeholder='放行'/></div>
+                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_ischeck' placeholder='查验'/></div>
+                    </div> 
                     <div class="row">
-                        <div class="col-40"><input type="search" id='txt_startdate' placeholder='委托起始日期'/></div>
-                        <div class="col-5">~</div>
-                        <div class="col-40"><input type="search" id='txt_enddate' placeholder='委托结束日期'/></div>
-                        <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
-                    </div>  
-                                
-                </div>  
-                <input type="hidden" id='txt_radio_type_hidden'/><input type="hidden" id='txt_morecon_hidden'/>              
-                <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>   
+                        <div class="col-25" style="width:21%;"><input id="btn_gridname_m" type="button" value="列名" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-60" style="width:54%;margin-left:0;"><input id="btn_search_m" type="button" value="查询" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-25" style="width:21%;margin-left:0;"><input id="btn_reset_m" type="button" value="重置" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                    </div> 
+                    <input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_lawflag'/><input type="hidden" id='txt_isneedclearance'/><input type="hidden" id='txt_isfumigation'/>
+                    <input type="hidden" id='txt_modifyflag'/>
+
+                    <input type="hidden" id='txt_busiunit'/><input type="hidden" id='txt_contractno'/>
+                    <input type="hidden" id='txt_ordercode'/> <input type="hidden" id='txt_cusno'/>  
+                    <input type="hidden" id='txt_divideno'/> <input type="hidden" id='txt_customareacode'/>
+
+                    <input type="hidden" id='txt_submittime_s'/><input type="hidden" id='txt_submittime_e'/>
+                    <input type="hidden" id='txt_sitepasstime_s'/><input type="hidden" id='txt_sitepasstime_e'/>                                    
+                </div>                 
             </header>
 
             <%--工具栏 --%>
