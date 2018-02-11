@@ -171,8 +171,8 @@
             });
 
             $("#btn_reset_m").click(function () {
-                $("#txt_reptime_s").val(""); $("#txt_reptime_s").val("");
-                $("#txt_reptime_s").calendar({}); $("#txt_reptime_s").calendar({});//否则之前选的那天  不能再次选中
+                $("#txt_reptime_s").val(""); $("#txt_reptime_e").val("");
+                $("#txt_reptime_s").calendar({}); $("#txt_reptime_e").calendar({});//否则之前选的那天  不能再次选中
 
                 $("#txt_declcode").val("");
                 $("#picker_CUSTOMSSTATUS").picker("setValue", ["全部"]); $("#picker_MODIFYFLAG").picker("setValue", ["全部"]);
