@@ -34,8 +34,8 @@ namespace WeChat.ModelBusi
                 }
                 if (!string.IsNullOrEmpty(ischeck))
                 {
-                    if (ispass == "查验") { where += " and ort.ischeck=1"; }
-                    if (ispass == "未查验") { where += " and ort.ischeck=0"; }
+                    if (ischeck == "查验") { where += " and ort.ischeck=1"; }
+                    if (ischeck == "未查验") { where += " and ort.ischeck=0"; }
                 }
 
                 if (!string.IsNullOrEmpty(busitype)) { where += " and ort.busitype in (" + busitype + ")"; }
