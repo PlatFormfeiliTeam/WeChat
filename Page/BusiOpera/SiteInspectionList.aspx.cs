@@ -19,7 +19,7 @@ namespace WeChat.Page.BusiOpera
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            /*WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+            WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
             if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
             {//授权成功
                 LogHelper.Write("第9步：" + userInfo.OpenID);
@@ -43,7 +43,7 @@ namespace WeChat.Page.BusiOpera
             else
             {//获取授权失败，也跳转至登录页面
                 System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SiteDeclareList");
-            }*/
+            }
         }
 
         //微信接口js-sdk config
