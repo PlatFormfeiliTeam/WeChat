@@ -64,8 +64,8 @@
       </div>
       <div class="content-block">
         <div class="row">
-          <div class="col-50"><a href="javascript:cancle()" class="button button-big button-fill button-danger">取消</a></div>
-          <div class="col-50"><a href="javascript:login()" class="button button-big button-fill button-success">提交</a></div>
+          <div class="col-50"><a href="javascript:cancle()" class="button button-big button-fill" style="background-color: gray">取消</a></div>
+          <div class="col-50"><a href="javascript:login()" class="button button-big button-fill" style="background-color: #3d4145;">提交</a></div>
         </div>
       </div>
     </div>
