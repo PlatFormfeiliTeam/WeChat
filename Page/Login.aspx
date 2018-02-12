@@ -25,7 +25,7 @@
               <div class="item-inner">
                 <div class="item-title label">姓名</div>
                 <div class="item-input">
-                  <input id="name" type="text" /><%-- placeholder="Your name"--%>
+                  <input id="name" type="text" placeholder="请输入姓名" />
                 </div>
               </div>
             </div>
@@ -36,7 +36,7 @@
               <div class="item-inner">
                 <div class="item-title label">密码</div>
                 <div class="item-input">
-                  <input id="pwd" type="password" class="" /> <%--placeholder="Password"--%>
+                  <input id="pwd" type="password" placeholder="请输入密码" class="" />
                 </div>
               </div>
             </div>
@@ -47,7 +47,7 @@
               <div class="item-inner">
                 <div class="item-title label">客商</div>
                 <div class="item-input">
-                  <input id="customer" type="text" /> <%--placeholder="Your Customer"--%>
+                  <input id="customer" type="text" placeholder="请输入客商代码" />
                 </div>
               </div>
             </div>
