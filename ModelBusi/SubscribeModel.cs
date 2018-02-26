@@ -151,7 +151,7 @@ namespace WeChat.ModelBusi
                     {
                         strWhere += " subws.TRIGGERSTATUS=0 and";
                     }
-                    if (userId >= 0)
+                    if (userId > 0)
                     {
                         strWhere += " subws.userid=" + userId + " and ";
                     }
@@ -188,7 +188,7 @@ namespace WeChat.ModelBusi
                 {
                     string strWhere = " subws.codetype=3 and (subws.TRIGGERSTATUS=0 or subws.TRIGGERSTATUS=1) and  ";
                     
-                    if (userId >= 0)
+                    if (userId > 0)
                     {
                         strWhere += " subws.userid=" + userId + " and ";
                     }
@@ -347,6 +347,11 @@ namespace WeChat.ModelBusi
             }
         }
 
+
+        public static bool deleteSubscribe(string cusno)
+        {
+            return true;
+        }
     }
 
 }

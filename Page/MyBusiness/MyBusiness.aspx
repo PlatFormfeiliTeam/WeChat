@@ -38,15 +38,7 @@
             border:0;
             vertical-align:middle;
             padding-top: 0.1rem;
-        }
-        input
-        {
-            /*font-family:"微软雅黑";*/
-            /*width:6rem;*/
-            /*height: 1.5rem;*/
-            /*border: none;*/
-            /*border-radius: .15rem;*/
-            /*font-size: .8rem;*/
+            text-align:center;
         }
         .row
         {
@@ -124,6 +116,9 @@
         {
             line-height:2rem;
             padding-left:4%;
+        }
+        .modal-inner {
+            padding: 0.25rem;
         }
         /*----------------------------*/
         #page-infinite-scroll-bottom .search-input input{
@@ -388,7 +383,7 @@
                         data: "{'code':'" + ordercode + "'}",
                         cache: false,
                         async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
-                        success: function(data) {
+                        success: function (data) {
                             var obj = eval("(" + data.d + ")");
                             console.log(obj);
                             //1、报关信息
@@ -871,7 +866,7 @@
         function showFile()
         {
             $.modal({
-                title: '查验图片',
+                title: '文件',
                 text: '<div class="content-block row">' +
                             '<div class="col-33"><a href="#" id="picfilecancel" class="button">返回</div>' +
                             '<div class="col-33"><a href="#" id="declpdf" class="button">报关单</div>' +
@@ -978,7 +973,7 @@
         //订阅清单
         function subscribeInfo()
         {
-            window.location.href = "BusiSubscribeInfo.aspx?userid=132qa";
+            window.location.href = "BusiSubscribeInfo.aspx";
         }
 
         //显示列名
@@ -1211,8 +1206,8 @@
                     </div>
                 </div>
             <div class="row" style="background-color:white;margin-top:1rem">
-                <div class="col-50"><a href="javascript:subscribe('报关状态')" class="button">确  认</a></div>
                 <div class="col-50"><a href="#" class="close-popup button" id="backto_decl">返  回</a></div>
+                <div class="col-50"><a href="javascript:subscribe('报关状态')" class="button">确  认</a></div>
             </div>
         </div>
     </div>
@@ -1277,8 +1272,8 @@
             </div>
           </div>
             <div class="row" style="background-color:white;margin-top:1rem">
-                <div class="col-50"><a href="javascript:subscribe('订单状态')" class="button">确  认</a></div>
                 <div class="col-50"><a href="#" class="close-popup button" id="backto_log">返  回</a></div>
+                <div class="col-50"><a href="javascript:subscribe('订单状态')" class="button">确  认</a></div>
             </div>
         </div>
     </div>   

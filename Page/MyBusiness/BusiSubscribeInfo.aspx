@@ -35,9 +35,9 @@
             height: 5rem;
         }
 
-            .bar-nav ~ .content {
-                top: 5rem;
-            }
+        .bar-nav ~ .content {
+            top: 5rem;
+        }
 
         .list-block {
             margin: 0.25rem 0;
@@ -93,9 +93,7 @@
             //----------------------------------------------------------------------------------------------------------------查询条件
             $("#txt_startdate").calendar({});
             $("#txt_enddate").calendar({});
-            //showGridName();
             $('.infinite-scroll-preloader').hide();
-            
 
             //无限滚动 注册'infinite'事件处理函数
             $(document).on('infinite', "#pageone", function () {
@@ -139,7 +137,6 @@
         })
         function queryData()
         {
-            //GetRequest();
             //查询
             $("#subcontent").html("");
             $.showPreloader('加载中...');
@@ -162,11 +159,7 @@
                 $.hidePreloader();
             }, 500);
         }
-        //function GetRequest() {
-        //    var url = location.search; //获取url中"?"符后的字串  
-        //    var userid = url.substr(url.indexOf("=") + 1);
-        //    alert(userid);
-        //}
+        
         function loadData(pagesize, lastnum) {
             $.ajax({
                 url: 'BusiSubscribeInfo.aspx/QuerySubscribeInfo',
@@ -188,12 +181,14 @@
                     "}",
                 cache: false,
                 async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
-                success: function(data) {
+                success: function (data) {
+                    if (data.d == null || data.d == "")
+                        return;
                     var obj = eval("(" + data.d + ")"); //将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
                         var obj = eval("(" + data.d + ")"); //将字符串转为json
                         var str = '<div class="list-block" id="' +
-                            obj[i]["CODE"] +
+                            obj[i]["CUSNO"] +
                             '">' +
                             '<ul>' +
                             '<li class="item-content">' +
@@ -245,9 +240,7 @@
                             '<div class="my-after">' +
                             (obj[i]["SUBSTATUS"] == null ? "" : obj[i]["SUBSTATUS"]) +
                             '</div>' +
-                            '<div class="my-after">' +
-                            (obj[i]["LOGISTICSNAME"] == null ? "" : obj[i]["LOGISTICSNAME"]) +
-                            '</div>' +
+                            '<div class="my-after" style="color:blue;cursor:pointer;" onclick="delSubscribeInfo(' + obj[i]["CUSNO"] + ')">删除</div>' +
                             '</div>' +
                             '</li>' +
                             '</ul>' +
@@ -258,6 +251,29 @@
             });
         }
         
+        function delSubscribeInfo(cusno)
+        {
+            $.ajax({
+                url: "BusiSubscribeInfo.aspx/DeleteSubscribeInfo",
+                contentType: "application/json; charset=utf-8",
+                type:"post",
+                data:"{'cusno':'" + cusno + "'}",
+                dataType: "json",
+                cache: false,
+                async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
+                success:function(data)
+                {
+                    if (data.d == true)
+                    {
+                        $.toast("删除成功");
+                        queryData();
+                    }
+                    else {
+                        $.toast("删除失败");
+                    }
+                }
+            })
+        }
     </script>
 </head>
 <body>

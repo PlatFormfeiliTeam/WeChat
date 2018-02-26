@@ -28,6 +28,7 @@ namespace WeChat.Page.MyBusiness
             if (user == null || user.GwyUserID <= 0)
                 return "";
             DataTable infodt = SubscribeModel.getSubscribeInfo_Decl(user.GwyUserID);
+            //DataTable infodt = SubscribeModel.getSubscribeInfo_Decl(0);
             if (infodt == null || infodt.Rows.Count == 0)
                 return "";
             DataTable resultdt=infodt.Clone();
@@ -64,6 +65,10 @@ namespace WeChat.Page.MyBusiness
             
         }
 
-       
+        [WebMethod]
+        public static bool DeleteSubscribeInfo(string cusno)
+        {
+            return SubscribeModel.deleteSubscribe(cusno);
+        }
     }
 }
