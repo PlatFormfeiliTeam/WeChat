@@ -162,11 +162,11 @@
                 $.hidePreloader();
             }, 500);
         }
-        function GetRequest() {
-            var url = location.search; //获取url中"?"符后的字串  
-            var userid = url.substr(url.indexOf("=") + 1);
-            alert(userid);
-        }
+        //function GetRequest() {
+        //    var url = location.search; //获取url中"?"符后的字串  
+        //    var userid = url.substr(url.indexOf("=") + 1);
+        //    alert(userid);
+        //}
         function loadData(pagesize, lastnum) {
             $.ajax({
                 url: 'BusiSubscribeInfo.aspx/QuerySubscribeInfo',

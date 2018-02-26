@@ -19,8 +19,8 @@ namespace WeChat.Page.MyBusiness
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string id = Request["userid"].ToString();
-            Console.WriteLine("id:" + id);
+            //string id = Request["userid"].ToString();
+            //Console.WriteLine("id:" + id);
         }
         [WebMethod]
         public static string QuerySubscribeInfo()
