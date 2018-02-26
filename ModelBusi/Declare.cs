@@ -50,7 +50,7 @@ namespace WeChat.ModelBusi
                 if (!string.IsNullOrEmpty(sitepasstime_s)) { where += " and ort.sitepasstime>=to_date('" + sitepasstime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
                 if (!string.IsNullOrEmpty(sitepasstime_e)) { where += " and ort.sitepasstime<=to_date('" + sitepasstime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
 
-                where += " ort.receiverunitcode='" + customercode + "'";
+                where += " and ort.receiverunitcode='" + customercode + "'";
 
                 string tempsql = @"select det.code,det.modifyflag,det.CUSTOMSSTATUS
                                     ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,lda.reptime
