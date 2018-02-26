@@ -19,30 +19,35 @@ namespace WeChat.Page.MyBusiness
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
-            if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
-            {//授权成功
-                LogHelper.Write("第9步：" + userInfo.OpenID);
-                WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
-                if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
-                {//账号未关联，跳转至登录界面
-                    LogHelper.Write("第10步：" + userInfo.OpenID);
-                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SubscribeList_decl");
-                }
-                else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
-                {//不是接单单位，无此权限
-                    LogHelper.Write("第11步：" + userInfo.OpenID);
-                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SubscribeList_decl");
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            //如果当前用户未登陆，先获取授权
+            if (user == null)
+            {
+                WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+                if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
+                {//授权成功
+                    LogHelper.Write("第9步：" + userInfo.OpenID);
+                    WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
+                    if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
+                    {//账号未关联，跳转至登录界面
+                        LogHelper.Write("第10步：" + userInfo.OpenID);
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SubscribeList_decl");
+                    }
+                    else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
+                    {//不是接单单位，无此权限
+                        LogHelper.Write("第11步：" + userInfo.OpenID);
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SubscribeList_decl");
+                    }
+                    else
+                    {//不需登录，保存当前用户
+                        HttpContext.Current.Session["user"] = wuser;
+                    }
+                    LogHelper.Write("第12步：" + wuser.WCOpenID);
                 }
                 else
-                {//不需登录，保存当前用户
-                    HttpContext.Current.Session["user"] = wuser;
+                {//获取授权失败，也跳转至登录页面
+                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SubscribeList_decl");
                 }
-                LogHelper.Write("第12步：" + wuser.WCOpenID);
-            }
-            else
-            {//获取授权失败，也跳转至登录页面
-                System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SubscribeList_decl");
             }
         }
         [WebMethod]
