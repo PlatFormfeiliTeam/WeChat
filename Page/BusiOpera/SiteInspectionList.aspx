@@ -65,7 +65,31 @@
     </style>
 
     <script type="text/javascript">
+        var v_userid = "", v_username = "";// var v_userid = "763", v_username = "昆山吉时报关有限公司";
+
         $(function () {
+            //---------------------------------------------------------------------------------------------------------------获取当前登录人及姓名
+            $.ajax({
+                type: "post", //要用post方式                 
+                url: "SiteInspectionList.aspx/getcuruser",//方法所在页面和方法名
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: "{}",
+                cache: false,
+                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                success: function (data) {
+                    var obj = eval("(" + data.d + ")");
+                    if (obj.length == 1) {
+                        v_userid = obj[0]["USERID"]; v_username = obj[0]["USERNAME"];
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                    //alert(XMLHttpRequest.status);
+                    //alert(XMLHttpRequest.readyState);
+                    //alert(textStatus);
+                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                }
+            });
             //---------------------------------------------------------------------------------------------------------------列表名称
             function showGridName() {
                 var strname = '<div class="list-block" style="margin:0;font-size:small;">'
@@ -657,8 +681,8 @@
                 $("#txt_inspchecktime").click(function () {
                     if ($("#txt_inspchecktime").val() == "") {
                         $("#txt_inspchecktime").val(getNowDate());//当前时间
-                        $("#txt_inspcheckid").val("763");//当前登录人id
-                        $("#txt_inspcheckname").val("昆山吉时报关有限公司");//当前登录人name
+                        $("#txt_inspcheckid").val(v_userid);//当前登录人id
+                        $("#txt_inspcheckname").val(v_username);//当前登录人name
                     } else {
                         $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
                         function () {//OK事件
@@ -673,8 +697,8 @@
                 $("#txt_fumigationtime").click(function () {
                     if ($("#txt_fumigationtime").val() == "") {
                         $("#txt_fumigationtime").val(getNowDate());
-                        $("#txt_fumigationid").val("763");//当前登录人id
-                        $("#txt_fumigationname").val("昆山吉时报关有限公司");//当前登录人name
+                        $("#txt_fumigationid").val(v_userid);//当前登录人id
+                        $("#txt_fumigationname").val(v_username);//当前登录人name
                     } else {
                         $.confirm('请确认是否需要<font color=blue>撤销熏蒸</font>?',
                         function () {//OK事件

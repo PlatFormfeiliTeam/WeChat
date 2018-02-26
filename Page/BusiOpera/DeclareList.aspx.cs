@@ -63,12 +63,17 @@ namespace WeChat.Page.BusiOpera
             , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
             , int start, int itemsPerLoad)
         {
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             DataTable dt = Declare.getDeclareInfo(reptime_s, reptime_e, declcode, customsstatus, getcode("modifyflag", modifyflag), busitype, ischeck
                 , ischeck, busiunit, ordercode, cusno, tradeway, contractno, blno
                 , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
-                , start, itemsPerLoad);
+                , start, itemsPerLoad, user.CustomerCode);
             var json = JsonConvert.SerializeObject(dt, iso);
             return json;
         }

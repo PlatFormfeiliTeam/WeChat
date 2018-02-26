@@ -53,6 +53,17 @@ namespace WeChat.Page.BusiOpera
             return ModelWeChat.SignatureModel.getSignature(url);
         }
 
+        [WebMethod]
+        public static string getcuruser()
+        {
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+            return "[{\"USERID\":" + user.GwyUserID + ",\"USERCODE\":'" + user.GwyUserCode + "',\"USERNAME\":'" + user.GwyUserName + "',\"CUSTOMERCODE\":'" + user.CustomerCode + "'}]";
+        }
+
         //查询绑定
         [WebMethod]
         public static string BindList(string inspsiteapplytime_s, string inspsiteapplytime_e, string inspcode, string approvalcode, string ispass, string ischeck, string busitype
@@ -60,12 +71,17 @@ namespace WeChat.Page.BusiOpera
             , string customareacode, string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
             , int start, int itemsPerLoad)
         {
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             DataTable dt = SiteInspection.getSiteInspectionInfo(inspsiteapplytime_s, inspsiteapplytime_e, inspcode, approvalcode, ispass, ischeck, busitype
                     , lawflag, isneedclearance, isfumigation, getcode("modifyflag", modifyflag), busiunit, contractno, ordercode, cusno, divideno
                     , customareacode, submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
-                    , start, itemsPerLoad);
+                    , start, itemsPerLoad, user.CustomerCode);
             var json = JsonConvert.SerializeObject(dt, iso);
             return json;
         }

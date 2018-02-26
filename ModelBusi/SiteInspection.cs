@@ -16,7 +16,7 @@ namespace WeChat.ModelBusi
         public static DataTable getSiteInspectionInfo(string inspsiteapplytime_s, string inspsiteapplytime_e, string inspcode, string approvalcode, string ispass, string ischeck, string busitype
             , string lawflag, string isneedclearance, string isfumigation, string modifyflag, string busiunit, string contractno, string ordercode, string cusno, string divideno
             , string customareacode, string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
-            , int start, int itemsPerLoad)
+            , int start, int itemsPerLoad, string customercode)
         {
             using (DBSession db = new DBSession())
             {
@@ -53,7 +53,9 @@ namespace WeChat.ModelBusi
                 if (!string.IsNullOrEmpty(submittime_s)) { where += " and ort.submittime>=to_date('" + submittime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
                 if (!string.IsNullOrEmpty(submittime_e)) { where += " and ort.submittime<=to_date('" + submittime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
                 if (!string.IsNullOrEmpty(sitepasstime_s)) { where += " and ort.inspsitepasstime>=to_date('" + sitepasstime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
-                if (!string.IsNullOrEmpty(sitepasstime_e)) { where += " and ort.inspsitepasstime<=to_date('" + sitepasstime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }       
+                if (!string.IsNullOrEmpty(sitepasstime_e)) { where += " and ort.inspsitepasstime<=to_date('" + sitepasstime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+
+                where += " ort.receiverunitcode='" + customercode + "'";
 
                 string tempsql = @"select ort.busiunitname,ort.busitype,ort.code
                                     ,ort.totalno,ort.divideno,ort.secondladingbillno,ort.landladingno,ort.associatepedeclno,ort.repwayid

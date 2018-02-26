@@ -102,8 +102,6 @@
     </style>
 
     <script type="text/javascript">
-        var userid = "763", username = "昆山吉时报关有限公司", openid = "ohNOmwZOt0tNr9WN7s1i7dHqOQnU";
-
         $(function () {
             //---------------------------------------------------------------------------------------------------------------列表名称
             function showGridName() {
@@ -586,8 +584,7 @@
                     url: '/Page/MyBusiness/MyBusiness.aspx/SubscribeStatus',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'type':'报关状态','status':'" + status + "','cusno':'" + cusno + "','declarationcode':'" + declcode +
-                        "','userid':'" + userid + "','username':'" + username + "','openid':'" + openid + "'}",
+                    data: "{'type':'报关状态','status':'" + status + "','cusno':'" + cusno + "','declarationcode':'" + declcode + "'}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {

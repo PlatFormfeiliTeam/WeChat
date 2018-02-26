@@ -13,7 +13,7 @@ namespace WeChat.ModelBusi
         public static DataTable getDeclareInfo(string reptime_s, string reptime_e, string declcode, string customsstatus, string modifyflag, string busitype, string ischeck
             , string ispass, string busiunit, string ordercode, string cusno, string tradeway, string contractno, string blno
             , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
-            , int start, int itemsPerLoad)
+            , int start, int itemsPerLoad, string customercode)
         {
             using (DBSession db = new DBSession())
             {
@@ -35,8 +35,8 @@ namespace WeChat.ModelBusi
                 }
                 if (!string.IsNullOrEmpty(ispass))
                 {
-                    if (ispass == "放行") { where += " and ort.declstatus=160" + (int)DeclStatusEnum.SitePass; }
-                    if (ispass == "未放行") { where += " and ort.declstatus<160" + (int)DeclStatusEnum.SitePass; }
+                    if (ispass == "放行") { where += " and ort.declstatus=" + (int)DeclStatusEnum.SitePass; }
+                    if (ispass == "未放行") { where += " and ort.declstatus<" + (int)DeclStatusEnum.SitePass; }
                 }
                 if (!string.IsNullOrEmpty(busiunit)) { where += " and (lda.BUSIUNITCODE like '%" + busiunit + "%' or lda.BUSIUNITNAME like '%" + busiunit + "%')"; }
                 if (!string.IsNullOrEmpty(ordercode)) { where += " and det.ORDERCODE like '%" + ordercode + "%'"; }
@@ -48,8 +48,10 @@ namespace WeChat.ModelBusi
                 if (!string.IsNullOrEmpty(submittime_s)) { where += " and ort.submittime>=to_date('" + submittime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
                 if (!string.IsNullOrEmpty(submittime_e)) { where += " and ort.submittime<=to_date('" + submittime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
                 if (!string.IsNullOrEmpty(sitepasstime_s)) { where += " and ort.sitepasstime>=to_date('" + sitepasstime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
-                if (!string.IsNullOrEmpty(sitepasstime_e)) { where += " and ort.sitepasstime<=to_date('" + sitepasstime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }               
-                
+                if (!string.IsNullOrEmpty(sitepasstime_e)) { where += " and ort.sitepasstime<=to_date('" + sitepasstime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+
+                where += " ort.receiverunitcode='" + customercode + "'";
+
                 string tempsql = @"select det.code,det.modifyflag,det.CUSTOMSSTATUS
                                     ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,lda.reptime
                                     ,lda.GOODSNUM,lda.GOODSGW
