@@ -68,20 +68,22 @@ namespace WeChat.Page.MyBusiness
         /// <param name="lastindex"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string QueryData(string declstatus,string inspstatus,string inout,string busitype,string customs,string sitedeclare,string logisticsstatus,
-            string starttime, string endtime, int itemsperload, int lastindex)
+        public static string QueryData(string submittimestart, string submittimeend, string declarationcode, string customarea, string ispass, string ischeck, string busitype,
+            string modifyflag, string auditflag, string ordercode, string cusno, string divideno, string contractno, string passtimestart, string passtimeend,
+            int itemsperload, int lastindex)
         {
             WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
-            if (user != null || string.IsNullOrEmpty(user.CustomerCode))
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
                 return "";
-            ListOrderModel orderModel = new ListOrderModel();
             string customerCode = user.CustomerCode;
             string hsCode = user.HSCode;
             if (user.IsCompany != 1)//如果不是企业角色，不能查出其对应经营单位的订单
                 hsCode = "";
             if (user.IsCustomer != 1)//如果不是委托单位角色，不能查出其对应委托单位的订单
                 customerCode = "";
-            DataTable dt = orderModel.getOrder(declstatus, inspstatus, inout, busitype, customs, sitedeclare, logisticsstatus, starttime, endtime, itemsperload, lastindex, customerCode, hsCode);
+            ListOrderModel orderModel = new ListOrderModel();
+            DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, ordercode,
+                cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, customerCode, hsCode);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             try
             {
@@ -98,11 +100,11 @@ namespace WeChat.Page.MyBusiness
                     if (string.IsNullOrEmpty(dr["contractno"].ToString2())) dr["contractno"] = "";
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 LogHelper.Write("MyBusiness_QueryData:" + e.Message);
             }
-           
+
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             string json = JsonConvert.SerializeObject(dt, iso);
             return json;

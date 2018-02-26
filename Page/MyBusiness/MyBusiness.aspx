@@ -11,10 +11,11 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css" />
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css" />
-    <%--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
+    <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />  
+    <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
     <style type="text/css">
         #scroll-bottom-one {
-            top: 7.8rem;
+            top: 5rem;
         }
          .bar input[type=search]{
              margin:.1rem 0;
@@ -40,12 +41,12 @@
         }
         input
         {
-            font-family:"微软雅黑";
-            width:6rem;
-            height: 1.5rem;
-            border: none;
-            border-radius: .15rem;
-            font-size: .8rem;
+            /*font-family:"微软雅黑";*/
+            /*width:6rem;*/
+            /*height: 1.5rem;*/
+            /*border: none;*/
+            /*border-radius: .15rem;*/
+            /*font-size: .8rem;*/
         }
         .row
         {
@@ -124,6 +125,11 @@
             line-height:2rem;
             padding-left:4%;
         }
+        /*----------------------------*/
+        #page-infinite-scroll-bottom .search-input input{
+            border-radius:0;font-size:13px;
+        }
+        
     </style>
 
     <script type="text/javascript">
@@ -143,15 +149,21 @@
                 url: "MyBusiness.aspx/QueryData",//通过static+[webmethod],直接访问指定的方法
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: "{'declstatus':'" + $("#picker_declstatus").val() +
-                        "','inspstatus':'" + $("#picker_inspstatus").val() +
-                        "','inout':'" + $("#picker_inout").val() +
-                        "','busitype':'" + $("#picker_busitype").val() +
-                        "','customs':'" + $("#picker_customs").val() +
-                        "','sitedeclare':'" + $("#picker_sitedeclare").val() +
-                        "','logisticsstatus':'" + $("#picker_logisticsstatus").val() +
-                        "','starttime':'" + $("#txt_startdate").val() +
-                        "','endtime':'" + $("#txt_enddate").val() +
+                data: "{'submittimestart':'" + $("#txt_submittime_s").val() +
+                        "','submittimeend':'" + $("#txt_submittime_e").val() +
+                        "','declarationcode':'" + $("#txt_declcode").val() +
+                        "','customarea':'" + $("#txt_customareacode").val() +
+                        "','ispass':'" + $("#picker_is_pass").val() +
+                        "','ischeck':'" + $("#picker_ischeck").val() +
+                        "','busitype':\"" + $("#txt_busitype").val() +
+                        "\",'modifyflag':'" + $("#txt_modifyflag").val() +
+                        "','auditflag':'" + $("#txt_auditflag").val() +
+                        "','ordercode':'" + $("#txt_ordercode").val() +
+                        "','cusno':'" + $("#txt_cusno").val() +
+                        "','divideno':'" + $("#txt_divideno").val() +
+                        "','contractno':'" + $("#txt_contractno").val() +
+                        "','passtimestart':'" + $("#txt_sitepasstime_s").val() +
+                        "','passtimeend':'" + $("#txt_sitepasstime_e").val() +
                         "','itemsperload':" + itemsPerLoad +
                         ",'lastindex':" + lastIndex + "}",
                 cache: false,
@@ -207,9 +219,36 @@
         //查询
         $(function() {
             $('.infinite-scroll-preloader').hide();
-            //FastClick.attach(document.body);
+            //初始化查询条件
+            initsearch_condition();
+            //初始化高级查询
+            initSerach_MyOrder();
+            //列名
+            $("#btn_gridname_m").click(function () {
+                showGridName();
+            });
+            //重置
+            $("#btn_reset_m").click(function () {
+                $("#txt_submittime_s").val(""); $("#txt_submittime_e").val("");
+                $("#txt_submittime_s").calendar({}); $("#txt_submittime_e").calendar({});//否则之前选的那天  不能再次选中
+
+                $("#txt_declcode").val(""); $("#txt_customareacode").val("");
+                $("#picker_is_pass").picker("setValue", ["全部"]); $("#picker_ischeck").picker("setValue", ["全部"]);
+
+                $("#txt_busitype").val("");
+                $("#txt_modifyflag").val("");
+                $("#txt_auditflag").val("");
+
+                $("#txt_ordercode").val("");
+                $("#txt_cusno").val("");
+                $("#txt_divideno").val("");
+                $("#txt_contractno").val("");
+                $("#txt_sitepasstime_s").val("");
+                $("#txt_sitepasstime_e").val("");
+            });
+
             //查询
-            $(document).on('click', '#button_one', function () {
+            $(document).on('click', '#btn_search_m', function () {
                 $('.infinite-scroll-preloader').hide();
 
                 $("#busicontent").html("");
@@ -260,7 +299,7 @@
                 });
 
             //无限滚动 注册'infinite'事件处理函数
-            $(document).on('infinite', "#router1", function () {
+            $(document).on('infinite', "#page-infinite-scroll-bottom", function () {
                 
                 if (loading) return;// 如果正在加载，则退出               
                 loading = true; // 设置flag                
@@ -701,9 +740,7 @@
             $.init();
 
         });
-        //长按事件
-        //$('#pop_tab_decl .list-block').longPress(function (e) {
-        //});
+        
         //打开业务订阅弹出框
         $(document).on('click',
             '.open-subscribe',
@@ -811,7 +848,7 @@
         }
 
         //返回后Checked置空
-        $(document).on('click', '#backto', function () {
+        $(document).on('click', '#backto_decl', function () {
             var input = $('.popup input');
             for (var i = 0; i < input.length; i++) {
                 if (input[i].checked) {
@@ -821,7 +858,39 @@
             $("[href='#sub_tab1']").addClass("active"); $("#sub_tab1").addClass("active");
             $("[href='#sub_tab2']").removeClass("active"); $("#sub_tab2").removeClass("active");
         });
-
+        $(document).on('click', '#backto_log', function () {
+            var input = $('.popup input');
+            for (var i = 0; i < input.length; i++) {
+                if (input[i].checked) {
+                    input[i].checked = false;
+                }
+            }
+            $("[href='#sub_tab1']").addClass("active"); $("#sub_tab1").addClass("active");
+            $("[href='#sub_tab2']").removeClass("active"); $("#sub_tab2").removeClass("active");
+        });
+        function showFile()
+        {
+            $.modal({
+                title: '查验图片',
+                text: '<div class="content-block row">' +
+                            '<div class="col-33"><a href="#" id="picfilecancel" class="button">返回</div>' +
+                            '<div class="col-33"><a href="#" id="declpdf" class="button">报关单</div>' +
+                            '<div class="col-33"><a href="#" id="checkpic" class="button">查验文件</a></div>' +
+                        '</div>',
+                extraClass: 'picdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
+            });
+            $("#picfilecancel").click(function () {
+                $.closeModal(".picdiv");
+            });
+            $("#declpdf").click(function () {
+                showDeclPdf();
+                $.closeModal(".picdiv");
+            });
+            $("#checkpic").click(function () {
+                showCheckPic();
+                $.closeModal(".picdiv");
+            });
+        }
         //报关单调阅
         function showDeclPdf() {
             var ordercode = "";
@@ -830,11 +899,10 @@
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
 
                     ordercode = $(this)[0].id;
-                    //yangyang.zhao
                     ordercode = ordercode.split(",")[0];
-                    //console.log(ordercode);
                 }
             });
+
             if (ordercode == "") {
                 $.toast("请选择需要调阅的记录");
                 return;
@@ -868,7 +936,6 @@
                     myPhotoBrowserStandalone.open();
                 }
             })
-            //$.popup(".popup-declpdf");
         }
         //查验图片调阅
         function showCheckPic() {
@@ -908,52 +975,13 @@
                 }
             });
         }
-
-        function reset() {
-            //报关状态重置
-            $("#picker_declstatus").remove();
-            $("#picker_declstatus1").append("<input type='search' id='picker_declstatus' placeholder='报关状态'/>");
-            util.picker_declstatus();
-            //报检状态重置
-            $("#picker_inspstatus").remove();
-            $("#picker_inspstatus1").append("<input type='search' id='picker_inspstatus' placeholder='报检状态'/>");
-            util.picker_inspstatus();
-            //进口出口重置
-            $("#picker_inout").remove();
-            $("#picker_inout1").append("<input type='search' id='picker_inout' placeholder='进口出口'/>");
-            util.picker_inout();
-            //业务类型重置
-            $("#picker_busitype").remove();
-            $("#picker_busitype1").append("<input type='search' id='picker_busitype' placeholder='业务类型'/>");
-            util.picker_busitype();
-            //申报现场（改为输入框）重置
-            $("#picker_customs").val("");
-            //$("#picker_customs").remove();
-            //$("#picker_customs1").append("<input type='search' id='picker_customs' placeholder='申报现场'/>");
-            //util.picker_customs();
-            //现场报关重置
-            $("#picker_sitedeclare").remove();
-            $("#picker_sitedeclare1").append("<input type='search' id='picker_sitedeclare' placeholder='现场报关'/>");
-            util.picker_sitedeclare();
-            //物流状态重置
-            $("#picker_logisticsstatus").remove();
-            $("#picker_logisticsstatus1").append("<input type='search' id='picker_logisticsstatus' placeholder='物流状态'/>");
-            util.picker_logisticsstatus();
-            //开始时间重置
-            $("#txt_startdate").remove();
-            $("#txt_startdate1").append("<input type='search' id='txt_startdate' placeholder='委托起始日期'/>");
-            $("#txt_startdate").calendar({});
-            //结束时间重置
-            $("#txt_enddate").remove();
-            $("#txt_enddate1").append("<input type='search' id='txt_enddate' placeholder='委托结束日期'/>");
-            $("#txt_enddate").calendar({});
-
-
-            console.log($("#picker_declstatus"));
-            
-            //window.location.reload();
+        //订阅清单
+        function subscribeInfo()
+        {
+            window.location.href = "BusiSubscribeInfo.aspx?userid=132qa";
         }
 
+        //显示列名
         function showGridName() {
             var strname = '<div class="list-block" >' +
                                     '<ul>' +
@@ -1006,6 +1034,51 @@
             });
 
         }
+
+        //查询条件初始化
+        function initsearch_condition() {
+            $("#picker_is_pass").picker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择放行情况</h1>\
+                      </header>',
+                cols: [
+                  {
+                      textAlign: 'center',
+                      values: ['全部', '未放行', '已放行']
+                  }
+                ]
+            });
+
+            $("#picker_ischeck").picker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择查验情况</h1>\
+                      </header>',
+                cols: [
+                  {
+                      textAlign: 'center',
+                      values: ['全部', '查验', '未查验']
+                  }
+                ]
+            });
+
+            //初始化时间控件
+            var before = new Date();
+            before.setDate(before.getDate() - 3);
+            var beforeday = before.Format("yyyy-MM-dd");
+
+            var now = new Date();
+            var today = now.Format("yyyy-MM-dd");
+
+            $("#txt_submittime_s").val(beforeday);
+            $("#txt_submittime_s").calendar({ value: [beforeday] });
+
+            $("#txt_submittime_e").val(today);
+            $("#txt_submittime_e").calendar({ value: [today] });
+
+        }
+
     </script>
 </head>
 <body>
@@ -1014,42 +1087,39 @@
 
     <div class="page-group">
         <!-- page1 消息订阅-->
-        <div class="page page-current"  id="router1">
+        <div class="page page-current" id="page-infinite-scroll-bottom">
             
-            <!-- 标题栏 -->
-            <%--<header class="bar bar-nav">
-                <a  style=" width:4rem;" class="icon icon-search pull-right open-panel">查询</a>
-                <h1 class="title">我的业务</h1>
-            </header>--%>
-            
-            
-            <header class="bar bar-nav">
-                
-                <div class="search-input">
+            <header class="bar bar-nav" style="height:5rem;"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
+                <div class="search-input">                    
+                    <div class="row"> 
+                        <div class="col-33" style="width:19%;font-size:13px;margin-top:.3rem;">委托时间:</div>
+                        <div class="col-33" style="width:33%;margin-left:0;"><input type="search" id='txt_submittime_s'/></div>
+                        <div class="col-33" style="width:33%;margin-left:0;"><input type="search" id='txt_submittime_e'/></div>
+                        <div class="col-10" style="width:10%;margin-left:0;margin-top:.14rem;">
+                            <input id="btn_more_m" type="button" value="..." class="open-tabs-modal" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;"  />
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="col-25" id="picker_declstatus1"><input type="search" id='picker_declstatus' placeholder='报关状态'/></div> 
-                        <div class="col-25" id="picker_inspstatus1"><input type="search" id='picker_inspstatus' placeholder='报检状态'/></div>
-                        <div class="col-25" id="picker_inout1"><input type="search" id='picker_inout' placeholder='进口出口'/></div> 
-                        <div class="col-25" id="picker_busitype1"><input type="search" id='picker_busitype' placeholder='业务类型'/></div>
+                        <div class="col-50" style="width:46%;"><input type="search" id='txt_declcode' placeholder='报关单号'/></div>
+                        <div class="col-20" style="width:19%;margin-left:0;"><input type="search" id='txt_customareacode' placeholder='申报关区'/></div>
+                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_is_pass' placeholder='放行'/></div>
+                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_ischeck' placeholder='查验'/></div>
                     </div> 
                     <div class="row">
-                        <div class="col-33" id="picker_customs1"><input type="text" id='picker_customs' placeholder='申报现场'/></div>
-                        <div class="col-33" id="picker_sitedeclare1"><input type="search" id='picker_sitedeclare' placeholder='现场报关'/></div> 
-                        <div class="col-33" id="picker_logisticsstatus1"><input type="search" id='picker_logisticsstatus' placeholder='物流状态'/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-40" id="txt_startdate1"><input type="search" id='txt_startdate' placeholder='委托起始日期'/></div>
-                        <div class="col-5">~</div>
-                        <div class="col-40" id="txt_enddate1"><input type="search" id='txt_enddate' placeholder='委托结束日期'/></div>
-                        <div class="col-15"><i class="iconfont" style="font-size:1.2rem;" onclick="reset()" >&#xe604;</i></div>
-                    </div>
-                    
-                    <div class="row" style="height:35px;">
-                        <div class="col-80"><a href="#" class="open-preloader-title  button  button-fill" id="button_one">查&nbsp;&nbsp;询</a></div>
-                        <div class="col-20"><a href="javascript:showGridName()"  class="button  ">列名</a></div>
-                    </div>
-                </div>
-                    
+                        <div class="col-25" style="width:21%;"><input id="btn_gridname_m" type="button"  value="列名" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-60" style="width:54%;margin-left:0;"><input id="btn_search_m" type="button" value="查询" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-25" style="width:21%;margin-left:0;"><input id="btn_reset_m" type="button" value="重置" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                    </div> 
+                    <input type="hidden" id='txt_busitype'/>
+                    <input type="hidden" id='txt_modifyflag'/>
+                    <input type="hidden" id='txt_auditflag'/>
+                    <input type="hidden" id='txt_ordercode'/> 
+                    <input type="hidden" id='txt_cusno'/>  
+                    <input type="hidden" id='txt_divideno'/> 
+                    <input type="hidden" id='txt_contractno'/>
+                    <input type="hidden" id='txt_sitepasstime_s'/>
+                    <input type="hidden" id='txt_sitepasstime_e'/>                   
+                </div>  
             </header>
             
             
@@ -1064,13 +1134,13 @@
                     <span class="icon icon-edit"></span>
                     <span class="tab-label">消息订阅</span>
                 </a>
-                <a class="tab-item open-declpdf"  href="javascript:showDeclPdf()">
+                <a class="tab-item open-declpdf"  href="javascript:showFile()">
                     <span class="icon icon-star" ></span>
-                    <span class="tab-label">报关单调阅</span>
+                    <span class="tab-label">文件调阅</span>
                 </a>
-                <a class="tab-item "  href="javascript:showCheckPic()"> 
+                <a class="tab-item "  href="javascript:subscribeInfo()"> 
                     <span class="icon icon-picture"></span>
-                    <span class="tab-label">查验图片调阅</span>
+                    <span class="tab-label">订阅清单</span>
                 </a>
                 <input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' />
             </nav>
@@ -1141,8 +1211,8 @@
                     </div>
                 </div>
             <div class="row" style="background-color:white;margin-top:1rem">
-                <div class="col-50"><a href="javascript:subscribe('报关状态')" class="button button-fill">确  认</a></div>
-                <div class="col-50"><a href="#" class="close-popup button button-fill" id="backto">返  回</a></div>
+                <div class="col-50"><a href="javascript:subscribe('报关状态')" class="button">确  认</a></div>
+                <div class="col-50"><a href="#" class="close-popup button" id="backto_decl">返  回</a></div>
             </div>
         </div>
     </div>
@@ -1207,8 +1277,8 @@
             </div>
           </div>
             <div class="row" style="background-color:white;margin-top:1rem">
-                <div class="col-50"><a href="javascript:subscribe('订单状态')" class="button button-fill">确  认</a></div>
-                <div class="col-50"><a href="#" class="close-popup button button-fill" id="backto">返  回</a></div>
+                <div class="col-50"><a href="javascript:subscribe('订单状态')" class="button">确  认</a></div>
+                <div class="col-50"><a href="#" class="close-popup button" id="backto_log">返  回</a></div>
             </div>
         </div>
     </div>   
@@ -1218,138 +1288,6 @@
     
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
      <script src="/js/sm-extend.min.js"></script>
-    <script type="text/javascript">
-        //初始化控件的值
-        var myDate = new Date();
-        var nowDate = myDate.toLocaleDateString();
-        $("#picker_starttime").val("2017/03/04");
-        $("#picker_endtime").val(nowDate);        
-        //创建picker
-        
-        var util = {
-            picker_declstatus: function() {
-                $("#picker_declstatus").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-  <button class="button button-link pull-right close-picker">确定</button>\
-  <h1 class="title">请选择</h1>\
-  </header>',
-                    cols: [
-                        {
-                            textAlign: 'center',
-                            values: ['全部', '申报完结', '现场申报', '现场放行']
-                        }
-                    ]
-
-                });
-            },
-            picker_inspstatus: function() {
-                $("#picker_inspstatus").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-  <button class="button button-link pull-right close-picker">确定</button>\
-  <h1 class="title">请选择</h1>\
-  </header>',
-                    cols: [
-                        {
-                            textAlign: 'center',
-                            values: ['全部', '申报完结', '现场报检', '现场放行']
-                        }
-                    ]
-                });
-            },
-            picker_inout: function() {
-                $("#picker_inout").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-  <button class="button button-link pull-right close-picker">确定</button>\
-  <h1 class="title">请选择</h1>\
-  </header>',
-                    cols: [
-                        {
-                            textAlign: 'center',
-                            values: ['全部', '进口', '出口']
-                        }
-                    ]
-                });
-            },
-            picker_busitype: function() {
-                $("#picker_busitype").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-  <button class="button button-link pull-right close-picker">确定</button>\
-  <h1 class="title">请选择</h1>\
-  </header>',
-                    cols: [
-                        {
-                            textAlign: 'center',
-                            values: ['全部（不含国内）', '国内业务', '特殊区域', '空运业务', '陆运业务', '海运业务']
-                        }
-                    ]
-                });
-            },
-            picker_customs: function() {
-                $("#picker_customs").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-  <button class="button button-link pull-right close-picker">确定</button>\
-  <h1 class="title">请选择</h1>\
-  </header>',
-                    cols: [
-                        {
-                            textAlign: 'center',
-                            values: ['全部', '2369']
-                        }
-                    ]
-                });
-            },
-            picker_sitedeclare: function() {
-                $("#picker_sitedeclare").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-  <button class="button button-link pull-right close-picker">确定</button>\
-  <h1 class="title">请选择</h1>\
-  </header>',
-                    cols: [
-                        {
-                            textAlign: 'center',
-                            values: ['全部', '需现场申报']
-                        }
-                    ]
-                });
-            },
-            picker_logisticsstatus: function() {
-                $("#picker_logisticsstatus").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-  <button class="button button-link pull-right close-picker">确定</button>\
-  <h1 class="title">请选择</h1>\
-  </header>',
-                    cols: [
-                        {
-                            textAlign: 'center',
-                            values: ['全部', '待抽单', '抽单完成', '未派车', '已派车', '未运抵', '运输完成', '未送货', '送货完成']
-                        }
-                    ]
-                });
-            }
-
-        }
-        util.picker_declstatus();
-        util.picker_inspstatus();
-        util.picker_inout();
-        util.picker_busitype();
-        //申报现场改为输入框
-        //util.picker_customs();
-        util.picker_sitedeclare();
-        util.picker_logisticsstatus();
-        
-        $("#picker_starttime").calendar({
-            value: [nowDate],
-            dateFormat:'yyyy/mm/dd'
-        });
-        $("#picker_endtime").calendar({
-            value: [nowDate],
-            dateFormat: 'yyyy/mm/dd'
-        });
-
-        $("#txt_startdate").calendar({});
-        $("#txt_enddate").calendar({});
-       
-    </script>
 </form>
 </body>
    

@@ -23,8 +23,9 @@ namespace WeChat.ModelBusi
         /// <param name="starttime"></param>
         /// <param name="endtime"></param>
         /// <returns></returns>
-        public DataTable getOrder(string declstatus,string inspstatus,string inout,string busitype,string customs,string sitedeclare,string logisticsstatus,
-            string starttime, string endtime, int itemsperLoad, int lastIndex, string customerCode,string hscode)
+        public DataTable getOrder(string submittime_s, string submittime_e, string declarationcode, string customarea, string ispass, string ischeck, string busitype,
+            string modifyflag, string auditflag, string ordercode, string cusno, string divideno, string contractno, string passtime_s, string passtime_e,
+            int itemsperLoad, int lastIndex, string customerCode,string hscode)
         {
             DataTable dt = new DataTable();
             try
@@ -32,44 +33,65 @@ namespace WeChat.ModelBusi
                 using (DBSession db = new DBSession())
                 {
                     string sql = @"with newtab as
-                            ( select * from ( select rownum as rown ,tab.* from 
-                            (select code,submittime,busiunitname,busitype,cusno,divideno,repwayid,contractno,goodsnum,goodsgw,to_char(ischeck) as ischeck,
-                            to_char(checkpic) as checkpic,to_char(declstatus) as declstatus,to_char(inspstatus) as inspstatus,to_char(lawflag) as lawflag,
-                            to_char(inspischeck) as inspischeck,logisticsstatus,logisticsname,customareacode 
-                            from list_order {0} order by submittime desc) tab where rownum<={1}) t1 where t1.rown>{2}）
-                            select nt.*,sb.name as busitypename,sr.name as repwayname from newtab nt 
-                            left join cusdoc.sys_busitype sb on nt.busitype=sb.code 
-                            left join cusdoc.sys_repway sr on nt.repwayid=sr.code";
+                                    ( select * from ( select rownum as rown ,tab.* from 
+                                            (select lo.code,lo.submittime,lo.busiunitname,lo.busitype,lo.cusno,lo.divideno,lo.repwayid,lo.contractno,lo.goodsnum,lo.goodsgw,
+                                            to_char(lo.ischeck) as ischeck,to_char(lo.checkpic) as checkpic,to_char(lo.declstatus) as declstatus,to_char(lo.inspstatus) as inspstatus,
+                                            to_char(lo.lawflag) as lawflag,to_char(lo.inspischeck) as inspischeck,lo.logisticsstatus,lo.logisticsname,lo.customareacode 
+                                            from list_order lo left join list_declaration ld on lo.code=ld.ordercode  {0} order by lo.submittime desc) tab 
+                                            where rownum<={1}) t1 
+                                    where t1.rown>{2}）
+                                    select nt.*,sb.name as busitypename,sr.name as repwayname from newtab nt 
+                                    left join cusdoc.sys_busitype sb on nt.busitype=sb.code 
+                                    left join cusdoc.sys_repway sr on nt.repwayid=sr.code";
                     string strWhere = " where submittime is not null";
-                    strWhere += switchValue("报关状态", declstatus);
-                    strWhere += switchValue("报检状态", inspstatus);
-                    strWhere += switchValue("进出口", inout);
-                    strWhere += switchValue("业务类型", busitype);
-                    strWhere += switchValue("现场申报", sitedeclare);
-                    strWhere += switchValue("物流状态", logisticsstatus);
-                    if (!string.IsNullOrEmpty(customs.Trim2()))
+
+
+                    if (!string.IsNullOrEmpty(submittime_s)) { strWhere += " and lo.submittime>=to_date('" + submittime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                    if (!string.IsNullOrEmpty(submittime_e)) { strWhere += " and lo.submittime<=to_date('" + submittime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+                    if (!string.IsNullOrEmpty(declarationcode)) { strWhere += " and ld.declarationcode like '%" + declarationcode + "%'"; }
+                    if (!string.IsNullOrEmpty(customarea)) { strWhere += " and lo.customareacode like '%" + customarea + "%'"; }
+
+                    if (!string.IsNullOrEmpty(ispass))
                     {
-                        strWhere += " and customareacode='" + customs + "'";
+                        if (ispass == "放行") { strWhere += " and lo.declstatus=" + (int)DeclStatusEnum.SitePass; }
+                        if (ispass == "未放行") { strWhere += " and lo.declstatus<" + (int)DeclStatusEnum.SitePass; }
                     }
-                    if (!string.IsNullOrEmpty(starttime))
+                    if (!string.IsNullOrEmpty(ischeck))
                     {
-                        strWhere += " and submittime>to_date('" + starttime + "','yyyy-mm-dd hh24:mi:ss')";
+                        if (ischeck == "查验") { strWhere += " and lo.ischeck=1"; }
+                        if (ischeck == "未查验") { strWhere += " and lo.ischeck=0"; }
                     }
-                    if (!string.IsNullOrEmpty(endtime))
+
+                    if (!string.IsNullOrEmpty(busitype)) { strWhere += " and lo.busitype in (" + busitype + ")"; }
+                    if (!string.IsNullOrEmpty(modifyflag))
                     {
-                        strWhere += " and submittime<to_date('" + endtime + " 23:59:59','yyyy-mm-dd hh24:mi:ss')";
+                        if (ispass == "删单") strWhere += " and ld.modifyflag=1";
+                        if (ispass == "改单") strWhere += " and ld.modifyflag=2";
+                        if (ispass == "改单完成") strWhere += " and ld.modifyflag=3";
                     }
+                    if (!string.IsNullOrEmpty(auditflag)) { strWhere += " and lo.auditflag=1"; }
+
+                    if (!string.IsNullOrEmpty(ordercode)) { strWhere += " and lo.code like '%" + ordercode + "%'"; }
+                    if (!string.IsNullOrEmpty(cusno)) { strWhere += " and lo.cusno like '%" + cusno + "%'"; }
+                    if (!string.IsNullOrEmpty(divideno)) { strWhere += " and lo.divideno like '%" + divideno + "%'"; }
+                    if (!string.IsNullOrEmpty(contractno)) { strWhere += " and lo.CONTRACTNO like '%" + contractno + "%'"; }
+
+                    if (!string.IsNullOrEmpty(passtime_s)) { strWhere += " and lo.sitepasstime>=to_date('" + passtime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                    if (!string.IsNullOrEmpty(passtime_e)) { strWhere += " and lo.sitepasstime<=to_date('" + passtime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; } 
+
+                    
+                    //当前登录用户权限控制
                     if (!string.IsNullOrEmpty(customerCode) && !string.IsNullOrEmpty(hscode))
                     {
-                        strWhere += " and (busiunitcode='" + hscode + "' or customercode='" + customerCode + "')";
+                        strWhere += " and (lo.busiunitcode='" + hscode + "' or lo.customercode='" + customerCode + "')";
                     }
                     else if (!string.IsNullOrEmpty(customerCode))
                     {
-                        strWhere += " and customercode='" + customerCode + "'";
+                        strWhere += " and lo.customercode='" + customerCode + "'";
                     }
                     else if (!string.IsNullOrEmpty(hscode))
                     {
-                        strWhere += " and busiunitcode='" + hscode + "'";
+                        strWhere += " and lo.busiunitcode='" + hscode + "'";
                     }
                     sql = string.Format(sql, strWhere, lastIndex + itemsperLoad, lastIndex);
                     dt = db.QuerySignle(sql);
@@ -238,6 +260,22 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                             break;
                         case "需现场申报":
                             strWhere += " and SITEAPPLYTIME is not null";
+                            break;
+                    }
+                    break;
+                case "是否放行":
+                    switch (str)
+                    {
+                        //yangyang.zhao
+                        case "":
+                            break;
+                        case "全部":
+                            break;
+                        case "已放行":
+                            strWhere += " and lo.declstatus=160";
+                            break;
+                        case "未放行":
+                            strWhere += " and lo.declstatus<160";
                             break;
                     }
                     break;
