@@ -78,11 +78,11 @@ namespace WeChat.Page.BusiOpera
             }
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            DataTable dt = SiteDeclare.getSiteDeclareInfo(siteapplytime_s, siteapplytime_e, declcode, customareacode, ispass, ischeck, busitype
+            DataSet ds = SiteDeclare.getSiteDeclareInfo(siteapplytime_s, siteapplytime_e, declcode, customareacode, ispass, ischeck, busitype
                 , getcode("modifyflag", modifyflag), auditflag, busiunit, ordercode, cusno, divideno, contractno
                 , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
-                , start, itemsPerLoad, user.CustomerCode);
-            var json = JsonConvert.SerializeObject(dt, iso);
+                , start, itemsPerLoad, user.CustomerCode);//
+            var json = "[{\"data\":" + JsonConvert.SerializeObject(ds.Tables[0], iso) + ",\"sum\":" + ds.Tables[1].Rows[0][0] + "}]";
             return json;
         }
 

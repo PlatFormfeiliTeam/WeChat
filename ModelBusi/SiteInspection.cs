@@ -13,11 +13,12 @@ namespace WeChat.ModelBusi
 {
     public class SiteInspection
     {
-        public static DataTable getSiteInspectionInfo(string inspsiteapplytime_s, string inspsiteapplytime_e, string inspcode, string approvalcode, string ispass, string ischeck, string busitype
+        public static DataSet getSiteInspectionInfo(string inspsiteapplytime_s, string inspsiteapplytime_e, string inspcode, string approvalcode, string ispass, string ischeck, string busitype
             , string lawflag, string isneedclearance, string isfumigation, string modifyflag, string busiunit, string contractno, string ordercode, string cusno, string divideno
             , string customareacode, string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
-            , int start, int itemsPerLoad, string customercode)
+            , int start, int itemsPerLoad, string customercode)//
         {
+            DataSet ds = new DataSet();
             using (DBSession db = new DBSession())
             {
                 string where = "";
@@ -70,9 +71,14 @@ namespace WeChat.ModelBusi
 
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
                 string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);
+                DataTable dt = db.QuerySignle(sql);
+                ds.Tables.Add(dt);
 
-                return db.QuerySignle(sql);
+                string sql_count = @"select count(1) sum from (" + tempsql + ") a";
+                DataTable dt_count = db.QuerySignle(sql_count);
+                ds.Tables.Add(dt_count);
             }
+            return ds;
         }
 
         public static string Siteapply(string ordercode)

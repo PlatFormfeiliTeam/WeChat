@@ -10,11 +10,12 @@ namespace WeChat.ModelBusi
 {
     public class Declare
     {
-        public static DataTable getDeclareInfo(string reptime_s, string reptime_e, string declcode, string customsstatus, string modifyflag, string busitype, string ischeck
+        public static DataSet getDeclareInfo(string reptime_s, string reptime_e, string declcode, string customsstatus, string modifyflag, string busitype, string ischeck
             , string ispass, string busiunit, string ordercode, string cusno, string tradeway, string contractno, string blno
             , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
             , int start, int itemsPerLoad, string customercode)
         {
+            DataSet ds = new DataSet();
             using (DBSession db = new DBSession())
             {
                 string where = "";
@@ -77,13 +78,17 @@ namespace WeChat.ModelBusi
                 {
                     tempsql += @" and b.ASSOCIATENO is null";
                 }
-
-
+                
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
                 string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);
+                DataTable dt = db.QuerySignle(sql);
+                ds.Tables.Add(dt);
 
-                return db.QuerySignle(sql);
+                string sql_count = @"select count(1) sum from (" + tempsql + ") a";
+                DataTable dt_count = db.QuerySignle(sql_count);
+                ds.Tables.Add(dt_count);
             }
+            return ds;
         }
 
         public static DataTable AssCon(string predelcode)

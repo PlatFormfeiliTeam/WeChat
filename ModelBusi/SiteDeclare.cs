@@ -13,11 +13,12 @@ namespace WeChat.ModelBusi
 {
     public class SiteDeclare
     {
-        public static DataTable getSiteDeclareInfo(string siteapplytime_s, string siteapplytime_e, string declcode, string customareacode, string ispass, string ischeck, string busitype
+        public static DataSet getSiteDeclareInfo(string siteapplytime_s, string siteapplytime_e, string declcode, string customareacode, string ispass, string ischeck, string busitype
             , string modifyflag, string auditflag, string busiunit, string ordercode, string cusno, string divideno, string contractno
             , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
-            , int start, int itemsPerLoad, string customercode)
+            , int start, int itemsPerLoad, string customercode)//
         {
+            DataSet ds = new DataSet();
             using (DBSession db = new DBSession())
             {
                 string where = "";
@@ -68,9 +69,14 @@ namespace WeChat.ModelBusi
 
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
                 string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);
-               
-                return db.QuerySignle(sql);
+                DataTable dt = db.QuerySignle(sql);
+                ds.Tables.Add(dt);
+
+                string sql_count = @"select count(1) sum from (" + tempsql + ") a";
+                DataTable dt_count = db.QuerySignle(sql_count);
+                ds.Tables.Add(dt_count);
             }
+            return ds;
         }
 
         public static string Siteapply(string ordercode)

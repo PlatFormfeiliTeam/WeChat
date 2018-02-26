@@ -25,7 +25,7 @@
             top:0;
         }
         #page-infinite-scroll-bottom .bar-nav~.content{
-            top: 5.5rem;
+            top: 6.2rem;
         }
         #page-infinite-scroll-bottom .search-input input{
             border-radius:0;font-size:13px;
@@ -188,7 +188,7 @@
                 setTimeout(function () {
                     $.closeModal();
                     //首次查询需要置为初始值
-                    $('#div_list').html("");
+                    $('#div_list').html(""); $("#span_curchose").text(0);
                     loading = false; itemsPerLoad = 10; lastIndex = 0;
                     var scroller = $('.native-scroll');
 
@@ -250,13 +250,25 @@
                 });
             });
 
+            //$("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
+            //    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+            //        $(this).children("ul").css('background-color', '#fff');
+            //    } else {
+            //        $("#div_list .list-block ul").css('background-color', '#fff');
+            //        $(this).children("ul").css('background-color', '#C1DDF1');
+            //    }
+            //});
+
             $("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
+                var curcount = parseInt($("#span_curchose").text());
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                     $(this).children("ul").css('background-color', '#fff');
+                    curcount = curcount - 1;
                 } else {
-                    $("#div_list .list-block ul").css('background-color', '#fff');
                     $(this).children("ul").css('background-color', '#C1DDF1');
+                    curcount++;
                 }
+                $("#span_curchose").text(curcount);
             });
             
             //现场报检
@@ -896,7 +908,9 @@
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
-                        var obj = eval("(" + data.d + ")");//将字符串转为json
+                        var objdata = eval("(" + data.d + ")");//将字符串转为json                        
+                        var obj = objdata[0]["data"];
+                        $("#span_sum").text(objdata[0]["sum"]);
 
                         var tb = "";
                         var blno_busi = "";//分提单号
@@ -1160,7 +1174,14 @@
 
                     <input type="hidden" id='txt_submittime_s'/><input type="hidden" id='txt_submittime_e'/>
                     <input type="hidden" id='txt_sitepasstime_s'/><input type="hidden" id='txt_sitepasstime_e'/>                                    
-                </div>                 
+                </div>   
+                <div id="div_tbar" style="font-size:13px;margin:.2rem 0;">
+                    <font color="#929292">共计</font>
+                    <span id="span_sum">0</span>
+                    <font color="#929292">笔,当前选中</font>
+                    <span id="span_curchose">0</span>
+                    <font color="#929292">笔</font>
+                </div>                  
             </header>
 
             <%--工具栏 --%>

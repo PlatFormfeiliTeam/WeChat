@@ -59,7 +59,7 @@ namespace WeChat.Page.BusiOpera
             WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
             if (user == null || string.IsNullOrEmpty(user.CustomerCode))
             {
-                return "[]";
+            return "[]";
             }
             return "[{\"USERID\":" + user.GwyUserID + ",\"USERCODE\":'" + user.GwyUserCode + "',\"USERNAME\":'" + user.GwyUserName + "',\"CUSTOMERCODE\":'" + user.CustomerCode + "'}]";
         }
@@ -78,11 +78,11 @@ namespace WeChat.Page.BusiOpera
             }
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            DataTable dt = SiteInspection.getSiteInspectionInfo(inspsiteapplytime_s, inspsiteapplytime_e, inspcode, approvalcode, ispass, ischeck, busitype
+            DataSet ds = SiteInspection.getSiteInspectionInfo(inspsiteapplytime_s, inspsiteapplytime_e, inspcode, approvalcode, ispass, ischeck, busitype
                     , lawflag, isneedclearance, isfumigation, getcode("modifyflag", modifyflag), busiunit, contractno, ordercode, cusno, divideno
                     , customareacode, submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
-                    , start, itemsPerLoad, user.CustomerCode);
-            var json = JsonConvert.SerializeObject(dt, iso);
+                    , start, itemsPerLoad, user.CustomerCode);//
+            var json = "[{\"data\":" + JsonConvert.SerializeObject(ds.Tables[0], iso) + ",\"sum\":" + ds.Tables[1].Rows[0][0] + "}]";
             return json;
         }
 
