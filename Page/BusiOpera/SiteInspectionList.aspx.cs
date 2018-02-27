@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -59,7 +60,7 @@ namespace WeChat.Page.BusiOpera
             WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
             if (user == null || string.IsNullOrEmpty(user.CustomerCode))
             {
-            return "[]";
+                return "[]";
             }
             return "[{\"USERID\":" + user.GwyUserID + ",\"USERCODE\":'" + user.GwyUserCode + "',\"USERNAME\":'" + user.GwyUserName + "',\"CUSTOMERCODE\":'" + user.CustomerCode + "'}]";
         }
@@ -103,11 +104,34 @@ namespace WeChat.Page.BusiOpera
             return code;
         }
 
+        ////现场报检
+        //[WebMethod]
+        //public static string Siteapply(string ordercode)
+        //{
+        //    return SiteInspection.Siteapply(ordercode);
+        //}
+
         //现场报检
         [WebMethod]
-        public static string Siteapply(string ordercode)
+        public static string Siteapplyall(string ordercode)
         {
-            return SiteInspection.Siteapply(ordercode);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+
+            string msg = "";
+            JArray ja = JArray.Parse(ordercode);
+            for (int i = 0; i < ja.Count; i++)
+            {
+                msg = msg + SiteInspection.Siteapplyall(ja[i].ToString(), user);
+                if (i != ja.Count - 1)
+                {
+                    msg = msg + ",";
+                }
+            }
+            return "[" + msg + "]";
         }
 
         //报关单详细
@@ -123,11 +147,34 @@ namespace WeChat.Page.BusiOpera
             return "[{\"json_order\":" + json_order + ",\"json_insp\":" + json_insp + "}]";
         }
 
-        //报关单放行
+        ////报关单放行
+        //[WebMethod]
+        //public static string Pass(string ordercode)
+        //{
+        //    return SiteInspection.Pass(ordercode);
+        //}
+
+        //现场放行
         [WebMethod]
-        public static string Pass(string ordercode)
+        public static string Passall(string ordercode)
         {
-            return SiteInspection.Pass(ordercode);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+
+            string msg = "";
+            JArray ja = JArray.Parse(ordercode);
+            for (int i = 0; i < ja.Count; i++)
+            {
+                msg = msg + SiteInspection.Passall(ja[i].ToString(), user);
+                if (i != ja.Count - 1)
+                {
+                    msg = msg + ",";
+                }
+            }
+            return "[" + msg + "]";
         }
 
         //查验标志 绑定集装箱数据

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -103,11 +104,34 @@ namespace WeChat.Page.BusiOpera
             return code;
         }
 
-        //报关单交接
+        ////报关单交接
+        //[WebMethod]
+        //public static string Siteapply(string ordercode)
+        //{
+        //    return SiteDeclare.Siteapply(ordercode);
+        //}
+
+        //现场报关
         [WebMethod]
-        public static string Siteapply(string ordercode)
+        public static string Siteapplyall(string ordercode)
         {
-            return SiteDeclare.Siteapply(ordercode);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+
+            string msg = "";
+            JArray ja = JArray.Parse(ordercode);
+            for (int i = 0; i < ja.Count; i++)
+            {
+                msg = msg + SiteDeclare.Siteapplyall(ja[i].ToString(), user);
+                if (i != ja.Count - 1)
+                {
+                    msg = msg + ",";
+                }
+            }
+            return "[" + msg + "]";
         }
 
         //报关单详细
@@ -123,11 +147,34 @@ namespace WeChat.Page.BusiOpera
             return "[{\"json_order\":" + json_order + ",\"json_decl\":" + json_decl + "}]";
         }
 
-        //报关单放行
+        ////报关单放行
+        //[WebMethod]
+        //public static string Pass(string ordercode)
+        //{
+        //    return SiteDeclare.Pass(ordercode);
+        //}
+
+        //现场放行
         [WebMethod]
-        public static string Pass(string ordercode)
+        public static string Passall(string ordercode)
         {
-            return SiteDeclare.Pass(ordercode);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+
+            string msg = "";
+            JArray ja = JArray.Parse(ordercode);
+            for (int i = 0; i < ja.Count; i++)
+            {
+                msg = msg + SiteDeclare.Passall(ja[i].ToString(), user);
+                if (i != ja.Count - 1)
+                {
+                    msg = msg + ",";
+                }
+            }
+            return "[" + msg + "]";
         }
 
         //查验标志 绑定集装箱数据

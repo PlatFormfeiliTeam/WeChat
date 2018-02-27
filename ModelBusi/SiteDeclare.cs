@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using WeChat.Common;
 using WeChat.Entity.Enum;
+using WeChat.Entity;
 
 namespace WeChat.ModelBusi
 {
@@ -21,11 +22,11 @@ namespace WeChat.ModelBusi
             DataSet ds = new DataSet();
             using (DBSession db = new DBSession())
             {
-                string where = "";
+                string where = ""; string where_dec = "";
 
                 if (!string.IsNullOrEmpty(siteapplytime_s)) { where += " and ort.siteapplytime>=to_date('" + siteapplytime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
                 if (!string.IsNullOrEmpty(siteapplytime_e)) { where += " and ort.siteapplytime<=to_date('" + siteapplytime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
-                if (!string.IsNullOrEmpty(declcode)) { where += " and det.declarationcode like '%" + declcode + "%'"; }
+                if (!string.IsNullOrEmpty(declcode)) { where_dec += " and det.declarationcode like '%" + declcode + "%'"; }//where_dec
                 if (!string.IsNullOrEmpty(customareacode)) { where += " and ort.customareacode like '%" + customareacode + "%'"; }
 
                 if (!string.IsNullOrEmpty(ispass))
@@ -40,7 +41,7 @@ namespace WeChat.ModelBusi
                 }
 
                 if (!string.IsNullOrEmpty(busitype)) { where += " and ort.busitype in (" + busitype + ")"; }
-                if (!string.IsNullOrEmpty(modifyflag)) { where += " and det.modifyflag='" + modifyflag + "'"; }
+                if (!string.IsNullOrEmpty(modifyflag)) { where_dec += " and det.modifyflag='" + modifyflag + "'"; }//where_dec
                 if (!string.IsNullOrEmpty(auditflag)) { where += " and ort.auditflag=1"; }
                 
                 if (!string.IsNullOrEmpty(busiunit)) { where += " and (ort.BUSIUNITCODE like '%" + busiunit + "%' or ort.BUSIUNITNAME like '%" + busiunit + "%')"; }
@@ -64,8 +65,9 @@ namespace WeChat.ModelBusi
                                     ,to_char(ort.sitepasstime,'yyyyMMdd HH24:mi') sitepasstime,ort.checkpic,ort.correspondno 
                                     ,ort.checkremark declcheckremark,ort.auditflag,ort.auditcontent 
                                 from list_order ort
-                                    left join list_declaration det on ort.code=det.ordercode   
-                                where ort.entrusttype in('01','03') and ort.isinvalid=0 and det.isinvalid=0" + where;
+                                where ort.entrusttype in('01','03') and ort.isinvalid=0" + where
+                                    + @"and exists (select 1 from list_declaration det where det.isinvalid=0" + where_dec + ")";
+
 
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
                 string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);
@@ -79,9 +81,89 @@ namespace WeChat.ModelBusi
             return ds;
         }
 
-        public static string Siteapply(string ordercode)
+//        public static string Siteapply(string ordercode)
+//        {
+//            string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
+
+//            using (DBSession db = new DBSession())
+//            {
+//                string sql = "select to_char(siteapplytime,'yyyy/mm/dd hh24:mi:ss') as siteapplytime from list_order where code='" + ordercode + "'";
+//                DataTable dt = db.QuerySignle(sql);
+//                string curtime = dt.Rows[0]["SITEAPPLYTIME"].ToString();
+//                if (curtime != "")
+//                {
+//                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+//                }
+
+//                curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+//                sql = "update list_order set siteapplyuserid='{1}',siteapplyusername='{2}',siteapplytime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=150 where code='{0}'";
+//                sql = string.Format(sql, ordercode, userid, realname, curtime);
+//                int i = db.ExecuteSignle(sql);
+//                if (i > 0)
+//                {
+//                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
+//                    msc.redis_OrderStatusLog(ordercode);
+
+//                    //add 20180115 保存操作记录list_times
+//                    //sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+//                        //values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+//                    //db.ExecuteSignle(sql);
+
+//                    //add 20180119 保存历史记录
+//                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+//                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+//                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+//                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+//                    sql = string.Format(sql, ordercode, userid, curtime, realname, ordercode, "SITEAPPLYTIME", "现场报关");
+//                    db.ExecuteSignle(sql);
+
+
+//                    sql = @"select code,entrusttype,declstatus,inspstatus from list_order lo where lo.code='" + ordercode + "'";
+//                    DataTable dt_order = db.QuerySignle(sql);
+
+//                    //add 20180115 费用异常接口
+//                    if (dt_order.Rows[0]["entrusttype"].ToString() == "03")
+//                    {
+//                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160 && Convert.ToInt32(dt_order.Rows[0]["inspstatus"].ToString()) >= 120)
+//                        {
+//                            msc.FinanceExceptionOrder(ordercode, username, "list_order.siteapplytime现场报关");
+//                        }
+//                    }
+//                    else
+//                    {
+//                        if (Convert.ToInt32(dt_order.Rows[0]["declstatus"].ToString()) >= 160)
+//                        {
+//                            msc.FinanceExceptionOrder(ordercode, username, "list_order.siteapplytime现场报关");
+//                        }
+//                    }   
+
+//                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+//                }
+//                else
+//                {
+//                    return "";
+//                }
+
+//                /*
+//                string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+//                string sql = "update list_order set siteapplyuserid='{1}',siteapplyusername='{2}',siteapplytime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
+//                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
+//                int i = db.ExecuteSignle(sql);
+//                if (i > 0)
+//                {
+//                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+//                }
+//                else
+//                {
+//                    return "";
+//                }*/
+//            }
+//        }
+
+        public static string Siteapplyall(string ordercode, WGUserEn user)
         {
-            string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
+            string userid = user.GwyUserID.ToString(); string username = user.GwyUserCode; string realname = user.GwyUserName;
+            //string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
 
             using (DBSession db = new DBSession())
             {
@@ -90,7 +172,7 @@ namespace WeChat.ModelBusi
                 string curtime = dt.Rows[0]["SITEAPPLYTIME"].ToString();
                 if (curtime != "")
                 {
-                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                    return "{\"ORDERCODE\":'" + ordercode + "',\"CURTIME\":'" + curtime.Left(curtime.Length - 3).Replace("/", "") + "',\"FLAG\":'',\"ISEXISTS\":'Y'}";
                 }
 
                 curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
@@ -101,11 +183,6 @@ namespace WeChat.ModelBusi
                 {
                     MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
                     msc.redis_OrderStatusLog(ordercode);
-
-                    //add 20180115 保存操作记录list_times
-                    //sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-                        //values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
-                    //db.ExecuteSignle(sql);
 
                     //add 20180119 保存历史记录
                     sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
@@ -133,34 +210,80 @@ namespace WeChat.ModelBusi
                         {
                             msc.FinanceExceptionOrder(ordercode, username, "list_order.siteapplytime现场报关");
                         }
-                    }   
+                    }
 
-                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                    return "{\"ORDERCODE\":'" + ordercode + "',\"CURTIME\":'" + curtime.Left(curtime.Length - 3).Replace("/", "") + "',\"FLAG\":'S',\"ISEXISTS\":'N'}"; 
                 }
                 else
                 {
-                    return "";
+                    return "{\"ORDERCODE\":'" + ordercode + "',\"CURTIME\":'" + curtime.Left(curtime.Length - 3).Replace("/", "") + "',\"FLAG\":'E',\"ISEXISTS\":'N'}"; 
                 }
-
-                /*
-                string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                string sql = "update list_order set siteapplyuserid='{1}',siteapplyusername='{2}',siteapplytime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
-                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
-                int i = db.ExecuteSignle(sql);
-                if (i > 0)
-                {
-                    return curtime.Left(curtime.Length - 3).Replace("/", "");
-                }
-                else
-                {
-                    return "";
-                }*/
             }
         }
 
-        public static string Pass(string ordercode)
+//        public static string Pass(string ordercode)
+//        {
+//            string userid = "763"; string realname = "昆山吉时报关有限公司";
+
+//            using (DBSession db = new DBSession())
+//            {
+//                string sql = "select to_char(sitepasstime,'yyyy/mm/dd hh24:mi:ss') as sitepasstime from list_order where code='" + ordercode + "'";
+//                DataTable dt = db.QuerySignle(sql);
+//                string curtime = dt.Rows[0]["SITEPASSTIME"].ToString();
+//                if (curtime != "")
+//                {
+//                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+//                }
+
+//                curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+//                sql = "update list_order set sitepassuserid='{1}',sitepassusername='{2}',sitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=160 where code='{0}'";
+//                sql = string.Format(sql, ordercode, userid, realname, curtime);
+//                int i = db.ExecuteSignle(sql);
+//                if (i > 0)
+//                {
+//                    MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
+//                    msc.redis_OrderStatusLog(ordercode);
+
+//                    //add 20180115 保存操作记录list_times
+////                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
+////                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
+////                    db.ExecuteSignle(sql);
+
+//                    //add 20180119 保存历史记录
+//                    sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
+//                                                            ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
+//                                                    values(LIST_UPDATEHISTORY_ID.nextval,sysdate,'1'
+//                                                            ,'{0}','{1}','{2}','{3}','{4}','{5}','{6}')";
+//                    sql = string.Format(sql, ordercode, userid, curtime, realname, ordercode, "SITEPASSTIME", "报关放行");
+//                    db.ExecuteSignle(sql);
+
+
+//                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+//                }
+//                else
+//                {
+//                    return "";
+//                }
+
+//                /*string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+//                string sql = "update list_order set sitepassuserid='{1}',sitepassusername='{2}',sitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
+//                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
+//                int i = db.ExecuteSignle(sql);
+//                if (i > 0)
+//                {
+//                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+//                }
+//                else
+//                {
+//                    return "";
+//                }*/
+//            }
+//        }
+
+        public static string Passall(string ordercode, WGUserEn user)
         {
-            string userid = "763"; string realname = "昆山吉时报关有限公司";
+            string userid = user.GwyUserID.ToString(); string username = user.GwyUserCode; string realname = user.GwyUserName;
+            //string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
 
             using (DBSession db = new DBSession())
             {
@@ -169,7 +292,7 @@ namespace WeChat.ModelBusi
                 string curtime = dt.Rows[0]["SITEPASSTIME"].ToString();
                 if (curtime != "")
                 {
-                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                    return "{\"ORDERCODE\":'" + ordercode + "',\"CURTIME\":'" + curtime.Left(curtime.Length - 3).Replace("/", "") + "',\"FLAG\":'',\"ISEXISTS\":'Y'}";
                 }
 
                 curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
@@ -181,11 +304,6 @@ namespace WeChat.ModelBusi
                     MethodSvc.MethodServiceClient msc = new MethodSvc.MethodServiceClient();
                     msc.redis_OrderStatusLog(ordercode);
 
-                    //add 20180115 保存操作记录list_times
-//                    sql = @"insert into list_times(id,code,userid,realname,times,type,ispause) 
-//                        values(list_times_id.nextval,'" + ordercode + "','" + userid + "','" + realname + "',sysdate,'0',0)";
-//                    db.ExecuteSignle(sql);
-
                     //add 20180119 保存历史记录
                     sql = @"insert into list_updatehistory(id,UPDATETIME,TYPE
                                                             ,ORDERCODE,USERID,NEWFIELD,NAME,CODE,FIELD,FIELDNAME) 
@@ -194,26 +312,12 @@ namespace WeChat.ModelBusi
                     sql = string.Format(sql, ordercode, userid, curtime, realname, ordercode, "SITEPASSTIME", "报关放行");
                     db.ExecuteSignle(sql);
 
-
-                    return curtime.Left(curtime.Length - 3).Replace("/", "");
+                    return "{\"ORDERCODE\":'" + ordercode + "',\"CURTIME\":'" + curtime.Left(curtime.Length - 3).Replace("/", "") + "',\"FLAG\":'S',\"ISEXISTS\":'N'}"; 
                 }
                 else
                 {
-                    return "";
+                    return "{\"ORDERCODE\":'" + ordercode + "',\"CURTIME\":'" + curtime.Left(curtime.Length - 3).Replace("/", "") + "',\"FLAG\":'E',\"ISEXISTS\":'N'}"; 
                 }
-
-                /*string curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                string sql = "update list_order set sitepassuserid='{1}',sitepassusername='{2}',sitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss') where code='{0}'";
-                sql = string.Format(sql, ordercode, "763", "昆山吉时报关有限公司", curtime);
-                int i = db.ExecuteSignle(sql);
-                if (i > 0)
-                {
-                    return curtime.Left(curtime.Length - 3).Replace("/", "");
-                }
-                else
-                {
-                    return "";
-                }*/
             }
         }
 

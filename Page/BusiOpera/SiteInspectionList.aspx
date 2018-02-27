@@ -49,6 +49,13 @@
         {
            width: 100%;
         }
+         /************************************************ *********************************/
+        .sitediv .modal-title{
+            font-weight:800;
+        }
+        .picdiv .modal-title{
+            font-weight:800;
+        }
         /************************************************ 查询列表名称*********************************/
         .girdnamediv {
             width: 98%;
@@ -271,7 +278,136 @@
                 $("#span_curchose").text(curcount);
             });
             
-            //现场报检
+            //现场报检放行
+            $("#Siteapply_Pass_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount <= 0) {
+                    $.toast("请选择需要报检放行的记录");
+                    return;
+                }
+
+                var arr_divid = new Array();
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        arr_divid.push($(this)[0].id.substring(6));////order_
+                    }
+                });
+                var arr_divids = JSON.stringify(arr_divid);//将数组转为JSON字符串
+
+                $.modal({
+                    title: '现场报检放行',
+                    text: '<div class="content-block row" style="margin:1rem 0;">' +
+                                '<div class="col-25"><a href="#" id="sitecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                                '<div class="col-40" style="margin-left:0;"><a href="#" id="siteapply" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">现场报检</a></div>' +
+                                '<div class="col-40" style="margin-left:0;"><a href="#" id="sitepass" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">现场放行</a></div>' +
+                            '</div>',
+                    extraClass: 'sitediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $("#sitecancel").click(function () {
+                    $.closeModal(".sitediv");
+                });
+
+                $("#siteapply").click(function () {
+                    $.closeModal(".sitediv");
+
+                    $.confirm('请确认是否需要<font color=blue>现场报检</font>?',
+                        function () {//OK事件
+                            $.ajax({
+                                type: "post", //要用post方式                 
+                                url: "SiteInspectionList.aspx/Siteapplyall",//方法所在页面和方法名
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: "{'ordercode':'" + arr_divids + "'}",
+                                cache: false,
+                                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                                success: function (data) {
+                                    var obj = eval("(" + data.d + ")");
+
+                                    var count_s = 0, count_e = 0, count_r = 0;
+                                    for (var i = 0; i < obj.length; i++) {
+                                        if (obj[i]["ISEXISTS"] == "Y") { count_r++; }
+                                        else {
+                                            if (obj[i]["FLAG"] == "S") {
+                                                count_s++;
+                                                $("#div_list #order_" + obj[i]["ORDERCODE"]).children("ul").children().eq(2).children("div").children().eq(0).text(obj[i]["CURTIME"]);//更新现场报检时间
+                                            }
+                                            if (obj[i]["FLAG"] == "E") { count_e++; }
+                                        }
+                                    }
+
+                                    var msg = "";//"当前选中" + arr_divid.length + "笔";
+                                    if (count_s > 0) { msg = msg + ",成功" + count_s + "笔"; }
+                                    if (count_e > 0) { msg = msg + ",失败" + count_e + "笔"; }
+                                    if (count_r > 0) { msg = msg + ",已维护" + count_r + "笔"; }
+
+                                    if (msg == "") { msg = "系统异常，请重新登录！";}
+
+                                    $.toast(msg.substr(1));
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                                    //alert(XMLHttpRequest.status);
+                                    //alert(XMLHttpRequest.readyState);
+                                    //alert(textStatus);
+                                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                                }
+                            });
+                        },
+                        function () { }//cancel事件
+                      );
+                });
+
+                $("#sitepass").click(function () {
+                    $.closeModal(".sitediv");
+
+                    $.confirm('请确认是否需要<font color=blue>现场放行</font>?',
+                        function () {//OK事件
+                            $.ajax({
+                                type: "post", //要用post方式                 
+                                url: "SiteInspectionList.aspx/Passall",//方法所在页面和方法名
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: "{'ordercode':'" + arr_divids + "'}",
+                                cache: false,
+                                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                                success: function (data) {
+                                    var obj = eval("(" + data.d + ")");
+
+                                    var count_s = 0, count_e = 0, count_r = 0;
+                                    for (var i = 0; i < obj.length; i++) {
+                                        if (obj[i]["ISEXISTS"] == "Y") { count_r++; }
+                                        else {
+                                            if (obj[i]["FLAG"] == "S") {
+                                                count_s++;
+                                                $("#div_list #order_" + obj[i]["ORDERCODE"]).children("ul").children().eq(4).children("div").children().eq(0).text(obj[i]["CURTIME"]);//更新现场放行时间
+                                            }
+                                            if (obj[i]["FLAG"] == "E") { count_e++; }
+                                        }
+                                    }
+
+                                    var msg = "";//"当前选中" + arr_divid.length + "笔";
+                                    if (count_s > 0) { msg = msg + ",成功" + count_s + "笔"; }
+                                    if (count_e > 0) { msg = msg + ",失败" + count_e + "笔"; }
+                                    if (count_r > 0) { msg = msg + ",已维护" + count_r + "笔"; }
+
+                                    if (msg == "") { msg = "系统异常，请重新登录！"; }
+
+                                    $.toast(msg.substr(1));
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                                    //alert(XMLHttpRequest.status);
+                                    //alert(XMLHttpRequest.readyState);
+                                    //alert(textStatus);
+                                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                                }
+                            });
+                        },
+                        function () { }//cancel事件
+                      );
+                });
+            });
+
+            /*//现场报检
             $("#Siteapply_a").click(function () {
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
@@ -319,10 +455,17 @@
                 function () { }//cancel事件
               );
 
-            });
+            });*/
             
+
             //报检单详细
             $("#Detail_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔报检详细记录");
+                    return;
+                }
+
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
@@ -330,10 +473,10 @@
                         //alert($(this).children("ul").children().eq(4).children("div").children().eq(0).text());
                     }
                 });
-                if (divid == "") {
-                    $.toast("请选择需要查看的记录");
-                    return;
-                }
+                //if (divid == "") {
+                //    $.toast("请选择需要查看的记录");
+                //    return;
+                //}
 
                 var strconHTML = "";
 
@@ -488,7 +631,7 @@
 
             });
 
-            //报检单放行
+            /*//报检单放行
             $("#Pass_a").click(function () {
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
@@ -536,20 +679,26 @@
                     function () { }//cancel事件
                   );
 
-            });
+            });*/
            
             //查验标志
             $("#Check_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔查验标志记录");
+                    return;
+                }
+
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         divid = $(this)[0].id;
                     }
                 });
-                if (divid == "") {
-                    $.toast("请选择需要查验标志的记录");
-                    return;
-                }
+                //if (divid == "") {
+                //    $.toast("请选择需要查验标志的记录");
+                //    return;
+                //}
 
                 var strconHTML = "";
                 strconHTML = '<font class="title"><b>报检查验维护</b></font>';
@@ -764,16 +913,22 @@
            
             //查验图片
             $("#Picture_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔查验图片记录");
+                    return;
+                }
+
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         divid = $(this)[0].id;
                     }
                 });
-                if (divid == "") {
-                    $.toast("请选择需要查验图片的记录");
-                    return;
-                }
+                //if (divid == "") {
+                //    $.toast("请选择需要查验图片的记录");
+                //    return;
+                //}
 
                 var concheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
 
@@ -785,9 +940,14 @@
                 $.modal({
                     title: '查验图片',
                     text: '<div class="content-block row">' +
-                                '<div class="col-33"><a href="#" id="picfilecancel" class="button button-fill">返回</div>' +
-                                '<div class="col-33"><a href="#" id="picfileupload" class="button button-fill">上传</a></div>' +
-                                '<div class="col-33"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
+                                //'<div class="col-33"><a href="#" id="picfilecancel" class="button button-fill">返回</div>' +
+                                //'<div class="col-33"><a href="#" id="picfileupload" class="button button-fill">上传</a></div>' +
+                                //'<div class="col-33"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
+
+                                '<div class="col-33"><a href="#" id="picfilecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                                '<div class="col-33" style="margin-left:0;"><a href="#" id="picfileupload" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">上传</a></div>' +
+                                '<div class="col-33" style="margin-left:0;"><a href="#" id="picfileconsult" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">调阅</a></div>' +
+
                             '</div>',
                     extraClass: 'picdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
@@ -1186,19 +1346,23 @@
 
             <%--工具栏 --%>
             <nav class="bar bar-tab">
-                <a class="tab-item external" href="#" id="Siteapply_a"><%--active--%>
+                <a class="tab-item external" href="#" id="Siteapply_Pass_a">
                     <span class="icon icon-friends"></span>
-                    <span class="tab-label">现场报检</span>
+                    <span class="tab-label">报检放行</span>
                 </a>
+                <%--<a class="tab-item external" href="#" id="Siteapply_a">--%><%--active--%>
+                    <%--<span class="icon icon-friends"></span>
+                    <span class="tab-label">现场报检</span>
+                </a>--%>
                 <a class="tab-item external" href="#" id="Detail_a">
                     <span class="icon icon-message"></span>
                     <span class="tab-label">报检详细</span>
                     <%--<span class="badge">2</span>--%>
                 </a>
-                <a class="tab-item external" href="#" id="Pass_a">
+                <%--<a class="tab-item external" href="#" id="Pass_a">
                     <span class="icon icon-cart"></span>
                     <span class="tab-label">报检放行</span>
-                </a>
+                </a>--%>
                 <a class="tab-item external" href="#" id="Check_a">
                     <span class="icon icon-check"></span>
                     <span class="tab-label">查验熏蒸</span>
