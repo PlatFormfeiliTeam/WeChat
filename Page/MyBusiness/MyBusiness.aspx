@@ -165,6 +165,8 @@
                 cache: false,
                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                 success: function (data) {
+                    if (data.d == null || data.d == "")
+                        return;
                     var obj = eval("(" + data.d + ")");//将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
                         var str = '<div class="list-block" id="' + obj[i]["CODE"] + ',' + obj[i]["CUSNO"] + '" >' +
@@ -484,32 +486,32 @@
                                     //'<div class="col-20"></div>' +
                                     '</div>' +
                                     '</div>';
-                                declstr +=
-                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                                declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
-                                if (declTable != null) {
-                                    for (var i = 0; i < declTable.length; i++) {
-                                        declstr += '<div class="list-block" id="' +
-                                            (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) +
-                                            '">';
-                                        declstr += '<div class="row">';
-                                        declstr += '<div class="col-40">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
-                                        declstr += '<div class="col-40">' +
-                                            declTable[i]["GOODSNUM"] +
-                                            '/' +
-                                            declTable[i]["GOODSGW"] +
-                                            '</div>';
-                                        declstr += '<div class="col-20">' + (declTable[i]["MODIFYFLAG"] == null ? "" : declTable[i]["MODIFYFLAG"]) + '</div>';
-                                        declstr += '</div>';
-                                        declstr += '<div class="row">';
-                                        declstr += '<div class="col-40">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
-                                        declstr += '<div class="col-40">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
-                                        declstr += '<div class="col-20">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
-                                        declstr += '</div>';
-                                        declstr += '</div>';
-                                    }
-                                }
-                                declstr += '</div>';
+                                //declstr +=
+                                //    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                                //declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                                //if (declTable != null) {
+                                //    for (var i = 0; i < declTable.length; i++) {
+                                //        declstr += '<div class="list-block" id="' +
+                                //            (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) +
+                                //            '">';
+                                //        declstr += '<div class="row">';
+                                //        declstr += '<div class="col-40">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
+                                //        declstr += '<div class="col-40">' +
+                                //            declTable[i]["GOODSNUM"] +
+                                //            '/' +
+                                //            declTable[i]["GOODSGW"] +
+                                //            '</div>';
+                                //        declstr += '<div class="col-20">' + (declTable[i]["MODIFYFLAG"] == null ? "" : declTable[i]["MODIFYFLAG"]) + '</div>';
+                                //        declstr += '</div>';
+                                //        declstr += '<div class="row">';
+                                //        declstr += '<div class="col-40">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
+                                //        declstr += '<div class="col-40">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
+                                //        declstr += '<div class="col-20">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
+                                //        declstr += '</div>';
+                                //        declstr += '</div>';
+                                //    }
+                                //}
+                                //declstr += '</div>';
                                 $("#pop_tab_decl").append(declstr);
                             }
                             //2、报检信息
@@ -605,27 +607,27 @@
                                     //'<div class="col-20"></div>' +
                                     '</div>' +
                                     '</div>';
-                                inspstr +=
-                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                                inspstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
-                                if (inspTable != null) {
-                                    for (var i = 0; i < inspTable.length; i++) {
-                                        inspstr += '<div class="list-block">';
-                                        inspstr += '<div class="row">';
-                                        inspstr += '<div class="col-50">' + (inspTable[i]["INSPECTIONCODE"] == null ? "" : inspTable[i]["INSPECTIONCODE"]) + '</div>';
-                                        inspstr += '<div class="col-50">' + (inspTable[i]["APPROVALCODE"] == null ? "" : inspTable[i]["APPROVALCODE"]) + '</div>';
+                                //inspstr +=
+                                //    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                                //inspstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                                //if (inspTable != null) {
+                                //    for (var i = 0; i < inspTable.length; i++) {
+                                //        inspstr += '<div class="list-block">';
+                                //        inspstr += '<div class="row">';
+                                //        inspstr += '<div class="col-50">' + (inspTable[i]["INSPECTIONCODE"] == null ? "" : inspTable[i]["INSPECTIONCODE"]) + '</div>';
+                                //        inspstr += '<div class="col-50">' + (inspTable[i]["APPROVALCODE"] == null ? "" : inspTable[i]["APPROVALCODE"]) + '</div>';
                                         
-                                        inspstr += '</div>';
-                                        inspstr += '<div class="row">';
-                                        inspstr += '<div class="col-50">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
-                                        inspstr += '<div class="col-25">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
-                                        inspstr += '<div class="col-25">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
-                                        //inspstr += '<div class="col-20"></div>';
-                                        inspstr += '</div>';
-                                        inspstr += '</div>'; 
-                                    }
-                                }
-                                inspstr += '</div>';
+                                //        inspstr += '</div>';
+                                //        inspstr += '<div class="row">';
+                                //        inspstr += '<div class="col-50">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
+                                //        inspstr += '<div class="col-25">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
+                                //        inspstr += '<div class="col-25">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
+                                //        //inspstr += '<div class="col-20"></div>';
+                                //        inspstr += '</div>';
+                                //        inspstr += '</div>'; 
+                                //    }
+                                //}
+                                //inspstr += '</div>';
                                 $("#pop_tab_insp").append(inspstr);
                             }
                             //物流状态
@@ -1169,7 +1171,6 @@
             <div class="tabs">
               <div id="tab1" class="tab active">
                 <div class="content-block " id="pop_tab_decl"></div>
-                <div style="margin-left:25%;width:50%;" ><a href="#" id="btn-subs-decl"  class="button">报关订阅</a></div>
               </div>
               <div id="tab2" class="tab">
                 <div class="content-block" id="pop_tab_insp"></div>
@@ -1180,7 +1181,7 @@
             </div>
           </div>
         </div>
-       <div style="bottom:0.2rem; position:absolute;width:96%;margin-left:2%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+       <div style="bottom:2rem; position:absolute;width:80%;margin-left:10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
     </div>
     <!--popup 订阅弹出页-->
     <div class="popup popup-subscribe" id="popup-subscribe-decl" >
