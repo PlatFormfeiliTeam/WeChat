@@ -24,7 +24,7 @@ namespace WeChat.ModelBusi
         /// <param name="endtime"></param>
         /// <returns></returns>
         public DataTable getOrder(string submittime_s, string submittime_e, string declarationcode, string customarea, string ispass, string ischeck, string busitype,
-            string modifyflag, string auditflag, string ordercode, string cusno, string divideno, string contractno, string passtime_s, string passtime_e,
+            string modifyflag, string auditflag, string busiunit, string ordercode, string cusno, string divideno, string contractno, string passtime_s, string passtime_e,
             int itemsperLoad, int lastIndex, string customerCode,string hscode)
         {
             DataTable dt = new DataTable();
@@ -45,7 +45,7 @@ namespace WeChat.ModelBusi
                                     left join cusdoc.sys_repway sr on nt.repwayid=sr.code";
                     string strWhere = " where submittime is not null";
 
-
+                    if (!string.IsNullOrEmpty(busiunit)) { strWhere += " and (lo.BUSIUNITCODE like '%" + busiunit + "%' or lo.BUSIUNITNAME like '%" + busiunit + "%')"; }
                     if (!string.IsNullOrEmpty(submittime_s)) { strWhere += " and lo.submittime>=to_date('" + submittime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
                     if (!string.IsNullOrEmpty(submittime_e)) { strWhere += " and lo.submittime<=to_date('" + submittime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
                     if (!string.IsNullOrEmpty(declarationcode)) { strWhere += " and ld.declarationcode like '%" + declarationcode + "%'"; }

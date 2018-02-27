@@ -153,6 +153,7 @@
                         "','busitype':\"" + $("#txt_busitype").val() +
                         "\",'modifyflag':'" + $("#txt_modifyflag").val() +
                         "','auditflag':'" + $("#txt_auditflag").val() +
+                        "','busiunit':'" + $("#txt_busiunit").val() +
                         "','ordercode':'" + $("#txt_ordercode").val() +
                         "','cusno':'" + $("#txt_cusno").val() +
                         "','divideno':'" + $("#txt_divideno").val() +
@@ -234,6 +235,7 @@
                 $("#txt_modifyflag").val("");
                 $("#txt_auditflag").val("");
 
+                $("#txt_busiunit").val("");
                 $("#txt_ordercode").val("");
                 $("#txt_cusno").val("");
                 $("#txt_divideno").val("");
@@ -1108,6 +1110,7 @@
                     <input type="hidden" id='txt_busitype'/>
                     <input type="hidden" id='txt_modifyflag'/>
                     <input type="hidden" id='txt_auditflag'/>
+                    <input type="hidden" id='txt_busiunit'/>
                     <input type="hidden" id='txt_ordercode'/> 
                     <input type="hidden" id='txt_cusno'/>  
                     <input type="hidden" id='txt_divideno'/> 

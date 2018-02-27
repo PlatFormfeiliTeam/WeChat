@@ -73,7 +73,7 @@ namespace WeChat.Page.MyBusiness
         /// <returns></returns>
         [WebMethod]
         public static string QueryData(string submittimestart, string submittimeend, string declarationcode, string customarea, string ispass, string ischeck, string busitype,
-            string modifyflag, string auditflag, string ordercode, string cusno, string divideno, string contractno, string passtimestart, string passtimeend,
+            string modifyflag, string auditflag, string busiunit, string ordercode, string cusno, string divideno, string contractno, string passtimestart, string passtimeend,
             int itemsperload, int lastindex)
         {
             WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
@@ -86,7 +86,7 @@ namespace WeChat.Page.MyBusiness
             if (user.IsCustomer != 1)//如果不是委托单位角色，不能查出其对应委托单位的订单
                 customerCode = "";
             ListOrderModel orderModel = new ListOrderModel();
-            DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, ordercode,
+            DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, busiunit, ordercode,
                 cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, customerCode, hsCode);
 
             //DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, ordercode,
