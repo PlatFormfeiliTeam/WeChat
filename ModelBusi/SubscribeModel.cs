@@ -120,6 +120,64 @@ namespace WeChat.ModelBusi
             }
 
         }
+
+        /// <summary>
+        /// 订单_获取本人未推送的所有订阅信息
+        /// </summary>
+        /// <returns></returns>
+        public static DataTable getNewSubscribeInfo_Order(string subscribestart, string subscribeend, string busiunit, string istigger, string busitype, string ordercode, string cusno,
+            string divideno, string contract, string submitstart, string sumitend, int pagesize, int lastnum, int userId)
+        {
+            try
+            {
+                using (DBSession db = new DBSession())
+                {
+                    string strWhere = " (ws.codetype=1 or ws.codetype=2) and ";
+                    if (!string.IsNullOrEmpty(subscribestart)) strWhere += "ws.substime > to_date('" + subscribestart + "','yyyy-mm-dd hh24:mi:ss') and ";
+                    if (!string.IsNullOrEmpty(subscribeend)) strWhere += "ws.substime < to_date('" + subscribeend + " 23:59:59','yyyy-mm-dd hh24:mi:ss') and ";
+
+                    if (!string.IsNullOrEmpty(busiunit)) strWhere += " (lo.busiunitcode like '%" + busiunit + "%' or lo.busiunitname like '%" + busiunit + "%') and ";
+                    
+                    int TRIGGERSTATUS = 0;
+                    if (istigger == "已触发") TRIGGERSTATUS = 1;
+                    else if (istigger == "已推送") TRIGGERSTATUS = 2;
+                    strWhere += " ws.TRIGGERSTATUS=" + TRIGGERSTATUS + " and ";
+
+                    if (!string.IsNullOrEmpty(busitype)) strWhere += " lo.busitype in (" + busiunit + ") and ";
+                    if (!string.IsNullOrEmpty(ordercode)) strWhere += " lo.code like '%" + ordercode + "%' and ";
+                    if (!string.IsNullOrEmpty(cusno)) strWhere += " lo.cusno like '%" + cusno + "%' and ";
+                    if (!string.IsNullOrEmpty(divideno)) strWhere += " lo.divideno like '%" + divideno + "%'  and ";
+                    if (!string.IsNullOrEmpty(contract)) strWhere += " lo.contractno like '%" + contract + "%' and ";
+
+                    if (!string.IsNullOrEmpty(submitstart)) strWhere += "lo.submittime > to_date('" + submitstart + "','yyyy-mm-dd hh24:mi:ss') and ";
+                    if (!string.IsNullOrEmpty(sumitend)) strWhere += "lo.submittime < to_date('" + sumitend + " 23:59:59','yyyy-mm-dd hh24:mi:ss') and ";
+                    if (userId > 0)
+                    {
+                        strWhere += " ws.userid=" + userId + " and";
+                    }
+                    strWhere += " ws.isinvalid=0";
+                    string sql = @"with newt
+                                    as(
+                                    select * from 
+                                        (select tab.*,rownum as rown from 
+                                            (select lo.busiunitname,lo.busitype,lo.divideno,lo.repwayid,lo.contractno,lo.goodsnum,lo.goodsgw,to_char(lo.declstatus) as declstatus,
+                                            to_char(lo.inspstatus) as inspstatus,lo.logisticsname,  ws.cusno,ws.triggerstatus, ws.substype,ws.status,ws.pushtime,ws.id,
+                                            ws.statusvalue,ws.substime from wechat_subscribe ws left join list_order lo on ws.cusno=lo.cusno where {0} order by substime desc
+                                        ) tab ) where rown>{1} and rown<={2})
+                                        select newt.*,sb.name as businame,sr.name as repwayname from newt 
+                                            left join cusdoc.sys_busitype sb on newt.busitype=sb.code 
+                                            left join cusdoc.sys_repway sr on newt.repwayid=sr.code  order by newt.substime desc";
+                    sql = string.Format(sql, strWhere, lastnum, lastnum + pagesize);
+                    return db.QuerySignle(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write("SubscribeModel_getSubscribeInfo_Order:" + ex.Message);
+                return null;
+            }
+
+        }
         /// <summary>
         /// 预制单_获取最新的N条订阅条信息
         /// </summary>
@@ -347,10 +405,18 @@ namespace WeChat.ModelBusi
             }
         }
 
-
-        public static bool deleteSubscribe(string cusno)
+        /// <summary>
+        /// 删除订阅信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool deleteSubscribe(string id)
         {
-            return true;
+            using(DBSession db=new DBSession())
+            {
+                string sql = "delete from wechat_subscribe where id=" + id + " and triggerstatus=0";
+                return db.ExecuteSignle(sql) == 0 ? false : true;
+            }
         }
     }
 

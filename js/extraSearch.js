@@ -1219,6 +1219,9 @@ function initSerach_MyOrder() {
                             '<div id="audit" class="col-25 labcontent">稽核</div>' +
                         '</div>' +
                         '<div class="row">' +
+                            '<div class="col-100" style="width:92%"><input type="text" id="busiunit" placeholder="经营单位"/></div>' +
+                        '</div>' +
+                        '<div class="row">' +
                             '<div class="col-50"><input type="text" id="ordercode" placeholder="订单编号"/></div>' +
                             '<div class="col-50" style="margin-left:0rem;"><input type="text" id="cusno" placeholder="企业编号"/></div>' +
                         '</div>' +
@@ -1340,6 +1343,7 @@ function initSerach_MyOrder() {
 
         if ($("#txt_auditflag").val() == "稽核") { $("#audit").addClass("labhover"); }
 
+        $("#busiunit").val($("#txt_busiunit").val());
         $("#ordercode").val($("#txt_ordercode").val());
         $("#cusno").val($("#txt_cusno").val());
         $("#divideno").val($("#txt_divideno").val());
@@ -1407,6 +1411,7 @@ function initSerach_MyOrder() {
             $("#txt_modifyflag").val(modifyflag);
             $("#txt_auditflag").val(auditflag);
 
+            $("#txt_busiunit").val($("#busiunit").val());
             $("#txt_ordercode").val($("#ordercode").val());
             $("#txt_cusno").val($("#cusno").val());
             $("#txt_divideno").val($("#divideno").val());
@@ -1431,6 +1436,7 @@ function initSerach_MyOrder() {
             $(".labcontent").each(function () { $(this).removeClass("labhover"); });
             $(".labtitle").each(function () { $(this).removeClass("labhover"); });
 
+            $("#txt_busiunit").val(""); $("#busiunit").val("");
             $("#txt_ordercode").val(""); $("#ordercode").val("");
             $("#txt_cusno").val(""); $("#cusno").val("");
             $("#txt_divideno").val(""); $("#divideno").val("");
@@ -1443,4 +1449,224 @@ function initSerach_MyOrder() {
     });
 }
 
+//业务订阅清单
+function initSerach_SubscribeBusi() {
+    $(document).on('click', '.open-tabs-modal', function () {
+        $.modal({
+            text:
+                    '<div class="content-padded grid-demo">' +
+                        '<div id="busitype">' +
+                            '<div id="busi_in" class="row">' +
+                                '<div class="col-25 labtitle">进口业务</div>' +
+                                '<div class="col-25 labcontent">空运进口</div>' +
+                                '<div class="col-25 labcontent">海运进口</div>' +
+                                '<div class="col-25 labcontent">陆运进口</div>' +
+                            '</div>' +
+                            '<div id="busi_out" class="row">' +
+                                '<div class="col-25 labtitle">出口业务</div>' +
+                                '<div class="col-25 labcontent">空运出口</div>' +
+                                '<div class="col-25 labcontent">海运出口</div>' +
+                                '<div class="col-25 labcontent">陆运出口</div>' +
+                            '</div>' +
+                            '<div id="busi_other" class="row">' +
+                                '<div class="col-25 labcontent">国内进口</div>' +
+                                '<div class="col-25 labcontent">国内出口</div>' +
+                                '<div class="col-25 labcontent">特殊进口</div>' +
+                                '<div class="col-25 labcontent">特殊出口</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="row">' +
+                            '<div class="col-50"><input type="text" id="ordercode" placeholder="订单编号"/></div>' +
+                            '<div class="col-50" style="margin-left:0rem;"><input type="text" id="cusno" placeholder="企业编号"/></div>' +
+                        '</div>' +
+                        '<div class="row">' +
+                            '<div class="col-50"><input type="text" id="divideno" placeholder="分单号"/></div>' +
+                            '<div class="col-50" style="margin-left:0rem;"><input type="text" id="contractno" placeholder="合同号"/></div>' +
+                        '</div>' +
+                        '<div class="row">' +
+                            '<div class="col-25">委托日期:</div>' +
+                            '<div class="col-33" style="width:35%;margin-left:0rem;"><input type="text" id="submitdatestart" placeholder="起始"/></div>' +
+                            '<div class="col-33" style="width:36%;margin-left:0rem;"><input type="text" id="submitdateend" placeholder="结束"/></div>' +
+                        '</div>' +
+                        '<div style="margin-top:.5rem;" class="row">' +
+                            '<div class="col-20" ><a href="#" id="btn_more_cancel" class="button">取消</a></div>' +
+                            '<div class="col-60" style="width:59.99%; margin-left:0rem;"><a href="#" id="btn_more_sure" style="background-color: #3d4145;" class="button">确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;认</a></div>' +
+                            '<div class="col-20" style="margin-left:0rem;"><a href="#" id="btn_more_reset" class="button">重置</a></div>' +
+                        '</div>' +
+                    '</div>',
+            extraClass: 'moredivmyorder'//避免直接设置.modal的样式，从而影响其他toast的提示
+        });
+
+        //绑定labtitle事件
+        $("#busi_in .labtitle").click(function () {
+            $(this).toggleClass("labhover");
+            if ($(this).css("color") == "rgb(0, 0, 255)") {
+                $("#busi_in .labcontent").each(function () {
+                    $(this).addClass("labhover");
+                })
+            }
+            else {
+                $("#busi_in .labcontent").each(function () {
+                    $(this).removeClass("labhover");
+                })
+            }
+        });
+        $("#busi_out .labtitle").click(function () {
+            $(this).toggleClass("labhover");
+            if ($(this).css("color") == "rgb(0, 0, 255)") {
+                $("#busi_out .labcontent").each(function () {
+                    $(this).addClass("labhover");
+                })
+            }
+            else {
+                $("#busi_out .labcontent").each(function () {
+                    $(this).removeClass("labhover");
+                })
+            }
+        });
+        //绑定labcontent事件
+        $("#busi_in .labcontent").click(function () {
+            $(this).toggleClass("labhover");
+            var flag = true;
+            $("#busi_in .labcontent").each(function () {
+                if ($(this).css("color") != "rgb(0, 0, 255)") {
+                    flag = false;
+                    return;
+                }
+            })
+            if (flag) {
+                $("#busi_in .labtitle").addClass("labhover");
+            }
+            else {
+                $("#busi_in .labtitle").removeClass("labhover");
+            }
+        });
+        $("#busi_out .labcontent").click(function () {
+            $(this).toggleClass("labhover");
+            var flag = true;
+            $("#busi_out .labcontent").each(function () {
+                if ($(this).css("color") != "rgb(0, 0, 255)") {
+                    flag = false;
+                    return;
+                }
+            })
+            if (flag) {
+                $("#busi_out .labtitle").addClass("labhover");
+            }
+            else {
+                $("#busi_out .labtitle").removeClass("labhover");
+            }
+        });
+        $("#busi_other .labcontent").click(function () {
+            $(this).toggleClass("labhover");
+        });
+        
+
+        //----------------------------------------------------------------------------------------------------------------------赋值
+        if ($("#txt_busitype").val() != "") {
+            $("#busitype .labcontent").each(function () {
+                if ($("#txt_busitype").val().replace(getbusitypeid($(this).html()), "") != $("#txt_busitype").val()) {
+                    $(this).addClass("labhover");
+                }
+            });
+
+            var inall = true;
+            $("#busi_in .labcontent").each(function () {
+                if ($(this).css("color") != "rgb(0, 0, 255)") { inall = false; }
+            });
+            if (inall) { $("#busi_in .labtitle").addClass("labhover"); }
+
+            var outall = true;
+            $("#busi_out .labcontent").each(function () {
+                if ($(this).css("color") != "rgb(0, 0, 255)") { outall = false; }
+            });
+            if (outall) { $("#busi_out .labtitle").addClass("labhover"); }
+        }
+
+       
+
+        $("#ordercode").val($("#txt_ordercode").val());
+        $("#cusno").val($("#txt_cusno").val());
+        $("#divideno").val($("#txt_divideno").val());
+        $("#contractno").val($("#txt_contractno").val());
+
+
+
+
+
+        if ($("#txt_submittime_s").val() != "" || $("#txt_submittime_e").val() != "") {
+
+            if ($("#txt_submittime_s").val() != "") {
+                $("#submitdatestart").val($("#txt_submittime_s").val());
+                $("#submitdatestart").calendar({ value: [$("#txt_submittime_s").val()] });
+            }
+            if ($("#txt_submittime_e").val() != "") {
+                $("#submitdateend").val($("#txt_submittime_e").val());
+                $("#submitdateend").calendar({ value: [$("#txt_submittime_e").val()] });
+            }
+
+        } else {
+
+            $("#submitdatestart").val("");
+            $("#submitdatestart").calendar({});
+
+            $("#submitdateend").val("");
+            $("#submitdateend").calendar({});
+
+        }
+
+        //----------------------------------------------------------------------------------------------------------------------按钮事件
+
+        $("#btn_more_cancel").click(function () {
+            $.closeModal(".moredivmyorder");
+        });
+
+        $("#btn_more_sure").click(function () {
+            var busitypeid = "";
+            $("#busitype .labcontent").each(function () {
+                if ($(this).css("color") == "rgb(0, 0, 255)") {
+                    busitypeid = busitypeid + "'" + getbusitypeid($(this).html()) + "',";
+                }
+            });
+            if (busitypeid != "") {
+                busitypeid = busitypeid.substr(0, busitypeid.length - 1);
+            }
+
+           
+
+            $("#txt_busitype").val(busitypeid);
+
+            $("#txt_ordercode").val($("#ordercode").val());
+            $("#txt_cusno").val($("#cusno").val());
+            $("#txt_divideno").val($("#divideno").val());
+            $("#txt_contractno").val($("#contractno").val());
+            $("#txt_submittime_s").val($("#submitdatestart").val());
+            $("#txt_submittime_e").val($("#submitdateend").val());
+
+            $.closeModal(".moredivmyorder");
+        });
+
+        $("#btn_more_reset").click(function () {
+            $("#txt_submittime_s").val(""); $("#txt_submittime_e").val("");
+            $("#txt_submittime_s").calendar({}); $("#txt_submittime_e").calendar({});//否则之前选的那天  不能再次选中
+
+            $("#txt_declcode").val(""); $("#txt_customareacode").val("");
+            $("#picker_is_pass").picker("setValue", ["全部"]); $("#picker_ischeck").picker("setValue", ["全部"]);
+
+            $("#txt_busitype").val("");
+
+            $(".labcontent").each(function () { $(this).removeClass("labhover"); });
+            $(".labtitle").each(function () { $(this).removeClass("labhover"); });
+
+            $("#txt_ordercode").val(""); $("#ordercode").val("");
+            $("#txt_cusno").val(""); $("#cusno").val("");
+            $("#txt_divideno").val(""); $("#divideno").val("");
+            $("#txt_contractno").val(""); $("#contractno").val("");
+            $("#txt_submittime_s").val(""); $("#submitdatestart").val(""); $("#submitdatestart").calendar({});
+            $("#txt_submittime_e").val(""); $("#submitdateend").val(""); $("#submitdateend").calendar({});
+
+            $.closeModal(".moredivmyorder");
+        });
+    });
+}
 
