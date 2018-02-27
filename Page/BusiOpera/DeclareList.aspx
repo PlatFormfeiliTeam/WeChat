@@ -49,6 +49,10 @@
         {
            width: 100%;
         }
+         /************************************************ *********************************/
+        .filediv .modal-title{
+            font-weight:800;
+        }
          /************************************************ 查询列表名称*********************************/
         .girdnamediv {
             width: 98%;
@@ -302,6 +306,12 @@
 
             //删改单维护
             $("#ModifyEdit_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔删改单记录");
+                    return;
+                }
+
                 var predelcode = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
@@ -309,10 +319,10 @@
                         //alert($(this).children("ul").children().eq(2).children("div").children().eq(2).text());
                     }
                 });
-                if (predelcode == "") {
-                    $.toast("请选择需要维护的记录");
-                    return;
-                }
+                //if (predelcode == "") {
+                //    $.toast("请选择需要维护的记录");
+                //    return;
+                //}
 
                 var buttons1 = [
                     {
@@ -348,16 +358,22 @@
 
             //关联报关单查询
             $("#Ass_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔关联报关单记录");
+                    return;
+                }
+
                 var predelcode = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         predelcode = $(this)[0].id;
                     }
                 });
-                if (predelcode == "") {
-                    $.toast("请选择需要关联的记录");
-                    return;
-                }
+                //if (predelcode == "") {
+                //    $.toast("请选择需要关联的记录");
+                //    return;
+                //}
 
                 var busitypename_con = $("#div_list #" + predelcode).children("ul").children().eq(0).children("div").children().eq(1).text();
                 if (busitypename_con != "国内出口" && busitypename_con != "国内进口") {
@@ -494,59 +510,123 @@
 
             });
 
-            //报关单调阅
+            //文件调阅
             $("#FileConsult_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔文件调阅记录");
+                    return;
+                }
+
                 var predelcode = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         predelcode = $(this)[0].id;
                     }
                 });
-                if (predelcode == "") {
-                    $.toast("请选择需要调阅的记录");
-                    return;
-                }
+                //if (predelcode == "") {
+                //    $.toast("请选择需要调阅的记录");
+                //    return;
+                //}
 
-                $.ajax({
-                    type: "post", //要用post方式                 
-                    url: "DeclareList.aspx/FileConsult",//方法所在页面和方法名
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: "{'predelcode':'" + predelcode + "'}",
-                    cache: false,
-                    async: false,
-                    success: function (data) {
-                        if (data.d == "") {
-                            $.toast("报关单文件不存在");
-                            return;
+                $.modal({
+                    title: '文件调阅',
+                    text: '<div class="content-block row" style="margin:1rem 0;">' +
+                                '<div class="col-25"><a href="#" id="filecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                                '<div class="col-40" style="margin-left:0;"><a href="#" id="filedecl" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">报关文件</a></div>' +
+                                '<div class="col-40" style="margin-left:0;"><a href="#" id="filecheck" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">查验文件</a></div>' +
+                            '</div>',
+                    extraClass: 'filediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $("#filecancel").click(function () {
+                    $.closeModal(".filediv");
+                });
+
+                $("#filedecl").click(function () {
+                    $.closeModal(".filediv");
+
+                    $.ajax({
+                        type: "post", //要用post方式                 
+                        url: "DeclareList.aspx/FileConsult",//方法所在页面和方法名
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: "{'predelcode':'" + predelcode + "'}",
+                        cache: false,
+                        async: false,
+                        success: function (data) {
+                            if (data.d == "") {
+                                $.toast("报关单文件不存在");
+                                return;
+                            }
+
+                            var picstr = data.d;
+                            var picarr = picstr.split(',');
+
+                            var imgs = "[";
+                            for (var i = 0; i < picarr.length; i++) {
+                                if (picarr[i] != "") { imgs += "'/TempFile/tempPic/" + picarr[i] + "',"; }
+                            }
+                            imgs += "]";
+
+                            var myPhotoBrowserStandalone = $.photoBrowser({
+                                photos: eval(imgs)
+                            });
+                            myPhotoBrowserStandalone.open();
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                            //alert(XMLHttpRequest.status);
+                            //alert(XMLHttpRequest.readyState);
+                            //alert(textStatus);
+                            alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
                         }
+                    });
 
-                        var picstr = data.d;
-                        var picarr = picstr.split(',');
+                });
 
-                        var imgs = "[";
-                        for (var i = 0; i < picarr.length; i++) {
-                            if (picarr[i] != "") { imgs += "'/TempFile/tempPic/" + picarr[i] + "',"; }
+                $("#filecheck").click(function () {
+                    $.closeModal(".filediv");
+
+                    $.ajax({
+                        type: "post", //要用post方式                 
+                        url: "DeclareList.aspx/picfileconsult",//方法所在页面和方法名
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: "{'predelcode':'" + predelcode + "'}",
+                        cache: false,
+                        async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                        success: function (data) {
+                            var obj = eval("(" + data.d + ")");//将字符串转为json
+
+                            if (obj.length <= 0) {
+                                $.toast("没有查验图片");
+                                return;
+                            }
+
+                            var imgs = "[";
+                            for (var i = 0; i < obj.length; i++) {
+                                imgs += "'" + $("#hd_AdminUrl").val() + "file/" + obj[i]["FILENAME"] + "',";
+                            }
+                            imgs += "]";
+
+                            var myPhotoBrowserStandalone = $.photoBrowser({
+                                photos: eval(imgs)
+                            });
+                            myPhotoBrowserStandalone.open();
                         }
-                        imgs += "]";
-
-                        var myPhotoBrowserStandalone = $.photoBrowser({
-                            photos: eval(imgs)
-                        });
-                        myPhotoBrowserStandalone.open();
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
-                        //alert(XMLHttpRequest.status);
-                        //alert(XMLHttpRequest.readyState);
-                        //alert(textStatus);
-                        alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
-                    }
+                    });
                 });
 
             });
 
             //报关订阅
             $("#Subs_decl_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔报关订阅记录");
+                    return;
+                }
+
                 var predeclcode = ""; var div_ordercode = ""; var declcode = ""; var cusno = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
@@ -557,10 +637,10 @@
                         cusno = $(this).children("ul").children().eq(3).children("div").children().eq(1).text();
                     }
                 });
-                if (predeclcode == "") {
-                    $.toast("请选择需要订阅的记录");
-                    return;
-                }
+                //if (predeclcode == "") {
+                //    $.toast("请选择需要订阅的记录");
+                //    return;
+                //}
                 $.popup("#popup-subscribe-decl");
 
                 $(document).on('open', '#popup-subscribe-decl', function () {
@@ -844,7 +924,7 @@
             <nav class="bar bar-tab">
                 <a class="tab-item external" href="#" id="Ass_a"><%--active--%>
                     <span class="icon icon-menu"></span>
-                    <span class="tab-label">关联报关单信息</span>
+                    <span class="tab-label">关联报关单</span>
                 </a>
                 <a class="tab-item external" href="#" id="ModifyEdit_a">
                     <span class="icon icon-edit"></span>
@@ -853,7 +933,7 @@
                 </a>
                 <a class="tab-item external" href="#" id="FileConsult_a">
                     <span class="icon icon-message"></span>
-                    <span class="tab-label">报关单调阅</span>
+                    <span class="tab-label">文件调阅<input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' /></span>
                 </a>
                 <a class="tab-item external" href="#" id="Subs_decl_a">
                     <span class="icon icon-card"></span>

@@ -73,7 +73,7 @@ namespace WeChat.Page.BusiOpera
             DataSet ds = Declare.getDeclareInfo(reptime_s, reptime_e, declcode, customsstatus, getcode("modifyflag", modifyflag), busitype, ischeck
                 , ischeck, busiunit, ordercode, cusno, tradeway, contractno, blno
                 , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
-                , start, itemsPerLoad, user.CustomerCode);
+                , start, itemsPerLoad, user.CustomerCode);//
             var json = "[{\"data\":" + JsonConvert.SerializeObject(ds.Tables[0], iso) + ",\"sum\":" + ds.Tables[1].Rows[0][0] + "}]";
             return json;
         }
@@ -150,6 +150,15 @@ namespace WeChat.Page.BusiOpera
                     }
                 }
             }
+            return json;
+        }
+
+        //查验调阅
+        [WebMethod]
+        public static string picfileconsult(string predelcode)
+        {
+            DataTable dt = Declare.picfileconsult(predelcode);
+            var json = JsonConvert.SerializeObject(dt);
             return json;
         }
 

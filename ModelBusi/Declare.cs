@@ -13,7 +13,7 @@ namespace WeChat.ModelBusi
         public static DataSet getDeclareInfo(string reptime_s, string reptime_e, string declcode, string customsstatus, string modifyflag, string busitype, string ischeck
             , string ispass, string busiunit, string ordercode, string cusno, string tradeway, string contractno, string blno
             , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
-            , int start, int itemsPerLoad, string customercode)
+            , int start, int itemsPerLoad, string customercode)//
         {
             DataSet ds = new DataSet();
             using (DBSession db = new DBSession())
@@ -282,6 +282,17 @@ namespace WeChat.ModelBusi
                 DataTable dt = db.QuerySignle(sql);
                 return dt;
             }
+        }
+
+        public static DataTable picfileconsult(string predelcode)
+        {
+            DataTable dt = new DataTable();
+            using (DBSession db = new DBSession())
+            {
+                string sql = "select filename from list_attachment where filetype=67 and ordercode=(select ordercode from list_declaration where code='" + predelcode + "')";
+                dt = db.QuerySignle(sql);
+            }
+            return dt;
         }
 
     }
