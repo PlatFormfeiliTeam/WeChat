@@ -685,6 +685,11 @@
                 });
             });
 
+            //订阅清单
+            $("#Subscribe_decl_a").click(function () {
+                window.location.href = "NewSubscribeList_decl.aspx";
+            });
+
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
             function loaddata(itemsPerLoad, lastIndex) {
@@ -938,6 +943,10 @@
                 <a class="tab-item external" href="#" id="Subs_decl_a">
                     <span class="icon icon-card"></span>
                     <span class="tab-label">报关订阅</span>
+                </a>
+                <a class="tab-item " href="#" id="Subscribe_decl_a"> 
+                    <span class="icon icon-menu"></span>
+                    <span class="tab-label">订阅清单</span>
                 </a>
             </nav>
 

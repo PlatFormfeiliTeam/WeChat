@@ -665,6 +665,7 @@
                                  '<div class="content">' +//data-type='native'                                                                               
                                         strconHTML +
                                         '<div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
+                                        //'<div class="content-block"><a href="#" class="close-popup button button-fill" style="background-color: #3d4145;border-radius:0;color:white;border:0;">返回</a></div>' +
                                  '</div>' +
                              '</div>';
                 $.popup(popupHTML);
@@ -748,8 +749,10 @@
 
                 strconHTML += '<div class="list-block" style="margin:0; margin-top:2rem;margin-buttom:2rem;margin-left:4%;margin-right:4%;line-height:1.5rem;font-size:.7rem">' +
                                     '<div class="row"> ' +
-                                           '<div class="col-50"><a href="#" class="close-popup button button-fill button-danger">返回</div>' +
-                                           '<div class="col-50"><a href="#" id="check_audit_save" class="button button-fill">保存</a></div>' +
+                                           //'<div class="col-50"><a href="#" class="close-popup button button-fill button-danger">返回</div>' +
+                                           //'<div class="col-50"><a href="#" id="check_audit_save" class="button button-fill">保存</a></div>' +
+                                            '<div class="col-50"><a href="#" class="close-popup button button-fill"  style="background-color: gray;border-radius:0;color:white;border:0;">返回</div>' +
+                                           '<div class="col-50" style="margin-left:0rem;"><a href="#" id="check_audit_save" class="button button-fill"  style="background-color: #3d4145;border-radius:0;color:white;border:0;">保存</a></div>' +
                                     '</div>' +
                                     '<div class="row"> ' +
                                         '<div class="col-33">订单编号：</div>' +
@@ -1173,6 +1176,11 @@
                     }
                 });
 
+            });
+
+            //订阅清单
+            $("#Subscribe_a").click(function () {
+                window.location.href = "NewSubscribeList_busi.aspx";
             });
 
             $.init();
