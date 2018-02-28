@@ -40,7 +40,7 @@ namespace WeChat.ModelBusi
                                             to_char(lo.lawflag) as lawflag,to_char(lo.inspischeck) as inspischeck,lo.logisticsstatus,lo.logisticsname,lo.customareacode,'' as sum 
                                             from list_order lo left join list_declaration ld on lo.code=ld.ordercode  {0} order by lo.submittime desc) tab 
                                             where rownum<={1}) t1 
-                                    where t1.rown>{2}）
+                                    where t1.rown>{2})
                                     select nt.*,sb.name as busitypename,sr.name as repwayname from newtab nt 
                                     left join cusdoc.sys_busitype sb on nt.busitype=sb.code 
                                     left join cusdoc.sys_repway sr on nt.repwayid=sr.code";

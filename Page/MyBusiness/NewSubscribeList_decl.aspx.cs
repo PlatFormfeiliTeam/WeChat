@@ -26,13 +26,13 @@ namespace WeChat.Page.MyBusiness
             string cusno, string contract, string submitstart, string submitend, int pagesize, int lastnum)
         {
             string sum = "0";
-            //WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
-            //if (user == null || user.GwyUserID <= 0)
-            //    return "";
-            //DataTable infodt = SubscribeModel.getNewSubscribeInfo_Decl(subscribestart, subscribeend, declarationcode, istrigger, busitype, busiunit, ordercode, cusno, contract, 
-            //    submitstart, submitend, pagesize, lastnum, user.GwyUserID);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || user.GwyUserID <= 0)
+                return "";
             DataTable infodt = SubscribeModel.getNewSubscribeInfo_Decl(subscribestart, subscribeend, declarationcode, istrigger, busitype, busiunit, ordercode, cusno, contract,
-                submitstart, submitend, pagesize, lastnum, 1124, out sum);
+                submitstart, submitend, pagesize, lastnum, user.GwyUserID, out sum);
+            //DataTable infodt = SubscribeModel.getNewSubscribeInfo_Decl(subscribestart, subscribeend, declarationcode, istrigger, busitype, busiunit, ordercode, cusno, contract,
+            //    submitstart, submitend, pagesize, lastnum, 1124, out sum);
             if (infodt == null || infodt.Rows.Count == 0)
                 return "";
             try
