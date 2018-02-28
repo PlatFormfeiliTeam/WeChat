@@ -25,9 +25,10 @@ namespace WeChat.ModelBusi
         /// <returns></returns>
         public DataTable getOrder(string submittime_s, string submittime_e, string declarationcode, string customarea, string ispass, string ischeck, string busitype,
             string modifyflag, string auditflag, string busiunit, string ordercode, string cusno, string divideno, string contractno, string passtime_s, string passtime_e,
-            int itemsperLoad, int lastIndex, string customerCode,string hscode)
+            int itemsperLoad, int lastIndex, string customerCode,string hscode, out string sum)
         {
             DataTable dt = new DataTable();
+            sum = "0";
             try
             {
                 using (DBSession db = new DBSession())
@@ -36,7 +37,7 @@ namespace WeChat.ModelBusi
                                     ( select * from ( select rownum as rown ,tab.* from 
                                             (select lo.code,lo.submittime,lo.busiunitname,lo.busitype,lo.cusno,lo.divideno,lo.repwayid,lo.contractno,lo.goodsnum,lo.goodsgw,
                                             to_char(lo.ischeck) as ischeck,to_char(lo.checkpic) as checkpic,to_char(lo.declstatus) as declstatus,to_char(lo.inspstatus) as inspstatus,
-                                            to_char(lo.lawflag) as lawflag,to_char(lo.inspischeck) as inspischeck,lo.logisticsstatus,lo.logisticsname,lo.customareacode 
+                                            to_char(lo.lawflag) as lawflag,to_char(lo.inspischeck) as inspischeck,lo.logisticsstatus,lo.logisticsname,lo.customareacode,'' as sum 
                                             from list_order lo left join list_declaration ld on lo.code=ld.ordercode  {0} order by lo.submittime desc) tab 
                                             where rownum<={1}) t1 
                                     where t1.rown>{2}）
@@ -93,9 +94,13 @@ namespace WeChat.ModelBusi
                     {
                         strWhere += " and lo.busiunitcode='" + hscode + "'";
                     }
+
+                    string sumSql = @"select count(1) from list_order lo left join list_declaration ld on lo.code=ld.ordercode  {0}";
+                    DataTable sdt = db.QuerySignle(string.Format(sumSql, strWhere));
+                    if (sdt != null && sdt.Rows.Count > 0) sum = sdt.Rows[0][0].ToString2();
+
                     sql = string.Format(sql, strWhere, lastIndex + itemsperLoad, lastIndex);
                     dt = db.QuerySignle(sql);
-                   
                 }
             }
             catch(Exception ex)

@@ -29,37 +29,6 @@
 				"url":"http://gwy.jishiks.com/Page/FrequentSearch/HsCodeList.aspx"
 			}]
       },
-      {
-			
-		   "name":"我的业务",
-           "sub_button":[
-           {	
-               "type":"view",
-               "name":"详细界面",
-               "url":"http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx"
-            },
-           {	
-               "type":"view",
-               "name":"报关单调阅",
-               "url":"http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx"
-            },
-			
-            {
-               "type":"view",
-			   "name":"查验图片",
-			   "url":"http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx"
-            },
-			{	
-               "type":"view",
-               "name":"业务订阅",
-               "url":"http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_busi.aspx"
-            },
-			{	
-               "type":"view",
-               "name":"报关单订阅",
-               "url":"http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_decl.aspx"
-            }]
-       },
 	   {
            "name":"业务操作",
            "sub_button":[
@@ -82,6 +51,26 @@
                "type":"view",
                "name":"报检单查询",
                "url":"http://gwy.jishiks.com/Page/BusiOpera/InspectionList.aspx"
+            }]
+       },
+      {
+			
+		   "name":"我的业务",
+           "sub_button":[
+           {	
+               "type":"view",
+               "name":"我的订单",
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"我的报关单",
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_busi.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"我的报检单",
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_decl.aspx"
             },
 			{
 				"type":"click",

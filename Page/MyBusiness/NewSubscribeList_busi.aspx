@@ -29,13 +29,13 @@
         }
         .bar-nav
         {
-            height:5rem;
+            height:5.5rem;
         }
         .bar-nav ~ .content {
-            top: 5rem;
+            top: 5.5rem;
         }
         .list-block {
-            margin: 0.25rem 0;
+            margin:0;
         }
         .list-block .item-inner {
             padding-right:0.25rem;
@@ -196,7 +196,7 @@
                     "','divideno':'" + $("#txt_divideno").val() +
                     "','contract':'" + $("#txt_contractno").val() +
                     "','submitstart':'" + $("#txt_submittime_s").val() +
-                    "','sumitend':'" + $("#txt_submittime_e").val() +
+                    "','submitend':'" + $("#txt_submittime_e").val() +
                     "','pagesize':" + pagesize +
                     ",'lastnum':" + lastnum +
                     "}",
@@ -208,6 +208,7 @@
                     var obj = eval("(" + data.d + ")"); //将字符串转为json
                     for (var i = 0; i < obj.length; i++) {
                         var obj = eval("(" + data.d + ")"); //将字符串转为json
+                        $("#span_sum").text(obj[0]["SUM"]);
                         var str = '<div class="list-block" id="' +
                             obj[i]["CUSNO"] +
                             '">' +
@@ -382,7 +383,7 @@
   <div class="page-group">
         <div id="page-infinite-scroll-bottom" class="page page-current">
             <%--search --%>
-            <header class="bar bar-nav" style="height:5rem;"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
+            <header class="bar bar-nav"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
                 <div class="search-input">                    
                     <div class="row"> 
                         <div class="col-33" style="width:20%;font-size:13px;margin-top:.3rem;">订阅时间:</div>
@@ -409,6 +410,11 @@
                     <input type="hidden" id='txt_submittime_s'/>
                     <input type="hidden" id='txt_submittime_e'/>                   
                 </div>  
+                <div id="div_tbar" style="font-size:13px;margin:.2rem 0;">
+                    <span style="color:#929292">共计</span>
+                    <span id="span_sum">0</span>
+                    <span style="color:#929292">笔</span>
+                </div>
             </header>
             
              <!-- 这里是页面内容区 -->
