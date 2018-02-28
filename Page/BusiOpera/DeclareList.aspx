@@ -687,7 +687,7 @@
 
             //订阅清单
             $("#Subscribe_decl_a").click(function () {
-                window.location.href = "NewSubscribeList_decl.aspx";
+                window.location.href = "/Page/MyBusiness/NewSubscribeList_decl.aspx";
             });
 
             $.init();

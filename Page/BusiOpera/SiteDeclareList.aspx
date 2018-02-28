@@ -1180,7 +1180,7 @@
 
             //订阅清单
             $("#Subscribe_a").click(function () {
-                window.location.href = "NewSubscribeList_busi.aspx";
+                window.location.href = "/Page/MyBusiness/NewSubscribeList_busi.aspx";
             });
 
             $.init();
