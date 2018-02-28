@@ -295,5 +295,98 @@ namespace WeChat.ModelBusi
             return dt;
         }
 
+
+        public static DataSet getDeclareInfo_my(string reptime_s, string reptime_e, string declcode, string customsstatus, string modifyflag, string busitype, string ischeck
+           , string ispass, string busiunit, string ordercode, string cusno, string tradeway, string contractno, string blno
+           , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
+           , int start, int itemsPerLoad, string customerCode, string hscode)//
+        {
+            DataSet ds = new DataSet();
+            using (DBSession db = new DBSession())
+            {
+                string where = "";
+                if (!string.IsNullOrEmpty(reptime_s)) { where += " and lda.reptime>=to_date('" + reptime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(reptime_e)) { where += " and lda.reptime<=to_date('" + reptime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(declcode)) { where += " and lda.declarationcode like '%" + declcode + "%'"; }
+                if (!string.IsNullOrEmpty(customsstatus))
+                {
+                    if (customsstatus == "已结关") { where += " and det.CUSTOMSSTATUS='已结关'"; }
+                    if (customsstatus == "未结关") { where += " and det.CUSTOMSSTATUS!='已结关' and det.CUSTOMSSTATUS!='删单或异常'"; }
+                }
+                if (!string.IsNullOrEmpty(modifyflag)) { where += " and det.modifyflag='" + modifyflag + "'"; }
+                if (!string.IsNullOrEmpty(busitype)) { where += " and ort.busitype in (" + busitype + ")"; }
+                if (!string.IsNullOrEmpty(ischeck))
+                {
+                    if (ispass == "查验") { where += " and ort.ischeck=1"; }
+                    if (ispass == "未查验") { where += " and ort.ischeck=0"; }
+                }
+                if (!string.IsNullOrEmpty(ispass))
+                {
+                    if (ispass == "放行") { where += " and ort.declstatus=" + (int)DeclStatusEnum.SitePass; }
+                    if (ispass == "未放行") { where += " and ort.declstatus<" + (int)DeclStatusEnum.SitePass; }
+                }
+                if (!string.IsNullOrEmpty(busiunit)) { where += " and (lda.BUSIUNITCODE like '%" + busiunit + "%' or lda.BUSIUNITNAME like '%" + busiunit + "%')"; }
+                if (!string.IsNullOrEmpty(ordercode)) { where += " and det.ORDERCODE like '%" + ordercode + "%'"; }
+                if (!string.IsNullOrEmpty(cusno)) { where += " and ort.CUSNO like '%" + cusno + "%'"; }
+                if (!string.IsNullOrEmpty(tradeway)) { where += " and lda.trademethod like '%" + tradeway + "%'"; }
+                if (!string.IsNullOrEmpty(contractno)) { where += " and ort.CONTRACTNO like '%" + contractno + "%'"; }
+                if (!string.IsNullOrEmpty(blno)) { where += " and lda.BLNO like '%" + blno + "%'"; }
+
+                if (!string.IsNullOrEmpty(submittime_s)) { where += " and ort.submittime>=to_date('" + submittime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(submittime_e)) { where += " and ort.submittime<=to_date('" + submittime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(sitepasstime_s)) { where += " and ort.sitepasstime>=to_date('" + sitepasstime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
+                if (!string.IsNullOrEmpty(sitepasstime_e)) { where += " and ort.sitepasstime<=to_date('" + sitepasstime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
+
+                //当前登录用户权限控制
+                if (!string.IsNullOrEmpty(customerCode) && !string.IsNullOrEmpty(hscode))
+                {
+                    where += " and (lo.busiunitcode='" + hscode + "' or lo.customercode='" + customerCode + "')";
+                }
+                else if (!string.IsNullOrEmpty(customerCode))
+                {
+                    where += " and lo.customercode='" + customerCode + "'";
+                }
+                else if (!string.IsNullOrEmpty(hscode))
+                {
+                    where += " and lo.busiunitcode='" + hscode + "'";
+                }
+
+                string tempsql = @"select det.code,det.modifyflag,det.CUSTOMSSTATUS
+                                    ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,lda.reptime
+                                    ,lda.GOODSNUM,lda.GOODSGW
+                                    ,ort.busitype,ort.cusno,ort.code ordercode
+                                from list_declaration det     
+                                    left join list_order ort on det.ordercode = ort.code 
+                                    left join list_declaration_after lda on det.code=lda.code and lda.csid=1
+                                    left join (select ordercode from list_declaration ld where ld.isinvalid=0 and ld.STATUS!=130 and ld.STATUS!=110) a on det.ordercode=a.ordercode
+                                    left join list_verification lv on lda.declarationcode=lv.declarationcode ";
+
+                if (busitype.Contains("'40'") || busitype.Contains("'41'"))//国内业务
+                {
+                    tempsql += @" left join (
+                                                  select ASSOCIATENO from list_order l inner join list_declaration i on l.code=i.ordercode 
+                                                  where l.ASSOCIATENO is not null and l.isinvalid=0 and i.isinvalid=0 and (i.STATUS!=130 and i.STATUS!=110)          
+                                                  ) b on ort.ASSOCIATENO=b.ASSOCIATENO";
+                }
+
+                tempsql += @" where (det.STATUS=130 or det.STATUS=110) and det.isinvalid=0 and ort.isinvalid=0" + where
+                                + @" and a.ordercode is null";
+
+                if (busitype.Contains("'40'") || busitype.Contains("'41'"))//国内业务
+                {
+                    tempsql += @" and b.ASSOCIATENO is null";
+                }
+
+                string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
+                string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);
+                DataTable dt = db.QuerySignle(sql);
+                ds.Tables.Add(dt);
+
+                string sql_count = @"select count(1) sum from (" + tempsql + ") a";
+                DataTable dt_count = db.QuerySignle(sql_count);
+                ds.Tables.Add(dt_count);
+            }
+            return ds;
+        }
     }
 }
