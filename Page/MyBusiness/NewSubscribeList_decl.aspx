@@ -72,6 +72,12 @@
         #page-infinite-scroll-bottom .search-input input{
             border-radius:0;font-size:13px;
         }
+        .modal
+        {
+            width:17.6rem;
+            margin-left:-8.75rem;
+            top:10%;
+        }
 
     </style>
     <script type="text/javascript">
@@ -270,9 +276,9 @@
                             '</li>' +
                             '<li class="item-content">' +
                             '<div class="item-inner">' +
-                            '<div class="my-title">订阅状态</div>' +
-                            '<div class="my-after"></div>' +
-                            '<div class="my-after"></div>' +
+                            '<div class="my-title">推送时间</div>' +
+                            '<div class="my-after">订阅状态</div>' +
+                            '<div class="my-after">删除</div>' +
                             '</div>' +
                             '</li>' +
                             '</ul>' +

@@ -121,9 +121,13 @@
             line-height:2rem;
             padding-left:4%;
         }
-        .modal-inner {
-            padding: 0.25rem;
+        .modal
+        {
+            width:17.6rem;
+            margin-left:-8.75rem;
+            top:14%;
         }
+        
         /*----------------------------*/
         #page-infinite-scroll-bottom .search-input input{
             border-radius:0;font-size:13px;
