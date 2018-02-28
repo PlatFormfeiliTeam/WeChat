@@ -52,7 +52,7 @@
         }
         
         .list-block {
-            margin: 0;
+            margin: 0.2rem 0 0 0;
         }
         .list-block .item-inner {
             padding-right:0.25rem;
@@ -121,7 +121,7 @@
             line-height:2rem;
             padding-left:4%;
         }
-        .modal
+        .girdnamediv  
         {
             width:17.6rem;
             margin-left:-8.75rem;

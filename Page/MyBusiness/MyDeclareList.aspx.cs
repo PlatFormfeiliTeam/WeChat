@@ -22,36 +22,36 @@ namespace WeChat.Page.BusiOpera
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
-            ////如果当前用户未登陆，先获取授权
-            //if (user == null)
-            //{
-            //    WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
-            //    if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
-            //    {//授权成功
-            //        LogHelper.Write("第9步：" + userInfo.OpenID);
-            //        WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
-            //        if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
-            //        {//账号未关联，跳转至登录界面
-            //            LogHelper.Write("第10步：" + userInfo.OpenID);
-            //            System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
-            //        }
-            //        else if (wuser.IsReceiver != 1)
-            //        {//不是接单单位，无此权限
-            //            LogHelper.Write("第11步：" + userInfo.OpenID);
-            //            System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
-            //        }
-            //        else
-            //        {//不需登录，保存当前用户
-            //            HttpContext.Current.Session["user"] = wuser;
-            //        }
-            //        LogHelper.Write("第12步：" + wuser.WCOpenID);
-            //    }
-            //    else
-            //    {//获取授权失败，也跳转至登录页面
-            //        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
-            //    }
-            //}
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            //如果当前用户未登陆，先获取授权
+            if (user == null)
+            {
+                WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+                if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
+                {//授权成功
+                    LogHelper.Write("第9步：" + userInfo.OpenID);
+                    WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
+                    if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
+                    {//账号未关联，跳转至登录界面
+                        LogHelper.Write("第10步：" + userInfo.OpenID);
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
+                    }
+                    else if (wuser.IsReceiver != 1)
+                    {//不是接单单位，无此权限
+                        LogHelper.Write("第11步：" + userInfo.OpenID);
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
+                    }
+                    else
+                    {//不需登录，保存当前用户
+                        HttpContext.Current.Session["user"] = wuser;
+                    }
+                    LogHelper.Write("第12步：" + wuser.WCOpenID);
+                }
+                else
+                {//获取授权失败，也跳转至登录页面
+                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
+                }
+            }
         }
 
         //微信接口js-sdk config
@@ -71,9 +71,7 @@ namespace WeChat.Page.BusiOpera
             WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
             if (user == null || string.IsNullOrEmpty(user.CustomerCode))
             {
-                //return "[]";
-                user = new WGUserEn();
-                user.CustomerCode = "3223980001";
+                return "[]";
             }
             string customerCode = user.CustomerCode;
             string hsCode = user.HSCode;
