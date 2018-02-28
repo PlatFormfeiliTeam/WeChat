@@ -182,6 +182,70 @@
         .moredivsiteinsp .modal-inner .list-block:first-child label .item-inner{
            margin-left:.2rem;padding-right:2px;
         }
+
+/**********************************************************************************************************************************************************/
+        .moredivinsp .row{
+            font-size:small;
+            margin-top:.1rem;
+        }
+        .moredivinsp .row .col-25
+        {
+            text-align: left;
+        }
+        .moredivinsp .button
+        {
+            border-radius:0;
+            background-color:gray;
+            color:white;
+            border:0;
+            vertical-align:middle;
+            padding-top: 0.1rem;
+        }
+        .moredivinsp .labtitle 
+        {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .moredivinsp .labcontent
+        {
+            cursor:pointer;
+        }
+        .moredivinsp .labhover
+        {
+            color:blue;
+        }
+        .moredivinsp input{
+            width:100%; border-radius:0;
+        }
+
+        .moredivinsp{
+            width: 94%;
+            left: 3%;
+            margin-left: 0px;
+            top: 13.9rem; position:fixed;
+        }        
+        .moredivinsp .modal-inner{
+            height:17rem;border-radius:0;
+        }
+
+        /* 更多查询 第一个ul 样式*/
+        .moredivinsp .modal-inner .list-block:first-child ul:first-child li{
+          float:left; width:25%;
+        }
+        .moredivinsp .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
+            width:.8rem;height:.8rem;
+        }
+        .moredivinsp .modal-inner .list-block:first-child .item-text{
+            height:1.1rem;font-size:.62rem;
+        }
+        .moredivinsp .modal-inner .list-block:first-child label{
+          padding-left:0px;
+        }
+        .moredivinsp .modal-inner .list-block:first-child label .item-inner{
+           margin-left:.2rem;padding-right:2px;
+        }
+
+
         /**********************************************************************************************************************************************************/
 .moredivmyorder .row{
             font-size:small;

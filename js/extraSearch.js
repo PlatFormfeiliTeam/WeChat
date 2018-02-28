@@ -992,7 +992,7 @@ function initSerach_inspection() {
                             '<div id="flag_unpass" class="col-25 labcontent">未放行</div>' +
                         '</div>' +
                         '<div id="otherflag2" class="row">' +
-                            '<div id="flag_law" class="col-25 labcontent">法检业务</div>' +
+                            '<div id="flag_law" class="col-25 labcontent">法检</div>' +
                             '<div id="flag_clearance" class="col-25 labcontent">需通关单</div>' +
                         '</div>' +
                         '<div class="row">' +
@@ -1008,23 +1008,26 @@ function initSerach_inspection() {
                             '<div class="col-50" style="margin-left:0rem;"><input type="text" id="customarea" placeholder="申报关区"/></div>' +
                         '</div>' +
                         '<div class="row">' +
-                            '<div class="col-20">委托日期</div>' +
-                            '<div class="col-40"><input type="date" id="subdatestart" placeholder="起始" /></div>' +
-                            '<div class="col-40" style="margin-left:0rem;"><input type="date" id="subdateend" placeholder="结束"/></div>' +
+                            '<div class="col-100" style="width:92%;"><input type="text" id="approvalcode" placeholder="流水号"/></div>' +
+                        '</div>' +
+                         '<div class="row">' +
+                            '<div class="col-25">委托日期:</div>' +
+                            '<div class="col-33" style="width:35%;margin-left:0rem;"><input type="text" id="subdatestart" placeholder="起始" /></div>' +
+                            '<div class="col-33" style="width:36%;margin-left:0rem;"><input type="text" id="subdateend" placeholder="结束"/></div>' +
                         '</div>' +
                         '<div class="row">' +
-                            '<div class="col-20">放行日期</div>' +
-                            '<div class="col-40"><input type="date" id="passdatestart" placeholder="起始"/></div>' +
-                            '<div class="col-40" style="margin-left:0rem;"><input type="date" id="passdateend" placeholder="结束"/></div>' +
+                            '<div class="col-25">放行日期:</div>' +
+                            '<div class="col-33" style="width:35%;margin-left:0rem;"><input type="text" id="passdatestart" placeholder="起始"/></div>' +
+                            '<div class="col-33" style="width:36%;margin-left:0rem;"><input type="text" id="passdateend" placeholder="结束"/></div>' +
                         '</div>' +
-                        '<div style="margin-top:0.3rem" class="row">' +
-                            '<div class="col-20" ><a href="#" class="button">取消</a></div>' +
-                            '<div class="col-60" style="width:59.99%; margin-left:0rem;"><a href="#" style="background-color: #3d4145;" class="button">确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;认</a></div>' +
-                            '<div class="col-20" style="margin-left:0rem;"><a href="#" class="button">重置</a></div>' +
+                        '<div style="margin-top:.3rem;" class="row">' +
+                            '<div class="col-20" ><a href="#" id="btn_more_cancel" class="button">取消</a></div>' +
+                            '<div class="col-60" style="width:59.99%; margin-left:0rem;"><a href="#" id="btn_more_sure" style="background-color: #3d4145;" class="button">确&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;认</a></div>' +
+                            '<div class="col-20" style="margin-left:0rem;"><a href="#" id="btn_more_reset" class="button">重置</a></div>' +
                         '</div>' +
                     '</div>' +
                 '</div>',
-            extraClass: 'morediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+            extraClass: 'moredivinsp'//避免直接设置.modal的样式，从而影响其他toast的提示
         });
 
         //绑定labtitle事件
@@ -1109,19 +1112,196 @@ function initSerach_inspection() {
             }
         });
 
-        //初始化时间控件
-        var before = new Date();
-        before.setDate(before.getDate() - 3);
-        var beforeday = before.Format("yyyy-MM-dd");
-        //拼装完整日期格式  
-        $("#subdatestart").val(beforeday);
-        $("#passdatestart").val(beforeday);
 
-        var now = new Date();
-        var today = now.Format("yyyy-MM-dd");
-        //完成赋值  
-        $("#subdateend").val(today);
-        $("#passdateend").val(today);
+        //----------------------------------------------------------------------------------------------------------------------赋值
+        if ($("#txt_busitype").val() != "") {
+            $("#busitype .labcontent").each(function () {
+                if ($("#txt_busitype").val().replace(getbusitypeid($(this).html()), "") != $("#txt_busitype").val()) {
+                    $(this).addClass("labhover");
+                }
+            });
+
+            var inall = true;
+            $("#busi_in .labcontent").each(function () {
+                if ($(this).css("color") != "rgb(0, 0, 255)") { inall = false; }
+            });
+            if (inall) { $("#busi_in .labtitle").addClass("labhover"); }
+
+            var outall = true;
+            $("#busi_out .labcontent").each(function () {
+                if ($(this).css("color") != "rgb(0, 0, 255)") { outall = false; }
+            });
+            if (outall) { $("#busi_out .labtitle").addClass("labhover"); }
+        }
+
+        if ($("#txt_ischeck").val() == "查验") { $("#flag_checked").addClass("labhover"); }
+        if ($("#txt_ischeck").val() == "未查验") { $("#flag_uncheck").addClass("labhover"); }
+
+        if ($("#txt_ispass").val() == "放行") { $("#flag_passed").addClass("labhover"); }
+        if ($("#txt_ispass").val() == "未放行") { $("#flag_unpass").addClass("labhover"); }
+
+        if ($("#txt_lawflag").val() == "法检") { $("#flag_law").addClass("labhover"); }
+        if ($("#txt_isneedclearance").val() == "需通关单") { $("#flag_clearance").addClass("labhover"); }
+
+        $("#busiunit").val($("#txt_busiunit").val());
+        $("#contractno").val($("#txt_contractno").val());
+        $("#ordercode").val($("#txt_ordercode").val());
+        $("#cusno").val($("#txt_cusno").val());
+        $("#divideno").val($("#txt_divideno").val());
+        $("#customarea").val($("#txt_customareacode").val());
+        $("#approvalcode").val($("#txt_approvalcode").val());
+
+        ////初始化时间控件
+        //var before = new Date();
+        //before.setDate(before.getDate() - 3);
+        //var beforeday = before.Format("yyyy-MM-dd");
+
+        //var now = new Date();
+        //var today = now.Format("yyyy-MM-dd");
+
+        if ($("#txt_submittime_s").val() != "" || $("#txt_submittime_e").val() != "") {
+
+            if ($("#txt_submittime_s").val() != "") {
+                $("#subdatestart").val($("#txt_submittime_s").val());
+                $("#subdatestart").calendar({ value: [$("#txt_submittime_s").val()] });
+            }
+            if ($("#txt_submittime_e").val() != "") {
+                $("#subdateend").val($("#txt_submittime_e").val());
+                $("#subdateend").calendar({ value: [$("#txt_submittime_e").val()] });
+            }
+
+        } else {
+            //$("#subdatestart").val(beforeday);
+            //$("#subdatestart").calendar({ value: [beforeday] });
+
+            //$("#subdateend").val(today);
+            //$("#subdateend").calendar({ value: [today] });
+
+            $("#subdatestart").val("");
+            $("#subdatestart").calendar({});
+
+            $("#subdateend").val("");
+            $("#subdateend").calendar({});
+        }
+
+        if ($("#txt_sitepasstime_s").val() != "" || $("#txt_sitepasstime_e").val() != "") {
+
+            if ($("#txt_sitepasstime_s").val() != "") {
+                $("#passdatestart").val($("#txt_sitepasstime_s").val());
+                $("#passdatestart").calendar({ value: [$("#txt_sitepasstime_s").val()] });
+            }
+            if ($("#txt_sitepasstime_e").val() != "") {
+                $("#passdateend").val($("#txt_sitepasstime_e").val());
+                $("#passdateend").calendar({ value: [$("#txt_sitepasstime_e").val()] });
+            }
+
+        } else {
+            //$("#passdatestart").val(beforeday);
+            //$("#passdatestart").calendar({ value: [beforeday] });
+
+            //$("#passdateend").val(today);
+            //$("#passdateend").calendar({ value: [today] });
+
+            $("#passdatestart").val("");
+            $("#passdatestart").calendar({ value: [""] });
+
+            $("#passdateend").val("");
+            $("#passdateend").calendar({ value: [""] });
+
+        }
+
+        //----------------------------------------------------------------------------------------------------------------------按钮事件
+
+        $("#btn_more_cancel").click(function () {
+            $.closeModal(".moredivinsp");
+        });
+
+        $("#btn_more_sure").click(function () {
+            var busitypeid = "";
+            $("#busitype .labcontent").each(function () {
+                if ($(this).css("color") == "rgb(0, 0, 255)") {
+                    busitypeid = busitypeid + "'" + getbusitypeid($(this).html()) + "',";
+                }
+            });
+            if (busitypeid != "") {
+                busitypeid = busitypeid.substr(0, busitypeid.length - 1);
+            }
+
+            var ischeck = ""; var ispass = "";
+            $("#otherflag .labcontent").each(function () {
+                if ($(this).attr("id") == "flag_checked" && $(this).css("color") == "rgb(0, 0, 255)") {
+                    ischeck = $(this).html();
+                }
+                if ($(this).attr("id") == "flag_uncheck" && $(this).css("color") == "rgb(0, 0, 255)") {
+                    ischeck = $(this).html();
+                }
+                if ($(this).attr("id") == "flag_passed" && $(this).css("color") == "rgb(0, 0, 255)") {
+                    ispass = $(this).html();
+                }
+                if ($(this).attr("id") == "flag_unpass" && $(this).css("color") == "rgb(0, 0, 255)") {
+                    ispass = $(this).html();
+                }
+            });
+
+            var lawflag = ""; var isneedclearance = ""; 
+            $("#otherflag2 .labcontent").each(function () {
+                if ($(this).attr("id") == "flag_law" && $(this).css("color") == "rgb(0, 0, 255)") {
+                    lawflag = $(this).html();
+                }
+                if ($(this).attr("id") == "flag_clearance" && $(this).css("color") == "rgb(0, 0, 255)") {
+                    isneedclearance = $(this).html();
+                }
+            });
+
+            $("#txt_busitype").val(busitypeid); $("#txt_ischeck").val(ischeck); $("#txt_ispass").val(ispass);
+            $("#txt_lawflag").val(lawflag); $("#txt_isneedclearance").val(isneedclearance);
+            
+
+            $("#txt_busiunit").val($("#busiunit").val());
+            $("#txt_contractno").val($("#contractno").val());
+            $("#txt_ordercode").val($("#ordercode").val());
+            $("#txt_cusno").val($("#cusno").val());
+            $("#txt_divideno").val($("#divideno").val());
+            $("#txt_customareacode").val($("#customarea").val());
+            $("#txt_approvalcode").val($("#approvalcode").val());
+
+            $("#txt_submittime_s").val($("#subdatestart").val());
+            $("#txt_submittime_e").val($("#subdateend").val());
+            $("#txt_sitepasstime_s").val($("#passdatestart").val());
+            $("#txt_sitepasstime_e").val($("#passdateend").val());
+
+            $.closeModal(".moredivinsp");
+        });
+
+        $("#btn_more_reset").click(function () {
+            $("#txt_reptime_s").val(""); $("#txt_reptime_e").val("");
+            $("#txt_reptime_s").calendar({}); $("#txt_reptime_e").calendar({});//否则之前选的那天  不能再次选中
+
+            $("#txt_inspcode").val("");
+            $("#picker_MODIFYFLAG").picker("setValue", ["全部"]); 
+
+            $("#txt_busitype").val(""); $("#txt_ischeck").val(""); $("#txt_ispass").val("");
+            $("#txt_lawflag").val(""); $("#txt_isneedclearance").val("");   
+
+            $(".labcontent").each(function () { $(this).removeClass("labhover"); });
+            $(".labtitle").each(function () { $(this).removeClass("labhover"); });
+
+            $("#txt_busiunit").val(""); $("#busiunit").val("");
+            $("#txt_contractno").val(""); $("#contractno").val("");
+            $("#txt_ordercode").val(""); $("#ordercode").val("");
+            $("#txt_cusno").val(""); $("#cusno").val("");
+            $("#txt_divideno").val(""); $("#divideno").val("");
+            $("#txt_customareacode").val(""); $("#customarea").val("");
+            $("#txt_approvalcode").val(); $("#approvalcode").val("");
+
+            $("#txt_submittime_s").val(""); $("#subdatestart").val(""); $("#subdatestart").calendar({});
+            $("#txt_submittime_e").val(""); $("#subdateend").val(""); $("#subdateend").calendar({});
+            $("#txt_sitepasstime_s").val(""); $("#passdatestart").val(""); $("#passdatestart").calendar({});
+            $("#txt_sitepasstime_e").val(""); $("#passdateend").val(""); $("#passdateend").calendar({});
+
+            $.closeModal(".moredivinsp");
+        });
+
 
     });
 }
