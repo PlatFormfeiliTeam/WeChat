@@ -340,15 +340,15 @@ namespace WeChat.ModelBusi
                 //当前登录用户权限控制
                 if (!string.IsNullOrEmpty(customerCode) && !string.IsNullOrEmpty(hscode))
                 {
-                    where += " and (lo.busiunitcode='" + hscode + "' or lo.customercode='" + customerCode + "')";
+                    where += " and (ort.busiunitcode='" + hscode + "' or ort.customercode='" + customerCode + "')";
                 }
                 else if (!string.IsNullOrEmpty(customerCode))
                 {
-                    where += " and lo.customercode='" + customerCode + "'";
+                    where += " and ort.customercode='" + customerCode + "'";
                 }
                 else if (!string.IsNullOrEmpty(hscode))
                 {
-                    where += " and lo.busiunitcode='" + hscode + "'";
+                    where += " and ort.busiunitcode='" + hscode + "'";
                 }
 
                 string tempsql = @"select det.code,det.modifyflag,det.CUSTOMSSTATUS
