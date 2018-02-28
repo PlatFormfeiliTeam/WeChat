@@ -72,6 +72,12 @@
         #page-infinite-scroll-bottom .search-input input{
             border-radius:0;font-size:13px;
         }
+        .modal
+        {
+            width:17.6rem;
+            margin-left:-8.75rem;
+            top:12%;
+        }
 
     </style>
     <script type="text/javascript">
