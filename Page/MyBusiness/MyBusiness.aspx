@@ -15,10 +15,14 @@
     <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
     <style type="text/css">
         #scroll-bottom-one {
-            top: 5rem;
+            top: 5.8rem;
         }
          .bar input[type=search]{
              margin:.1rem 0;
+         }
+         .bar-nav
+         {
+             height:5.8rem;
          }
         .content-block
         {
@@ -48,7 +52,7 @@
         }
         
         .list-block {
-            margin: 0.25rem 0;
+            margin: 0;
         }
         .list-block .item-inner {
             padding-right:0.25rem;
@@ -168,6 +172,7 @@
                     if (data.d == null || data.d == "")
                         return;
                     var obj = eval("(" + data.d + ")");//将字符串转为json
+                    $("#span_sum").text(obj[0]["SUM"]);
                     for (var i = 0; i < obj.length; i++) {
                         var str = '<div class="list-block" id="' + obj[i]["CODE"] + ',' + obj[i]["CUSNO"] + '" >' +
                                     '<ul>' +
@@ -977,7 +982,7 @@
         //订阅清单
         function subscribeInfo()
         {
-            window.location.href = "BusiSubscribeInfo.aspx";
+            window.location.href = "NewSubscribeList_busi.aspx";
         }
 
         //显示列名
@@ -1088,7 +1093,7 @@
         <!-- page1 消息订阅-->
         <div class="page page-current" id="page-infinite-scroll-bottom">
             
-            <header class="bar bar-nav" style="height:5rem;"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
+            <header class="bar bar-nav"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
                 <div class="search-input">                    
                     <div class="row"> 
                         <div class="col-33" style="width:19%;font-size:13px;margin-top:.3rem;">委托时间:</div>
@@ -1120,6 +1125,11 @@
                     <input type="hidden" id='txt_sitepasstime_s'/>
                     <input type="hidden" id='txt_sitepasstime_e'/>                   
                 </div>  
+                <div id="div_tbar" style="font-size:13px;margin:.2rem 0;">
+                    <span style="color:#929292">共计</span>
+                    <span id="span_sum">0</span>
+                    <span style="color:#929292">笔</span>
+                </div> 
             </header>
             
             

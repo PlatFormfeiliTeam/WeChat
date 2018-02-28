@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="NewSubscribeList_busi.aspx.cs" Inherits="WeChat.Page.MyBusiness.NewSubscribeList_busi" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="NewSubscribeList_decl.aspx.cs" Inherits="WeChat.Page.MyBusiness.NewSubscribeList_decl" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>业务订阅</title>
+    <title>报关单订阅</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css" />
@@ -83,79 +83,67 @@
         // 最多可加载的条目
         var maxItems = 100;
         // 每次加载添加多少条目
-        var pagesize = 6;
-        $(function () {
-            //----------------------------------------------------------------------------------------------------------------查询条件
-            //查询条件初始化
+        var pagesize = 8;
+        $(function() {
+            //查询条件
             initsearch_condition();
             //高级查询
-            initSerach_SubscribeBusi();
+            initSerach_SubscribeDecl();
             //列名
             $("#btn_gridname_m").click(function () {
                 showGridName();
             });
             //重置
             $("#btn_reset_m").click(function () {
-                $("#txt_subscribetime_s").val(""); $("#txt_subscribetime_e").val("");
-                $("#txt_subscribetime_s").calendar({}); $("#txt_subscribetime_e").calendar({});//否则之前选的那天  不能再次选中
-
-                $("#txt_busiunit").val(""); $("#txt_customareacode").val("");
-                $("#picker_trigger").picker("setValue", ["未触发"]); 
-
-                $("#txt_busitype").val("");
-                $("#txt_ordercode").val("");
-                $("#txt_cusno").val("");
-                $("#txt_divideno").val("");
-                $("#txt_contractno").val("");
-                $("#txt_submittime_s").val("");
-                $("#txt_submittime_e").val("");
+                reset();
             });
+
 
             $('.infinite-scroll-preloader').hide();
             //查询
             $(document).on('click', '#btn_search_m', function (e) {
                 queryData();
             });
-
             //无限滚动 注册'infinite'事件处理函数
             $(document).on('infinite', "#page-infinite-scroll-bottom", function () {
-                // 如果正在加载，则退出
-                if (loading) return;
-                // 设置flag
-                loading = true;
-                //显示加载栏
-                $('.infinite-scroll-preloader').show();
-                // 模拟1s的加载过程
-                setTimeout(function () {
-                    // 重置加载flag
-                    loading = false;
-                    if (lastnum >= maxItems || lastnum % pagesize != 0) {
-                        // 加载完毕，则注销无限加载事件，以防不必要的加载
-                        $.detachInfiniteScroll($('.infinite-scroll'));
-                        // 删除加载提示符
-                        $('.infinite-scroll-preloader').hide();
-                        $.toast("已经加载到最后");
-                        return;
-                    }
-                    // 添加新条目
-                    loadData(pagesize, lastnum);
+                    // 如果正在加载，则退出
+                    if (loading) return;
+                    // 设置flag
+                    loading = true;
+                    //显示加载栏
+                    $('.infinite-scroll-preloader').show();
+                    // 模拟1s的加载过程
+                    setTimeout(function() {
+                            // 重置加载flag
+                            loading = false;
+                            if (lastnum >= maxItems || lastnum % pagesize != 0) {
+                                // 加载完毕，则注销无限加载事件，以防不必要的加载
+                                $.detachInfiniteScroll($('.infinite-scroll'));
+                                // 删除加载提示符
+                                $('.infinite-scroll-preloader').hide();
+                                $.toast("已经加载到最后");
+                                return;
+                            }
+                            // 添加新条目
+                            loadData(pagesize, lastnum);
 
-                    if (lastnum == $('#subcontent .list-block').length) {
-                        $.detachInfiniteScroll($('.infinite-scroll'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
-                        $('.infinite-scroll-preloader').hide();
+                            if (lastnum == $('#subcontent .list-block').length) {
+                                $.detachInfiniteScroll($('.infinite-scroll')); // 加载完毕，则注销无限加载事件，以防不必要的加载     
+                                $('.infinite-scroll-preloader').hide();
 
-                        $.toast("已经加载到最后");
-                        return;
-                    }
-                    // 更新最后加载的序号
-                    lastnum = $('#subcontent .list-block').length;
-                    //容器发生改变,如果是js滚动，需要刷新滚动
-                    $.refreshScroller();
-                }, 500);
-            });
+                                $.toast("已经加载到最后");
+                                return;
+                            }
+                            // 更新最后加载的序号
+                            lastnum = $('#subcontent .list-block').length;
+                            //容器发生改变,如果是js滚动，需要刷新滚动
+                            $.refreshScroller();
+                        },
+                        500);
+                });
             $.init();
-        })
-        
+        });
+        //查询
         function queryData()
         {
             $("#subcontent").html("");
@@ -165,35 +153,38 @@
             $.attachInfiniteScroll($('.infinite-scroll'));
             setTimeout(function () {
                 $.closeModal();
-                loadData(pagesize, lastnum);//加载数据
-                lastnum = $('#subcontent .list-block').length;//获取数据条数
-                $.refreshScroller();//刷新滚动条
-                $('.infinite-scroll-bottom').scrollTop(0);//滚动条置顶
+                loadData(pagesize, lastnum); //加载数据
+                lastnum = $('#subcontent .list-block').length; //获取数据条数
+                $.refreshScroller(); //刷新滚动条
+                $('.infinite-scroll-bottom').scrollTop(0); //滚动条置顶
 
                 if (lastnum < pagesize) {
-                    $.detachInfiniteScroll($('.infinite-scroll-bottom'));// 加载完毕，则注销无限加载事件，以防不必要的加载     
+                    $.detachInfiniteScroll($('.infinite-scroll-bottom')); // 加载完毕，则注销无限加载事件，以防不必要的加载     
                     $('.infinite-scroll-preloader').hide();
-                    if (lastnum == 0) { $.toast("没有符合的数据！"); }
-                    else { $.toast("已经加载到最后"); }
+                    if (lastnum == 0) {
+                        $.toast("没有符合的数据！");
+                    } else {
+                        $.toast("已经加载到最后");
+                    }
                 }
                 $.hidePreloader();
             }, 500);
         }
-
+        //加载数据
         function loadData(pagesize, lastnum) {
             $.ajax({
-                url: 'NewSubscribeList_busi.aspx/QuerySubscribeInfo',
+                url: 'NewSubscribeList_decl.aspx/QuerySubscribeInfo',
                 contentType: "application/json; charset=utf-8",
                 type: 'post',
                 dataType: 'json',
                 data: "{'subscribestart':'" + $("#txt_subscribetime_s").val() +
                     "','subscribeend':'" + $("#txt_subscribetime_e").val() +
-                    "','busiunit':'" + $("#txt_busiunit").val() +
-                    "','istigger':'" + $("#picker_trigger").val() +
-                    "','busitype':\"" + $("#txt_busitype").val() +
-                    "\",'ordercode':'" + $("#txt_ordercode").val() +
+                    "','declarationcode':'" + $("#txt_declcode").val() +
+                    "','istrigger':'" + $("#picker_trigger").val() +
+                     "','busitype':\"" + $("#txt_busitype").val() +
+                    "\",'busiunit':'" + $("#txt_busiunit").val() +
+                    "','ordercode':'" + $("#txt_ordercode").val() +
                     "','cusno':'" + $("#txt_cusno").val() +
-                    "','divideno':'" + $("#txt_divideno").val() +
                     "','contract':'" + $("#txt_contractno").val() +
                     "','submitstart':'" + $("#txt_submittime_s").val() +
                     "','submitend':'" + $("#txt_submittime_e").val() +
@@ -202,55 +193,40 @@
                     "}",
                 cache: false,
                 async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
-                success: function (data) {
-                    if (data.d == null || data.d == "")
-                        return;
+                success: function(data) {
                     var obj = eval("(" + data.d + ")"); //将字符串转为json
+                    $("#span_sum").text(obj[0]["SUM"]);
                     for (var i = 0; i < obj.length; i++) {
                         var obj = eval("(" + data.d + ")"); //将字符串转为json
-                        $("#span_sum").text(obj[0]["SUM"]);
                         var str = '<div class="list-block" id="' +
-                            obj[i]["CUSNO"] +
-                            '">' +
+                            obj[i]["DECLARATIONCODE"] +
+                            '" >' +
                             '<ul>' +
                             '<li class="item-content">' +
                             '<div class="item-inner">' +
                             '<div class="my-title">' +
-                            (obj[i]["BUSIUNITNAME"] == null ? "" : obj[i]["BUSIUNITNAME"]) +
+                            obj[i]["DECLARATIONCODE"] +
                             '</div>' +
                             '<div class="my-after">' +
-                            (obj[i]["BUSINAME"] == null ? "" : obj[i]["BUSINAME"]) +
-                            '</div>' +
-                            '<div class="my-after">' +
-                            (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) +
-                            '</div>' +
-                            '</div>' +
-                            '</li>' +
-                            '<li class="item-content">' +
-                            '<div class="item-inner">' +
-                            '<div class="my-title">' +
-                            (obj[i]["DIVIDENO"] == null ? "" : obj[i]["DIVIDENO"]) +
-                            '</div>' +
-                            '<div class="my-after">' +
-                            (obj[i]["REPWAYNAME"] == null ? "" : obj[i]["REPWAYNAME"]) +
-                            '</div>' +
-                            '<div class="my-after">' +
-                            (obj[i]["CONTRACTNO"] == null ? "" : obj[i]["CONTRACTNO"]) +
-                            '</div>' +
-                            '</div>' +
-                            '</li>' +
-                            '<li class="item-content">' +
-                            '<div class="item-inner">' +
-                            '<div class="my-title">' +
-                            (obj[i]["GOODSNUM"] == null ? "" : obj[i]["GOODSNUM"]) +
+                            obj[i]["GOODSNUM"] +
                             '/' +
-                            (obj[i]["GOODSGW"] == null ? "" : obj[i]["GOODSGW"]) +
+                            obj[i]["GOODSGW"] +
                             '</div>' +
                             '<div class="my-after">' +
-                            (obj[i]["DECLSTATUS"] == null ? "" : obj[i]["DECLSTATUS"]) +
+                            obj[i]["MODIFYFLAG"] +
+                            '</div>' +
+                            '</div>' +
+                            '</li>' +
+                            '<li class="item-content">' +
+                            '<div class="item-inner">' +
+                            '<div class="my-title">' +
+                            obj[i]["TRANSNAME"] +
                             '</div>' +
                             '<div class="my-after">' +
-                            (obj[i]["INSPSTATUS"] == null ? "" : obj[i]["INSPSTATUS"]) +
+                            obj[i]["TRADENAME"] +
+                            '</div>' +
+                            '<div class="my-after">' +
+                            obj[i]["CUSTOMSSTATUS"] +
                             '</div>' +
                             '</div>' +
                             '</li>' +
@@ -260,7 +236,7 @@
                             (obj[i]["PUSHTIME"] == null ? "" : obj[i]["PUSHTIME"]) +
                             '</div>' +
                             '<div class="my-after">' +
-                            (obj[i]["STATUS"] == null ? "" : obj[i]["STATUS"]) +
+                            obj[i]["STATUS"] +
                             '</div>' +
                             '<div class="my-after" style="color:blue;cursor:pointer;" onclick="delSubscribeInfo(' + obj[i]["ID"] + ',' + obj[i]["TRIGGERSTATUS"] + ')">' +
                             (obj[i]["TRIGGERSTATUS"] == 0 ? "删除" : "") +
@@ -274,36 +250,29 @@
                 }
             });
         }
-
+        //列名
         function showGridName() {
-            var strname = '<div class="list-block" >' +
+            var strname = '<div class="list-block">' +
                             '<ul>' +
                             '<li class="item-content">' +
                             '<div class="item-inner">' +
-                            '<div class="my-title">经营单位</div>' +
-                            '<div class="my-after">业务类型</div>' +
-                            '<div class="my-after">企业编号</div>' +
+                            '<div class="my-title">报关单号</div>' +
+                            '<div class="my-after">件数/毛重</div>' +
+                            '<div class="my-after">删改单</div>' +
                             '</div>' +
                             '</li>' +
                             '<li class="item-content">' +
                             '<div class="item-inner">' +
-                            '<div class="my-title">分单号</div>' +
-                            '<div class="my-after">申报方式</div>' +
-                            '<div class="my-after">合同号</div>' +
+                            '<div class="my-title">运输工具</div>' +
+                            '<div class="my-after">贸易方式</div>' +
+                            '<div class="my-after">海关状态</div>' +
                             '</div>' +
                             '</li>' +
                             '<li class="item-content">' +
                             '<div class="item-inner">' +
-                            '<div class="my-title">件数/毛重</div>' +
-                            '<div class="my-after">报关状态</div>' +
-                            '<div class="my-after">报检状态</div>' +
-                            '</div>' +
-                            '</li>' +
-                            '<li class="item-content">' +
-                            '<div class="item-inner">' +
-                            '<div class="my-title">推送时间</div>' +
-                            '<div class="my-after">订阅状态</div>' +
-                            '<div class="my-after">删除按钮</div>' +
+                            '<div class="my-title">订阅状态</div>' +
+                            '<div class="my-after"></div>' +
+                            '<div class="my-after"></div>' +
                             '</div>' +
                             '</li>' +
                             '</ul>' +
@@ -320,7 +289,21 @@
             });
 
         }
+        //重置
+        function reset() {
+            $("#txt_subscribetime_s").val(""); $("#txt_subscribetime_e").val("");
+            $("#txt_subscribetime_s").calendar({}); $("#txt_subscribetime_e").calendar({});//否则之前选的那天  不能再次选中
 
+            $("#txt_declcode").val("");
+
+            $("#txt_busitype").val("");
+            $("#txt_busiunit").val("");
+            $("#txt_ordercode").val("");
+            $("#txt_cusno").val("");
+            $("#txt_contractno").val("");
+            $("#txt_submittime_s").val("");
+            $("#txt_submittime_e").val("");
+        }
         //查询条件初始化
         function initsearch_condition() {
             $("#picker_trigger").picker({
@@ -352,13 +335,12 @@
             $("#txt_subscribetime_e").calendar({ value: [today] });
 
         }
-
-
+        //删除
         function delSubscribeInfo(id, status) {
             if (status != 0)
                 return;
             $.ajax({
-                url: "NewSubscribeList_busi.aspx/DeleteSubscribeInfo",
+                url: "NewSubscribeList_decl.aspx/DeleteSubscribeInfo",
                 contentType: "application/json; charset=utf-8",
                 type: "post",
                 data: "{'id':'" + id + "'}",
@@ -383,10 +365,10 @@
   <div class="page-group">
         <div id="page-infinite-scroll-bottom" class="page page-current">
             <%--search --%>
-            <header class="bar bar-nav"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
-                <div class="search-input">                    
+            <header class="bar bar-nav" >
+                <div class="search-input">                 
                     <div class="row"> 
-                        <div class="col-33" style="width:20%;font-size:13px;margin-top:.3rem;">订阅时间:</div>
+                        <div class="col-25" style="width:20%;font-size:13px;margin-top:.3rem;">订阅时间</div>
                         <div class="col-33" style="width:33%;margin-left:0;"><input type="search" id='txt_subscribetime_s'/></div>
                         <div class="col-33" style="width:33%;margin-left:0;"><input type="search" id='txt_subscribetime_e'/></div>
                         <div class="col-10" style="width:10%;margin-left:0;">
@@ -394,27 +376,27 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-70" style="width:75%;margin-left:4%;"><input type="search" id='txt_busiunit' placeholder='经营单位'/></div>
+                        <div class="col-70" style="width:75%;margin-left:4%;"><input type="search" id='txt_declcode' placeholder='报关单号'/></div>
                         <div class="col-30" style="width:21%;margin-left:0;"><input type="search" id='picker_trigger' placeholder='未触发'/></div>
                     </div> 
                     <div class="row">
-                        <div class="col-25" style="width:21%;"><input id="btn_gridname_m" type="button"  value="列名" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-25" style="width:21%;"><input id="btn_gridname_m" type="button" value="列名" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
                         <div class="col-60" style="width:54%;margin-left:0;"><input id="btn_search_m" type="button" value="查询" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;" /></div>
                         <div class="col-25" style="width:21%;margin-left:0;"><input id="btn_reset_m" type="button" value="重置" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
                     </div> 
                     <input type="hidden" id='txt_busitype'/>
-                    <input type="hidden" id='txt_ordercode'/> 
+                    <input type="hidden" id='txt_busiunit'/>
+                    <input type="hidden" id='txt_ordercode'/>
                     <input type="hidden" id='txt_cusno'/>  
-                    <input type="hidden" id='txt_divideno'/> 
-                    <input type="hidden" id='txt_contractno'/>
+                    <input type="hidden" id='txt_contractno'/>  
                     <input type="hidden" id='txt_submittime_s'/>
-                    <input type="hidden" id='txt_submittime_e'/>                   
-                </div>  
+                    <input type="hidden" id='txt_submittime_e'/>
+                </div>   
                 <div id="div_tbar" style="font-size:13px;margin:.2rem 0;">
                     <span style="color:#929292">共计</span>
                     <span id="span_sum">0</span>
                     <span style="color:#929292">笔</span>
-                </div>
+                </div>                         
             </header>
             
              <!-- 这里是页面内容区 -->
@@ -429,6 +411,5 @@
         </div>
     </div>  
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>  
-    
 </body>
 </html>

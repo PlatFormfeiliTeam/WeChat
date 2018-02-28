@@ -14,7 +14,7 @@ namespace WeChat.Common
         {
             try
             {
-                string fileName = DateTime.Now.ToShortDateString() + ".txt";
+                string fileName = DateTime.Now.ToShortDateString().Replace("/", "") + ".txt";
                 if (!File.Exists(path + fileName))
                 {
                     File.Create(path + fileName);

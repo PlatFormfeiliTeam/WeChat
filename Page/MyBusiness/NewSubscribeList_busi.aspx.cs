@@ -23,15 +23,16 @@ namespace WeChat.Page.MyBusiness
         }
         [WebMethod]
         public static string QuerySubscribeInfo(string subscribestart, string subscribeend, string busiunit, string istigger,string busitype, string ordercode, string cusno,
-            string divideno, string contract, string submitstart,string sumitend, int pagesize, int lastnum)
+            string divideno, string contract, string submitstart, string submitend, int pagesize, int lastnum)
         {
+            string sum = "0";
             //WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
             //if (user == null || user.GwyUserID <= 0)
             //    return "";
             //DataTable infodt = SubscribeModel.getNewSubscribeInfo_Order(subscribestart, subscribeend, busiunit, istigger, busitype, ordercode, cusno, divideno, contract,
             //    submitstart, sumitend, pagesize, lastnum, user.GwyUserID);
             DataTable infodt = SubscribeModel.getNewSubscribeInfo_Order(subscribestart, subscribeend, busiunit, istigger, busitype, ordercode, cusno, divideno, contract,
-                submitstart, sumitend, pagesize, lastnum, 1124);
+                submitstart, submitend, pagesize, lastnum, 1124, out sum);
             if (infodt == null || infodt.Rows.Count == 0)
                 return "";
             try
@@ -43,6 +44,7 @@ namespace WeChat.Page.MyBusiness
                     if (string.IsNullOrEmpty(dr["contractno"].ToString2())) dr["contractno"] = "";
                     dr["declstatus"] = SwitchHelper.switchValue("declstatus", dr["declstatus"].ToString2());
                     dr["inspstatus"] = SwitchHelper.switchValue("inspstatus", dr["inspstatus"].ToString2());
+                    dr["sum"] = sum;
                 }
                 IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
                 iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";

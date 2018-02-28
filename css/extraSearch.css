@@ -243,3 +243,64 @@
         .moredivmyorder .modal-inner .list-block:first-child label .item-inner{
            margin-left:.2rem;padding-right:2px;
         }
+        /**********************************************************************************************************************************************************/
+        .moredivsubdecl .row{
+            font-size:small;
+            margin-top:.1rem;
+        }
+        .moredivsubdecl .row .col-25
+        {
+            text-align: left;
+        }
+        .moredivsubdecl .button
+        {
+            border-radius:0;
+            background-color:gray;
+            color:white;
+            border:0;
+            vertical-align:middle;
+            padding-top: 0.1rem;
+        }
+        .moredivsubdecl .labtitle 
+        {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .moredivsubdecl .labcontent
+        {
+            cursor:pointer;
+        }
+        .moredivsubdecl .labhover
+        {
+            color:blue;
+        }
+        .moredivsubdecl input{
+            width:100%; border-radius:0;
+        }
+
+        .moredivsubdecl{
+            width: 94%;
+            left: 3%;
+            margin-left: 0px;
+            top: 10.2rem; position:fixed;
+        }        
+        .moredivsubdecl .modal-inner{
+            height:12rem;border-radius:0;
+        }
+
+        /* 更多查询 第一个ul 样式*/
+        .moredivsubdecl .modal-inner .list-block:first-child ul:first-child li{
+          float:left; width:25%;
+        }
+        .moredivsubdecl .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
+            width:.8rem;height:.8rem;
+        }
+        .moredivsubdecl .modal-inner .list-block:first-child .item-text{
+            height:1.1rem;font-size:.62rem;
+        }
+        .moredivsubdecl .modal-inner .list-block:first-child label{
+          padding-left:0px;
+        }
+        .moredivsubdecl .modal-inner .list-block:first-child label .item-inner{
+           margin-left:.2rem;padding-right:2px;
+        }
