@@ -297,9 +297,9 @@
                 $.modal({
                     title: '现场报检放行',
                     text: '<div class="content-block row" style="margin:1rem 0;">' +
-                                '<div class="col-25"><a href="#" id="sitecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
-                                '<div class="col-40" style="margin-left:0;"><a href="#" id="siteapply" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">现场报检</a></div>' +
-                                '<div class="col-40" style="margin-left:0;"><a href="#" id="sitepass" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">现场放行</a></div>' +
+                                '<div class="col-20"><a href="#" id="sitecancel" class="button" style="padding:0 0;background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                                '<div class="col-40"><a href="#" id="siteapply" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">现场报检</a></div>' +
+                                '<div class="col-40"><a href="#" id="sitepass" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">现场放行</a></div>' +
                             '</div>',
                     extraClass: 'sitediv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
@@ -953,8 +953,8 @@
                                 //'<div class="col-33"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
 
                                 '<div class="col-33"><a href="#" id="picfilecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
-                                '<div class="col-33" style="margin-left:0;"><a href="#" id="picfileupload" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">上传</a></div>' +
-                                '<div class="col-33" style="margin-left:0;"><a href="#" id="picfileconsult" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">调阅</a></div>' +
+                                '<div class="col-33"><a href="#" id="picfileupload" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">上传</a></div>' +
+                                '<div class="col-33"><a href="#" id="picfileconsult" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">调阅</a></div>' +
 
                             '</div>',
                     extraClass: 'picdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
