@@ -780,39 +780,7 @@
 
             return str;
         }
-
-        function modifySave(predelcode, modifystr, modifyflag) {
-
-            $.confirm('请确认是否保存为 <font color=blue>' + modifystr + '</font>?',
-                function () {//OK事件
-                    $.ajax({
-                        type: "post", //要用post方式                 
-                        url: "MyDeclareList.aspx/ModifySave",//方法所在页面和方法名
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: "{'predelcode':'" + predelcode + "','modifyflag':" + modifyflag+ "}",
-                        cache: false,
-                        async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
-                        success: function (data) {
-                            if (data.d == "success") {
-                                $.toast("保存成功");
-                                $("#div_list #" + predelcode).children("ul").children().eq(2).children("div").children().eq(2).text(modifystr);
-                            } else {
-                                $.toast("保存失败");
-                            }
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
-                            //alert(XMLHttpRequest.status);
-                            //alert(XMLHttpRequest.readyState);
-                            //alert(textStatus);
-                            alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
-                        }
-                    });
-                },
-                function () { }//cancel事件
-              );
-        }
-               
+       
     </script>
 </head>
 <body>

@@ -123,15 +123,6 @@ namespace WeChat.Page.BusiOpera
             return json;
         }
 
-        //删改单维护
-        [WebMethod]
-        public static string ModifySave(string predelcode, int modifyflag)
-        {
-            bool bf = Declare.saveModifyFlag(predelcode, modifyflag);
-            var jsonstr = "false";
-            if (bf) { jsonstr = "success"; }
-            return jsonstr;
-        }
         
         //报关单调阅
         [WebMethod]

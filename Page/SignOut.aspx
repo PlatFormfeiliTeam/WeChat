@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>登录界面</title>
+    <title>解绑绑定</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
@@ -64,9 +64,6 @@
     </script>
 </head>
 <body>
-    <header class="bar bar-nav">
-        <h1 class='title'>解除绑定</h1>
-    </header>
     <div class="content">
       <div class="list-block">
         <ul>
