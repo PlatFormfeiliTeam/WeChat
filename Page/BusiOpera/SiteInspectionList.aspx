@@ -729,7 +729,7 @@
                                     '</div> ' +
                                     '<div class="row"> ' +
                                         '<div class="col-33">查验备注：</div>' +
-                                        '<div class="col-66"><input type="text" style="background:#ffffff;height:1.2rem;font-size:.7rem" id="txt_inspcheckremark" /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_inspcheckremark" readonly /></div>' +//#ffffff
                                     '</div> ' +
                                 '</div>';
                 strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
@@ -827,6 +827,10 @@
                             $("#txt_inspcheckname").val(obj[0]["INSPCHECKNAME"] == null ? "" : obj[0]["INSPCHECKNAME"]);//当前登录人name
                             $("#txt_inspcheckremark").val(obj[0]["INSPCHECKREMARK"] == null ? "" : obj[0]["INSPCHECKREMARK"]);//查验备注赋值
 
+                            if ($("#txt_inspchecktime").val() != "") {
+                                $("#txt_inspcheckremark").removeAttr('readonly'); $("#txt_inspcheckremark").css('background', '#ffffff');
+                            }
+
                             $("#txt_fumigationtime").val(obj[0]["FUMIGATIONTIME"] == null ? "" : obj[0]["FUMIGATIONTIME"]);//初始化日期时间
                             $("#txt_fumigationid").val(obj[0]["FUMIGATIONID"] == null ? "" : obj[0]["FUMIGATIONID"]);//当前登录人id
                             $("#txt_fumigationname").val(obj[0]["FUMIGATIONNAME"] == null ? "" : obj[0]["FUMIGATIONNAME"]);//当前登录人name
@@ -846,6 +850,7 @@
                         $("#txt_inspchecktime").val(getNowDate());//当前时间
                         $("#txt_inspcheckid").val(v_userid);//当前登录人id
                         $("#txt_inspcheckname").val(v_username);//当前登录人name
+                        $("#txt_inspcheckremark").removeAttr('readonly'); $("#txt_inspcheckremark").css('background', '#ffffff');
                     } else {
                         $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
                         function () {//OK事件
@@ -853,6 +858,7 @@
                             $("#txt_inspcheckid").val("");
                             $("#txt_inspcheckname").val("");
                             $("#txt_inspcheckremark").val("");
+                            $("#txt_inspcheckremark").prop('readonly', 'readonly'); $("#txt_inspcheckremark").css('background', '#c7c7cc');
                         });
                     }
                 });

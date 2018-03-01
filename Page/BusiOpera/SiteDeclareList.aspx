@@ -773,7 +773,7 @@
                                     '</div> ' +
                                     '<div class="row"> ' +
                                         '<div class="col-33">查验备注：</div>' +
-                                        '<div class="col-66"><input type="text" style="background:#ffffff;height:1.2rem;font-size:.7rem" id="txt_declcheckremark" /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declcheckremark" readonly /></div>' +//:#ffffff
                                     '</div> ' +
                                 '</div>';
                 strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
@@ -839,7 +839,7 @@
                                     '</div> ' +
                                     '<div class="row"> ' +
                                         '<div class="col-33">稽核内容：</div>' +
-                                        '<div class="col-66"><input type="text" style="background:#ffffff;height:1.2rem;font-size:.7rem" id="txt_auditcontent" /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_auditcontent" readonly /></div>' +//:#ffffff
                                     '</div> ' +
                                 '</div>';
 
@@ -877,10 +877,18 @@
                             $("#txt_declcheckname").val(obj[0]["DECLCHECKNAME"] == null ? "" : obj[0]["DECLCHECKNAME"]);//当前登录人name
                             $("#txt_declcheckremark").val(obj[0]["DECLCHECKREMARK"] == null ? "" : obj[0]["DECLCHECKREMARK"]);//查验备注赋值
 
+                            if ($("#txt_declchecktime").val() != "") {
+                                $("#txt_declcheckremark").removeAttr('readonly'); $("#txt_declcheckremark").css('background','#ffffff');
+                            }
+
                             $("#txt_auditflagtime").val(obj[0]["AUDITFLAGTIME"] == null ? "" : obj[0]["AUDITFLAGTIME"]);//初始化日期时间
                             $("#txt_auditflagid").val(obj[0]["AUDITFLAGID"] == null ? "" : obj[0]["AUDITFLAGID"]);//当前登录人id
                             $("#txt_auditflagname").val(obj[0]["AUDITFLAGNAME"] == null ? "" : obj[0]["AUDITFLAGNAME"]);//当前登录人name
                             $("#txt_auditcontent").val(obj[0]["AUDITCONTENT"] == null ? "" : obj[0]["AUDITCONTENT"]);//稽核内容赋值
+
+                            if ($("#txt_auditflagtime").val() != "") {
+                                $("#txt_auditcontent").removeAttr('readonly'); $("#txt_auditcontent").css('background', '#ffffff');
+                            }
                         }
 
                     },
@@ -897,6 +905,7 @@
                         $("#txt_declchecktime").val(getNowDate());//当前时间
                         $("#txt_declcheckid").val(v_userid);//当前登录人id
                         $("#txt_declcheckname").val(v_username);//当前登录人name
+                        $("#txt_declcheckremark").removeAttr('readonly'); $("#txt_declcheckremark").css('background', '#ffffff');
                     } else {
                         $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
                         function () {//OK事件
@@ -904,6 +913,7 @@
                             $("#txt_declcheckid").val("");
                             $("#txt_declcheckname").val("");
                             $("#txt_declcheckremark").val("");
+                            $("#txt_declcheckremark").prop('readonly', 'readonly'); $("#txt_declcheckremark").css('background', '#c7c7cc');
                         });
                     }                    
                 });
@@ -913,6 +923,7 @@
                         $("#txt_auditflagtime").val(getNowDate());
                         $("#txt_auditflagid").val(v_userid);//当前登录人id
                         $("#txt_auditflagname").val(v_username);//当前登录人name
+                        $("#txt_auditcontent").removeAttr('readonly'); $("#txt_auditcontent").css('background', '#ffffff');
                     } else {
                         $.confirm('请确认是否需要<font color=blue>撤销稽核</font>?',
                         function () {//OK事件
@@ -920,6 +931,7 @@
                             $("#txt_auditflagid").val("");
                             $("#txt_auditflagname").val("");
                             $("#txt_auditcontent").val("");
+                            $("#txt_auditcontent").prop('readonly', 'readonly'); $("#txt_auditcontent").css('background', '#c7c7cc');
                         });
                     }
                 });

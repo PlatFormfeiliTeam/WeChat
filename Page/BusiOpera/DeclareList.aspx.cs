@@ -22,30 +22,35 @@ namespace WeChat.Page.BusiOpera
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
-            if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
-            {//授权成功
-                LogHelper.Write("第9步：" + userInfo.OpenID);
-                WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
-                if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
-                {//账号未关联，跳转至登录界面
-                    LogHelper.Write("第10步：" + userInfo.OpenID);
-                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
-                }
-                else if (wuser.IsReceiver != 1)
-                {//不是接单单位，无此权限
-                    LogHelper.Write("第11步：" + userInfo.OpenID);
-                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            //如果当前用户未登陆，先获取授权 
+            if (user == null)
+            {
+                WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+                if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
+                {//授权成功
+                    LogHelper.Write("第9步：" + userInfo.OpenID);
+                    WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
+                    if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
+                    {//账号未关联，跳转至登录界面
+                        LogHelper.Write("第10步：" + userInfo.OpenID);
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
+                    }
+                    else if (wuser.IsReceiver != 1)
+                    {//不是接单单位，无此权限
+                        LogHelper.Write("第11步：" + userInfo.OpenID);
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
+                    }
+                    else
+                    {//不需登录，保存当前用户
+                        HttpContext.Current.Session["user"] = wuser;
+                    }
+                    LogHelper.Write("第12步：" + wuser.WCOpenID);
                 }
                 else
-                {//不需登录，保存当前用户
-                    HttpContext.Current.Session["user"] = wuser;
+                {//获取授权失败，也跳转至登录页面
+                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
                 }
-                LogHelper.Write("第12步：" + wuser.WCOpenID);
-            }
-            else
-            {//获取授权失败，也跳转至登录页面
-                System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
             }
         }
 
@@ -71,7 +76,7 @@ namespace WeChat.Page.BusiOpera
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             DataSet ds = Declare.getDeclareInfo(reptime_s, reptime_e, declcode, customsstatus, getcode("modifyflag", modifyflag), busitype, ischeck
-                , ischeck, busiunit, ordercode, cusno, tradeway, contractno, blno
+                , ispass, busiunit, ordercode, cusno, tradeway, contractno, blno
                 , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
                 , start, itemsPerLoad, user.CustomerCode);//
             var json = "[{\"data\":" + JsonConvert.SerializeObject(ds.Tables[0], iso) + ",\"sum\":" + ds.Tables[1].Rows[0][0] + "}]";
