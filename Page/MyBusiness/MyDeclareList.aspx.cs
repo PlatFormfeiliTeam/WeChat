@@ -34,12 +34,12 @@ namespace WeChat.Page.BusiOpera
                     if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
                     {//账号未关联，跳转至登录界面
                         LogHelper.Write("第10步：" + userInfo.OpenID);
-                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyDeclareList");
                     }
                     else if (wuser.IsReceiver != 1)
                     {//不是接单单位，无此权限
                         LogHelper.Write("第11步：" + userInfo.OpenID);
-                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyDeclareList");
                     }
                     else
                     {//不需登录，保存当前用户
@@ -49,7 +49,7 @@ namespace WeChat.Page.BusiOpera
                 }
                 else
                 {//获取授权失败，也跳转至登录页面
-                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
+                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyDeclareList");
                 }
             }
         }
