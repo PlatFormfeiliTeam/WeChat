@@ -40,7 +40,7 @@ namespace WeChat.ModelBusi
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "select wcopenid from wechat_user where gwyusercode='" + name + "' and ";
+                string sql = "select wcopenid from wechat_user where gwyusercode='" + name + "'";
                 DataTable dt = db.QuerySignle(sql);
                 if (dt != null && dt.Rows.Count > 0)
                 {
