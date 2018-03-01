@@ -120,7 +120,12 @@ namespace WeChat.Page.BusiOpera
         [WebMethod]
         public static string ModifySave(string predelcode, int modifyflag)
         {
-            bool bf = Declare.saveModifyFlag(predelcode, modifyflag);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+            bool bf = Declare.saveModifyFlag(predelcode, modifyflag, user);
             var jsonstr = "false";
             if (bf) { jsonstr = "success"; }
             return jsonstr;

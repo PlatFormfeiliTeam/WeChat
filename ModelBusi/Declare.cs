@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using WeChat.Common;
+using WeChat.Entity;
 using WeChat.Entity.Enum;
 
 namespace WeChat.ModelBusi
@@ -134,12 +135,13 @@ namespace WeChat.ModelBusi
         }
 
 
-        public static bool saveModifyFlag(string predelcode, int modifyflag)
+        public static bool saveModifyFlag(string predelcode, int modifyflag, WGUserEn user)
         {
             bool bf = false;
             try
             {
-                string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
+                string userid = user.GwyUserID.ToString(); string username = user.GwyUserCode; string realname = user.GwyUserName;
+                //string userid = "763"; string username = "ksjsbg"; string realname = "昆山吉时报关有限公司";
 
                 using (DBSession db = new DBSession())
                 {
