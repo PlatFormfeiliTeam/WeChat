@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>报关单订阅</title>
+    <title>报关订阅清单</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     <link href="/css/iconfont/iconfont.css" rel="stylesheet" />
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css" />
@@ -301,7 +301,7 @@
             $("#txt_subscribetime_s").calendar({}); $("#txt_subscribetime_e").calendar({});//否则之前选的那天  不能再次选中
 
             $("#txt_declcode").val("");
-
+            $("#picker_trigger").picker("setValue", ["未触发"]);
             $("#txt_busitype").val("");
             $("#txt_busiunit").val("");
             $("#txt_ordercode").val("");
