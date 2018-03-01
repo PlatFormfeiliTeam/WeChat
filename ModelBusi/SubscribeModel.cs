@@ -156,7 +156,7 @@ namespace WeChat.ModelBusi
                     {
                         strWhere += " ws.userid=" + userId + " and";
                     }
-                    strWhere += " ws.isinvalid=0";
+                    strWhere += " ws.isinvalid=0 and lo.isinvalid=0";
                     string sql = @"with newt
                                     as(
                                     select * from 
@@ -309,7 +309,7 @@ namespace WeChat.ModelBusi
                     {
                         strWhere += " ws.userid=" + userId + " and ";
                     }
-                    strWhere += " ws.isinvalid=0";
+                    strWhere += " ws.isinvalid=0 and lo.isinvalid=0 and ld.isinvalid=0";
                     string sql = @"with newt
                                       as(
                                       select * from 

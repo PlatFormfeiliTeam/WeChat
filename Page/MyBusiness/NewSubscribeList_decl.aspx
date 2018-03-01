@@ -345,23 +345,25 @@
         function delSubscribeInfo(id, status) {
             if (status != 0)
                 return;
-            $.ajax({
-                url: "NewSubscribeList_decl.aspx/DeleteSubscribeInfo",
-                contentType: "application/json; charset=utf-8",
-                type: "post",
-                data: "{'id':'" + id + "'}",
-                dataType: "json",
-                cache: false,
-                async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
-                success: function (data) {
-                    if (data.d == true) {
-                        $.toast("删除成功");
-                        queryData();
+            $.confirm('请确认是否<font color=blue>删除订阅</font>?', function () {//OK事件
+                $.ajax({
+                    url: "NewSubscribeList_decl.aspx/DeleteSubscribeInfo",
+                    contentType: "application/json; charset=utf-8",
+                    type: "post",
+                    data: "{'id':'" + id + "'}",
+                    dataType: "json",
+                    cache: false,
+                    async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
+                    success: function (data) {
+                        if (data.d == true) {
+                            $.toast("删除成功");
+                            queryData();
+                        }
+                        else {
+                            $.toast("删除失败");
+                        }
                     }
-                    else {
-                        $.toast("删除失败");
-                    }
-                }
+                });
             })
         }
 
