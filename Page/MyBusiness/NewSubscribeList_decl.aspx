@@ -35,7 +35,7 @@
             top: 5.5rem;
         }
         .list-block {
-            margin:0;
+           margin: 0.2rem 0 0 0;
         }
         .list-block .item-inner {
             padding-right:0.25rem;
@@ -72,7 +72,7 @@
         #page-infinite-scroll-bottom .search-input input{
             border-radius:0;font-size:13px;
         }
-        .modal
+        .girdnamediv
         {
             width:17.6rem;
             margin-left:-8.75rem;

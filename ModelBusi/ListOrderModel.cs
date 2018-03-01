@@ -321,5 +321,7 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
             }
             return strWhere;
         }
+
+
     }
 }
