@@ -84,7 +84,7 @@ namespace WeChat.ModelWeChat
                                 req.FromUserName,
                                 req.ToUserName,
                                 DateTime.Now.Ticks,
-                                "注销成功");
+                                "解绑成功");
                         }
                         else
                         {
@@ -92,7 +92,7 @@ namespace WeChat.ModelWeChat
                                 req.FromUserName,
                                 req.ToUserName,
                                 DateTime.Now.Ticks,
-                                "注销失败");
+                                "账号未绑定");
                         }
                     }
                 }

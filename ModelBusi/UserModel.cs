@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using WeChat.Entity;
 using WeChat.Common;
+using System.Data;
 
 namespace WeChat.ModelBusi
 {
@@ -22,8 +23,8 @@ namespace WeChat.ModelBusi
             using(DBSession db=new DBSession())
             {
                 pwd = pwd.Trim2().ToSHA1();
-                string sql = @"select su.id as GWYUSERID,su.name GWYUSERCODE,su.realname as GWYUSERNAME,csc.code as CUSTOMERCODE,csc.hscode,csc.iscompany,csc.iscustomer,csc.isreceiver from sys_user su 
-                            left join cusdoc.sys_customer csc on su.customerid=csc.id where su.name='{0}' and su.password='{1}' and csc.code='{2}' and su.enabled=1";
+                string sql = @"select su.id as GWYUSERID,su.name GWYUSERCODE,su.realname as GWYUSERNAME,csc.code as CUSTOMERCODE,csc.hscode,csc.iscompany,csc.iscustomer,csc.isreceiver 
+                            from sys_user su left join cusdoc.sys_customer csc on su.customerid=csc.id where su.name='{0}' and su.password='{1}' and csc.code='{2}' and su.enabled=1";
                 sql = string.Format(sql, name.Trim2(), pwd, customer.Trim2().ToUpper());
                 WGUserEn user = db.QuerySignleEntity<WGUserEn>(sql);
                 if (user != null)
@@ -32,6 +33,23 @@ namespace WeChat.ModelBusi
                     user.WCNickName = nickname;
                 }
                 return user;
+            }
+        }
+
+        public static bool UserExsit(string name, string openid)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "select wcopenid from wechat_user where gwyusercode='" + name + "' and ";
+                DataTable dt = db.QuerySignle(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (dt.Rows[0]["wcopenid"].ToString2() != openid)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
         }
         /// <summary>

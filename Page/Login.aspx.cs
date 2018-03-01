@@ -27,6 +27,11 @@ namespace WeChat.Page
         [WebMethod]
         public static string UserLogin(string name,string pwd,string customer)
         {
+            if(UserModel.UserExsit(name,wcopenid))
+            {
+                return "{'flag':'false','url':'登录失败！该账号已经绑定其它微信，请先解绑'}";
+            }
+
             WGUserEn user = UserModel.Login(name, pwd, customer,wcopenid,wcnickname);
             if (user != null && !string.IsNullOrEmpty(user.GwyUserCode))
             {
