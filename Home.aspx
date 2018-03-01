@@ -19,7 +19,21 @@
                 //initSerach_SiteDeclare();
                 //initSerach_SiteInspection();
                 //initSerach_Declare();
-                initSerach_inspection();
+                //initSerach_inspection();
+
+                $(function () {
+                    console.log("aaa");
+                    if (typeof window.addEventListener != "undefined") {
+                        window.addEventListener("popstate", function (e) {
+                            console.log("ddd");
+                            show();
+                        }, false);
+                    } else {
+                        window.attachEvent("popstate", function (e) {
+                            console.log("fff");
+                        });
+                    }
+                });
             })
            
     </script>

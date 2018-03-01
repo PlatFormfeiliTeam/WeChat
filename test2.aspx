@@ -22,6 +22,42 @@
    }
     .btn{ position: absolute; top: 0; right: -80px; text-align: center; background: #999; color: #fff; width: 80px}
 </style>
+    
+ 
+<script type="text/javascript" src="js/touchWipe.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        
+        //延时监听     
+        setTimeout(function () {
+            //监听物理返回按钮    
+            window.addEventListener("popstate", function (e) {
+                alert("sfd");
+                layer.open({
+                    content: '您确定要返回微信吗？',
+
+                    btn: ['确认', '再逛逛'],
+                    shadeClose: false,
+
+                    yes: function () {
+                        //调用微信浏览器私有API关闭浏览器  
+                        WeixinJSBridge.call('closeWindow');
+                    }, no: function () {
+                        //点击【再逛逛】，再次写入空白历史记录  
+                        pushHistory();
+                    }
+                });
+            }, false);
+
+        }, 3000);
+       
+        $('.list-li').touchWipe({ itemDelete: '.btn' });
+    });
+    function show() {
+        window.location = "Home.aspx";
+    }
+</script>
 </head>
 <body>
 <header>
@@ -49,17 +85,5 @@
     </ul>
   </section>
 
- 
-<%--<script type="text/javascript" src="http://apps.bdimg.com/libs/zepto/1.1.4/zepto.min.js"></script>--%>
-<script type="text/javascript" src="js/touchWipe.js"></script>
-<script type="text/javascript">
-    $(function () {
-        $('.list-li').touchWipe({ itemDelete: '.btn' });
-    });
-    function show()
-    {
-        alert("删除成功");
-    }
-</script>
 </body>
 </html>
