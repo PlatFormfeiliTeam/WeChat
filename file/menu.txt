@@ -73,9 +73,9 @@
                "url":"http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_decl.aspx"
             },
 			{
-				"type":"click",
-				"name":"解除绑定",
-				"key":"V1001_GOOD"
+				"type":"view",
+               "name":"账号解绑",
+               "url":"http://gwy.jishiks.com/Page/SignOut.aspx"
 			}]
        }]
  }
