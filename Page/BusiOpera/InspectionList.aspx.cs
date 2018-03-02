@@ -51,6 +51,10 @@ namespace WeChat.Page.BusiOpera
                     System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=DeclareList");
                 }
             }
+            else if (user.IsReceiver != 1)
+            {//不是接单单位，无此权限
+                System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + user.WCOpenID + "&nickname=" + user.WCNickName + "&transferurl=DeclareList");
+            }
         }
 
         //微信接口js-sdk config

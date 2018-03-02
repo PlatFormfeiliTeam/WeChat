@@ -43,7 +43,7 @@ namespace WeChat.Page
                         return "{'flag':'false','url':'登录失败！该账号不属于接单单位'}";
                     }
                 }
-                if (transferUrl == "MyBusiness" || transferUrl == "SubscribeList_busi" || transferUrl == "SubscribeList_decl")
+                if (transferUrl == "MyBusiness" || transferUrl == "MyDeclareList" || transferUrl == "MyInspectionList")
                 {
                     if (user.IsCompany != 1 && user.IsCustomer != 1)
                     {

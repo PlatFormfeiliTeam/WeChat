@@ -53,6 +53,10 @@ namespace WeChat.Page.MyBusiness
                     System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
                 }
             }
+            else if (user.IsCustomer != 1 && user.IsCompany != 1)
+            {//不是接单单位，无此权限
+                System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + user.WCOpenID + "&nickname=" + user.WCNickName + "&transferurl=MyBusiness");
+            }
             
         }
        
