@@ -36,6 +36,30 @@ namespace WeChat.ModelBusi
             }
         }
         /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="pwd"></param>
+        /// <param name="customer"></param>
+        /// <returns></returns>
+        public static WGUserEn LoginById(string id, string openid, string nickname)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = @"select su.id as GWYUSERID,su.name as GWYUSERCODE,su.realname as GWYUSERNAME,csc.code as CUSTOMERCODE,csc.hscode,csc.iscompany,csc.iscustomer,csc.isreceiver 
+                            from sys_user su left join cusdoc.sys_customer csc on su.customerid=csc.id where id={0} and su.enabled=1";
+                sql = string.Format(sql,id);
+                WGUserEn user = db.QuerySignleEntity<WGUserEn>(sql);
+                if (user != null)
+                {
+                    user.WCOpenID = openid;
+                    user.WCNickName = nickname;
+                }
+                return user;
+            }
+        }
+        
+        /// <summary>
         /// 判断用户是否已经存在，
         /// </summary>
         /// <param name="usercode"></param>
@@ -110,11 +134,39 @@ namespace WeChat.ModelBusi
         {
             using(DBSession db=new DBSession())
             {
-                string sql = "select * from wechat_user where wcopenid='" + openid + "' and rownum=1";
+                string sql = "select * from wechat_user where wcopenid='" + openid + "' and rownum=1 and isunbind=0";
                 WGUserEn wuser= db.QuerySignleEntity<WGUserEn>(sql);
                 return wuser;
             }
         }
 
+
+        /// <summary>
+        /// 获取推送任务
+        /// </summary>
+        /// <returns></returns>
+        public static List<LoginExceptionEn> getLoginExceptionTask()
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "select * from wechat_loginexceptioninfo where issend=0";
+                return db.QueryEntity<LoginExceptionEn>(sql);
+            }
+        }
+
+        /// <summary>
+        /// 信息已推送
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool updateLoginExceptionInfo(int id)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "update wechat_loginexceptioninfo set issend=1,sendtime=sysdate where id=" + id;
+                return db.ExecuteSignle(sql) == 0 ? true : false;
+            }
+
+        }
     }
 }

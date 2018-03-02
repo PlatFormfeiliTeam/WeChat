@@ -23,5 +23,11 @@ namespace WeChat
         {
             TemplateModel.ExcuteSubcirbePush_single();
         }
+
+        [WebMethod]
+        public void LoginExceptionSend()
+        {
+            TemplateModel.ExcuteLoginExceptionPush_single();
+        }
     }
 }

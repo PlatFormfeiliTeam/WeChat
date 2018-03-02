@@ -21,29 +21,6 @@ namespace WeChat.ModelWeChat
             List<SubcribeInfoEn> sublist = SubscribeModel.getSubscribeTask();
             foreach (SubcribeInfoEn sub in sublist)
             {
-                #region 测试代码
-                //var data = new
-                //{
-                //    type = new TemplateDataItem(sub.SubsType, "#ff0000"),
-                //    cusno = new TemplateDataItem(sub.Cusno),
-                //    tiggertime = new TemplateDataItem(sub.TriggerTime.ToString()),
-                //    status = new TemplateDataItem(sub.Status)
-                //};
-
-                //if (sub.SubsType == "物流状态")
-                //{
-                //    sub.TemplateId = "2W7nYI371TSk18pLLubXelXz59wA3yMxoWq6o9uLYXY";
-                //}
-                //if (sub.SubsType == "报关状态")
-                //{
-                //    sub.TemplateId = "PDpzPNCQdKFyyxTXCxZphl9Vor2mkgfUf-CLqPlLk8E";
-                //}
-                //if (sub.SubsType == "业务状态")
-                //{
-                //    sub.TemplateId = "82bKjSd9Iyxdi0JPZMvUZ3zwmuleev6PfXimPfyb7aE";
-                //}
-                #endregion
-
                 var data = new
                 {
                     first = new TemplateDataItem("您好，您订阅的" + sub.SubsType + "已触发"),
@@ -62,6 +39,33 @@ namespace WeChat.ModelWeChat
             }
             LogHelper.Write("订阅推送完成...");
         }
+
+
+        public static void ExcuteLoginExceptionPush_single()
+        {
+            LogHelper.Write("进入订阅执行...");
+            List<LoginExceptionEn> sublist = UserModel.getLoginExceptionTask();
+            foreach (LoginExceptionEn sub in sublist)
+            {
+                var data = new
+                {
+                    first = new TemplateDataItem("您好，您的账号在异地登录，请确认账号安全！"),
+                    keyword1 = new TemplateDataItem(sub.LoginNickName),
+                    keyword2 = new TemplateDataItem("******"),
+                    remark = new TemplateDataItem("登录时间：" + sub.CreateTime.ToString())
+
+                };
+
+                SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.OldOpenId, "iG2fGqtk__dU7m68WTKdutu8gb-wUvDGmGc7bj_fWsQ", data, "http://weixin.qq.com/download");
+                if (msg.errcode == "0")
+                {
+                    UserModel.updateLoginExceptionInfo(sub.ID);
+                }
+            }
+            LogHelper.Write("订阅推送完成...");
+        }
+
+
         public static void ExcuteSubcirbePush_batch()
         {
             if (taskFlag)
