@@ -35,23 +35,39 @@ namespace WeChat.ModelBusi
                 return user;
             }
         }
-
-        public static bool UserExsit(string name, string openid)
+        /// <summary>
+        /// 判断用户是否已经存在，
+        /// </summary>
+        /// <param name="usercode"></param>
+        /// <param name="openid"></param>
+        /// <param name="nickname"></param>
+        /// <returns></returns>
+        public static bool UserExsit(string usercode, string openid,string nickname)
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "select wcopenid from wechat_user where gwyusercode='" + name + "'";
+                string sql = "select wcopenid,wcnickname,isunbind from wechat_user where gwyusercode='" + usercode + "' and wcopenid<>'" + openid + "' order by unbindtime desc ";
                 DataTable dt = db.QuerySignle(sql);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    if (dt.Rows[0]["wcopenid"].ToString2() != openid)
+                    //已经存在则向之前的用户推送消息
+                    string exsql = @"insert into wechat_loginexceptioninfo(id,loginopenid,loginnickname,usercode,oldopenid,oldnickname)
+                                    values(wechat_loginexceptioninfo_id.nextval,'{0}','{1}','{2}','{3}','{4}')";
+                    exsql = string.Format(exsql, openid, nickname, usercode, dt.Rows[0]["wcopenid"].ToString2(), dt.Rows[0]["wcnickname"].ToString2());
+                    db.ExecuteSignle(exsql);
+                    if (dt.Rows[0]["isunbind"].ToString2() == "1")
                     {
-                        return true;
+                        return false;//已经解绑，可以登录
+                    }
+                    else
+                    {
+                        return true;//未解绑，不可登录
                     }
                 }
                 return false;
             }
         }
+      
         /// <summary>
         /// 新增账号
         /// </summary>
@@ -80,7 +96,7 @@ namespace WeChat.ModelBusi
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "delete from wechat_user where WCOpenID='" + openid + "'";
+                string sql = "update wechat_user set isunbind=1,unbindtime=sysdate where wcopenid='" + openid + "'";
                 return db.ExecuteSignle(sql) == 0 ? false : true;
             }
         }
