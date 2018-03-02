@@ -113,7 +113,18 @@ namespace WeChat.ModelWeChat
                               string.Format(ReplyType.Message_News_Item, "欢迎关注<关务云>公众账号", "关于我们",
                               "http://1w838262n7.imwork.net/image/banner_feiliks.png",
                               "") + news);
-                    LogHelper.Write("subscribe:" + responseContent);
+                    LogHelper.Write("subscribe_EventKey:" + req.EventKey);
+                    if(!string.IsNullOrEmpty(req.EventKey))
+                    {
+                        login(req.EventKey,req.FromUserName,"");
+                    }
+                }
+                else if (req.Event.Equals("SCAN", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!string.IsNullOrEmpty(req.EventKey))
+                    {
+                        login(req.EventKey, req.FromUserName, "");
+                    }
                 }
                 else if (req.Event.Equals("unsubscribe", StringComparison.OrdinalIgnoreCase))
                 {
@@ -145,8 +156,24 @@ namespace WeChat.ModelWeChat
             return responseContent;
         }
 
-      
+        /// <summary>
+        /// 账号绑定
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="openid"></param>
+        /// <param name="nickname"></param>
+        private static void login(string userid, string openid,string nickname)
+        {
+            WGUserEn user = UserModel.LoginById(userid, openid, nickname);
+            if (user != null)//登录成功
+            {
+                if (!UserModel.UserExsit(user.GwyUserCode, openid, nickname))//账号未绑定
+                {
+                    UserModel.SaveUser(user);//绑定账号
+                }
+            }
 
+        }
        
 
     }
