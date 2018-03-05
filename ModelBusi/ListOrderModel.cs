@@ -44,7 +44,7 @@ namespace WeChat.ModelBusi
                                     select nt.*,sb.name as busitypename,sr.name as repwayname from newtab nt 
                                     left join cusdoc.sys_busitype sb on nt.busitype=sb.code 
                                     left join cusdoc.sys_repway sr on nt.repwayid=sr.code";
-                    string strWhere = " where submittime is not null";
+                    string strWhere = " where lo.submittime is not null and lo.cusno is not null  and lo.isinvalid=0 and ld.isinvalid=0";
 
                     if (!string.IsNullOrEmpty(busiunit)) { strWhere += " and (lo.BUSIUNITCODE like '%" + busiunit + "%' or lo.BUSIUNITNAME like '%" + busiunit + "%')"; }
                     if (!string.IsNullOrEmpty(submittime_s)) { strWhere += " and lo.submittime>=to_date('" + submittime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }

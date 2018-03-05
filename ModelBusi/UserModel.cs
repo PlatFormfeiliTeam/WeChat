@@ -47,7 +47,7 @@ namespace WeChat.ModelBusi
             using (DBSession db = new DBSession())
             {
                 string sql = @"select su.id as GWYUSERID,su.name as GWYUSERCODE,su.realname as GWYUSERNAME,csc.code as CUSTOMERCODE,csc.hscode,csc.iscompany,csc.iscustomer,csc.isreceiver 
-                            from sys_user su left join cusdoc.sys_customer csc on su.customerid=csc.id where id={0} and su.enabled=1";
+                            from sys_user su left join cusdoc.sys_customer csc on su.customerid=csc.id where su.id={0} and su.enabled=1";
                 sql = string.Format(sql,id);
                 WGUserEn user = db.QuerySignleEntity<WGUserEn>(sql);
                 if (user != null)

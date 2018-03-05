@@ -133,6 +133,24 @@
             border-radius:0;font-size:13px;
         }
         
+        #popup-subscribe-log input
+        {
+            font-family:"微软雅黑";
+            width:6rem;
+            height: 1.5rem;
+            border: none;
+            border-radius: .15rem;
+            font-size: .8rem;
+        }
+        #popup-subscribe-decl input
+        {
+            font-family:"微软雅黑";
+            width:6rem;
+            height: 1.5rem;
+            border: none;
+            border-radius: .15rem;
+            font-size: .8rem;
+        }
     </style>
 
     <script type="text/javascript">
