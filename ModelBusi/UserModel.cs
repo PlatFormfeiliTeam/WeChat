@@ -42,7 +42,7 @@ namespace WeChat.ModelBusi
         /// <param name="pwd"></param>
         /// <param name="customer"></param>
         /// <returns></returns>
-        public static WGUserEn LoginById(string id, string openid, string nickname)
+        public static WGUserEn LoginById(string id)
         {
             using (DBSession db = new DBSession())
             {
@@ -50,11 +50,6 @@ namespace WeChat.ModelBusi
                             from sys_user su left join cusdoc.sys_customer csc on su.customerid=csc.id where su.id={0} and su.enabled=1";
                 sql = string.Format(sql,id);
                 WGUserEn user = db.QuerySignleEntity<WGUserEn>(sql);
-                if (user != null)
-                {
-                    user.WCOpenID = openid;
-                    user.WCNickName = nickname;
-                }
                 return user;
             }
         }

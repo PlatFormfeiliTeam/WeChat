@@ -23,9 +23,9 @@
             <div class="item-content">
               <div class="item-media"><i class="icon icon-form-name"></i></div>
               <div class="item-inner">
-                <div class="item-title label">姓名</div>
+                <div class="item-title label">账号</div>
                 <div class="item-input">
-                  <input id="name" type="text" placeholder="请输入姓名" />
+                  <input id="name" type="text" placeholder="请输入账号" />
                 </div>
               </div>
             </div>

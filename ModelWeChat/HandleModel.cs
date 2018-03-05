@@ -192,10 +192,12 @@ namespace WeChat.ModelWeChat
             try
             {
                 userid = userid.Replace("QRSCENE_", "").Replace("qrscene_", "");
-                WGUserEn user = UserModel.LoginById(userid, openid, nickname);
+                WGUserEn user = UserModel.LoginById(userid);
                 if (user != null)//登录成功
                 {
-                    if (!UserModel.UserExsit(user.GwyUserCode, openid, nickname))//账号未绑定
+                    user.WCOpenID = openid;
+                    user.WCNickName = getUserInfo(openid);
+                    if (!UserModel.UserExsit(user.GwyUserCode, user.WCOpenID, user.WCNickName))//账号未绑定
                     {
                         UserModel.SaveUser(user);//绑定账号
                         return true;
@@ -209,7 +211,18 @@ namespace WeChat.ModelWeChat
                 return false;
             }
         }
-       
+
+        private static string getUserInfo(string openid)
+        {
+            var url = @"https://api.weixin.qq.com/cgi-bin/user/info?access_token={0}&openid={1}&lang=zh_CN";
+            url = string.Format(url, TokenModel.AccessToken, openid);
+            string getJson = MyHttpHelper.HttpGet(url);
+            WUserEn ac = JsonHelper.DeserializeJsonToObject<WUserEn>(getJson);
+            if (ac != null)
+                return ac.NickName;
+            else
+                return "";
+        }
 
     }
 }
