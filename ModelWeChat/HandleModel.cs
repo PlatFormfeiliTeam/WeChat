@@ -101,29 +101,54 @@ namespace WeChat.ModelWeChat
                     WebNoticeModel wnm = new WebNoticeModel();
                     List<WebNoticeEn> list = wnm.getTwoNotice();
                     string news = "";
+                    int count = 3;
                     foreach(WebNoticeEn w in list)
                     {
                         news += string.Format(ReplyType.Message_News_Item, w.TypeName + "：" + w.Title, w.Title, "", "http://223.68.174.213:8012/Home/IndexNoticeDetail?fekx4+uqU5g=");
+                    }
+                    if (!string.IsNullOrEmpty(req.EventKey))
+                    {
+                        count++;
+                        if(login(req.EventKey, req.FromUserName, ""))
+                        {
+                            news += string.Format(ReplyType.Message_News_Item, "账号绑定成功", "", "", "");
+                        }
+                        else
+                        {
+                            news += string.Format(ReplyType.Message_News_Item, "该账号已绑定，请先解绑", "", "", "");
+                        }
                     }
                     responseContent = string.Format(ReplyType.Message_News_Main,
                              req.FromUserName,
                              req.ToUserName,
                              DateTime.Now.Ticks,
-                             "3",
+                             count,
                               string.Format(ReplyType.Message_News_Item, "欢迎关注<关务云>公众账号", "关于我们",
                               "http://1w838262n7.imwork.net/image/banner_feiliks.png",
                               "") + news);
                     LogHelper.Write("subscribe_EventKey:" + req.EventKey);
-                    if(!string.IsNullOrEmpty(req.EventKey))
-                    {
-                        login(req.EventKey,req.FromUserName,"");
-                    }
+                    
                 }
                 else if (req.Event.Equals("SCAN", StringComparison.OrdinalIgnoreCase))
                 {
                     if (!string.IsNullOrEmpty(req.EventKey))
                     {
-                        login(req.EventKey, req.FromUserName, "");
+                        if (login(req.EventKey, req.FromUserName, ""))
+                        {
+                            responseContent = string.Format(ReplyType.Message_Text,
+                             req.FromUserName,
+                             req.ToUserName,
+                             DateTime.Now.Ticks,
+                             "账号绑定成功");
+                        }
+                        else
+                        {
+                            responseContent = string.Format(ReplyType.Message_Text,
+                             req.FromUserName,
+                             req.ToUserName,
+                             DateTime.Now.Ticks,
+                             "该账号已绑定，请先解绑");
+                        }
                     }
                 }
                 else if (req.Event.Equals("unsubscribe", StringComparison.OrdinalIgnoreCase))
@@ -162,17 +187,27 @@ namespace WeChat.ModelWeChat
         /// <param name="userid"></param>
         /// <param name="openid"></param>
         /// <param name="nickname"></param>
-        private static void login(string userid, string openid,string nickname)
+        private static bool login(string userid, string openid,string nickname)
         {
-            WGUserEn user = UserModel.LoginById(userid, openid, nickname);
-            if (user != null)//登录成功
+            try
             {
-                if (!UserModel.UserExsit(user.GwyUserCode, openid, nickname))//账号未绑定
+                userid = userid.Replace("QRSCENE_", "").Replace("qrscene_", "");
+                WGUserEn user = UserModel.LoginById(userid, openid, nickname);
+                if (user != null)//登录成功
                 {
-                    UserModel.SaveUser(user);//绑定账号
+                    if (!UserModel.UserExsit(user.GwyUserCode, openid, nickname))//账号未绑定
+                    {
+                        UserModel.SaveUser(user);//绑定账号
+                        return true;
+                    }
                 }
+                return false;
             }
-
+            catch( Exception  ex)
+            {
+                LogHelper.Write("扫码异常:" + ex.Message);
+                return false;
+            }
         }
        
 

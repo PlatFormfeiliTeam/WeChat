@@ -49,26 +49,31 @@ namespace WeChat.ModelWeChat
 
         public static void ExcuteLoginExceptionPush_single()
         {
-            LogHelper.Write("进入订阅执行...");
-            List<LoginExceptionEn> sublist = UserModel.getLoginExceptionTask();
-            foreach (LoginExceptionEn sub in sublist)
+            try
             {
-                var data = new
+                List<LoginExceptionEn> sublist = UserModel.getLoginExceptionTask();
+                foreach (LoginExceptionEn sub in sublist)
                 {
-                    first = new TemplateDataItem("您好，您的账号在异地登录，请确认账号安全！"),
-                    keyword1 = new TemplateDataItem(sub.LoginNickName),
-                    keyword2 = new TemplateDataItem("******"),
-                    remark = new TemplateDataItem("登录时间：" + sub.CreateTime.ToString())
+                    var data = new
+                    {
+                        first = new TemplateDataItem("您好，您的账号在异地登录，请确认账号安全！"),
+                        keyword1 = new TemplateDataItem(sub.LoginNickName),
+                        keyword2 = new TemplateDataItem("******"),
+                        remark = new TemplateDataItem("登录时间：" + sub.CreateTime.ToString())
 
-                };
+                    };
 
-                SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.OldOpenId, "iG2fGqtk__dU7m68WTKdutu8gb-wUvDGmGc7bj_fWsQ", data, "http://weixin.qq.com/download");
-                if (msg.errcode == "0")
-                {
-                    UserModel.updateLoginExceptionInfo(sub.ID);
+                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.OldOpenId, "iG2fGqtk__dU7m68WTKdutu8gb-wUvDGmGc7bj_fWsQ", data, "http://weixin.qq.com/download");
+                    if (msg.errcode == "0")
+                    {
+                        UserModel.updateLoginExceptionInfo(sub.ID);
+                    }
                 }
             }
-            LogHelper.Write("订阅推送完成...");
+            catch (Exception e)
+            {
+                LogHelper.Write("TemplateModel_异常登录推送异常：" + e.Message);
+            }
         }
 
 
