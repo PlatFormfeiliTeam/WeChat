@@ -91,7 +91,7 @@ namespace WeChat.Page.MyBusiness
                 cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, customerCode, hsCode, out sum);
 
             //DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, busiunit, ordercode,
-            //   cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, "KSJSBGYXGS", "3223980001", out sum);
+            //   cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, "RBDZKJKSYXGS", "3223640003", out sum);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             try
             {
@@ -132,16 +132,20 @@ namespace WeChat.Page.MyBusiness
                 DataSet ds = orderModel.getOrderDetail(code);
                 ds.Tables[0].Rows[0]["busitype"] = SwitchHelper.switchValue("busitype", ds.Tables[0].Rows[0]["busitype"].ToString2());
                 
-                //ds.Tables[2].Rows[0]["modifyflag"] = SwitchHelper.switchValue("modifyflag", ds.Tables[2].Rows[0]["modifyflag"].ToString2());
-                
-                foreach (DataRow dr in ds.Tables[1].Rows)
-                {
-                    dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
-                }
-                foreach (DataRow dr in ds.Tables[2].Rows)
-                {
-                    dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
-                }               
+                //if (ds.Tables.Count > 1)
+                //{
+                //    foreach (DataRow dr in ds.Tables[1].Rows)
+                //    {
+                //        dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
+                //    }
+                //}
+                //if (ds.Tables.Count > 2)
+                //{
+                //    foreach (DataRow dr in ds.Tables[2].Rows)
+                //    {
+                //        dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
+                //    }
+                //}
                 IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
                 iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
                 string json = JsonConvert.SerializeObject(ds, iso);

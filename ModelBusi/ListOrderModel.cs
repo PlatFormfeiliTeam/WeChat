@@ -135,21 +135,21 @@ namespace WeChat.ModelBusi
                 DataTable dt1 = db.QuerySignle(sql);
                 dt1.TableName = "OrderTable";
                 ds.Tables.Add(dt1);
-                //报关单信息
-                sql = @" select ld.code,ld.declarationcode,ld.goodsnum,ld.goodsgw,ld.tradecode,ld.transname,to_char(ld.modifyflag) as modifyflag,ld.customsstatus,
-cbd.name as tradename from list_declaration ld left join cusdoc.base_decltradeway cbd on ld.tradecode=cbd.code
-where ld.ordercode='" + code + "'";
-                DataTable dt2 = db.QuerySignle(sql);
-                dt2.TableName = "DeclTable";
-                ds.Tables.Add(dt2);
-                //报检单信息
-                if (dt1.Rows[0]["entrusttype"].ToString2() == "02" || dt1.Rows[0]["entrusttype"].ToString2() == "03")
-                {
-                    sql = "select li.approvalcode,li.inspectioncode,li.clearancecode,to_char(li.modifyflag) as modifyflag,li.inspstatus from list_inspection li where li.ordercode='" + code + "'";
-                    DataTable dt3 = db.QuerySignle(sql);
-                    dt3.TableName = "InspTable";
-                    ds.Tables.Add(dt3);
-                }
+//                //报关单信息
+//                sql = @" select ld.code,ld.declarationcode,ld.goodsnum,ld.goodsgw,ld.tradecode,ld.transname,to_char(ld.modifyflag) as modifyflag,ld.customsstatus,
+//cbd.name as tradename from list_declaration ld left join cusdoc.base_decltradeway cbd on ld.tradecode=cbd.code
+//where ld.ordercode='" + code + "'";
+//                DataTable dt2 = db.QuerySignle(sql);
+//                dt2.TableName = "DeclTable";
+//                ds.Tables.Add(dt2);
+//                //报检单信息
+//                if (dt1.Rows[0]["entrusttype"].ToString2() == "02" || dt1.Rows[0]["entrusttype"].ToString2() == "03")
+//                {
+//                    sql = "select li.approvalcode,li.inspectioncode,li.clearancecode,to_char(li.modifyflag) as modifyflag,li.inspstatus from list_inspection li where li.ordercode='" + code + "'";
+//                    DataTable dt3 = db.QuerySignle(sql);
+//                    dt3.TableName = "InspTable";
+//                    ds.Tables.Add(dt3);
+//                }
                 //物流信息
                 if (!string.IsNullOrEmpty(dt1.Rows[0]["totalno"].ToString2()) && !string.IsNullOrEmpty(dt1.Rows[0]["divideno"].ToString2()))
                 {

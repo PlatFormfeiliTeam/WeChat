@@ -906,7 +906,7 @@
                 </div>
             </div>
             <div class="content-block row">
-                <div class="col-50"><a href="#" class="close-popup button button-fill">返  回</a></div>
+                <div class="col-50"><a href="#" class="close-popup button">返  回</a></div>
                 <div class="col-50"><a href="#" class="button button-fill" id="Pop_Subscribe"  style="background-color: #3d4145">确  认</a></div>
             </div>
         </div>
