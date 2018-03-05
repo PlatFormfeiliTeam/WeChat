@@ -17,27 +17,33 @@ namespace WeChat.ModelWeChat
 
         public static void ExcuteSubcirbePush_single()
         {
-            LogHelper.Write("进入订阅执行...");
-            List<SubcribeInfoEn> sublist = SubscribeModel.getSubscribeTask();
-            foreach (SubcribeInfoEn sub in sublist)
+            try
             {
-                var data = new
+                List<SubcribeInfoEn> sublist = SubscribeModel.getSubscribeTask();
+                foreach (SubcribeInfoEn sub in sublist)
                 {
-                    first = new TemplateDataItem("您好，您订阅的" + sub.SubsType + "已触发"),
-                    keyword1 = new TemplateDataItem(sub.Cusno),
-                    keyword2 = new TemplateDataItem(sub.Status),
-                    remark = new TemplateDataItem("触发时间：" + sub.TriggerTime.ToString())
+                    var data = new
+                    {
+                        first = new TemplateDataItem("您好，您订阅的" + sub.SubsType + "已触发"),
+                        keyword1 = new TemplateDataItem(sub.Cusno),
+                        keyword2 = new TemplateDataItem(sub.Status),
+                        remark = new TemplateDataItem("触发时间：" + sub.TriggerTime.ToString())
 
-                };
-                sub.TemplateId = "-GdghWwMXHwOE_hu1xxm2H5hRDGGRTQwTuGoSIg8xww";
+                    };
+                    sub.TemplateId = "-GdghWwMXHwOE_hu1xxm2H5hRDGGRTQwTuGoSIg8xww";
 
-                SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.Openid, sub.TemplateId, data, "http://weixin.qq.com/download");
-                if (msg.errcode == "0")
-                {
-                    SubscribeModel.updateSubscirbeInfo(sub.Id);
+                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.Openid, sub.TemplateId, data, "http://weixin.qq.com/download");
+                    if (msg.errcode == "0")
+                    {
+                        SubscribeModel.updateSubscirbeInfo(sub.Id);
+                    }
                 }
             }
-            LogHelper.Write("订阅推送完成...");
+            catch(Exception e)
+            {
+                LogHelper.Write("TemplateModel_订阅推送异常：" + e.Message);
+            }
+            
         }
 
 
