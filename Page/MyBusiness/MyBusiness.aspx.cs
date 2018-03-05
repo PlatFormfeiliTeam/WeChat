@@ -180,6 +180,10 @@ namespace WeChat.Page.MyBusiness
                 //判断是否订阅的信息是否已经触发
                 if (type == "报关状态")
                 {
+                    if(!string.IsNullOrEmpty(declarationcode))
+                    {
+                        return "订阅失败，报关单号不能为空";
+                    }
                     DataTable dt = SubscribeModel.getDeclstatus(declarationcode);
                     for (int i = 0; i < st.Length; i++)
                     {
@@ -192,6 +196,10 @@ namespace WeChat.Page.MyBusiness
                 }
                 else if(type=="物流状态")
                 {
+                    if (!string.IsNullOrEmpty(cusno))
+                    {
+                        return "订阅失败，企业编号不能为空";
+                    }
                     DataTable dt = SubscribeModel.getLogisticsstatus(cusno);
                     for (int i = 0; i < st.Length; i++)
                     {
@@ -204,6 +212,10 @@ namespace WeChat.Page.MyBusiness
                 }
                 else if (type == "业务状态")
                 {
+                    if (!string.IsNullOrEmpty(cusno))
+                    {
+                        return "订阅失败，企业编号不能为空";
+                    }
                     DataTable dt = SubscribeModel.getOrderstatus(cusno);
                     for (int i = 0; i < st.Length; i++)
                     {
