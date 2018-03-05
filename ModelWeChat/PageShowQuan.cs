@@ -21,25 +21,21 @@ namespace WeChat.ModelWeChat
             if (HttpContext.Current.Session["ShouquanCode"] == null || HttpContext.Current.Session["ShouquanCode"].ToString() == "")
             {
                 HttpContext.Current.Session["ShouquanCode"] = "123";
-                LogHelper.Write("第1步：" + HttpContext.Current.Session["ShouquanCode"]);
                 //用户授权的Code
                 GetShouQuanCodeUrl(HttpContext.Current.Request.Url.AbsoluteUri.Replace(":8088", ""));
 
             }
             else if (HttpContext.Current.Request.QueryString["code"] == null || HttpContext.Current.Request.QueryString["code"] == "")
             {
-                LogHelper.Write("第3步：" + HttpContext.Current.Session["code"]);
                 //用户授权的Code 
                 GetShouQuanCodeUrl(HttpContext.Current.Request.Url.AbsoluteUri.Replace(":8088", ""));
             }
             else
             {
                 var model = ShouQuanAccessToken(HttpContext.Current.Request.QueryString["code"]);
-                LogHelper.Write("第4步：" + model.openid);
                 var url = @"https://api.weixin.qq.com/sns/userinfo?access_token={0}&openid={1}&lang=zh_CN";
                 url = string.Format(url, model.access_token, model.openid);
                 string getJson = MyHttpHelper.HttpGet(url);
-                LogHelper.Write("第5步：" + getJson);
                 var ac = JsonHelper.DeserializeJsonToObject<WUserEn>(getJson);
                 LogHelper.Write("OpenID：" + ac.OpenID);
                 return ac;
@@ -53,7 +49,6 @@ namespace WeChat.ModelWeChat
         /// <returns></returns>
         public static void GetShouQuanCodeUrl(string url)
         {
-            LogHelper.Write("第6步：" + url);
             string CodeUrl = "";
             //加密过的url
             string value = HttpUtility.UrlEncode(url);
@@ -70,11 +65,9 @@ namespace WeChat.ModelWeChat
         /// <returns></returns>
         public static OauthAccessToken ShouQuanAccessToken(string code)
         {
-            LogHelper.Write("第7步：" + code);
             var url = @"https://api.weixin.qq.com/sns/oauth2/access_token?appid={0}&secret={1}&code={2}&grant_type=authorization_code";
             url = string.Format(string.Format(url, TokenModel.AppID, TokenModel.AppSecret, code));
             string getJson = MyHttpHelper.HttpGet(url);
-            LogHelper.Write("第8步：" + getJson);
             OauthAccessToken ac = new OauthAccessToken();
             ac = JsonHelper.DeserializeJsonToObject<OauthAccessToken>(getJson);
             return ac;

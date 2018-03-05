@@ -30,23 +30,19 @@ namespace WeChat.Page.MyBusiness
                 WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
                 if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
                 {//授权成功
-                    LogHelper.Write("第9步：" + userInfo.OpenID);
                     WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
                     if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
                     {//账号未关联，跳转至登录界面
-                        LogHelper.Write("第10步：" + userInfo.OpenID);
                         System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
                     }
                     else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
                     {//不是接单单位，无此权限
-                        LogHelper.Write("第11步：" + userInfo.OpenID);
                         System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
                     }
                     else
                     {//不需登录，保存当前用户
                         HttpContext.Current.Session["user"] = wuser;
                     }
-                    LogHelper.Write("第12步：" + wuser.WCOpenID);
                 }
                 else
                 {//获取授权失败，也跳转至登录页面

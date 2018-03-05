@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using WeChat.Common;
 using WeChat.Entity;
 using WeChat.ModelBusi;
+using WeChat.ModelWeChat;
 
 namespace WeChat.Page
 {
@@ -16,6 +17,27 @@ namespace WeChat.Page
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            try
+            {
+                WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+                //如果当前用户未登陆，先获取授权
+                if (user == null)
+                {
+                    WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+                    if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
+                    {//授权成功
+                        WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
+                        if (wuser != null || string.IsNullOrEmpty(wuser.GwyUserName))
+                        {//账号未关联，跳转至登录界面
+                            HttpContext.Current.Session["user"] = wuser;
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                LogHelper.Write("SignOut解除绑定异常：" + ex.Message);
+            }
         }
 
         [WebMethod]
