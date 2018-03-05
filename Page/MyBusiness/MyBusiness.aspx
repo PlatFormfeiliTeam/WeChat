@@ -1243,7 +1243,7 @@
                 </div>
             <div class="row" style="background-color:white;margin-top:1rem">
                 <div class="col-50"><a href="#" class="close-popup button" id="backto_decl">返  回</a></div>
-                <div class="col-50"><a href="javascript:subscribe('报关状态')" class="button">确  认</a></div>
+                <div class="col-50"><a href="javascript:subscribe('报关状态')" class="button"  style="background-color: #3d4145">确  认</a></div>
             </div>
         </div>
     </div>
@@ -1309,7 +1309,7 @@
           </div>
             <div class="row" style="background-color:white;margin-top:1rem">
                 <div class="col-50"><a href="#" class="close-popup button" id="backto_log">返  回</a></div>
-                <div class="col-50"><a href="javascript:subscribe('订单状态')" class="button">确  认</a></div>
+                <div class="col-50"><a href="javascript:subscribe('订单状态')" class="button" style="background-color: #3d4145">确  认</a></div>
             </div>
         </div>
     </div>   

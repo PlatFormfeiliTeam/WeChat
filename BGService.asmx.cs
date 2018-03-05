@@ -29,5 +29,11 @@ namespace WeChat
         {
             TemplateModel.ExcuteLoginExceptionPush_single();
         }
+
+        [WebMethod]
+        public string  GetAccessToken()
+        {
+            return TokenModel.AccessToken;
+        }
     }
 }
