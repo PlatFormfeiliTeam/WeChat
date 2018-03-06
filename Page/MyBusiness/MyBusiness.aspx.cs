@@ -36,8 +36,8 @@ namespace WeChat.Page.MyBusiness
                         System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
                     }
                     else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
-                    {//不是接单单位，无此权限
-                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+                    {//不是企业或委托单位，无此权限
+                        System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
                     }
                     else
                     {//不需登录，保存当前用户
@@ -51,7 +51,7 @@ namespace WeChat.Page.MyBusiness
             }
             else if (user.IsCustomer != 1 && user.IsCompany != 1)
             {//不是接单单位，无此权限
-                System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + user.WCOpenID + "&nickname=" + user.WCNickName + "&transferurl=MyBusiness");
+                System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
             }
             
         }

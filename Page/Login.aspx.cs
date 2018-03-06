@@ -18,7 +18,7 @@ namespace WeChat.Page
         protected void Page_Load(object sender, EventArgs e)
         {
             HttpRequest request = System.Web.HttpContext.Current.Request;
-            LogHelper.Write("进入Login页面:" + request["openid"]);
+            LogHelper.Write("进入Login页面:" + request["openid"] + "_____" + request["transferurl"]);
             wcopenid = request["openid"];
             wcnickname = request["nickname"];
             transferUrl = request["transferurl"];
