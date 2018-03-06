@@ -28,7 +28,7 @@ namespace WeChat.Page
                     {//授权成功
                         WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
                         if (wuser != null || string.IsNullOrEmpty(wuser.GwyUserName))
-                        {//账号未关联，跳转至登录界面
+                        {
                             HttpContext.Current.Session["user"] = wuser;
                         }
                     }
@@ -49,6 +49,9 @@ namespace WeChat.Page
             if(UserModel.DeleteUser(user.WCOpenID))
             {
                 HttpContext.Current.Session["user"] = null;
+                HttpContext.Current.Session["openid"] = null;
+                HttpContext.Current.Session["nickname"] = null;
+                HttpContext.Current.Session["transferurl"] = null;
                 return "{'flag':'true','url':'解绑成功'}";
             }
             else

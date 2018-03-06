@@ -51,7 +51,7 @@ namespace WeChat.Page.BusiOpera
                     System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyInspectionList");
                 }
             }
-            else if (user.IsReceiver != 1)
+            else if (user.IsCustomer != 1 && user.IsCompany != 1)
             {//不是接单单位，无此权限
                 System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
             }

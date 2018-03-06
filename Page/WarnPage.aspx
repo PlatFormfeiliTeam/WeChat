@@ -9,8 +9,8 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div style="color:red;font-size:xx-large">
-    无此权限！
+    <div style="color:red;font-size:40px;margin:30px 0 0 40px;">
+    对不起，您无此权限！
     </div>
     </form>
 </body>
