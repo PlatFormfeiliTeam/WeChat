@@ -70,7 +70,7 @@
 			{	
                "type":"view",
                "name":"我的报检单",
-               "url":"http://gwy.jishiks.com/Page/MyBusiness/SubscribeList_decl.aspx"
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/MyInspectionList.aspx"
             },
 			{
 				"type":"view",
