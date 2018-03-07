@@ -55,7 +55,7 @@ namespace WeChat.ModelBusi
                 where += " and ort.receiverunitcode='" + customercode + "'";
 
                 string tempsql = @"select det.code,det.modifyflag,det.CUSTOMSSTATUS
-                                    ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,lda.reptime
+                                    ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,to_char(lda.reptime,'yyyy-mm-dd') reptime
                                     ,lda.GOODSNUM,lda.GOODSGW
                                     ,ort.busitype,ort.cusno,ort.code ordercode
                                 from list_declaration det     
@@ -112,7 +112,7 @@ namespace WeChat.ModelBusi
                 string ordercode_con = dt2.Rows[0][0].ToString();
 
                 string tempsql = @"select det.code,det.modifyflag,det.CUSTOMSSTATUS
-                                    ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,lda.reptime
+                                    ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,to_char(lda.reptime,'yyyy-mm-dd') reptime
                                     ,lda.GOODSNUM,lda.GOODSGW
                                     ,ort.busitype,ort.cusno
                                 from list_declaration det     
@@ -354,7 +354,7 @@ namespace WeChat.ModelBusi
                 }
 
                 string tempsql = @"select det.code,det.modifyflag,det.CUSTOMSSTATUS
-                                    ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,lda.reptime
+                                    ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,to_char(lda.reptime,'yyyy-mm-dd') reptime
                                     ,lda.GOODSNUM,lda.GOODSGW
                                     ,ort.busitype,ort.cusno,ort.code ordercode
                                 from list_declaration det     

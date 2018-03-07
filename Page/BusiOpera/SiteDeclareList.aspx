@@ -50,11 +50,24 @@
            width: 100%;
         }
          /************************************************ *********************************/
+         .sitediv .modal-inner{
+             padding:0;
+         }
         .sitediv .modal-title{
-            font-weight:800;
+            text-align:right;
         }
+        .sitediv .modal-title+.modal-text{
+            margin-top:0;
+        }
+
+        .picdiv .modal-inner{
+             padding:0;
+         }
         .picdiv .modal-title{
-            font-weight:800;
+            text-align:right;
+        }
+        .picdiv .modal-title+.modal-text{
+            margin-top:0;
         }
         /************************************************ 查询列表名称*********************************/
         .girdnamediv {
@@ -331,12 +344,18 @@
                 var arr_divids = JSON.stringify(arr_divid);//将数组转为JSON字符串
 
                 $.modal({
-                    title: '现场报关放行',
-                    text: '<div class="content-block row" style="margin:1rem 0;">' +
-                                '<div class="col-20"><a href="#" id="sitecancel" class="button" style="padding:0 0;background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
-                                '<div class="col-40"><a href="#" id="siteapply" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">现场报关</a></div>' +
-                                '<div class="col-40"><a href="#" id="sitepass" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">现场放行</a></div>' +
+                    title: '<i id="sitecancel" class="iconfont" style="font-size:1.3rem;">&#xea4f;</i>',
+                    text: '<span style="font-weight:800;">现场报关放行</span>' +
+                            '<div class="content-block row" style="margin:0;padding:.75rem;">' +
+                                '<div class="col-50"><a href="#" id="siteapply" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">现场报关</a></div>' +
+                                '<div class="col-50"><a href="#" id="sitepass" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">现场放行</a></div>' +
                             '</div>',
+                    //title: '现场报关放行',
+                    //text: '<div class="content-block row" style="margin:1rem 0;padding:0;">' +
+                    //            '<div class="col-20"><a href="#" id="sitecancel" class="button" style="padding:0 0;background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                    //            '<div class="col-40"><a href="#" id="siteapply" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">现场报关</a></div>' +
+                    //            '<div class="col-40"><a href="#" id="sitepass" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">现场放行</a></div>' +
+                    //        '</div>',
                     extraClass: 'sitediv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
 
@@ -375,11 +394,11 @@
                                     var msg = "";//"当前选中" + arr_divid.length + "笔";
                                     if (count_s > 0) { msg = msg + ",成功" + count_s + "笔"; }
                                     if (count_e > 0) { msg = msg + ",失败" + count_e + "笔"; }
-                                    if (count_r > 0) { msg = msg + ",已维护" + count_r + "笔"; }
+                                    if (count_r > 0) { msg = msg + ",已存在" + count_r + "笔"; }
 
                                     if (msg == "") { msg = "系统异常，请重新登录！"; }
-
-                                    $.toast(msg.substr(1));
+                                    else { msg = msg.substr(1);}
+                                    $.toast(msg);
                                 },
                                 error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
                                     //alert(XMLHttpRequest.status);
@@ -424,11 +443,11 @@
                                     var msg = "";//"当前选中" + arr_divid.length + "笔";
                                     if (count_s > 0) { msg = msg + ",成功" + count_s + "笔"; }
                                     if (count_e > 0) { msg = msg + ",失败" + count_e + "笔"; }
-                                    if (count_r > 0) { msg = msg + ",已维护" + count_r + "笔"; }
+                                    if (count_r > 0) { msg = msg + ",已存在" + count_r + "笔"; }
 
                                     if (msg == "") { msg = "系统异常，请重新登录！"; }
-
-                                    $.toast(msg.substr(1));
+                                    else { msg = msg.substr(1); }
+                                    $.toast(msg);
                                 },
                                 error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
                                     //alert(XMLHttpRequest.status);
@@ -664,8 +683,8 @@
                 var popupHTML = '<div class="popup">' +
                                  '<div class="content">' +//data-type='native'                                                                               
                                         strconHTML +
-                                        '<div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
-                                        //'<div class="content-block"><a href="#" class="close-popup button button-fill" style="background-color: #3d4145;border-radius:0;color:white;border:0;">返回</a></div>' +
+                                        //'<div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
+                                        '<div class="content-block"><a href="#" class="close-popup button button-fill" style="background-color: #3d4145;border-radius:0;color:white;border:0;">返回</a></div>' +
                                  '</div>' +
                              '</div>';
                 $.popup(popupHTML);
@@ -1004,16 +1023,22 @@
 
 
                 $.modal({
-                    title: '查验图片',
-                    text: '<div class="content-block row" style="margin:1rem 0;">' +
-                                //'<div class="col-33"><a href="#" id="picfilecancel" class="button button-fill">返回</div>' +
-                                //'<div class="col-33"><a href="#" id="picfileupload" class="button button-fill">上传</a></div>' +
-                                //'<div class="col-33"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
-
-                                '<div class="col-33"><a href="#" id="picfilecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
-                                '<div class="col-33"><a href="#" id="picfileupload" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">上传</a></div>' +
-                                '<div class="col-33"><a href="#" id="picfileconsult" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">调阅</a></div>' +
+                    title: '<i id="picfilecancel" class="iconfont" style="font-size:1.3rem;">&#xea4f;</i>',
+                    text: '<span style="font-weight:800;">查验图片</span>' +
+                            '<div class="content-block row" style="margin:0;padding:.75rem;">' +
+                                '<div class="col-50"><a href="#" id="picfileupload" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">上传</a></div>' +
+                                '<div class="col-50"><a href="#" id="picfileconsult" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">调阅</a></div>' +
                             '</div>',
+                    //title: '查验图片',
+                    //text: '<div class="content-block row" style="margin:1rem 0;">' +
+                    //            //'<div class="col-33"><a href="#" id="picfilecancel" class="button button-fill">返回</div>' +
+                    //            //'<div class="col-33"><a href="#" id="picfileupload" class="button button-fill">上传</a></div>' +
+                    //            //'<div class="col-33"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
+
+                    //            '<div class="col-33"><a href="#" id="picfilecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                    //            '<div class="col-33"><a href="#" id="picfileupload" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">上传</a></div>' +
+                    //            '<div class="col-33"><a href="#" id="picfileconsult" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">调阅</a></div>' +
+                    //        '</div>',
                     extraClass: 'picdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
 
@@ -1432,7 +1457,7 @@
             <header class="bar bar-nav" style="height:5.5rem;"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
                 <div class="search-input">                    
                     <div class="row"> 
-                        <div class="col-33" style="width:33%;font-size:13px;margin-top:.8rem;">现场报关时间始/末:</div>
+                        <div class="col-33" style="width:33%;font-size:13px;margin-top:.8rem;">现场报关日期始/末:</div>
                         <div class="col-33" style="width:26%;margin-left:0;"><input type="search" id='txt_siteapplytime_s'/></div>
                         <div class="col-33" style="width:26%;margin-left:0;"><input type="search" id='txt_siteapplytime_e'/></div>
                         <div class="col-10" style="width:10%;margin-left:0;margin-top:.2rem;">
