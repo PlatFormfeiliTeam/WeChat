@@ -28,11 +28,14 @@
     </style>
     <script type="text/javascript">
         $(function () {
+
+            var params= GetRequest();
             $.ajax({
                 type: 'post',
                 url: 'BusiSubsDetail.aspx/getInfo',
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
+                data:"{'code':'" + params["code"] + "'}",
                 cache: false,
                 async: false,
                 success: function (data) {
@@ -97,6 +100,19 @@
                 }
             })
         })
+
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串   
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
     </script>
 </head>
 <body>

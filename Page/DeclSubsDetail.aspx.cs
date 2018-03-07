@@ -15,14 +15,13 @@ namespace WeChat.Page
 {
     public partial class DeclSubsDetail : System.Web.UI.Page
     {
-        static string code = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-            code = HttpContext.Current.Session["code"].ToString2();
+            string code = HttpContext.Current.Session["code"].ToString2();
         }
 
         [WebMethod]
-        public static string getInfo()
+        public static string getInfo(string code)
         {
             Declare model = new Declare();
             DataTable dt = model.getSubsInfo(code);

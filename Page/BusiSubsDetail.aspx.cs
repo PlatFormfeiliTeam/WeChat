@@ -15,14 +15,14 @@ namespace WeChat.Page
 {
     public partial class BusiSubsDetail : System.Web.UI.Page
     {
-        static string code = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-            code = HttpContext.Current.Session["code"].ToString2();
+            string code = HttpContext.Current.Session["code"].ToString2();
+            LogHelper.Write("进入BusiSubsDetail页面，code=" + code);
         }
 
         [WebMethod]
-        public static string getInfo()
+        public static string getInfo(string code)
         {
             ListOrderModel model = new ListOrderModel();
             DataTable dt = model.getSubsInfo(code);
