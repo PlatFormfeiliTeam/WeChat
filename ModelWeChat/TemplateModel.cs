@@ -31,8 +31,8 @@ namespace WeChat.ModelWeChat
 
                     };
                     sub.TemplateId = "-GdghWwMXHwOE_hu1xxm2H5hRDGGRTQwTuGoSIg8xww";
-
-                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.Openid, sub.TemplateId, data, "http://weixin.qq.com/download");
+                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.Openid, sub.TemplateId, data,
+                        "http://gwy.jishiks.com/Page/SignOut.aspx?substype=" + sub.SubsType + "&cusno=" + sub.Cusno + "&declcode=" + sub.DeclarationCode);
                     if (msg.errcode == "0")
                     {
                         SubscribeModel.updateSubscirbeInfo(sub.Id);
@@ -63,7 +63,7 @@ namespace WeChat.ModelWeChat
 
                     };
 
-                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.OldOpenId, "iG2fGqtk__dU7m68WTKdutu8gb-wUvDGmGc7bj_fWsQ", data, "http://weixin.qq.com/download");
+                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.OldOpenId, "iG2fGqtk__dU7m68WTKdutu8gb-wUvDGmGc7bj_fWsQ", data, "");
                     if (msg.errcode == "0")
                     {
                         UserModel.updateLoginExceptionInfo(sub.ID);

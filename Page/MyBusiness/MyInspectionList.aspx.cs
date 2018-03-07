@@ -36,7 +36,7 @@ namespace WeChat.Page.BusiOpera
                         System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyInspectionList");
                     }
                     else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
-                    {//不是接单单位，无此权限
+                    {//不是企业或委托单位，无此权限
                         LogHelper.Write("第11步：" + userInfo.OpenID);
                         System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
                     }
@@ -52,7 +52,7 @@ namespace WeChat.Page.BusiOpera
                 }
             }
             else if (user.IsCustomer != 1 && user.IsCompany != 1)
-            {//不是接单单位，无此权限
+            {//不是企业或委托单位，无此权限
                 System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
             }
         }

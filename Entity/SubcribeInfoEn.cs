@@ -19,9 +19,9 @@ namespace WeChat.Entity
         /// </summary>
         public string OrderCode { get; set; }
         /// <summary>
-        /// 预制单号
+        /// 报关单号
         /// </summary>
-        public string DeclCode { get; set; }
+        public string DeclarationCode { get; set; }
         /// <summary>
         /// 企业编号
         /// </summary>
