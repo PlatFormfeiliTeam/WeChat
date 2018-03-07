@@ -96,9 +96,9 @@ namespace WeChat.ModelBusi
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "delete from wechat_user where WCOpenID='" + user.WCOpenID + "'";
-                db.ExecuteSignle(sql);
-                sql = @"insert into wechat_user(id,GWYUSERCODE,GWYUSERNAME,WCOpenID,WCNickName,iscompany,iscustomer,isreceiver,customercode,createdate,gwyuserid,hscode) 
+                //string sql = "delete from wechat_user where WCOpenID='" + user.WCOpenID + "'";
+                //db.ExecuteSignle(sql);
+                string sql = @"insert into wechat_user(id,GWYUSERCODE,GWYUSERNAME,WCOpenID,WCNickName,iscompany,iscustomer,isreceiver,customercode,createdate,gwyuserid,hscode) 
                     values(wechat_user_id.nextval,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}',sysdate,{8},'{9}')";
                 sql = string.Format(sql, user.GwyUserCode, user.GwyUserName, user.WCOpenID, user.WCNickName, user.IsCompany, user.IsCustomer, user.IsReceiver,
                     user.CustomerCode, user.GwyUserID, user.HSCode);

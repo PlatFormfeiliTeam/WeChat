@@ -390,5 +390,23 @@ namespace WeChat.ModelBusi
             }
             return ds;
         }
+
+        public DataTable getSubsInfo(string declarationCode)
+        {
+            string sql=@"select det.code,det.modifyflag,det.CUSTOMSSTATUS
+                                    ,lda.declarationcode,lda.BLNO,lda.CONSIGNEESHIPPER,lda.CONSIGNEESHIPPERNAME,lda.CONTRACTNO,lda.TRADEMETHOD,lda.TRANSNAME,lda.VOYAGENO,to_char(lda.reptime,'yyyy-mm-dd') reptime
+                                    ,lda.GOODSNUM,lda.GOODSGW
+                                    ,ort.busitype,ort.cusno,ort.code ordercode
+                                from list_declaration det     
+                                    left join list_order ort on det.ordercode = ort.code 
+                                    left join list_declaration_after lda on det.code=lda.code and lda.csid=1
+                                    left join (select ordercode from list_declaration ld where ld.isinvalid=0 and ld.STATUS!=130 and ld.STATUS!=110) a on det.ordercode=a.ordercode
+                                    left join list_verification lv on lda.declarationcode=lv.declarationcode 
+                                    where (det.STATUS=130 or det.STATUS=110) and det.isinvalid=0 and ort.isinvalid=0 and a.ordercode is null and ort.code ='{0}'"
+                using(DBSession db=new DBSession())
+                {
+                    return db.QuerySignle(string.Format(sql,declarationCode));
+                }
+        }
     }
 }

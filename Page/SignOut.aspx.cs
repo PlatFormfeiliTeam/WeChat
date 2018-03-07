@@ -56,6 +56,10 @@ namespace WeChat.Page
             }
             else
             {
+                HttpContext.Current.Session["user"] = null;
+                HttpContext.Current.Session["openid"] = null;
+                HttpContext.Current.Session["nickname"] = null;
+                HttpContext.Current.Session["transferurl"] = null;
                 return "{'flag':'false','url':'解绑失败！当前账号未绑定'}";
             }
             

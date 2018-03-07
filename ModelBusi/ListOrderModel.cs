@@ -163,6 +163,23 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
             }
         }
 
+        public DataTable getSubsInfo(string code)
+        {
+            
+            using(DBSession db=new DBSession())
+            {
+                string sql = @"select lo.code,lo.submittime,lo.busiunitname,lo.busitype,lo.cusno,lo.divideno,lo.repwayid,lo.contractno,lo.goodsnum,lo.goodsgw,
+                                to_char(lo.ischeck) as ischeck,to_char(lo.checkpic) as checkpic,to_char(lo.declstatus) as declstatus,to_char(lo.inspstatus) as inspstatus,
+                                to_char(lo.lawflag) as lawflag,to_char(lo.inspischeck) as inspischeck,lo.logisticsstatus,lo.logisticsname,lo.customareacode,
+                                sb.name as busitypename,sr.name as repwayname
+                                from list_order lo left join list_declaration ld on lo.code=ld.ordercode 
+                                left join cusdoc.sys_busitype sb on lo.busitype=sb.code 
+                                left join cusdoc.sys_repway sr on lo.repwayid=sr.code
+                                where lo.isinvalid=0 and ld.isinvalid=0 and lo.cusno='{0}'";
+                return db.QuerySignle(string.Format(sql, code));
+            }
+        }
+
         private string switchValue(string kind, string str)
         {
             str = str.Trim2();

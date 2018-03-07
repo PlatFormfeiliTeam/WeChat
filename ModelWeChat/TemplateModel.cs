@@ -31,8 +31,16 @@ namespace WeChat.ModelWeChat
 
                     };
                     sub.TemplateId = "-GdghWwMXHwOE_hu1xxm2H5hRDGGRTQwTuGoSIg8xww";
-                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.Openid, sub.TemplateId, data,
-                        "http://gwy.jishiks.com/Page/SignOut.aspx?substype=" + sub.SubsType + "&cusno=" + sub.Cusno + "&declcode=" + sub.DeclarationCode);
+                    string url = "";
+                    if(sub.SubsType=="业务状态"||sub.SubsType=="物流状态")
+                    {
+                        url = @"http://gwy.jishiks.com/Page/BusiSubsDetail.aspx?code=" + sub.Cusno;
+                    }
+                    else
+                    {
+                        url = @"http://gwy.jishiks.com/Page/DeclSubsDetail.aspx?code=" + sub.DeclarationCode;
+                    }
+                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.Openid, sub.TemplateId, data,url);
                     if (msg.errcode == "0")
                     {
                         SubscribeModel.updateSubscirbeInfo(sub.Id);
