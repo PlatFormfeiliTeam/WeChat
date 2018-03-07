@@ -49,6 +49,10 @@
         {
            width: 100%;
         }
+        /*************************************************************************************/
+        .actions-modal-group{
+            margin:0;
+        }
          /************************************************ *********************************/
         .filediv .modal-title{
             font-weight:800;
@@ -128,15 +132,15 @@
                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                     + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
                                         + '<div class="item-title col-50">运输工具</div>'
-                                        + '<div class="item-title col-33">件数/毛重</div>'
-                                        + '<div class="item-title col-20">删改单</div>'
+                                        + '<div class="item-title col-33">删改单</div>'
+                                        + '<div class="item-title col-20">海关状态</div>'
                                     + '</div>'
                                 + '</li>'
                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                     + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border:2px solid #0894EC;
                                         + '<div class="item-title col-50">提运单号</div>'
                                         + '<div class="item-title col-33">企业编号</div>'
-                                        + '<div class="item-title col-20">海关状态</div>'
+                                        + '<div class="item-title col-20"></div>'
                                     + '</div>'
                                 + '</li>'
                             + '</ul>'
@@ -444,7 +448,7 @@
                                                   '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["DECLARATIONCODE"] == null ? "" : obj[0]["DECLARATIONCODE"]) + '</div>'
                                                     + '<div class="item-title col-33">' + getname("BUSITYPE", obj[0]["BUSITYPE"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + (obj[0]["TRADEMETHOD"] == null ? "" : obj[0]["TRADEMETHOD"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + (obj[0]["TRADEMETHOD"] == null ? "" : obj[0]["TRADEMETHOD"]) + '</div>'
                                                 + '</div>'
                                            + '</li>'
                                     + '</ul>'
@@ -457,7 +461,7 @@
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["CONSIGNEESHIPPERNAME"] == null ? "" : obj[0]["CONSIGNEESHIPPERNAME"]) + '</div>'
                                                     + '<div class="item-title col-33">' + (obj[0]["CONTRACTNO"] == null ? "" : obj[0]["CONTRACTNO"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -469,8 +473,8 @@
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["TRANSNAME"] == null ? "" : obj[0]["TRANSNAME"]) + '</div>'
-                                                    + '<div class="item-title col-33">' + (obj[0]["GOODSNUM"] == null ? "" : obj[0]["GOODSNUM"]) + '/' + (obj[0]["GOODSGW"] == null ? "" : obj[0]["GOODSGW"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + (obj[0]["CUSTOMSSTATUS"] == null ? "" : obj[0]["CUSTOMSSTATUS"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -483,7 +487,7 @@
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["BLNO"] == null ? "" : obj[0]["BLNO"]) + '</div>'
                                                     + '<div class="item-title col-33">' + (obj[0]["CUSNO"] == null ? "" : obj[0]["CUSNO"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + (obj[0]["CUSTOMSSTATUS"] == null ? "" : obj[0]["CUSTOMSSTATUS"]) + '</div>'
+                                                    + '<div class="item-title col-33"></div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -720,28 +724,28 @@
                                              + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["DECLARATIONCODE"] == null ? "" : obj[i]["DECLARATIONCODE"]) + '</div>'
                                                 + '<div class="item-title col-33">' + getname("BUSITYPE", obj[i]["BUSITYPE"]) + '</div>'
-                                                + '<div class="item-title col-20">' + (obj[i]["TRADEMETHOD"] == null ? "" : obj[i]["TRADEMETHOD"]) + '</div>'
+                                                + '<div class="item-title col-33">' + (obj[i]["TRADEMETHOD"] == null ? "" : obj[i]["TRADEMETHOD"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["CONSIGNEESHIPPERNAME"] == null ? "" : obj[i]["CONSIGNEESHIPPERNAME"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["CONTRACTNO"] == null ? "" : obj[i]["CONTRACTNO"]) + '</div>'
-                                                + '<div class="item-title col-20">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
+                                                + '<div class="item-title col-33">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["TRANSNAME"] == null ? "" : obj[i]["TRANSNAME"]) + '</div>'
-                                                + '<div class="item-title col-33">' + (obj[i]["GOODSNUM"] == null ? "" : obj[i]["GOODSNUM"]) + '/' + (obj[i]["GOODSGW"] == null ? "" : obj[i]["GOODSGW"]) + '</div>'
-                                                + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
+                                                + '<div class="item-title col-33">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
+                                                + '<div class="item-title col-33">' + (obj[i]["CUSTOMSSTATUS"] == null ? "" : obj[i]["CUSTOMSSTATUS"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["BLNO"] == null ? "" : obj[i]["BLNO"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) + '</div>'
-                                                + '<div class="item-title col-20">' + (obj[i]["CUSTOMSSTATUS"] == null ? "" : obj[i]["CUSTOMSSTATUS"]) + '</div>'
+                                                + '<div class="item-title col-33"></div>'
                                             + '</div>'
                                         + '</li>'
                                     + '</ul>'
@@ -874,7 +878,7 @@
             <header class="bar bar-nav">
                 <div class="search-input">                 
                     <div class="row"> 
-                        <div class="col-25" style="width:25%;font-size:13px;margin-top:.8rem;">报关时间始/末:</div>
+                        <div class="col-25" style="width:25%;font-size:13px;margin-top:.8rem;">报关日期始/末:</div>
                         <div class="col-33" style="width:30%;margin-left:0;"><input type="search" id='txt_reptime_s'/></div>
                         <div class="col-33" style="width:30%;margin-left:0;"><input type="search" id='txt_reptime_e'/></div>
                         <div class="col-10" style="width:10%;margin-left:0;margin-top:.2rem;">

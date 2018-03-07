@@ -716,7 +716,7 @@
             <header class="bar bar-nav">
                 <div class="search-input">                 
                     <div class="row"> 
-                        <div class="col-25" style="width:25%;font-size:13px;margin-top:.8rem;">报检时间始/末:</div>
+                        <div class="col-25" style="width:25%;font-size:13px;margin-top:.8rem;">报检日期始/末:</div>
                         <div class="col-33" style="width:30%;margin-left:0;"><input type="search" id='txt_reptime_s'/></div>
                         <div class="col-33" style="width:30%;margin-left:0;"><input type="search" id='txt_reptime_e'/></div>
                         <div class="col-10" style="width:10%;margin-left:0;margin-top:.2rem;">
