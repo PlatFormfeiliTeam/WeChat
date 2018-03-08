@@ -64,14 +64,14 @@ namespace WeChat.ModelWeChat
                 {
                     var data = new
                     {
-                        first = new TemplateDataItem("您好，您的账号在异地登录，请确认账号安全！"),
+                        first = new TemplateDataItem("您好，您的账号在异地登录！"),
                         keyword1 = new TemplateDataItem(sub.LoginNickName),
-                        keyword2 = new TemplateDataItem("******"),
-                        remark = new TemplateDataItem("登录时间：" + sub.CreateTime.ToString())
+                        keyword2 = new TemplateDataItem(sub.CreateTime.ToString()),
+                        remark = new TemplateDataItem("请及时确认，注意账号安全。")
 
                     };
 
-                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.OldOpenId, "iG2fGqtk__dU7m68WTKdutu8gb-wUvDGmGc7bj_fWsQ", data, "");
+                    SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.OldOpenId, "lo_I8kOZqOPfNxFcBTd0wGt_WKGZ5ZXxvdE-iEx2uG4", data, "");
                     if (msg.errcode == "0")
                     {
                         UserModel.updateLoginExceptionInfo(sub.ID);
@@ -152,9 +152,7 @@ namespace WeChat.ModelWeChat
                 data = data
             };
             string postData = JsonHelper.SerializeObject(msgData);
-            LogHelper.Write("postData：" + postData.ToString());
             string str = WeChatHelper.SendHttpRequest(postUrl, postData);
-            LogHelper.Write("订阅消息回执：" + str);
             SendMassMsgResultEn result = JsonHelper.DeserializeJsonToObject<SendMassMsgResultEn>(str);
             return result;
         }
