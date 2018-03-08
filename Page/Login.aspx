@@ -80,7 +80,7 @@
         {
             var params = GetRequest();
             var name=$("#name").val();
-            var pwd=$("#pwd").val();
+            var pwd = $("#pwd").val();
             var customer=$("#customer").val();
             $.ajax({
                 type: 'post',
@@ -90,8 +90,8 @@
                 data: "{'name':'" + name +
                     "','pwd':'" + pwd +
                     "','customer':'" + customer +
-                    "','wcopenid':'" + params["wcopenid"] +
-                    "','wcnickname':'" + params["wcnickname"] +
+                    "','wcopenid':'" + params["openid"] +
+                    "','wcnickname':'" + params["nickname"] +
                     "','transferurl':'" + params["transferurl"] +
                     "'}",
                 cache: false,

@@ -22,6 +22,7 @@ namespace WeChat.Page
         [WebMethod]
         public static string UserLogin(string name, string pwd, string customer, string wcopenid, string wcnickname, string transferurl)
         {
+            LogHelper.Write(wcopenid + "----" + wcnickname + "----" + transferurl);
             if (UserModel.UserExsit(name, wcopenid, wcnickname))
             {
                 return "{'flag':'false','url':'登录失败！该账号已经绑定其它微信，请先解绑'}";
