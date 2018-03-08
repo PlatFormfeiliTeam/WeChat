@@ -151,6 +151,16 @@
             border-radius: .15rem;
             font-size: .8rem;
         }
+        /*----------------------------------------*/
+        .picdiv .modal-inner{
+             padding:0;
+         }
+        .picdiv .modal-title{
+            text-align:right;
+        }
+        .picdiv .modal-title+.modal-text{
+            margin-top:0;
+        }
     </style>
 
     <script type="text/javascript">
@@ -897,12 +907,19 @@
         function showFile()
         {
             $.modal({
-                title: '文件',
-                text: '<div class="content-block row">' +
-                            '<div class="col-33"><a href="#" id="picfilecancel" class="button">返回</div>' +
-                            '<div class="col-33"><a href="#" id="declpdf" class="button">报关单</div>' +
-                            '<div class="col-33"><a href="#" id="checkpic" class="button">查验文件</a></div>' +
+                title: '<i id="picfilecancel" class="iconfont" style="font-size:1.3rem;">&#xea4f;</i>',
+                text: '<span style="font-weight:800;">文件调阅</span>' +
+                        '<div class="content-block row" style="margin:0;padding:.75rem;">' +
+                            '<div class="col-50"><a href="#" id="declpdf" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">报关文件</a></div>' +
+                            '<div class="col-50"><a href="#" id="checkpic" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">查验文件</a></div>' +
                         '</div>',
+
+                //title: '文件',
+                //text: '<div class="content-block row">' +
+                //            '<div class="col-33"><a href="#" id="picfilecancel" class="button">返回</div>' +
+                //            '<div class="col-33"><a href="#" id="declpdf" class="button">报关单</div>' +
+                //            '<div class="col-33"><a href="#" id="checkpic" class="button">查验文件</a></div>' +
+                //        '</div>',
                 extraClass: 'picdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
             });
             $("#picfilecancel").click(function () {

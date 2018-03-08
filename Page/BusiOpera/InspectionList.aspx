@@ -49,8 +49,14 @@
            width: 100%;
         }
          /************************************************ *********************************/
+        .filediv .modal-inner{
+             padding:0;
+         }
         .filediv .modal-title{
-            font-weight:800;
+            text-align:right;
+        }
+        .filediv .modal-title+.modal-text{
+            margin-top:0;
         }
          /************************************************ 查询列表名称*********************************/
         .girdnamediv {
@@ -453,12 +459,18 @@
                 //}
 
                 $.modal({
-                    title: '文件调阅',
-                    text: '<div class="content-block row" style="margin:1rem 0;">' +
-                                '<div class="col-25"><a href="#" id="filecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
-                                '<div class="col-40" style="margin-left:0;"><a href="#" id="filedecl" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">报检文件</a></div>' +
-                                '<div class="col-40" style="margin-left:0;"><a href="#" id="filecheck" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">查验文件</a></div>' +
+                    title: '<i id="filecancel" class="iconfont" style="font-size:1.3rem;">&#xea4f;</i>',
+                    text: '<span style="font-weight:800;">文件调阅</span>' +
+                            '<div class="content-block row" style="margin:0;padding:.75rem;">' +
+                                '<div class="col-50"><a href="#" id="filedecl" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">报检文件</a></div>' +
+                                '<div class="col-50"><a href="#" id="filecheck" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">查验文件</a></div>' +
                             '</div>',
+                    //title: '文件调阅',
+                    //text: '<div class="content-block row" style="margin:1rem 0;">' +
+                    //            '<div class="col-25"><a href="#" id="filecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                    //            '<div class="col-40" style="margin-left:0;"><a href="#" id="filedecl" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">报检文件</a></div>' +
+                    //            '<div class="col-40" style="margin-left:0;"><a href="#" id="filecheck" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">查验文件</a></div>' +
+                    //        '</div>',
                     extraClass: 'filediv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
 
