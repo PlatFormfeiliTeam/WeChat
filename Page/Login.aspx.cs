@@ -13,19 +13,14 @@ namespace WeChat.Page
 {
     public partial class Login : System.Web.UI.Page
     {
-        private static string wcopenid = "", wcnickname = "", transferUrl = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            HttpRequest request = System.Web.HttpContext.Current.Request;
-            LogHelper.Write("进入Login页面:" + request["nickname"] + "_____" + request["transferurl"]);
-            wcopenid = request["openid"];
-            wcnickname = request["nickname"];
-            transferUrl = request["transferurl"];
+
         }
 
         [WebMethod]
-        public static string UserLogin(string name,string pwd,string customer)
+        public static string UserLogin(string name, string pwd, string customer, string wcopenid, string wcnickname, string transferurl)
         {
             if (UserModel.UserExsit(name, wcopenid, wcnickname))
             {
@@ -36,14 +31,14 @@ namespace WeChat.Page
             if (user != null && !string.IsNullOrEmpty(user.GwyUserCode))
             {
                 //1、判断权限
-                if (transferUrl == "DeclareList" || transferUrl == "SiteDeclareList" || transferUrl == "SiteInspectionList")
+                if (transferurl == "DeclareList" || transferurl == "SiteDeclareList" || transferurl == "SiteInspectionList")
                 {
                     if (user.IsReceiver != 1)
                     {
                         return "{'flag':'false','url':'登录失败！该账号不属于接单单位'}";
                     }
                 }
-                if (transferUrl == "MyBusiness" || transferUrl == "MyDeclareList" || transferUrl == "MyInspectionList")
+                if (transferurl == "MyBusiness" || transferurl == "MyDeclareList" || transferurl == "MyInspectionList")
                 {
                     if (user.IsCompany != 1 && user.IsCustomer != 1)
                     {
@@ -53,30 +48,30 @@ namespace WeChat.Page
                 //2、保存当前账号
                 UserModel.SaveUser(user);
                 //3、页面跳转
-                switch(transferUrl)
+                switch (transferurl)
                 {
                     case "DeclareList":
-                        transferUrl = "http://gwy.jishiks.com/Page/BusiOpera/DeclareList.aspx";
+                        transferurl = "http://gwy.jishiks.com/Page/BusiOpera/DeclareList.aspx";
                         break;
                     case "SiteDeclareList":
-                        transferUrl = "http://gwy.jishiks.com/Page/BusiOpera/SiteDeclareList.aspx";
+                        transferurl = "http://gwy.jishiks.com/Page/BusiOpera/SiteDeclareList.aspx";
                         break;
                     case "SiteInspectionList":
-                        transferUrl = "http://gwy.jishiks.com/Page/MyBusiness/SiteInspectionList.aspx";
+                        transferurl = "http://gwy.jishiks.com/Page/MyBusiness/SiteInspectionList.aspx";
                         break;
                     case "MyBusiness":
-                        transferUrl = "http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx";
+                        transferurl = "http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx";
                         break;
                     case "MyDeclareList":
-                        transferUrl = "http://gwy.jishiks.com/Page/MyBusiness/MyDeclareList.aspx";
+                        transferurl = "http://gwy.jishiks.com/Page/MyBusiness/MyDeclareList.aspx";
                         break;
                     case "MyInspectionList":
-                        transferUrl = "http://gwy.jishiks.com/Page/MyBusiness/MyInspectionList.aspx";
+                        transferurl = "http://gwy.jishiks.com/Page/MyBusiness/MyInspectionList.aspx";
                         break;
 
                     
                 }
-                return "{'flag':'true','url':'" + transferUrl + "'}";
+                return "{'flag':'true','url':'" + transferurl + "'}";
             }
             else
             {
