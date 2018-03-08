@@ -22,6 +22,7 @@ namespace WeChat.Page
         [WebMethod]
         public static string UserLogin(string name, string pwd, string customer, string wcopenid, string wcnickname, string transferurl)
         {
+            wcnickname = HttpUtility.UrlDecode(wcnickname);
             LogHelper.Write(wcopenid + "----" + wcnickname + "----" + transferurl);
             if (UserModel.UserExsit(name, wcopenid, wcnickname))
             {

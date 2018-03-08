@@ -90,9 +90,9 @@
                 data: "{'name':'" + name +
                     "','pwd':'" + pwd +
                     "','customer':'" + customer +
-                    "','wcopenid':'" + params["openid"] +
-                    "','wcnickname':'" + params["nickname"] +
-                    "','transferurl':'" + params["transferurl"] +
+                    "','wcopenid':'" + escape(params["openid"]) +
+                    "','wcnickname':'" + escape(params["nickname"]) +
+                    "','transferurl':'" + escape(params["transferurl"]) +
                     "'}",
                 cache: false,
                 async: false,
@@ -117,6 +117,8 @@
                 strs = str.split("&");
                 for (var i = 0; i < strs.length; i++) {
                     theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                    
+                    //theRequest[strs[i].split("=")[0]] = strs[i].split("=")[1];
                 }
             }
             return theRequest;
