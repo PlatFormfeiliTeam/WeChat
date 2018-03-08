@@ -201,8 +201,10 @@
                 cache: false,
                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                 success: function (data) {
-                    if (data.d == null || data.d == "")
+                    if (data.d == null || data.d == "") {
+                        $("#span_sum").text(0);
                         return;
+                    }
                     var obj = eval("(" + data.d + ")");//将字符串转为json
                     $("#span_sum").text(obj[0]["SUM"]);
                     for (var i = 0; i < obj.length; i++) {

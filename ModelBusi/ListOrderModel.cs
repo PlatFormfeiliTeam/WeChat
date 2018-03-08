@@ -66,9 +66,9 @@ namespace WeChat.ModelBusi
                     if (!string.IsNullOrEmpty(busitype)) { strWhere += " and lo.busitype in (" + busitype + ")"; }
                     if (!string.IsNullOrEmpty(modifyflag))
                     {
-                        if (ispass == "删单") strWhere += " and ld.modifyflag=1";
-                        if (ispass == "改单") strWhere += " and ld.modifyflag=2";
-                        if (ispass == "改单完成") strWhere += " and ld.modifyflag=3";
+                        if (modifyflag == "删单") strWhere += " and ld.modifyflag=1";
+                        if (modifyflag == "改单") strWhere += " and ld.modifyflag=2";
+                        if (modifyflag == "改单完成") strWhere += " and ld.modifyflag=3";
                     }
                     if (!string.IsNullOrEmpty(auditflag)) { strWhere += " and lo.auditflag=1"; }
 
