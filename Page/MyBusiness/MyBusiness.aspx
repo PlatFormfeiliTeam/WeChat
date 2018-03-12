@@ -203,6 +203,7 @@
                 success: function (data) {
                     if (data.d == null || data.d == "") {
                         $("#span_sum").text(0);
+                        $("#busicontent").append("");
                         return;
                     }
                     var obj = eval("(" + data.d + ")");//将字符串转为json
