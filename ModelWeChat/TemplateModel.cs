@@ -45,6 +45,7 @@ namespace WeChat.ModelWeChat
                     {
                         SubscribeModel.updateSubscirbeInfo(sub.Id);
                     }
+                    LogHelper.Write("TemplateModel_订阅推送回执：" + msg.errcode);
                 }
             }
             catch(Exception e)
@@ -74,7 +75,11 @@ namespace WeChat.ModelWeChat
                     SendMassMsgResultEn msg = SendTemplateMessage(TokenModel.AccessToken, sub.OldOpenId, "lo_I8kOZqOPfNxFcBTd0wGt_WKGZ5ZXxvdE-iEx2uG4", data, "");
                     if (msg.errcode == "0")
                     {
-                        UserModel.updateLoginExceptionInfo(sub.ID);
+                        UserModel.updateLoginExceptionInfo_success(sub.ID);
+                    }
+                    else
+                    {
+                        UserModel.updateLoginExceptionInfo_failure(sub.ID);
                     }
                 }
             }

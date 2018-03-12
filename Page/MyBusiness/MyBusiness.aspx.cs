@@ -226,10 +226,11 @@ namespace WeChat.Page.MyBusiness
                     }
                     codetype = "1";
                 }
+                WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
                 //防止重复订阅
                 for (int i = 0; i < st.Length; i++)
                 {
-                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type,declarationcode);
+                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type, declarationcode, user.GwyUserID);
                     if (getTriggerStatus.Rows.Count > 0)
                     {
                         orderData.Add(st[i]);
@@ -241,7 +242,6 @@ namespace WeChat.Page.MyBusiness
                 {
                     try
                     {
-                        WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
                         SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, user.GwyUserID, user.GwyUserName, user.WCOpenID, codetype);
                         return "订阅成功";
                     }

@@ -144,7 +144,7 @@ namespace WeChat.ModelBusi
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "select * from wechat_loginexceptioninfo where issend=0";
+                string sql = "select * from wechat_loginexceptioninfo where issend<3";
                 return db.QueryEntity<LoginExceptionEn>(sql);
             }
         }
@@ -154,11 +154,25 @@ namespace WeChat.ModelBusi
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static bool updateLoginExceptionInfo(int id)
+        public static bool updateLoginExceptionInfo_success(int id)
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "update wechat_loginexceptioninfo set issend=1,sendtime=sysdate where id=" + id;
+                string sql = "update wechat_loginexceptioninfo set issend=3,sendtime=sysdate where id=" + id;
+                return db.ExecuteSignle(sql) == 0 ? true : false;
+            }
+
+        }
+        /// <summary>
+        /// 信息推送失败
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool updateLoginExceptionInfo_failure(int id)
+        {
+            using (DBSession db = new DBSession())
+            {
+                string sql = "update wechat_loginexceptioninfo set issend=issend + 1,sendtime=sysdate where id=" + id;
                 return db.ExecuteSignle(sql) == 0 ? true : false;
             }
 
