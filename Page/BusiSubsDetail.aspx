@@ -19,7 +19,7 @@
         .row .col-40
         {
             text-align:right;
-            width:20%;
+            width:25%;
         }
         .row .col-60
         {
