@@ -1238,6 +1238,12 @@
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
+                        if (data.d == "") {
+                            $("#span_sum").text("0");
+                            $('#div_list').append("");
+                            return;
+                        }
+
                         var objdata = eval("(" + data.d + ")");//将字符串转为json                        
                         var obj = objdata[0]["data"];
                         $("#span_sum").text(objdata[0]["sum"]); 

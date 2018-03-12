@@ -72,6 +72,8 @@ namespace WeChat.Page.BusiOpera
             , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
             , int start, int itemsPerLoad)
         {
+            LogHelper.Write("后台查询开始时间" );
+
             WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
             if (user == null || string.IsNullOrEmpty(user.CustomerCode))
             {
@@ -84,6 +86,12 @@ namespace WeChat.Page.BusiOpera
                 , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
                 , start, itemsPerLoad, user.CustomerCode);//
             var json = "[{\"data\":" + JsonConvert.SerializeObject(ds.Tables[0], iso) + ",\"sum\":" + ds.Tables[1].Rows[0][0] + "}]";
+
+            LogHelper.Write("后台查询结束时间");
+            LogHelper.Write("当前登录人：" + user.GwyUserCode);
+            LogHelper.Write("返回json：");
+            LogHelper.Write(json);
+
             return json;
         }
 

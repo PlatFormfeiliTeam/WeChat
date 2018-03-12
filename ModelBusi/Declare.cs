@@ -22,7 +22,8 @@ namespace WeChat.ModelBusi
                 string where = "";
                 if (!string.IsNullOrEmpty(reptime_s)) { where += " and lda.reptime>=to_date('" + reptime_s + " 00:00:00','yyyy-mm-dd hh24:mi:ss') "; }
                 if (!string.IsNullOrEmpty(reptime_e)) { where += " and lda.reptime<=to_date('" + reptime_e + " 23:59:59','yyyy-mm-dd hh24:mi:ss') "; }
-                if (!string.IsNullOrEmpty(declcode)) { where += " and lda.declarationcode like '%" + declcode + "%'"; }
+                if (!string.IsNullOrEmpty(declcode)) { where += " and lda.declarationcode like '" + declcode + "%'"; }
+                //if (!string.IsNullOrEmpty(declcode)) { where += " and det.declarationcode like '%" + declcode + "%'"; }
                 if (!string.IsNullOrEmpty(customsstatus))
                 {
                     if (customsstatus == "已结关") { where += " and det.CUSTOMSSTATUS='已结关'"; }
@@ -61,8 +62,7 @@ namespace WeChat.ModelBusi
                                 from list_declaration det     
                                     left join list_order ort on det.ordercode = ort.code 
                                     left join list_declaration_after lda on det.code=lda.code and lda.csid=1
-                                    left join (select ordercode from list_declaration ld where ld.isinvalid=0 and ld.STATUS!=130 and ld.STATUS!=110) a on det.ordercode=a.ordercode
-                                    left join list_verification lv on lda.declarationcode=lv.declarationcode ";
+                                    left join (select ordercode from list_declaration ld where ld.isinvalid=0 and ld.STATUS!=130 and ld.STATUS!=110) a on det.ordercode=a.ordercode";
 
                 if (busitype.Contains("'40'") || busitype.Contains("'41'"))//国内业务
                 {
@@ -81,7 +81,7 @@ namespace WeChat.ModelBusi
                 }
                 
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
-                string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);
+                string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);//ort.submittime
                 DataTable dt = db.QuerySignle(sql);
                 ds.Tables.Add(dt);
 
