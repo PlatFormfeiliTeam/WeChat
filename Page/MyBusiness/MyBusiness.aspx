@@ -494,7 +494,7 @@
                                     '<div class="row">' +
                                     '<div class="col-20">查验维护</div>' +
                                     '<div class="col-60">' +
-                                    (orderTable[0]["SUBMITTIME"] == null ? "" : orderTable[0]["SUBMITTIME"]) +
+                                    (orderTable[0]["DECLCHECKTIME"] == null ? "" : orderTable[0]["DECLCHECKTIME"]) +
                                     '</div>' +
                                     //'<div class="col-20">' +
                                     //(orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
@@ -526,32 +526,32 @@
                                     //'<div class="col-20"></div>' +
                                     '</div>' +
                                     '</div>';
-                                //declstr +=
-                                //    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                                //declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
-                                //if (declTable != null) {
-                                //    for (var i = 0; i < declTable.length; i++) {
-                                //        declstr += '<div class="list-block" id="' +
-                                //            (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) +
-                                //            '">';
-                                //        declstr += '<div class="row">';
-                                //        declstr += '<div class="col-60">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
-                                //        declstr += '<div class="col-60">' +
-                                //            declTable[i]["GOODSNUM"] +
-                                //            '/' +
-                                //            declTable[i]["GOODSGW"] +
-                                //            '</div>';
-                                //        declstr += '<div class="col-20">' + (declTable[i]["MODIFYFLAG"] == null ? "" : declTable[i]["MODIFYFLAG"]) + '</div>';
-                                //        declstr += '</div>';
-                                //        declstr += '<div class="row">';
-                                //        declstr += '<div class="col-60">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
-                                //        declstr += '<div class="col-60">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
-                                //        declstr += '<div class="col-20">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
-                                //        declstr += '</div>';
-                                //        declstr += '</div>';
-                                //    }
-                                //}
-                                //declstr += '</div>';
+                                declstr +=
+                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                                declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                                if (declTable != null) {
+                                    for (var i = 0; i < declTable.length; i++) {
+                                        declstr += '<div class="list-block" id="' +
+                                            (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) +
+                                            '">';
+                                        declstr += '<div class="row">';
+                                        declstr += '<div class="col-50">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
+                                        declstr += '<div class="col-25">' +
+                                            declTable[i]["GOODSNUM"] +
+                                            '/' +
+                                            declTable[i]["GOODSGW"] +
+                                            '</div>';
+                                        declstr += '<div class="col-25">' + (declTable[i]["MODIFYFLAG"] == null ? "" : declTable[i]["MODIFYFLAG"]) + '</div>';
+                                        declstr += '</div>';
+                                        declstr += '<div class="row">';
+                                        declstr += '<div class="col-50">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
+                                        declstr += '<div class="col-25">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
+                                        declstr += '<div class="col-25">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
+                                        declstr += '</div>';
+                                        declstr += '</div>';
+                                    }
+                                }
+                                declstr += '</div>';
                                 $("#pop_tab_decl").append(declstr);
                             }
                             //2、报检信息
@@ -615,7 +615,7 @@
                                     '<div class="row">' +
                                     '<div class="col-20">查验维护</div>' +
                                     '<div class="col-60">' +
-                                    (orderTable[0]["INSPSUBMITTIME"] == null ? "" : orderTable[0]["INSPSUBMITTIME"]) +
+                                    (orderTable[0]["INSPCHECKTIME"] == null ? "" : orderTable[0]["INSPCHECKTIME"]) +
                                     '</div>' +
                                     //'<div class="col-20">' +
                                     //(orderTable[0]["INSPSUBMITUSERNAME"] == null ? "" : orderTable[0]["INSPSUBMITUSERNAME"]) +
@@ -647,27 +647,27 @@
                                     //'<div class="col-20"></div>' +
                                     '</div>' +
                                     '</div>';
-                                //inspstr +=
-                                //    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                                //inspstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
-                                //if (inspTable != null) {
-                                //    for (var i = 0; i < inspTable.length; i++) {
-                                //        inspstr += '<div class="list-block">';
-                                //        inspstr += '<div class="row">';
-                                //        inspstr += '<div class="col-50">' + (inspTable[i]["INSPECTIONCODE"] == null ? "" : inspTable[i]["INSPECTIONCODE"]) + '</div>';
-                                //        inspstr += '<div class="col-50">' + (inspTable[i]["APPROVALCODE"] == null ? "" : inspTable[i]["APPROVALCODE"]) + '</div>';
+                                inspstr +=
+                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                                inspstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                                if (inspTable != null) {
+                                    for (var i = 0; i < inspTable.length; i++) {
+                                        inspstr += '<div class="list-block">';
+                                        inspstr += '<div class="row">';
+                                        inspstr += '<div class="col-50">' + (inspTable[i]["INSPECTIONCODE"] == null ? "" : inspTable[i]["INSPECTIONCODE"]) + '</div>';
+                                        inspstr += '<div class="col-50">' + (inspTable[i]["APPROVALCODE"] == null ? "" : inspTable[i]["APPROVALCODE"]) + '</div>';
                                         
-                                //        inspstr += '</div>';
-                                //        inspstr += '<div class="row">';
-                                //        inspstr += '<div class="col-50">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
-                                //        inspstr += '<div class="col-25">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
-                                //        inspstr += '<div class="col-25">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
-                                //        //inspstr += '<div class="col-20"></div>';
-                                //        inspstr += '</div>';
-                                //        inspstr += '</div>'; 
-                                //    }
-                                //}
-                                //inspstr += '</div>';
+                                        inspstr += '</div>';
+                                        inspstr += '<div class="row">';
+                                        inspstr += '<div class="col-50">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
+                                        inspstr += '<div class="col-25">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
+                                        inspstr += '<div class="col-25">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
+                                        //inspstr += '<div class="col-20"></div>';
+                                        inspstr += '</div>';
+                                        inspstr += '</div>'; 
+                                    }
+                                }
+                                inspstr += '</div>';
                                 $("#pop_tab_insp").append(inspstr);
                             }
                             //物流状态

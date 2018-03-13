@@ -131,21 +131,21 @@ namespace WeChat.Page.MyBusiness
                 ListOrderModel orderModel = new ListOrderModel();
                 DataSet ds = orderModel.getOrderDetail(code);
                 ds.Tables[0].Rows[0]["busitype"] = SwitchHelper.switchValue("busitype", ds.Tables[0].Rows[0]["busitype"].ToString2());
-                
-                //if (ds.Tables.Count > 1)
-                //{
-                //    foreach (DataRow dr in ds.Tables[1].Rows)
-                //    {
-                //        dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
-                //    }
-                //}
-                //if (ds.Tables.Count > 2)
-                //{
-                //    foreach (DataRow dr in ds.Tables[2].Rows)
-                //    {
-                //        dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
-                //    }
-                //}
+
+                if (ds.Tables.Count > 1)
+                {
+                    foreach (DataRow dr in ds.Tables[1].Rows)
+                    {
+                        dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
+                    }
+                }
+                if (ds.Tables.Count > 2)
+                {
+                    foreach (DataRow dr in ds.Tables[2].Rows)
+                    {
+                        dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
+                    }
+                }
                 IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
                 iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
                 string json = JsonConvert.SerializeObject(ds, iso);
