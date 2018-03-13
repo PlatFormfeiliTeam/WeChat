@@ -167,7 +167,7 @@
                                 + '</li>'
                                 + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
                                     + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
-                                        + '<div class="item-title col-40">现场交接</div>'
+                                        + '<div class="item-title col-40">现场报关</div>'
                                         + '<div class="item-title col-25">件数/毛重</div>'
                                         + '<div class="item-title col-33">合同号</div>'
                                     + '</div>'
