@@ -176,7 +176,7 @@ namespace WeChat.ModelBusi
                 }
 
                 curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                sql = "update list_order set siteapplyuserid='{1}',siteapplyusername='{2}',siteapplytime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=150 where code='{0}'";
+                sql = "update list_order set siteapplyuserid='{1}',siteapplyusername='{2}',siteapplytime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=150 where code='{0}' and declstatus<=150";
                 sql = string.Format(sql, ordercode, userid, realname, curtime);
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)
@@ -296,7 +296,7 @@ namespace WeChat.ModelBusi
                 }
 
                 curtime = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                sql = "update list_order set sitepassuserid='{1}',sitepassusername='{2}',sitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=160 where code='{0}'";
+                sql = "update list_order set sitepassuserid='{1}',sitepassusername='{2}',sitepasstime=to_date('{3}','yyyy-MM-dd HH24:mi:ss'),declstatus=160 where code='{0}' and declstatus<=160";
                 sql = string.Format(sql, ordercode, userid, realname, curtime);
                 int i = db.ExecuteSignle(sql);
                 if (i > 0)

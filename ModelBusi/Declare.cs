@@ -227,7 +227,7 @@ namespace WeChat.ModelBusi
                     }
                     if (flag)
                     {
-                        sql = "update list_order set declstatus=160,sitepassusername='system_tool_modify',sitepasstime=sysdate,siteapplyuserid=-2 where code='" + ordercode + "'";
+                        sql = "update list_order set declstatus=160,sitepassusername='system_tool_modify',sitepasstime=sysdate,siteapplyuserid=-2 where code='" + ordercode + "' and declstatus<=160";
                         db.ExecuteSignle(sql);
                     }
 
