@@ -68,7 +68,8 @@ namespace WeChat.ModelBusi
                                     ,ort.inspcheckremark 
                                 from list_order ort
                                 where ort.entrusttype in('02','03') and ort.isinvalid=0" + where
-                                    + @"and exists (select 1 from list_inspection li where li.isinvalid=0" + where_insp + ")";
+                                    //+ @"and exists (select 1 from list_inspection li where li.isinvalid=0" + where_insp + ")";
+                                    + @"and ort.code in (select ordercode from list_inspection li where li.isinvalid=0" + where_insp + ")";
 
                 string pageSql = @"SELECT * FROM ( SELECT tt.*, ROWNUM AS rowno FROM ({0} ORDER BY {1} {2}) tt WHERE ROWNUM <= {4}) table_alias WHERE table_alias.rowno >= {3}";
                 string sql = string.Format(pageSql, tempsql, "ort.submittime", "desc", start + 1, start + itemsPerLoad);
