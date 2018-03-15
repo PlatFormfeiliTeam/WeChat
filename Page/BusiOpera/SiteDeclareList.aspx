@@ -15,8 +15,9 @@
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
     <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />    
+    <link rel="stylesheet" href="/css/SubscribeInfo.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />
     <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
-
+    <script type="text/javascript" src="/js/SubscribeInfo.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
              margin:.2rem 0;
@@ -1216,8 +1217,14 @@
             });
 
             //订阅清单
-            $("#Subscribe_a").click(function () {
-                window.location.href = "/Page/MyBusiness/NewSubscribeList_busi.aspx";
+            //$("#Subscribe_a").click(function () {
+            //    window.location.href = "/Page/MyBusiness/NewSubscribeList_busi.aspx";
+            //});
+            //打开订阅详情弹出框
+            $(document).on('click', '.open-subinfo_busi', function () {
+
+                subinfoload_busi();
+
             });
 
             $.init();
@@ -1528,7 +1535,7 @@
                     <span class="icon icon-card"></span>
                     <span class="tab-label">消息订阅</span>
                 </a>
-                <a class="tab-item " href="#" id="Subscribe_a"> 
+                <a class="tab-item open-subinfo_busi" href="#" id="Subscribe_a"> 
                     <span class="icon icon-menu"></span>
                     <span class="tab-label">订阅清单</span>
                 </a>
@@ -1610,6 +1617,13 @@
             </div>
         </div>
     </div>   
+
+    <!--popup 订阅详情弹出页-->
+    <div class="popup pop-subscribeinfo">
+        <div class="content" id="subscribeinfo" style="bottom: 3rem;">
+        </div>
+        <div style="bottom: 1.5rem; position: fixed; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+    </div>
 
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
     <%--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
