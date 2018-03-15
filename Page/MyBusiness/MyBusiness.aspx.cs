@@ -196,9 +196,9 @@ namespace WeChat.Page.MyBusiness
                 }
                 else if(type=="物流状态")
                 {
-                    if (string.IsNullOrEmpty(cusno) || cusno == "null")
+                    if (string.IsNullOrEmpty(ordercode) || ordercode == "null")
                     {
-                        return "订阅失败，企业编号不能为空";
+                        return "订阅失败，订单编号不能为空";
                     }
                     DataTable dt = SubscribeModel.getLogisticsstatus(ordercode);
                     for (int i = 0; i < st.Length; i++)
@@ -212,9 +212,9 @@ namespace WeChat.Page.MyBusiness
                 }
                 else if (type == "业务状态")
                 {
-                    if (string.IsNullOrEmpty(cusno) || cusno == "null")
+                    if (string.IsNullOrEmpty(ordercode) || ordercode == "null")
                     {
-                        return "订阅失败，企业编号不能为空";
+                        return "订阅失败，订单编号不能为空";
                     }
                     DataTable dt = SubscribeModel.getOrderstatus(ordercode);
                     for (int i = 0; i < st.Length; i++)
@@ -227,6 +227,7 @@ namespace WeChat.Page.MyBusiness
                     codetype = "1";
                 }
                 WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+                user = new WGUserEn();
                 //防止重复订阅
                 for (int i = 0; i < st.Length; i++)
                 {

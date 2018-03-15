@@ -179,7 +179,7 @@
         // 每次加载添加多少条目
         var itemsPerLoad = 6;
         var lastIndex = 0;
-        var subOrder="", subCusno = "", subDeclarationCode = "";//订阅的单号
+        var subOrderCode="", subCusno = "", subDeclarationCode = "";//订阅的单号
         //按钮查询
         function loadData(itemsPerLoad, lastIndex) {
             $.ajax({
@@ -410,14 +410,9 @@
                 $("#pop_tab_logistics").html("");
                 var ordercode = "";
                 $("#busicontent .list-block").each(function () {
-
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                        ordercode = $(this)[0].id;
-                        //console.log(ordercode);
-                        subCusno = ordercode.split(",")[1];
-                        subOrder = ordercode = ordercode.split(",")[0];
-                        //console.log(ordercode);
-                        //console.log(subCusno);
+                        var code = $(this)[0].id;
+                        ordercode = code.split(",")[0];
                     }
                 });
                 if (ordercode == "") {
@@ -800,9 +795,9 @@
             $("#busicontent .list-block").each(function () {
 
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                    cusno = $(this)[0].id;
-                    cusno = cusno.split(",")[1];
-                    ordercode = cusno.split(",")[0];
+                    var code = $(this)[0].id;
+                    cusno = code.split(",")[1];
+                    ordercode = code.split(",")[0];
                 }
             });
             if (cusno == "") {
@@ -821,9 +816,7 @@
                 $("#pop_tab_decl .list-block").each(function () {
 
                     if ($(this).css('background-color') == "rgb(193, 221, 241)") {
-                        console.log($(this));
                         declcode = $(this)[0].id;
-                        //console.log(declcode);
                     }
                 });
                 if (declcode == "") {
@@ -838,7 +831,7 @@
             var status = "";
             var input;
             if (type == "订单状态") {
-                if (subOrder == "") {
+                if (subOrderCode == "") {
                     $.toast("请选择需要订阅的业务");
                     return;
                 }
