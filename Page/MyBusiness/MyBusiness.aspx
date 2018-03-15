@@ -805,7 +805,7 @@
                 return;
             }
             subCusno = cusno;
-            subOrder = ordercode;
+            subOrderCode = ordercode;
             $.popup("#popup-subscribe-log");
         });
         //打开预制单订阅弹出框
