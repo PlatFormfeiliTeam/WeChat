@@ -227,7 +227,6 @@ namespace WeChat.Page.MyBusiness
                     codetype = "1";
                 }
                 WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
-                user = new WGUserEn();
                 //防止重复订阅
                 for (int i = 0; i < st.Length; i++)
                 {
