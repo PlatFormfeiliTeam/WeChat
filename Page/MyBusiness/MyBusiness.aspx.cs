@@ -23,36 +23,36 @@ namespace WeChat.Page.MyBusiness
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
-            //如果当前用户未登陆，先获取授权
-            if (user == null)
-            {
-                WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
-                if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
-                {//授权成功
-                    WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
-                    if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
-                    {//账号未关联，跳转至登录界面
-                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
-                    }
-                    else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
-                    {//不是企业或委托单位，无此权限
-                        System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
-                    }
-                    else
-                    {//不需登录，保存当前用户
-                        HttpContext.Current.Session["user"] = wuser;
-                    }
-                }
-                else
-                {//获取授权失败，也跳转至登录页面
-                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
-                }
-            }
-            else if (user.IsCustomer != 1 && user.IsCompany != 1)
-            {//不是接单单位，无此权限
-                System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
-            }
+            //WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            ////如果当前用户未登陆，先获取授权
+            //if (user == null)
+            //{
+            //    WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+            //    if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
+            //    {//授权成功
+            //        WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
+            //        if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
+            //        {//账号未关联，跳转至登录界面
+            //            System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+            //        }
+            //        else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
+            //        {//不是企业或委托单位，无此权限
+            //            System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
+            //        }
+            //        else
+            //        {//不需登录，保存当前用户
+            //            HttpContext.Current.Session["user"] = wuser;
+            //        }
+            //    }
+            //    else
+            //    {//获取授权失败，也跳转至登录页面
+            //        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+            //    }
+            //}
+            //else if (user.IsCustomer != 1 && user.IsCompany != 1)
+            //{//不是接单单位，无此权限
+            //    System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
+            //}
             
         }
        
@@ -77,21 +77,21 @@ namespace WeChat.Page.MyBusiness
             int itemsperload, int lastindex)
         {
             string sum = "0";
-            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
-            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
-                return "";
-            string customerCode = user.CustomerCode;
-            string hsCode = user.HSCode;
-            if (user.IsCompany != 1)//如果不是企业角色，不能查出其对应经营单位的订单
-                hsCode = "";
-            if (user.IsCustomer != 1)//如果不是委托单位角色，不能查出其对应委托单位的订单
-                customerCode = "";
+            //WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            //if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            //    return "";
+            //string customerCode = user.CustomerCode;
+            //string hsCode = user.HSCode;
+            //if (user.IsCompany != 1)//如果不是企业角色，不能查出其对应经营单位的订单
+            //    hsCode = "";
+            //if (user.IsCustomer != 1)//如果不是委托单位角色，不能查出其对应委托单位的订单
+            //    customerCode = "";
             ListOrderModel orderModel = new ListOrderModel();
-            DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, busiunit, ordercode,
-                cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, customerCode, hsCode, out sum);
-
             //DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, busiunit, ordercode,
-            //   cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, "RBDZKJKSYXGS", "3223640003", out sum);
+            //    cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, customerCode, hsCode, out sum);
+
+            DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, busiunit, ordercode,
+               cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, "RBDZKJKSYXGS", "3223640003", out sum);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             try
             {

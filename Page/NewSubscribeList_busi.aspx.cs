@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 using WeChat.Entity;
 using WeChat.ModelWeChat;
 
-namespace WeChat.Page.MyBusiness
+namespace WeChat.Page
 {
     public partial class NewSubscribeList_busi : System.Web.UI.Page
     {
@@ -57,6 +57,40 @@ namespace WeChat.Page.MyBusiness
                 return "";
             }
             
+        }
+
+        [WebMethod]
+        public static string NewQuerySubscribeInfo()
+        {
+            //WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            //if (user == null || user.GwyUserID <= 0)
+            //    return "";
+            //DataTable infodt = SubscribeModel.getNewSubscribeInfo_Order(user.GwyUserID);
+            DataTable infodt = SubscribeModel.getNewSubscribeInfo_Order(1124);
+            
+            if (infodt == null || infodt.Rows.Count == 0)
+                return "";
+            try
+            {
+                foreach (DataRow dr in infodt.Rows)
+                {
+                    if (string.IsNullOrEmpty(dr["divideno"].ToString2())) dr["divideno"] = "";
+                    if (string.IsNullOrEmpty(dr["logisticsname"].ToString2())) dr["logisticsname"] = "";
+                    if (string.IsNullOrEmpty(dr["contractno"].ToString2())) dr["contractno"] = "";
+                    dr["declstatus"] = SwitchHelper.switchValue("declstatus", dr["declstatus"].ToString2());
+                    dr["inspstatus"] = SwitchHelper.switchValue("inspstatus", dr["inspstatus"].ToString2());
+                }
+                IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
+                iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+                string json = JsonConvert.SerializeObject(infodt, iso);
+                return json;
+            }
+            catch (Exception e)
+            {
+                LogHelper.Write("MyBusiness_QueryData:" + e.Message);
+                return "";
+            }
+
         }
 
         [WebMethod]

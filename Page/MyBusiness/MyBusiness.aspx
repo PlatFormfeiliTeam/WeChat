@@ -1,166 +1,174 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MyBusiness.aspx.cs" Inherits="WeChat.Page.MyBusiness.MyBusiness" %>
+
 <%@ Import Namespace="System.Configuration" %>
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>我的订单</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     <link href="/css/iconfont/iconfont.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" rel="stylesheet" />
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css" />
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css" />
-    <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />  
-    <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
+    <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />
+    <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
+    <script type="text/javascript" src="/js/SubscribeInfo.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
     <style type="text/css">
         #scroll-bottom-one {
             top: 5.8rem;
         }
-         .bar input[type=search]{
-             margin:.1rem 0;
-         }
-         .bar-nav
-         {
-             height:5.8rem;
-         }
-        .content-block
-        {
-            margin:0rem 0;
-            padding:0.2rem;
-            color:#6d6d72;
+
+        .bar input[type=search] {
+            margin: .1rem 0;
         }
-        .content-padded
-        {
-            margin:0.2rem;
+
+        .bar-nav {
+            height: 5.8rem;
         }
-        .button
-        {
-            border-radius:0;
-            background-color:gray;
-            color:white;
-            border:0;
-            vertical-align:middle;
+
+        .content-block {
+            margin: 0rem 0;
+            padding: 0.2rem;
+            color: #6d6d72;
+        }
+
+        .content-padded {
+            margin: 0.2rem;
+        }
+
+        .button {
+            border-radius: 0;
+            background-color: gray;
+            color: white;
+            border: 0;
+            vertical-align: middle;
             padding-top: 0.1rem;
-            text-align:center;
+            text-align: center;
         }
-        .row
-        {
-            font-size:small;
-            overflow:hidden;
-            margin-left:-2%;
+
+        .row {
+            font-size: small;
+            overflow: hidden;
+            margin-left: -2%;
         }
-        
+
         .list-block {
             margin: 0.2rem 0 0 0;
         }
-        .list-block .item-inner {
-            padding-right:0.25rem;
-            padding-top:0.1rem;
-            padding-bottom:0.1rem;
-            min-height:1.2rem;
-            font-size:small;
+
+            .list-block .item-inner {
+                padding-right: 0.25rem;
+                padding-top: 0.1rem;
+                padding-bottom: 0.1rem;
+                min-height: 1.2rem;
+                font-size: small;
+            }
+
+            .list-block .item-content {
+                min-height: 1.2rem;
+            }
+
+            .list-block .my-title {
+                width: 40%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: center;
+            }
+
+            .list-block .my-after {
+                width: 30%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: center;
+            }
+
+        .picker-items-col-wrapper {
+            width: 12rem;
         }
-        .list-block .item-content {
-            min-height:1.2rem;
+
+        .popup .list-block {
+            margin: 0.1rem 0 0 0;
+            background-color: white;
         }
-        .list-block .my-title {
-            width:40%;
-            overflow:hidden;
-            white-space:nowrap;
-            text-overflow:ellipsis;
-            text-align:center;
+
+        .popup .row {
+            margin-top: 0.5rem;
         }
-        .list-block .my-after {
-            width:30%;
-            overflow:hidden;
-            white-space:nowrap;
-            text-overflow:ellipsis;
-            text-align:center;
+
+        .popup-subscribe .content-block {
+            background-color: #1D2E3C;
+            color: white;
+            margin-top: 1rem;
         }
-        .picker-items-col-wrapper
-        {
-            width:12rem;
+
+        .popup-subscribe .row {
+            background-color: #456581;
+            border-top: solid 1px white;
+            margin: 0rem;
+            font-size: initial;
+            vertical-align: middle;
+            height: 2rem;
+            line-height: 2rem;
         }
-        
-        .popup .list-block
-        {
-            margin:0.1rem 0 0 0;
-            background-color:white;
+
+        .popup-subscribe .col-33 {
+            padding-top: 0.2rem;
         }
-        .popup .row
-        {
-            margin-top:0.5rem;
+
+        .popup-subscribe .col-50 {
+            margin-left: 2%;
         }
-        .popup-subscribe .content-block
-        {
-            background-color:#1D2E3C;
-            color:white;
-            margin-top:1rem;
+
+        .myrow {
+            line-height: 2rem;
+            padding-left: 4%;
         }
-        .popup-subscribe .row
-        {
-            background-color:#456581;
-            border-top:solid 1px white;
-            margin:0rem;
-            font-size:initial;
-            vertical-align:middle;
-            height:2rem;
-            line-height:2rem;
+
+        .girdnamediv {
+            width: 17.6rem;
+            margin-left: -8.75rem;
+            top: 14%;
         }
-        .popup-subscribe .col-33
-        {
-            padding-top:0.2rem;
-        }
-        .popup-subscribe .col-50
-        {
-            margin-left:2%;
-        }
-        .myrow
-        {
-            line-height:2rem;
-            padding-left:4%;
-        }
-        .girdnamediv  
-        {
-            width:17.6rem;
-            margin-left:-8.75rem;
-            top:14%;
-        }
-        
+
         /*----------------------------*/
-        #page-infinite-scroll-bottom .search-input input{
-            border-radius:0;font-size:13px;
+        #page-infinite-scroll-bottom .search-input input {
+            border-radius: 0;
+            font-size: 13px;
         }
-        
-        #popup-subscribe-log input
-        {
-            font-family:"微软雅黑";
-            width:6rem;
+
+        #popup-subscribe-log input {
+            font-family: "微软雅黑";
+            width: 6rem;
             height: 1.5rem;
             border: none;
             border-radius: .15rem;
             font-size: .8rem;
         }
-        #popup-subscribe-decl input
-        {
-            font-family:"微软雅黑";
-            width:6rem;
+
+        #popup-subscribe-decl input {
+            font-family: "微软雅黑";
+            width: 6rem;
             height: 1.5rem;
             border: none;
             border-radius: .15rem;
             font-size: .8rem;
         }
         /*----------------------------------------*/
-        .picdiv .modal-inner{
-             padding:0;
-         }
-        .picdiv .modal-title{
-            text-align:right;
+        .picdiv .modal-inner {
+            padding: 0;
         }
-        .picdiv .modal-title+.modal-text{
-            margin-top:0;
+
+        .picdiv .modal-title {
+            text-align: right;
         }
+
+            .picdiv .modal-title + .modal-text {
+                margin-top: 0;
+            }
     </style>
 
     <script type="text/javascript">
@@ -201,7 +209,7 @@
                 cache: false,
                 async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                 success: function (data) {
-                    if (data.d == null || data.d == "") {
+                    if (data.d == null || data.d == "" || data.d == "[]") {
                         $("#span_sum").text(0);
                         $("#busicontent").append("");
                         return;
@@ -253,9 +261,9 @@
                 }
             });
         }
-       
+
         //查询
-        $(function() {
+        $(function () {
             $('.infinite-scroll-preloader').hide();
             //初始化查询条件
             initsearch_condition();
@@ -322,7 +330,7 @@
             //物流状态——按钮切换
             $(document).on('click',
                 '.iconfont',
-                function() {
+                function () {
                     $("#choudan").hide();
                     $("#zhuanguan").hide();
                     $("#baojian").hide();
@@ -339,7 +347,7 @@
 
             //无限滚动 注册'infinite'事件处理函数
             $(document).on('infinite', "#page-infinite-scroll-bottom", function () {
-                
+
                 if (loading) return;// 如果正在加载，则退出               
                 loading = true; // 设置flag                
                 $('.infinite-scroll-preloader').show();//显示加载栏
@@ -374,7 +382,7 @@
             //选中业务变色
             $("#busicontent").on('click',
                 '.list-block',
-                function(e) { // $("#div_list")也可以换成$(document)，是基于父容器的概念   
+                function (e) { // $("#div_list")也可以换成$(document)，是基于父容器的概念   
 
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         $(this).children("ul").css('background-color', '#fff');
@@ -388,386 +396,386 @@
             //功能菜单
             $(document).on('click',
                 '.tab-item',
-                function(e) {
+                function (e) {
                     $(".tab-item").removeClass("active");
                     $(this).addClass("active");
                 })
 
             //打开详情弹出框
-            $(document).on('click',
-                '.open-detail',
-                function() {
-                    $.showPreloader('加载中...');
-                    //清空弹出窗信息
-                    $("#pop_tab_decl").html("");
-                    $("#pop_tab_insp").html("");
-                    $("#pop_tab_logistics").html("");
-                    var ordercode = "";
-                    $("#busicontent .list-block").each(function() {
+            $(document).on('click', '.open-detail', function () {
+                $.showPreloader('加载中...');
+                //清空弹出窗信息
+                $("#pop_tab_decl").html("");
+                $("#pop_tab_insp").html("");
+                $("#pop_tab_logistics").html("");
+                var ordercode = "";
+                $("#busicontent .list-block").each(function () {
 
-                        if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                            ordercode = $(this)[0].id;
-                            //console.log(ordercode);
-                            subCusno = ordercode.split(",")[1];
-                            ordercode = ordercode.split(",")[0];
-                            //console.log(ordercode);
-                            //console.log(subCusno);
-                        }
-                    });
-                    if (ordercode == "") {
-                        $.toast("请选择需要调阅的记录");
-                        $.hidePreloader();
-                        return;
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        ordercode = $(this)[0].id;
+                        //console.log(ordercode);
+                        subCusno = ordercode.split(",")[1];
+                        ordercode = ordercode.split(",")[0];
+                        //console.log(ordercode);
+                        //console.log(subCusno);
                     }
-                    $.ajax({
-                        type: 'post',
-                        url: 'MyBusiness.aspx/QueryOrderDetail',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: "{'code':'" + ordercode + "'}",
-                        cache: false,
-                        async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
-                        success: function (data) {
-                            var obj = eval("(" + data.d + ")");
-                            console.log(obj);
-                            //1、报关信息
-                            var orderTable = obj.OrderTable;
-                            var declTable = obj.DeclTable;
-                            var inspTable = obj.InspTable;
-                            var logisticsTable = obj.LogisticsTable;
-                            if (orderTable != null && orderTable.length > 0) {
-                                var declstr = '<div class="content-padded grid-demo" >' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">委托时间</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["SUBMITTIME"] == null ? "" : orderTable[0]["SUBMITTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">制单完成</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["MOENDTIME"] == null ? "" : orderTable[0]["MOENDTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["MOENDNAME"] == null ? "" : orderTable[0]["MOENDNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">审核完成</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["COENDTIME"] == null ? "" : orderTable[0]["COENDTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["COENDNAME"] == null ? "" : orderTable[0]["COENDNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">预录完成</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["PREENDTIME"] == null ? "" : orderTable[0]["PREENDTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["PREENDNAME"] == null ? "" : orderTable[0]["PREENDNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">申报完成</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["REPENDTIME"] == null ? "" : orderTable[0]["REPENDTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["REPENDNAME"] == null ? "" : orderTable[0]["REPENDNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">现场报关</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["SITEAPPLYTIME"] == null ? "" : orderTable[0]["SITEAPPLYTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["SITEAPPLYUSERNAME"] == null ? "" : orderTable[0]["SITEAPPLYUSERNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">查验维护</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["DECLCHECKTIME"] == null ? "" : orderTable[0]["DECLCHECKTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">现场稽核</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["AUDITFLAGTIME"] == null ? "" : orderTable[0]["AUDITFLAGTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["AUDITFLAGNAME"] == null ? "" : orderTable[0]["AUDITFLAGNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">现场放行</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["SITEPASSTIME"] == null ? "" : orderTable[0]["SITEPASSTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["SITEPASSUSERNAME"] == null ? "" : orderTable[0]["SITEPASSUSERNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">查验图片</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["CHECKPIC"] == null ? "" : orderTable[0]["CHECKPIC"]) +
-                                    '</div>' +
-                                    //'<div class="col-20"></div>' +
-                                    '</div>' +
-                                    '</div>';
-                                declstr +=
-                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                                declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
-                                if (declTable != null) {
-                                    for (var i = 0; i < declTable.length; i++) {
-                                        declstr += '<div class="list-block" id="' +
-                                            (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) +
-                                            '">';
-                                        declstr += '<div class="row">';
-                                        declstr += '<div class="col-50">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
-                                        declstr += '<div class="col-25">' +
-                                            declTable[i]["GOODSNUM"] +
-                                            '/' +
-                                            declTable[i]["GOODSGW"] +
-                                            '</div>';
-                                        declstr += '<div class="col-25">' + (declTable[i]["MODIFYFLAG"] == null ? "" : declTable[i]["MODIFYFLAG"]) + '</div>';
-                                        declstr += '</div>';
-                                        declstr += '<div class="row">';
-                                        declstr += '<div class="col-50">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
-                                        declstr += '<div class="col-25">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
-                                        declstr += '<div class="col-25">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
-                                        declstr += '</div>';
-                                        declstr += '</div>';
-                                    }
-                                }
-                                declstr += '</div>';
-                                $("#pop_tab_decl").append(declstr);
-                            }
-                            //2、报检信息
-                            if (orderTable != null &&
-                                (orderTable[0]["ENTRUSTTYPE"] == "02" || orderTable[0]["ENTRUSTTYPE"] == "03")) {
-                                var inspstr = '<div class="content-padded grid-demo" >' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">委托时间</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["SUBMITTIME"] == null ? "" : orderTable[0]["SUBMITTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">制单完成</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["INSPMOENDTIME"] == null ? "" : orderTable[0]["INSPMOENDTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["INSPMOENDNAME"] == null ? "" : orderTable[0]["INSPMOENDNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">审核完成</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["INSPCOENDTIME"] == null ? "" : orderTable[0]["INSPCOENDTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["INSPCOENDNAME"] == null ? "" : orderTable[0]["INSPCOENDNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">预录完成</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["INSPPREENDTIME"] == null ? "" : orderTable[0]["INSPPREENDTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["INSPPREENDNAME"] == null ? "" : orderTable[0]["INSPPREENDNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">申报完成</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["INSPREPENDTIME"] == null ? "" : orderTable[0]["INSPREPENDTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["INSPREPENDNAME"] == null ? "" : orderTable[0]["INSPREPENDNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">现场报检</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["INSPSITEAPPLYTIME"] == null ? "" : orderTable[0]["INSPSITEAPPLYTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["INSPSITEAPPLYUSERNAME"] == null ? "" : orderTable[0]["INSPSITEAPPLYUSERNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">查验维护</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["INSPCHECKTIME"] == null ? "" : orderTable[0]["INSPCHECKTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["INSPSUBMITUSERNAME"] == null ? "" : orderTable[0]["INSPSUBMITUSERNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">熏蒸维护</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["FUMIGATIONTIME"] == null ? "" : orderTable[0]["FUMIGATIONTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["FUMIGATIONNAME"] == null ? "" : orderTable[0]["FUMIGATIONNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">报检放行</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["INSPSITEPASSTIME"] == null ? "" : orderTable[0]["INSPSITEPASSTIME"]) +
-                                    '</div>' +
-                                    //'<div class="col-20">' +
-                                    //(orderTable[0]["INSPSITEPASSUSERNAME"] == null ? "" : orderTable[0]["INSPSITEPASSUSERNAME"]) +
-                                    //'</div>' +
-                                    '</div>' +
-                                    '<div class="row">' +
-                                    '<div class="col-20">查验图片</div>' +
-                                    '<div class="col-60">' +
-                                    (orderTable[0]["INSPCHECKPIC"] == null ? "" : orderTable[0]["INSPCHECKPIC"]) +
-                                    '</div>' +
-                                    //'<div class="col-20"></div>' +
-                                    '</div>' +
-                                    '</div>';
-                                inspstr +=
-                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                                inspstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
-                                if (inspTable != null) {
-                                    for (var i = 0; i < inspTable.length; i++) {
-                                        inspstr += '<div class="list-block">';
-                                        inspstr += '<div class="row">';
-                                        inspstr += '<div class="col-50">' + (inspTable[i]["INSPECTIONCODE"] == null ? "" : inspTable[i]["INSPECTIONCODE"]) + '</div>';
-                                        inspstr += '<div class="col-50">' + (inspTable[i]["APPROVALCODE"] == null ? "" : inspTable[i]["APPROVALCODE"]) + '</div>';
-                                        
-                                        inspstr += '</div>';
-                                        inspstr += '<div class="row">';
-                                        inspstr += '<div class="col-50">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
-                                        inspstr += '<div class="col-25">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
-                                        inspstr += '<div class="col-25">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
-                                        //inspstr += '<div class="col-20"></div>';
-                                        inspstr += '</div>';
-                                        inspstr += '</div>'; 
-                                    }
-                                }
-                                inspstr += '</div>';
-                                $("#pop_tab_insp").append(inspstr);
-                            }
-                            //物流状态
-                            if (logisticsTable != null && logisticsTable.length > 0) {
-                                var logstr = '<div style="text-align:center;">物流状态（' +
-                                    orderTable[0]["BUSITYPE"] +
-                                    '）</div>';
-                                logstr += '<div class="row">' +
-                                    '<div class="col-25" style="color:#0894EC"><i id="icon_choudan" class="iconfont" >&#xe63f;抽单</i></div>' +
-                                    '<div class="col-25"><i id="icon_zhuanguan" class="iconfont" >&#xe63f;转关</i></div>' +
-                                    '<div class="col-25"><i id="icon_baojian" class="iconfont" >&#xe63f;报检</i></div>' +
-                                    '<div class="col-25"><i id="icon_yunshu" class="iconfont" >&#xe63f;运输</i></div>' +
-                                    '</div>';
-                                logstr +=
-                                    '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
-                                logstr += '<div id="logistics" style="background-color:white;">';
-                                logstr += '<div class="row">' +
-                                    //'<div class="col-25">操作人</div>' +
-                                    '<div class="col-60">时间</div>' +
-                                    '<div class="col-35">状态值</div>' +
-                                    '</div>'
-                                var choudan = '<div id="choudan">';
-                                var zhuanguan = '<div id="zhuanguan" style="display:none">';
-                                var baojian = '<div id="baojian" style="display:none">';
-                                var yunshu = '<div id="yunshu" style="display:none">';
-                                for (var i = 0; i < logisticsTable.length; i++) {
-                                    if (logisticsTable[i]["OPERATE_TYPE"] == "抽单状态") {
-                                        choudan += '<div class="row">' +
-                                            //'<div class="col-25">' +
-                                            //(logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
-                                            //'</div>' +
-                                            '<div class="col-60">' +
-                                            (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
-                                            '</div>' +
-                                            '<div class="col-35">' +
-                                            (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
-                                            '</div>' +
-                                            '</div>';
-                                    } else if (logisticsTable[i]["OPERATE_TYPE"] == "报关申报状态" ||
-                                        logisticsTable[i]["OPERATE_TYPE"] == "转关申报状态") {
-                                        zhuanguan += '<div class="row">' +
-                                            //'<div class="col-25">' +
-                                            //(logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
-                                            //'</div>' +
-                                            '<div class="col-60">' +
-                                            (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
-                                            '</div>' +
-                                            '<div class="col-35">' +
-                                            (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
-                                            '</div>' +
-                                            '</div>';
-                                    } else if (logisticsTable[i]["OPERATE_TYPE"] == "商检状态") {
-                                        baojian += '<div class="row">' +
-                                            //'<div class="col-25">' +
-                                            //(logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
-                                            //'</div>' +
-                                            '<div class="col-60">' +
-                                            (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
-                                            '</div>' +
-                                            '<div class="col-35">' +
-                                            (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
-                                            '</div>' +
-                                            '</div>';
-                                    } else if (logisticsTable[i]["OPERATE_TYPE"] == "运输状态") {
-                                        yunshu += '<div class="row">' +
-                                            //'<div class="col-25">' +
-                                            //(logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
-                                            //'</div>' +
-                                            '<div class="col-60">' +
-                                            (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
-                                            '</div>' +
-                                            '<div class="col-35">' +
-                                            (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
-                                            '</div>' +
-                                            '</div>';
-                                    }
-
-                                }
-                                choudan += '</div>';
-                                zhuanguan += '</div>';
-                                baojian += '</div>';
-                                yunshu += '</div>';
-                                logstr += choudan;
-                                logstr += zhuanguan;
-                                logstr += baojian;
-                                logstr += yunshu;
-                                logstr += "</div>";
-                                $("#pop_tab_logistics").append(logstr);
-                            }
-                        }
-                    });
-                    $.hidePreloader();
-                    $.popup('.popup-detail');
-
-
                 });
+                if (ordercode == "") {
+                    $.toast("请选择需要调阅的记录");
+                    $.hidePreloader();
+                    return;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: 'MyBusiness.aspx/QueryOrderDetail',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'code':'" + ordercode + "'}",
+                    cache: false,
+                    async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
+                    success: function (data) {
+                        var obj = eval("(" + data.d + ")");
+                        console.log(obj);
+                        //1、报关信息
+                        var orderTable = obj.OrderTable;
+                        var declTable = obj.DeclTable;
+                        var inspTable = obj.InspTable;
+                        var logisticsTable = obj.LogisticsTable;
+                        if (orderTable != null && orderTable.length > 0) {
+                            var declstr = '<div class="content-padded grid-demo" >' +
+                                '<div class="row">' +
+                                '<div class="col-20">委托时间</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["SUBMITTIME"] == null ? "" : orderTable[0]["SUBMITTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">制单完成</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["MOENDTIME"] == null ? "" : orderTable[0]["MOENDTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["MOENDNAME"] == null ? "" : orderTable[0]["MOENDNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">审核完成</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["COENDTIME"] == null ? "" : orderTable[0]["COENDTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["COENDNAME"] == null ? "" : orderTable[0]["COENDNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">预录完成</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["PREENDTIME"] == null ? "" : orderTable[0]["PREENDTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["PREENDNAME"] == null ? "" : orderTable[0]["PREENDNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">申报完成</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["REPENDTIME"] == null ? "" : orderTable[0]["REPENDTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["REPENDNAME"] == null ? "" : orderTable[0]["REPENDNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">现场报关</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["SITEAPPLYTIME"] == null ? "" : orderTable[0]["SITEAPPLYTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["SITEAPPLYUSERNAME"] == null ? "" : orderTable[0]["SITEAPPLYUSERNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">查验维护</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["DECLCHECKTIME"] == null ? "" : orderTable[0]["DECLCHECKTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">现场稽核</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["AUDITFLAGTIME"] == null ? "" : orderTable[0]["AUDITFLAGTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["AUDITFLAGNAME"] == null ? "" : orderTable[0]["AUDITFLAGNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">现场放行</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["SITEPASSTIME"] == null ? "" : orderTable[0]["SITEPASSTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["SITEPASSUSERNAME"] == null ? "" : orderTable[0]["SITEPASSUSERNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">查验图片</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["CHECKPIC"] == null ? "" : orderTable[0]["CHECKPIC"]) +
+                                '</div>' +
+                                //'<div class="col-20"></div>' +
+                                '</div>' +
+                                '</div>';
+                            declstr +=
+                                '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                            declstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                            if (declTable != null) {
+                                for (var i = 0; i < declTable.length; i++) {
+                                    declstr += '<div class="list-block" id="' +
+                                        (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) +
+                                        '">';
+                                    declstr += '<div class="row">';
+                                    declstr += '<div class="col-50">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
+                                    declstr += '<div class="col-25">' +
+                                        declTable[i]["GOODSNUM"] +
+                                        '/' +
+                                        declTable[i]["GOODSGW"] +
+                                        '</div>';
+                                    declstr += '<div class="col-25">' + (declTable[i]["MODIFYFLAG"] == null ? "" : declTable[i]["MODIFYFLAG"]) + '</div>';
+                                    declstr += '</div>';
+                                    declstr += '<div class="row">';
+                                    declstr += '<div class="col-50">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
+                                    declstr += '<div class="col-25">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
+                                    declstr += '<div class="col-25">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
+                                    declstr += '</div>';
+                                    declstr += '</div>';
+                                }
+                            }
+                            declstr += '</div>';
+                            $("#pop_tab_decl").append(declstr);
+                        }
+                        //2、报检信息
+                        if (orderTable != null &&
+                            (orderTable[0]["ENTRUSTTYPE"] == "02" || orderTable[0]["ENTRUSTTYPE"] == "03")) {
+                            var inspstr = '<div class="content-padded grid-demo" >' +
+                                '<div class="row">' +
+                                '<div class="col-20">委托时间</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["SUBMITTIME"] == null ? "" : orderTable[0]["SUBMITTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">制单完成</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["INSPMOENDTIME"] == null ? "" : orderTable[0]["INSPMOENDTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["INSPMOENDNAME"] == null ? "" : orderTable[0]["INSPMOENDNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">审核完成</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["INSPCOENDTIME"] == null ? "" : orderTable[0]["INSPCOENDTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["INSPCOENDNAME"] == null ? "" : orderTable[0]["INSPCOENDNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">预录完成</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["INSPPREENDTIME"] == null ? "" : orderTable[0]["INSPPREENDTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["INSPPREENDNAME"] == null ? "" : orderTable[0]["INSPPREENDNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">申报完成</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["INSPREPENDTIME"] == null ? "" : orderTable[0]["INSPREPENDTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["INSPREPENDNAME"] == null ? "" : orderTable[0]["INSPREPENDNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">现场报检</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["INSPSITEAPPLYTIME"] == null ? "" : orderTable[0]["INSPSITEAPPLYTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["INSPSITEAPPLYUSERNAME"] == null ? "" : orderTable[0]["INSPSITEAPPLYUSERNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">查验维护</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["INSPCHECKTIME"] == null ? "" : orderTable[0]["INSPCHECKTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["INSPSUBMITUSERNAME"] == null ? "" : orderTable[0]["INSPSUBMITUSERNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">熏蒸维护</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["FUMIGATIONTIME"] == null ? "" : orderTable[0]["FUMIGATIONTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["FUMIGATIONNAME"] == null ? "" : orderTable[0]["FUMIGATIONNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">报检放行</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["INSPSITEPASSTIME"] == null ? "" : orderTable[0]["INSPSITEPASSTIME"]) +
+                                '</div>' +
+                                //'<div class="col-20">' +
+                                //(orderTable[0]["INSPSITEPASSUSERNAME"] == null ? "" : orderTable[0]["INSPSITEPASSUSERNAME"]) +
+                                //'</div>' +
+                                '</div>' +
+                                '<div class="row">' +
+                                '<div class="col-20">查验图片</div>' +
+                                '<div class="col-60">' +
+                                (orderTable[0]["INSPCHECKPIC"] == null ? "" : orderTable[0]["INSPCHECKPIC"]) +
+                                '</div>' +
+                                //'<div class="col-20"></div>' +
+                                '</div>' +
+                                '</div>';
+                            inspstr +=
+                                '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                            inspstr += '<div style=" height: 100%;background-color:#DBDBDB;">';
+                            if (inspTable != null) {
+                                for (var i = 0; i < inspTable.length; i++) {
+                                    inspstr += '<div class="list-block">';
+                                    inspstr += '<div class="row">';
+                                    inspstr += '<div class="col-50">' + (inspTable[i]["INSPECTIONCODE"] == null ? "" : inspTable[i]["INSPECTIONCODE"]) + '</div>';
+                                    inspstr += '<div class="col-50">' + (inspTable[i]["APPROVALCODE"] == null ? "" : inspTable[i]["APPROVALCODE"]) + '</div>';
+
+                                    inspstr += '</div>';
+                                    inspstr += '<div class="row">';
+                                    inspstr += '<div class="col-50">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
+                                    inspstr += '<div class="col-25">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
+                                    inspstr += '<div class="col-25">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
+                                    //inspstr += '<div class="col-20"></div>';
+                                    inspstr += '</div>';
+                                    inspstr += '</div>';
+                                }
+                            }
+                            inspstr += '</div>';
+                            $("#pop_tab_insp").append(inspstr);
+                        }
+                        //物流状态
+                        if (logisticsTable != null && logisticsTable.length > 0) {
+                            var logstr = '<div style="text-align:center;">物流状态（' +
+                                orderTable[0]["BUSITYPE"] +
+                                '）</div>';
+                            logstr += '<div class="row">' +
+                                '<div class="col-25" style="color:#0894EC"><i id="icon_choudan" class="iconfont" >&#xe63f;抽单</i></div>' +
+                                '<div class="col-25"><i id="icon_zhuanguan" class="iconfont" >&#xe63f;转关</i></div>' +
+                                '<div class="col-25"><i id="icon_baojian" class="iconfont" >&#xe63f;报检</i></div>' +
+                                '<div class="col-25"><i id="icon_yunshu" class="iconfont" >&#xe63f;运输</i></div>' +
+                                '</div>';
+                            logstr +=
+                                '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
+                            logstr += '<div id="logistics" style="background-color:white;">';
+                            logstr += '<div class="row">' +
+                                //'<div class="col-25">操作人</div>' +
+                                '<div class="col-60">时间</div>' +
+                                '<div class="col-35">状态值</div>' +
+                                '</div>'
+                            var choudan = '<div id="choudan">';
+                            var zhuanguan = '<div id="zhuanguan" style="display:none">';
+                            var baojian = '<div id="baojian" style="display:none">';
+                            var yunshu = '<div id="yunshu" style="display:none">';
+                            for (var i = 0; i < logisticsTable.length; i++) {
+                                if (logisticsTable[i]["OPERATE_TYPE"] == "抽单状态") {
+                                    choudan += '<div class="row">' +
+                                        //'<div class="col-25">' +
+                                        //(logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
+                                        //'</div>' +
+                                        '<div class="col-60">' +
+                                        (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
+                                        '</div>' +
+                                        '<div class="col-35">' +
+                                        (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
+                                        '</div>' +
+                                        '</div>';
+                                } else if (logisticsTable[i]["OPERATE_TYPE"] == "报关申报状态" ||
+                                    logisticsTable[i]["OPERATE_TYPE"] == "转关申报状态") {
+                                    zhuanguan += '<div class="row">' +
+                                        //'<div class="col-25">' +
+                                        //(logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
+                                        //'</div>' +
+                                        '<div class="col-60">' +
+                                        (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
+                                        '</div>' +
+                                        '<div class="col-35">' +
+                                        (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
+                                        '</div>' +
+                                        '</div>';
+                                } else if (logisticsTable[i]["OPERATE_TYPE"] == "商检状态") {
+                                    baojian += '<div class="row">' +
+                                        //'<div class="col-25">' +
+                                        //(logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
+                                        //'</div>' +
+                                        '<div class="col-60">' +
+                                        (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
+                                        '</div>' +
+                                        '<div class="col-35">' +
+                                        (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
+                                        '</div>' +
+                                        '</div>';
+                                } else if (logisticsTable[i]["OPERATE_TYPE"] == "运输状态") {
+                                    yunshu += '<div class="row">' +
+                                        //'<div class="col-25">' +
+                                        //(logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
+                                        //'</div>' +
+                                        '<div class="col-60">' +
+                                        (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
+                                        '</div>' +
+                                        '<div class="col-35">' +
+                                        (logisticsTable[i]["OPERATE_RESULT"] == null ? "" : logisticsTable[i]["OPERATE_RESULT"]) +
+                                        '</div>' +
+                                        '</div>';
+                                }
+
+                            }
+                            choudan += '</div>';
+                            zhuanguan += '</div>';
+                            baojian += '</div>';
+                            yunshu += '</div>';
+                            logstr += choudan;
+                            logstr += zhuanguan;
+                            logstr += baojian;
+                            logstr += yunshu;
+                            logstr += "</div>";
+                            $("#pop_tab_logistics").append(logstr);
+                        }
+                    }
+                });
+                $.hidePreloader();
+                $.popup('.popup-detail');
+
+
+            });
+
+
             //选中报关单变色
             $("#pop_tab_decl").on('click',
                 '.list-block',
-                function(e) {
+                function (e) {
 
                     if ($(this).css('background-color') == "rgb(193, 221, 241)") {
                         $(this).css('background-color', '#fff');
@@ -779,32 +787,36 @@
             $.init();
 
         });
-        
-        //打开业务订阅弹出框
-        $(document).on('click',
-            '.open-subscribe',
-            function() {
-                var cusno = "";
-                $("#busicontent .list-block").each(function() {
 
-                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
-                        cusno = $(this)[0].id;
-                        cusno = cusno.split(",")[1];
-                    }
-                });
-                if (cusno == "") {
-                    $.toast("请选择需要订阅的记录");
-                    return;
+        //打开订阅详情弹出框
+        $(document).on('click', '.open-subinfo_busi', function () {
+            
+            subinfoload_busi();
+
+        });
+        //打开业务订阅弹出框
+        $(document).on('click', '.open-subscribe', function () {
+            var cusno = "";
+            $("#busicontent .list-block").each(function () {
+
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    cusno = $(this)[0].id;
+                    cusno = cusno.split(",")[1];
                 }
-                subCusno = cusno;
-                $.popup("#popup-subscribe-log");
             });
+            if (cusno == "") {
+                $.toast("请选择需要订阅的记录");
+                return;
+            }
+            subCusno = cusno;
+            $.popup("#popup-subscribe-log");
+        });
         //打开预制单订阅弹出框
         $(document).on('click',
             '#btn-subs-decl',
-            function() {
+            function () {
                 var declcode = "";
-                $("#pop_tab_decl .list-block").each(function() {
+                $("#pop_tab_decl .list-block").each(function () {
 
                     if ($(this).css('background-color') == "rgb(193, 221, 241)") {
                         console.log($(this));
@@ -823,29 +835,24 @@
         function subscribe(type) {
             var status = "";
             var input;
-            if (type == "订单状态")
-            {
+            if (type == "订单状态") {
                 if (subCusno == "") {
                     $.toast("请选择需要订阅的业务");
                     return;
                 }
-                else
-                {
+                else {
                     var tab = $(".popup-subscribe .tab").css("display");
-                    if (tab == "block")
-                    {
+                    if (tab == "block") {
                         type = "业务状态";
                         input = $("#pop_sub_order input");
                     }
-                    else
-                    {
+                    else {
                         type = "物流状态";
                         input = $("#pop_sub_log input");
                     }
                 }
             }
-            if (type == "报关状态")
-            {
+            if (type == "报关状态") {
                 if (subDeclarationCode == "") {
                     $.toast("请选择需要订阅的报关单");
                     return;
@@ -859,8 +866,7 @@
                     status += input[i].value + ",";
                 }
             }
-            if (status == "")
-            {
+            if (status == "") {
                 $.toast("请选择需要订阅的状态");
                 return;
             }
@@ -880,7 +886,7 @@
                     "'}",
                 cache: false,
                 async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
-                success: function(data) {
+                success: function (data) {
                     $.toast(data.d);
                 }
             });
@@ -907,8 +913,7 @@
             $("[href='#sub_tab1']").addClass("active"); $("#sub_tab1").addClass("active");
             $("[href='#sub_tab2']").removeClass("active"); $("#sub_tab2").removeClass("active");
         });
-        function showFile()
-        {
+        function showFile() {
             $.modal({
                 title: '<i id="picfilecancel" class="iconfont" style="font-size:1.3rem;">&#xea4f;</i>',
                 text: '<span style="font-weight:800;">文件调阅</span>' +
@@ -1022,8 +1027,7 @@
             });
         }
         //订阅清单
-        function subscribeInfo()
-        {
+        function subscribeInfo() {
             window.location.href = "NewSubscribeList_busi.aspx";
         }
 
@@ -1129,218 +1133,249 @@
 </head>
 <body>
 
-<form id="form1" runat="server">
+    <form id="form1" runat="server">
 
-    <div class="page-group">
-        <!-- page1 消息订阅-->
-        <div class="page page-current" id="page-infinite-scroll-bottom">
-            
-            <header class="bar bar-nav"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
-                <div class="search-input">                    
-                    <div class="row"> 
-                        <div class="col-33" style="width:19%;font-size:13px;margin-top:.3rem;">委托时间:</div>
-                        <div class="col-33" style="width:33%;margin-left:0;"><input type="search" id='txt_submittime_s'/></div>
-                        <div class="col-33" style="width:33%;margin-left:0;"><input type="search" id='txt_submittime_e'/></div>
-                        <div class="col-10" style="width:10%;margin-left:0;margin-top:.14rem;">
-                            <input id="btn_more_m" type="button" value="..." class="open-tabs-modal" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;"  />
+        <div class="page-group">
+            <!-- page1 消息订阅-->
+            <div class="page page-current" id="page-infinite-scroll-bottom">
+
+                <header class="bar bar-nav">
+                    <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
+                    <div class="search-input">
+                        <div class="row">
+                            <div class="col-33" style="width: 19%; font-size: 13px; margin-top: .3rem;">委托时间:</div>
+                            <div class="col-33" style="width: 33%; margin-left: 0;">
+                                <input type="search" id='txt_submittime_s' /></div>
+                            <div class="col-33" style="width: 33%; margin-left: 0;">
+                                <input type="search" id='txt_submittime_e' /></div>
+                            <div class="col-10" style="width: 10%; margin-left: 0; margin-top: .14rem;">
+                                <input id="btn_more_m" type="button" value="..." class="open-tabs-modal" style="background-color: #3D4145; color: #ffffff; border-radius: 0; border: 0;" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-50" style="width: 46%;">
+                                <input type="search" id='txt_declcode' placeholder='报关单号' /></div>
+                            <div class="col-20" style="width: 19%; margin-left: 0;">
+                                <input type="search" id='txt_customareacode' placeholder='申报关区' /></div>
+                            <div class="col-15" style="width: 15%; margin-left: 0;">
+                                <input type="search" id='picker_is_pass' placeholder='放行' /></div>
+                            <div class="col-15" style="width: 15%; margin-left: 0;">
+                                <input type="search" id='picker_ischeck' placeholder='查验' /></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-25" style="width: 21%;">
+                                <input id="btn_gridname_m" type="button" value="列名" style="background-color: #808080; color: #ffffff; border-radius: 0; border: 0;" /></div>
+                            <div class="col-60" style="width: 54%; margin-left: 0;">
+                                <input id="btn_search_m" type="button" value="查询" style="background-color: #3D4145; color: #ffffff; border-radius: 0; border: 0;" /></div>
+                            <div class="col-25" style="width: 21%; margin-left: 0;">
+                                <input id="btn_reset_m" type="button" value="重置" style="background-color: #808080; color: #ffffff; border-radius: 0; border: 0;" /></div>
+                        </div>
+                        <input type="hidden" id='txt_busitype' />
+                        <input type="hidden" id='txt_modifyflag' />
+                        <input type="hidden" id='txt_auditflag' />
+                        <input type="hidden" id='txt_busiunit' />
+                        <input type="hidden" id='txt_ordercode' />
+                        <input type="hidden" id='txt_cusno' />
+                        <input type="hidden" id='txt_divideno' />
+                        <input type="hidden" id='txt_contractno' />
+                        <input type="hidden" id='txt_sitepasstime_s' />
+                        <input type="hidden" id='txt_sitepasstime_e' />
+                    </div>
+                    <div id="div_tbar" style="font-size: 13px; margin: .2rem 0;">
+                        <span style="color: #929292">共计</span>
+                        <span id="span_sum">0</span>
+                        <span style="color: #929292">笔</span>
+                    </div>
+                </header>
+
+
+
+                <!-- 工具栏 -->
+                <nav class="bar bar-tab">
+                    <a class="tab-item open-detail" href="#">
+                        <span class="icon icon-menu"></span>
+                        <span class="tab-label">业务详情</span>
+                    </a>
+                    <a class="tab-item  open-subscribe" href="#">
+                        <span class="icon icon-edit"></span>
+                        <span class="tab-label">消息订阅</span>
+                    </a>
+                    <a class="tab-item open-declpdf" href="javascript:showFile()">
+                        <span class="icon icon-star"></span>
+                        <span class="tab-label">文件调阅</span>
+                    </a>
+                    <a class="tab-item open-subinfo_busi">
+                        <span class="icon icon-picture"></span>
+                        <span class="tab-label">订阅清单</span>
+                    </a>
+                    <input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' />
+                </nav>
+
+
+
+                <!-- 这里是页面内容区 -->
+                <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100" id="scroll-bottom-one">
+                    <div id="busicontent"></div>
+                    <!-- 加载提示符 -->
+                    <div class="infinite-scroll-preloader">
+                        <div class="preloader"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!--popup 详情弹出页-->
+        <div class="popup popup-detail">
+            <div class="content" style="bottom: 60px;">
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">报关信息</a>
+                    <a href="#tab2" class="tab-link button">报检信息</a>
+                    <a href="#tab3" class="tab-link button">物流信息</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div class="content-block " id="pop_tab_decl"></div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <div class="content-block" id="pop_tab_insp"></div>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <div class="content-block" id="pop_tab_logistics"></div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-50" style="width:46%;"><input type="search" id='txt_declcode' placeholder='报关单号'/></div>
-                        <div class="col-20" style="width:19%;margin-left:0;"><input type="search" id='txt_customareacode' placeholder='申报关区'/></div>
-                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_is_pass' placeholder='放行'/></div>
-                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_ischeck' placeholder='查验'/></div>
-                    </div> 
-                    <div class="row">
-                        <div class="col-25" style="width:21%;"><input id="btn_gridname_m" type="button"  value="列名" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
-                        <div class="col-60" style="width:54%;margin-left:0;"><input id="btn_search_m" type="button" value="查询" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;" /></div>
-                        <div class="col-25" style="width:21%;margin-left:0;"><input id="btn_reset_m" type="button" value="重置" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
-                    </div> 
-                    <input type="hidden" id='txt_busitype'/>
-                    <input type="hidden" id='txt_modifyflag'/>
-                    <input type="hidden" id='txt_auditflag'/>
-                    <input type="hidden" id='txt_busiunit'/>
-                    <input type="hidden" id='txt_ordercode'/> 
-                    <input type="hidden" id='txt_cusno'/>  
-                    <input type="hidden" id='txt_divideno'/> 
-                    <input type="hidden" id='txt_contractno'/>
-                    <input type="hidden" id='txt_sitepasstime_s'/>
-                    <input type="hidden" id='txt_sitepasstime_e'/>                   
-                </div>  
-                <div id="div_tbar" style="font-size:13px;margin:.2rem 0;">
-                    <span style="color:#929292">共计</span>
-                    <span id="span_sum">0</span>
-                    <span style="color:#929292">笔</span>
-                </div> 
-            </header>
-            
-            
-
-            <!-- 工具栏 -->
-            <nav class="bar bar-tab">
-                <a class="tab-item open-detail" href="#">
-                    <span class="icon icon-menu"></span>
-                    <span class="tab-label">业务详情</span>
-                </a>
-                <a class="tab-item  open-subscribe" href="#">
-                    <span class="icon icon-edit"></span>
-                    <span class="tab-label">消息订阅</span>
-                </a>
-                <a class="tab-item open-declpdf"  href="javascript:showFile()">
-                    <span class="icon icon-star" ></span>
-                    <span class="tab-label">文件调阅</span>
-                </a>
-                <a class="tab-item "  href="javascript:subscribeInfo()"> 
-                    <span class="icon icon-picture"></span>
-                    <span class="tab-label">订阅清单</span>
-                </a>
-                <input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' />
-            </nav>
-            
-            
-
-            <!-- 这里是页面内容区 -->
-            <div class="content infinite-scroll infinite-scroll-bottom" data-distance="100" id="scroll-bottom-one">
-                <div id ="busicontent"></div>
-                <!-- 加载提示符 -->
-                <div class="infinite-scroll-preloader"> 
-                    <div class="preloader"></div>
                 </div>
-                
             </div>
+            <div style="bottom: 2rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
         </div>
-    </div>
-
-    <!--popup 详情弹出页-->
-    <div class="popup popup-detail" >
-        <div class="content" style="bottom:60px;">
-          <div class="buttons-tab">
-            <a href="#tab1" class="tab-link active button">报关信息</a>
-            <a href="#tab2" class="tab-link button">报检信息</a>
-            <a href="#tab3" class="tab-link button">物流信息</a>
-          </div>
-          <div class="content-block">
-            <div class="tabs">
-              <div id="tab1" class="tab active">
-                <div class="content-block " id="pop_tab_decl"></div>
-              </div>
-              <div id="tab2" class="tab">
-                <div class="content-block" id="pop_tab_insp"></div>
-              </div>
-              <div id="tab3" class="tab">
-                <div class="content-block" id="pop_tab_logistics"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-       <div style="bottom:2rem; position:absolute;width:80%;margin-left:10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
-    </div>
-    <!--popup 订阅弹出页-->
-    <div class="popup popup-subscribe" id="popup-subscribe-decl" >
-        <div class="content" >
-          <div class="content-block" id="pop_sub_decl">
+        <!--popup 报关订阅弹出页-->
+        <div class="popup popup-subscribe" id="popup-subscribe-decl">
+            <div class="content">
+                <div class="content-block" id="pop_sub_decl">
                     <div class="myrow">报关状态订阅</div>
                     <div class="row">
                         <div class="col-66">申报完成</div>
-                        <div class="col-33"><input type="checkbox" value="申报完成"/></div>
+                        <div class="col-33">
+                            <input type="checkbox" value="申报完成" /></div>
                     </div>
                     <div class="row">
                         <div class="col-66">已放行</div>
-                        <div class="col-33"><input type="checkbox" value="已放行"/></div>
+                        <div class="col-33">
+                            <input type="checkbox" value="已放行" /></div>
                     </div>
                     <div class="row">
                         <div class="col-66">已结关</div>
-                        <div class="col-33"><input type="checkbox" value="已结关"/></div>
+                        <div class="col-33">
+                            <input type="checkbox" value="已结关" /></div>
                     </div>
                     <div class="row">
                         <div class="col-66">改单完成</div>
-                        <div class="col-33"><input type="checkbox" value="改单完成"/></div>
+                        <div class="col-33">
+                            <input type="checkbox" value="改单完成" /></div>
                     </div>
                     <div class="row">
                         <div class="col-66">删单完成</div>
-                        <div class="col-33"><input type="checkbox" value="删单完成"/></div>
+                        <div class="col-33">
+                            <input type="checkbox" value="删单完成" /></div>
                     </div>
                 </div>
-            <div class="row" style="background-color:white;margin-top:1rem">
-                <div class="col-50"><a href="#" class="close-popup button" id="backto_decl">返  回</a></div>
-                <div class="col-50"><a href="javascript:subscribe('报关状态')" class="button"  style="background-color: #3d4145">确  认</a></div>
+                <div class="row" style="background-color: white; margin-top: 1rem">
+                    <div class="col-50"><a href="#" class="close-popup button" id="backto_decl">返  回</a></div>
+                    <div class="col-50"><a href="javascript:subscribe('报关状态')" class="button" style="background-color: #3d4145">确  认</a></div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="popup popup-subscribe" id="popup-subscribe-log" >
-        <div class="content" >
-          <div class="buttons-tab">
-            <a href="#sub_tab1" class="tab-link active button">业务状态</a>
-            <a href="#sub_tab2" class="tab-link button">物流状态</a>
-          </div>
-          <div class="content-block">
-            <div class="tabs">
-              <div id="sub_tab1" class="tab active">
-                <div class="content-block" id="pop_sub_order">
-                    <div class="myrow">业务状态订阅</div>
-                    <div class="row">
-                        <div class="col-66">订单受理</div>
-                        <div class="col-33"><input type="checkbox" value="订单受理"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">申报开始</div>
-                        <div class="col-33"><input type="checkbox" value="申报开始"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">提前申报完成</div>
-                        <div class="col-33"><input type="checkbox" value="提前申报完成"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">申报完成</div>
-                        <div class="col-33"><input type="checkbox" value="申报完成"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">现场报关</div>
-                        <div class="col-33"><input type="checkbox" value="现场报关"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">现场放行</div>
-                        <div class="col-33"><input type="checkbox" value="现场放行"/></div>
+        <!--popup 业务订阅弹出页-->
+        <div class="popup popup-subscribe" id="popup-subscribe-log">
+            <div class="content">
+                <div class="buttons-tab">
+                    <a href="#sub_tab1" class="tab-link active button">业务状态</a>
+                    <a href="#sub_tab2" class="tab-link button">物流状态</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="sub_tab1" class="tab active">
+                            <div class="content-block" id="pop_sub_order">
+                                <div class="myrow">业务状态订阅</div>
+                                <div class="row">
+                                    <div class="col-66">订单受理</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="订单受理" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-66">申报开始</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="申报开始" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-66">提前申报完成</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="提前申报完成" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-66">申报完成</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="申报完成" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-66">现场报关</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="现场报关" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-66">现场放行</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="现场放行" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sub_tab2" class="tab">
+                            <div class="content-block" id="pop_sub_log">
+                                <div class="myrow">物流状态订阅</div>
+                                <div class="row">
+                                    <div class="col-66">抽单完成</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="抽单完成" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-66">已派车</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="已派车" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-66">运输完成</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="运输完成" /></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-66">送货完成</div>
+                                    <div class="col-33">
+                                        <input type="checkbox" value="送货完成" /></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-              </div>
-              <div id="sub_tab2" class="tab">
-                <div class="content-block" id="pop_sub_log">
-                    <div class="myrow">物流状态订阅</div>
-                    <div class="row">
-                        <div class="col-66">抽单完成</div>
-                        <div class="col-33"><input type="checkbox" value="抽单完成"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">已派车</div>
-                        <div class="col-33"><input type="checkbox" value="已派车"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">运输完成</div>
-                        <div class="col-33"><input type="checkbox" value="运输完成"/></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-66">送货完成</div>
-                        <div class="col-33"><input type="checkbox" value="送货完成"/></div>
-                    </div>
+                <div class="row" style="background-color: white; margin-top: 1rem">
+                    <div class="col-50"><a href="#" class="close-popup button" id="backto_log">返  回</a></div>
+                    <div class="col-50"><a href="javascript:subscribe('订单状态')" class="button" style="background-color: #3d4145">确  认</a></div>
                 </div>
-              </div>
-            </div>
-          </div>
-            <div class="row" style="background-color:white;margin-top:1rem">
-                <div class="col-50"><a href="#" class="close-popup button" id="backto_log">返  回</a></div>
-                <div class="col-50"><a href="javascript:subscribe('订单状态')" class="button" style="background-color: #3d4145">确  认</a></div>
             </div>
         </div>
-    </div>   
+        <!--popup 订阅详情弹出页-->
+        <div class="popup pop-subscribeinfo">
+            <div class="content" id="subscribeinfo" style="bottom: 3rem;">
+            </div>
+            <div style="bottom: 1.5rem; position: fixed; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+        </div>
 
+        <!-- 默认必须要执行$.init(),实际业务里一般不会在HTML文档里执行，通常是在业务页面代码的最后执行 -->
 
-    <!-- 默认必须要执行$.init(),实际业务里一般不会在HTML文档里执行，通常是在业务页面代码的最后执行 -->
-    
-    <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
-     <script src="/js/sm-extend.min.js"></script>
-</form>
+        <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+        <script src="/js/sm-extend.min.js"></script>
+    </form>
 </body>
-   
+
 
 </html>

@@ -183,6 +183,40 @@ namespace WeChat.ModelBusi
 
         }
         /// <summary>
+        /// 订单_获取本人未推送的所有订阅信息
+        /// </summary>
+        /// <returns></returns>
+        public static DataTable getNewSubscribeInfo_Order( int userId)
+        {
+            try
+            {
+                using (DBSession db = new DBSession())
+                {
+                    string strWhere = " (ws.codetype=1 or ws.codetype=2) and ws.TRIGGERSTATUS=0 and ws.userid=" + userId + " and";
+                    strWhere += " ws.isinvalid=0 and lo.isinvalid=0";
+                    string sql = @"with newt
+                                    as(
+                                    select * from 
+                                        (select tab.*,rownum as rown from 
+                                            (select lo.busiunitname,lo.busitype,lo.divideno,lo.repwayid,lo.contractno,lo.goodsnum,lo.goodsgw,to_char(lo.declstatus) as declstatus,
+                                            to_char(lo.inspstatus) as inspstatus,lo.logisticsname,  ws.cusno,ws.triggerstatus, ws.substype,ws.status,ws.pushtime,ws.id,
+                                            ws.statusvalue,ws.substime,'' as sum from wechat_subscribe ws left join list_order lo on ws.cusno=lo.cusno where {0} order by substime desc
+                                        ) tab ) where rown>{1} and rown<={2})
+                                        select newt.*,sb.name as businame,sr.name as repwayname from newt 
+                                            left join cusdoc.sys_busitype sb on newt.busitype=sb.code 
+                                            left join cusdoc.sys_repway sr on newt.repwayid=sr.code  order by newt.substime desc";
+                    sql = string.Format(sql, strWhere, 0, 1000);
+                    return db.QuerySignle(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write("SubscribeModel_getSubscribeInfo_Order:" + ex.Message);
+                return null;
+            }
+
+        }
+        /// <summary>
         /// 预制单_获取最新的N条订阅条信息
         /// </summary>
         /// <returns></returns>
