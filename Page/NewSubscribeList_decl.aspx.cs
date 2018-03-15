@@ -61,11 +61,11 @@ namespace WeChat.Page
         [WebMethod]
         public static string NewQuerySubscribeInfo()
         {
-            //WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
-            //if (user == null || user.GwyUserID <= 0)
-            //    return "";
-            //DataTable infodt = SubscribeModel.getNewSubscribeInfo_Decl(user.GwyUserID);
-            DataTable infodt = SubscribeModel.getNewSubscribeInfo_Decl(1124);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || user.GwyUserID <= 0)
+                return "";
+            DataTable infodt = SubscribeModel.getNewSubscribeInfo_Decl(user.GwyUserID);
+            //DataTable infodt = SubscribeModel.getNewSubscribeInfo_Decl(1124);
             
             if (infodt == null || infodt.Rows.Count == 0)
                 return "";
