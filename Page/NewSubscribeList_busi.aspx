@@ -209,7 +209,7 @@
                 cache: false,
                 async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
                 success: function (data) {
-                    if (data.d == null || data.d == "")
+                    if (data.d == null || data.d == "" || data.d == "[]")
                         return;
                     var obj = eval("(" + data.d + ")"); //将字符串转为json
                     for (var i = 0; i < obj.length; i++) {

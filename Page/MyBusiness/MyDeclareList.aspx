@@ -675,7 +675,7 @@
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
-                        if (data.d == null || data.d == "") {
+                        if (data.d == null || data.d == "" || data.d == "[]") {
                             $("#span_sum").text(0);
                             $("#div_list").append("");
                             return;
