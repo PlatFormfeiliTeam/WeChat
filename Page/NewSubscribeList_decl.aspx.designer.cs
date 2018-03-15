@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace WeChat.Page.MyBusiness {
+namespace WeChat.Page {
     
     
     public partial class NewSubscribeList_decl {

@@ -10,12 +10,11 @@ function subinfoload_busi() {
         cache: false,
         async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
         success: function (data) {
-            if (data.d == null || data.d == "")
+            if (data.d == null || data.d == "" || data.d == "[]")
                 return;
             $("#subscribeinfo").html("");
             var obj = eval("(" + data.d + ")"); //将字符串转为json
             for (var i = 0; i < obj.length; i++) {
-                var obj = eval("(" + data.d + ")"); //将字符串转为json
                 var str = '<div class="list-block" style="border-bottom:solid 1px black" id="' +
                     obj[i]["CUSNO"] +
                     '">' +
@@ -110,4 +109,75 @@ function delSubscribeInfo(id, status) {
         });
     });
 
+}
+
+//加载数据
+function subinfoload_decl() {
+    $.showPreloader('加载中...');
+    $.ajax({
+        url: '../NewSubscribeList_decl.aspx/NewQuerySubscribeInfo',
+        contentType: "application/json; charset=utf-8",
+        type: 'post',
+        dataType: 'json',
+        cache: false,
+        async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码
+        success: function (data) {
+            if (data.d == null || data.d == "" || data.d == "[]")
+                return;
+            $("#subscribeinfo").html("");
+            var obj = eval("(" + data.d + ")"); //将字符串转为json
+            for (var i = 0; i < obj.length; i++) {
+                var str = '<div class="list-block" style="border-bottom:solid 1px black" id="' +
+                    obj[i]["DECLARATIONCODE"] +
+                    '" >' +
+                    '<ul>' +
+                    '<li class="item-content">' +
+                    '<div class="item-inner">' +
+                    '<div class="my-title">' +
+                    obj[i]["DECLARATIONCODE"] +
+                    '</div>' +
+                    '<div class="my-after">' +
+                    obj[i]["GOODSNUM"] +
+                    '/' +
+                    obj[i]["GOODSGW"] +
+                    '</div>' +
+                    '<div class="my-after">' +
+                    obj[i]["MODIFYFLAG"] +
+                    '</div>' +
+                    '</div>' +
+                    '</li>' +
+                    '<li class="item-content">' +
+                    '<div class="item-inner">' +
+                    '<div class="my-title">' +
+                    obj[i]["TRANSNAME"] +
+                    '</div>' +
+                    '<div class="my-after">' +
+                    obj[i]["TRADENAME"] +
+                    '</div>' +
+                    '<div class="my-after">' +
+                    obj[i]["CUSTOMSSTATUS"] +
+                    '</div>' +
+                    '</div>' +
+                    '</li>' +
+                    '<li class="item-content">' +
+                    '<div class="item-inner">' +
+                    '<div class="my-title">' +
+                    (obj[i]["PUSHTIME"] == null ? "" : obj[i]["PUSHTIME"]) +
+                    '</div>' +
+                    '<div class="my-after">' +
+                    obj[i]["STATUS"] +
+                    '</div>' +
+                    '<div class="my-after" style="color:blue;cursor:pointer;" onclick="delSubscribeInfo(' + obj[i]["ID"] + ',' + obj[i]["TRIGGERSTATUS"] + ')">' +
+                    (obj[i]["TRIGGERSTATUS"] == 0 ? "删除" : "") +
+                    '</div>' +
+                    '</div>' +
+                    '</li>' +
+                    '</ul>' +
+                    '</div>';
+                $("#subscribeinfo").append(str);
+            }
+            $.hidePreloader();
+            $.popup(".pop-subscribeinfo");
+        }
+    });
 }

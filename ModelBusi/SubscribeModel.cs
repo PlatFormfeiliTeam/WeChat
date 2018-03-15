@@ -376,6 +376,45 @@ namespace WeChat.ModelBusi
 
         }
         /// <summary>
+        /// 
+        /// /// <summary>
+        /// 预制单_获取最新的N条订阅条信息
+        /// </summary>
+        /// <returns></returns>
+        public static DataTable getNewSubscribeInfo_Decl(int userId)
+        {
+            try
+            {
+                using (DBSession db = new DBSession())
+                {
+                    string strWhere = " ws.isinvalid=0 and lo.isinvalid=0 and ld.isinvalid=0 and ws.codetype=3 and ws.TRIGGERSTATUS=0 and ws.userid=" + userId;
+
+                    string sql = @"with newt
+                                      as(
+                                      select * from 
+                                          (select tab.*,rownum as rown from 
+                                              (select ld.goodsnum,ld.goodsgw,ld.tradecode,ld.modifyflag,ld.customsstatus,ld.transname,
+                                              ws.declarationcode, ws.cusno,ws.triggerstatus, ws.substype,ws.status ,ws.statusvalue,ws.pushtime,ws.id,
+                                              ws.substime,'' as sum from wechat_subscribe ws 
+                                              left join list_order lo on ws.cusno=lo.cusno
+                                              left join list_declaration ld on ld.declarationcode=ws.declarationcode 
+                                              where {0} order by ws.substime desc
+                                          )tab ) where rown>{1} and rown<={2})
+                                        select newt.*,cbd.name as tradename from newt 
+                                            left join cusdoc.base_decltradeway cbd on newt.tradecode=cbd.code 
+                                            order by newt.substime desc";
+                    sql = string.Format(sql, strWhere, 0, 1000);
+                    return db.QuerySignle(sql);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Write("SubscribeModel_getSubscribeInfo_Decl:" + ex.Message);
+                return null;
+            }
+
+        }
+        /// <summary>
         /// 查询订阅详情
         /// </summary>
         /// <param name="starttime"></param>
