@@ -179,7 +179,7 @@
         // 每次加载添加多少条目
         var itemsPerLoad = 6;
         var lastIndex = 0;
-        var subCusno = "", subDeclarationCode = "";//订阅的单号
+        var subOrder="", subCusno = "", subDeclarationCode = "";//订阅的单号
         //按钮查询
         function loadData(itemsPerLoad, lastIndex) {
             $.ajax({
@@ -415,7 +415,7 @@
                         ordercode = $(this)[0].id;
                         //console.log(ordercode);
                         subCusno = ordercode.split(",")[1];
-                        ordercode = ordercode.split(",")[0];
+                        subOrder = ordercode = ordercode.split(",")[0];
                         //console.log(ordercode);
                         //console.log(subCusno);
                     }
@@ -796,12 +796,13 @@
         });
         //打开业务订阅弹出框
         $(document).on('click', '.open-subscribe', function () {
-            var cusno = "";
+            var cusno = "", ordercode = "";
             $("#busicontent .list-block").each(function () {
 
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                     cusno = $(this)[0].id;
                     cusno = cusno.split(",")[1];
+                    ordercode = cusno.split(",")[0];
                 }
             });
             if (cusno == "") {
@@ -809,6 +810,7 @@
                 return;
             }
             subCusno = cusno;
+            subOrder = ordercode;
             $.popup("#popup-subscribe-log");
         });
         //打开预制单订阅弹出框
@@ -836,7 +838,7 @@
             var status = "";
             var input;
             if (type == "订单状态") {
-                if (subCusno == "") {
+                if (subOrder == "") {
                     $.toast("请选择需要订阅的业务");
                     return;
                 }
@@ -875,14 +877,11 @@
                 url: 'MyBusiness.aspx/SubscribeStatus',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: "{'type':'" +
-                    type +
-                    "','status':'" +
-                    status +
-                    "','cusno':'" +
-                    subCusno +
-                    "','declarationcode':'" +
-                    subDeclarationCode +
+                data: "{'type':'" + type +
+                    "','status':'" + status +
+                    "','cusno':'" + subCusno +
+                    "','declarationcode':'" + subDeclarationCode +
+                    "','ordercode':'" + subOrderCode +
                     "'}",
                 cache: false,
                 async: false, //默认是true，异步；false为同步，此方法执行完在执行下面代码

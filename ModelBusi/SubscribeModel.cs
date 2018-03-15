@@ -199,7 +199,7 @@ namespace WeChat.ModelBusi
                                     select * from 
                                         (select tab.*,rownum as rown from 
                                             (select lo.busiunitname,lo.busitype,lo.divideno,lo.repwayid,lo.contractno,lo.goodsnum,lo.goodsgw,to_char(lo.declstatus) as declstatus,
-                                            to_char(lo.inspstatus) as inspstatus,lo.logisticsname,  ws.cusno,ws.triggerstatus, ws.substype,ws.status,ws.pushtime,ws.id,
+                                            to_char(lo.inspstatus) as inspstatus,lo.logisticsname,  ws.cusno,ws.triggerstatus, ws.substype,ws.status,ws.pushtime,ws.id,ws.ordercode,
                                             ws.statusvalue,ws.substime,'' as sum from wechat_subscribe ws left join list_order lo on ws.cusno=lo.cusno where {0} order by substime desc
                                         ) tab ) where rown>{1} and rown<={2})
                                         select newt.*,sb.name as businame,sr.name as repwayname from newt 
@@ -394,7 +394,7 @@ namespace WeChat.ModelBusi
                                       select * from 
                                           (select tab.*,rownum as rown from 
                                               (select ld.goodsnum,ld.goodsgw,ld.tradecode,ld.modifyflag,ld.customsstatus,ld.transname,
-                                              ws.declarationcode, ws.cusno,ws.triggerstatus, ws.substype,ws.status ,ws.statusvalue,ws.pushtime,ws.id,
+                                              ws.declarationcode, ws.cusno,ws.triggerstatus, ws.substype,ws.status ,ws.statusvalue,ws.pushtime,ws.id,ws.ordercode
                                               ws.substime,'' as sum from wechat_subscribe ws 
                                               left join list_order lo on ws.cusno=lo.cusno
                                               left join list_declaration ld on ld.declarationcode=ws.declarationcode 
@@ -461,17 +461,17 @@ namespace WeChat.ModelBusi
         /// <param name="openid"></param>
         /// <param name="codetype"></param>
         /// <returns></returns>
-        public static bool insertSubscribe(string type, string[] status, string cusno, string declarationcode, int userid, string username, string openid, string codetype)
+        public static bool insertSubscribe(string type, string[] status, string cusno, string declarationcode, int userid, string username, string openid, string codetype, string ordercode)
         {
             try
             {
-                string sql = @"insert into wechat_subscribe(id,cusno,declarationcode,userid,username,substime,substype,status,openid,statusvalue,codetype) 
-                values(wechat_subscribe_id.nextval,'{0}','{1}','{2}','{3}',sysdate,'{4}','{5}','{6}','{7}','{8}')";
+                string sql = @"insert into wechat_subscribe(id,cusno,declarationcode,userid,username,substime,substype,status,openid,statusvalue,codetype,ordercode) 
+                values(wechat_subscribe_id.nextval,'{0}','{1}','{2}','{3}',sysdate,'{4}','{5}','{6}','{7}','{8}','{9}')";
                 List<string> sqls = new List<string>();
                 for (int i = 0; i < status.Length; i++)
                 {
                     string statusvalue = SwitchHelper.switchValue(type, status[i]);
-                    sqls.Add(string.Format(sql, cusno, declarationcode, userid, username, type, status[i], openid, statusvalue, codetype));
+                    sqls.Add(string.Format(sql, cusno, declarationcode, userid, username, type, status[i], openid, statusvalue, codetype, ordercode));
                 }
                 using (DBSession db = new DBSession())
                 {
@@ -503,11 +503,11 @@ namespace WeChat.ModelBusi
         /// </summary>
         /// <param name="cusno"></param>
         /// <returns></returns>
-        public static DataTable getLogisticsstatus(string cusno)
+        public static DataTable getLogisticsstatus(string ordercode)
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "select logisticsname from list_order where cusno='" + cusno + "'";
+                string sql = "select logisticsname from list_order where code='" + ordercode + "'";
                 return db.QuerySignle(sql);
             }
         }
@@ -516,11 +516,11 @@ namespace WeChat.ModelBusi
         /// </summary>
         /// <param name="cusno"></param>
         /// <returns></returns>
-        public static DataTable getOrderstatus(string cusno)
+        public static DataTable getOrderstatus(string ordercode)
         {
             using (DBSession db = new DBSession())
             {
-                string sql = "select declstatus from list_order where code='" + cusno + "'";
+                string sql = "select declstatus from list_order where code='" + ordercode + "'";
                 return db.QuerySignle(sql);
             }
         }
@@ -529,19 +529,19 @@ namespace WeChat.ModelBusi
         /// </summary>
         /// <param name="cusno"></param>
         /// <returns></returns>
-        public static DataTable GetTriggerstatus(string cusno, string checkedStatus, string type, string declarationcode, int userid)
+        public static DataTable GetTriggerstatus(string cusno, string checkedStatus, string type, string declarationcode, int userid, string ordercode)
         {
             using (DBSession db = new DBSession())
             {
                 string sql;
                 if (type.Equals("报关状态"))
                 {
-                    sql = "select triggerstatus from wechat_subscribe where cusno='" + cusno +
+                    sql = "select triggerstatus from wechat_subscribe where ordercode='" + ordercode +
                                 "'  and status = '" + checkedStatus + "' and substype = '" + type + "' and declarationcode = '" + declarationcode + "' and userid=" + userid;
                 }
                 else
                 {
-                    sql = "select triggerstatus from wechat_subscribe where cusno='" + cusno + "'  and status = '" + checkedStatus + "' and substype = '" + type + "'  and userid=" + userid;
+                    sql = "select triggerstatus from wechat_subscribe where ordercode='" + ordercode + "'  and status = '" + checkedStatus + "' and substype = '" + type + "'  and userid=" + userid;
                 }
                  
                 return db.QuerySignle(sql);

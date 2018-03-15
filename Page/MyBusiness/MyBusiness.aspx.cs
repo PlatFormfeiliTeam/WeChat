@@ -165,7 +165,7 @@ namespace WeChat.Page.MyBusiness
         /// <param name="orderCode"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string SubscribeStatus(string type, string status, string cusno, string declarationcode)
+        public static string SubscribeStatus(string type, string status, string cusno, string declarationcode, string ordercode)
         {
             try
             {
@@ -200,7 +200,7 @@ namespace WeChat.Page.MyBusiness
                     {
                         return "订阅失败，企业编号不能为空";
                     }
-                    DataTable dt = SubscribeModel.getLogisticsstatus(cusno);
+                    DataTable dt = SubscribeModel.getLogisticsstatus(ordercode);
                     for (int i = 0; i < st.Length; i++)
                     {
                         if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
@@ -216,7 +216,7 @@ namespace WeChat.Page.MyBusiness
                     {
                         return "订阅失败，企业编号不能为空";
                     }
-                    DataTable dt = SubscribeModel.getOrderstatus(cusno);
+                    DataTable dt = SubscribeModel.getOrderstatus(ordercode);
                     for (int i = 0; i < st.Length; i++)
                     {
                         if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= dt.Rows[0][0].ToString2().ToInt32())
@@ -230,7 +230,7 @@ namespace WeChat.Page.MyBusiness
                 //防止重复订阅
                 for (int i = 0; i < st.Length; i++)
                 {
-                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type, declarationcode, user.GwyUserID);
+                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type, declarationcode, user.GwyUserID, ordercode);
                     if (getTriggerStatus.Rows.Count > 0)
                     {
                         orderData.Add(st[i]);
@@ -242,7 +242,7 @@ namespace WeChat.Page.MyBusiness
                 {
                     try
                     {
-                        SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, user.GwyUserID, user.GwyUserName, user.WCOpenID, codetype);
+                        SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, user.GwyUserID, user.GwyUserName, user.WCOpenID, codetype, ordercode);
                         return "订阅成功";
                     }
                     catch (Exception e)
