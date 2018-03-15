@@ -77,6 +77,7 @@ namespace WeChat.Page.MyBusiness
             int itemsperload, int lastindex)
         {
             string sum = "0";
+            ListOrderModel orderModel = new ListOrderModel();
             WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
             if (user == null || string.IsNullOrEmpty(user.CustomerCode))
                 return "";
@@ -86,7 +87,6 @@ namespace WeChat.Page.MyBusiness
                 hsCode = "";
             if (user.IsCustomer != 1)//如果不是委托单位角色，不能查出其对应委托单位的订单
                 customerCode = "";
-            ListOrderModel orderModel = new ListOrderModel();
             DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, busiunit, ordercode,
                 cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, customerCode, hsCode, out sum);
 
