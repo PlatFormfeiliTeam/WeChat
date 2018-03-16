@@ -43,6 +43,7 @@
         #div_list .list-block .item-inner{
             height:1.3rem;
             min-height:1.3rem;
+            PADDING-RIGHT: 0;
         }
         .picker-items-col.picker-items-col-center{
              width: 100%;
@@ -493,9 +494,8 @@
                                         + '<ul>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-title col-50">' + (obj[0]["BLNO"] == null ? "" : obj[0]["BLNO"]) + '</div>'
+                                                    + '<div class="item-title col-60">' + (obj[0]["BLNO"] == null ? "" : obj[0]["BLNO"]) + '</div>'
                                                     + '<div class="item-title col-33">' + (obj[0]["CUSNO"] == null ? "" : obj[0]["CUSNO"]) + '</div>'
-                                                    + '<div class="item-title col-33"></div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -766,9 +766,8 @@
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
-                                                + '<div class="item-title col-50">' + (obj[i]["BLNO"] == null ? "" : obj[i]["BLNO"]) + '</div>'
+                                                + '<div class="item-title col-60">' + (obj[i]["BLNO"] == null ? "" : obj[i]["BLNO"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) + '</div>'
-                                                + '<div class="item-title col-33"></div>'
                                             + '</div>'
                                         + '</li>'
                                     + '</ul>'
