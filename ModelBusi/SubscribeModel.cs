@@ -19,6 +19,7 @@ namespace WeChat.ModelBusi
             using(DBSession db=new DBSession())
             {
                 string sql = @"select ws.*,lo.busiunitname,lo.contractno,lo.FirstLadingBillno,lo.SecondLadingBillno,lo.LandLadingno,lo.totalno,lo.divideno,lo.busitype
+                                from wechat_subscribe ws left join list_order lo on ws.ordercode=lo.code where lo.isinvalid=0 and ws.isinvalid=0 and ws.TriggerStatus=1";
                 return db.QueryEntity<SubcribeInfoEn>(sql);
             }
         }
