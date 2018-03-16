@@ -115,6 +115,12 @@
             border-radius: .15rem;
             font-size: .8rem;
         }
+        .float-button {
+            position: fixed;
+            bottom: 120px;
+            right: 0px;
+            z-index:300;
+        }
 
     </style>
 
@@ -711,6 +717,7 @@
             $(document).on('click', '.open-subinfo_decl', function () {
                 subinfoload_decl();
             });
+            
 
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
@@ -889,6 +896,16 @@
                 function () { }//cancel事件
               );
         }
+
+        //清除选中
+        function clearSelect() {
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    $(this).children("ul").css('background-color', '#fff');
+                    $("#span_curchose").text(0);
+                }
+            });
+        }
                
     </script>
 </head>
@@ -984,6 +1001,7 @@
                 <div class="infinite-scroll-preloader">
                   <div class="preloader"></div>
                 </div>
+                <div class="float-button" onclick="clearSelect()"><img src="../../image/clearbtn.png" /></div>
             </div>
 
             
@@ -1033,6 +1051,8 @@
             <div style="bottom: 1.5rem; position: fixed; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
         </div>
 
+
+    
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
    <%-- <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
     <script src="/js/sm-extend.min.js"></script>

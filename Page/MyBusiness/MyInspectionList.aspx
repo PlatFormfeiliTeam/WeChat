@@ -69,7 +69,13 @@
         } 
         .girdnamediv .modal-inner{
            padding:0px;
-        }  
+        }
+        .float-button {
+            position: fixed;
+            bottom: 120px;
+            right: 0px;
+            z-index: 300;
+        }
     </style>
 
     <script type="text/javascript">
@@ -671,6 +677,15 @@
               );
         }        
 
+
+        //清除选中
+        function clearSelect() {
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    $(this).children("ul").css('background-color', '#fff');
+                }
+            });
+        }
     </script>
 
 </head>
@@ -736,6 +751,7 @@
                 <div class="infinite-scroll-preloader">
                   <div class="preloader"></div>
                 </div>
+                <div class="float-button" onclick="clearSelect()"><img src="../../image/clearbtn.png" /></div>
             </div>
 
             
