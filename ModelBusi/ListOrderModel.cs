@@ -175,7 +175,7 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                                 from list_order lo left join list_declaration ld on lo.code=ld.ordercode 
                                 left join cusdoc.sys_busitype sb on lo.busitype=sb.code 
                                 left join cusdoc.sys_repway sr on lo.repwayid=sr.code
-                                where lo.isinvalid=0 and ld.isinvalid=0 and lo.cusno='{0}'";
+                                where lo.isinvalid=0 and ld.isinvalid=0 and lo.code='{0}'";
                 return db.QuerySignle(string.Format(sql, code));
             }
         }

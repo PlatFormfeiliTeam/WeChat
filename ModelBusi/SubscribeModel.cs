@@ -18,7 +18,7 @@ namespace WeChat.ModelBusi
         {
             using(DBSession db=new DBSession())
             {
-                string sql = "select * from wechat_subscribe where TriggerStatus=1 and isinvalid=0";
+                string sql = @"select ws.*,lo.busiunitname,lo.contractno,lo.FirstLadingBillno,lo.SecondLadingBillno,lo.LandLadingno,lo.totalno,lo.divideno,lo.busitype
                 return db.QueryEntity<SubcribeInfoEn>(sql);
             }
         }

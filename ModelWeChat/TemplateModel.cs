@@ -22,19 +22,40 @@ namespace WeChat.ModelWeChat
                 List<SubcribeInfoEn> sublist = SubscribeModel.getSubscribeTask();
                 foreach (SubcribeInfoEn sub in sublist)
                 {
+                    //var data = new
+                    //{
+                    //    first = new TemplateDataItem("您好，您订阅的" + sub.SubsType + "已触发"),
+                    //    keyword1 = new TemplateDataItem(sub.Cusno),
+                    //    keyword2 = new TemplateDataItem(sub.Status),
+                    //    remark = new TemplateDataItem("触发时间：" + sub.TriggerTime.ToString())
+                    //};
+                    //sub.TemplateId = "-GdghWwMXHwOE_hu1xxm2H5hRDGGRTQwTuGoSIg8xww";
+                    string subcode = "";
+                    if (sub.SubsType == "报关状态")
+                    {
+                        subcode = sub.DeclarationCode;
+                    }
+                    else
+                    {
+                        subcode = sub.OrderCode;
+                    }
+                    string busiblno = getBusiBlno(sub);
                     var data = new
                     {
-                        first = new TemplateDataItem("您好，您订阅的" + sub.SubsType + "已触发"),
-                        keyword1 = new TemplateDataItem(sub.Cusno),
-                        keyword2 = new TemplateDataItem(sub.Status),
+                        first = new TemplateDataItem("您好，您订阅的状态已触发"),
+                        keyword1 = new TemplateDataItem(subcode),
+                        keyword2 = new TemplateDataItem(sub.BusiUnitName),
+                        keyword3 = new TemplateDataItem(sub.Contractno),
+                        keyword4 = new TemplateDataItem(busiblno),
+                        keyword5 = new TemplateDataItem(sub.Status),
                         remark = new TemplateDataItem("触发时间：" + sub.TriggerTime.ToString())
 
                     };
-                    sub.TemplateId = "-GdghWwMXHwOE_hu1xxm2H5hRDGGRTQwTuGoSIg8xww";
+                    sub.TemplateId = "1i5IvENyqxo349wlgluja4skxORiGSB6M5GD_fLeoKk";
                     string url = "";
                     if(sub.SubsType=="业务状态"||sub.SubsType=="物流状态")
                     {
-                        url = @"http://gwy.jishiks.com/Page/BusiSubsDetail.aspx?code=" + sub.Cusno;
+                        url = @"http://gwy.jishiks.com/Page/BusiSubsDetail.aspx?code=" + sub.OrderCode;
                     }
                     else
                     {
@@ -55,7 +76,46 @@ namespace WeChat.ModelWeChat
             
         }
 
+        private static string getBusiBlno(SubcribeInfoEn sub)
+        {
+            string str="";
+            switch(sub.BusiType)
+            {
+                case "10":
+                    str = "空出/" + sub.Totalno + "_" + sub.Divideno;
+                    break;
+                case "11":
+                    str = "空进/" + sub.Totalno + "_" + sub.Divideno;
+                    break;
+                case "20":
+                    str = "海出/" + sub.SecondLadingBillno;
+                    break;
+                case "21":
+                    str = "海进/" + sub.SecondLadingBillno;
+                    break;
+                case "30":
+                    str = "陆出/" + sub.LandLadingno;
+                    break;
+                case "31":
+                    str = "陆进/" + sub.LandLadingno;
+                    break;
+                case "40":
+                    str = "国内出口";
+                    break;
+                case "41":
+                    str = "国内进口";
+                    break;
+                case "50":
+                    str = "特殊区域出口";
+                    break;
+                case "51":
+                    str = "特殊区域进口";
+                    break;
 
+
+            }
+            return str;
+        }
         public static void ExcuteLoginExceptionPush_single()
         {
             try
