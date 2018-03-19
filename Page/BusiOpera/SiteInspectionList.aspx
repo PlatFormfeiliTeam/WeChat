@@ -1357,6 +1357,29 @@
             });
         }
 
+
+        //条码扫描
+        $("#btn_barcode").click(function () {
+            wx.ready(function () {
+                wx.scanQRCode({
+                    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                        var serial = result.split(",");
+                        var serialNumber = serial[serial.length - 1];
+                        $("#txt_inspcode").val(serialNumber);
+                    }
+                });
+
+            });
+            //初始化jsapi接口 状态
+            wx.error(function (res) {
+                alert("调用微信jsapi返回的状态:" + res.errMsg);
+            });
+        });
+
+
     </script>
 </head>
 <body>
@@ -1366,12 +1389,13 @@
             <header class="bar bar-nav" style="height:5.1rem;">
                 <div class="search-input">                    
                     <div class="row"> 
-                        <div class="col-33" style="width:33%;font-size:13px;margin-top:.8rem;">现场报检日期始/末:</div>
+                        <div class="col-33" style="width:25%;font-size:13px;margin-top:.8rem;">现场报检日期:</div>
                         <div class="col-33" style="width:26%;margin-left:0;"><input type="search" id='txt_inspsiteapplytime_s'/></div>
                         <div class="col-33" style="width:26%;margin-left:0;"><input type="search" id='txt_inspsiteapplytime_e'/></div>
                         <div class="col-10" style="width:10%;margin-left:0;margin-top:.2rem;">
                             <input id="btn_more_m" type="button" value="..." class="open-tabs-modal" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;"  />
                         </div>
+                        <div class="col-15" style="width:5%;margin-left:2%;"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
                     </div>
                     <div class="row">
                         <div class="col-50" style="width:47%;"><input type="search" id='txt_inspcode' placeholder='报检单号'/></div>

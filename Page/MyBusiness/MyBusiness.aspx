@@ -1138,6 +1138,30 @@
             });
         }
 
+
+
+        //条码扫描
+        $("#btn_barcode").click(function () {
+            wx.ready(function () {
+                wx.scanQRCode({
+                    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                        var serial = result.split(",");
+                        var serialNumber = serial[serial.length - 1];
+                        $("#txt_declcode").val(serialNumber);
+                    }
+                });
+
+            });
+            //初始化jsapi接口 状态
+            wx.error(function (res) {
+                alert("调用微信jsapi返回的状态:" + res.errMsg);
+            });
+        });
+
+
     </script>
 </head>
 <body>
@@ -1152,14 +1176,15 @@
                     <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
                     <div class="search-input">
                         <div class="row">
-                            <div class="col-33" style="width: 19%; font-size: 13px; margin-top: .3rem;">委托时间:</div>
-                            <div class="col-33" style="width: 33%; margin-left: 0;">
+                            <div class="col-33" style="width: 20%; font-size: 13px; margin-top: .3rem;">委托时间:</div>
+                            <div class="col-33" style="width: 28%; margin-left: 0;">
                                 <input type="search" id='txt_submittime_s' /></div>
-                            <div class="col-33" style="width: 33%; margin-left: 0;">
+                            <div class="col-33" style="width: 28%; margin-left: 0;">
                                 <input type="search" id='txt_submittime_e' /></div>
                             <div class="col-10" style="width: 10%; margin-left: 0; margin-top: .14rem;">
                                 <input id="btn_more_m" type="button" value="..." class="open-tabs-modal" style="background-color: #3D4145; color: #ffffff; border-radius: 0; border: 0;" />
                             </div>
+                            <div class="col-15" style="width:5%;margin-left:2%;"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
                         </div>
                         <div class="row">
                             <div class="col-50" style="width: 46%;">
