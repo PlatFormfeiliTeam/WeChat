@@ -1410,6 +1410,33 @@
         <script src="/js/sm-extend.min.js"></script>
     </form>
 </body>
+    <script type='text/javascript' src='http://res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
+    <script type='text/javascript'>
 
+
+        var conf = [];
+        $.ajax({
+            type: "post", //要用post方式                 
+            url: "MyBusiness.aspx/getConf",//方法所在页面和方法名
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: "{'url':'" + window.location.href.split('#')[0] + "'}",
+            cache: false,
+            async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+            success: function (data) {
+                conf = eval("(" + data.d + ")");//将字符串转为json
+            }
+        });
+
+        wx.config({
+            debug: false,
+            appId: conf.appid,
+            timestamp: conf.timestamp,
+            nonceStr: conf.noncestr,
+            signature: conf.signature,
+            jsApiList: ['scanQRCode']
+        });
+
+    </script>
 
 </html>

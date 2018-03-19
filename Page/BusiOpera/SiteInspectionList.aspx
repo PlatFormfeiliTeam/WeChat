@@ -1500,7 +1500,7 @@
             timestamp: conf.timestamp,
             nonceStr: conf.noncestr,
             signature: conf.signature,
-            jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage']
+            jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage','scanQRCode']
         });
 
     </script>
