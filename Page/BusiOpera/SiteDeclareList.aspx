@@ -1435,18 +1435,20 @@
             });
 
             //初始化时间控件
-            var before = new Date();
-            before.setDate(before.getDate() - 3);
-            var beforeday = before.Format("yyyy-MM-dd");
+            //var before = new Date();
+            //before.setDate(before.getDate() - 3);
+            //var beforeday = before.Format("yyyy-MM-dd");
 
-            var now = new Date();
-            var today = now.Format("yyyy-MM-dd");
+            //var now = new Date();
+            //var today = now.Format("yyyy-MM-dd");
 
-            $("#txt_siteapplytime_s").val(beforeday);
-            $("#txt_siteapplytime_s").calendar({ value: [beforeday] });
+            //$("#txt_siteapplytime_s").val(beforeday);
+            //$("#txt_siteapplytime_s").calendar({ value: [beforeday] });
 
-            $("#txt_siteapplytime_e").val(today);
-            $("#txt_siteapplytime_e").calendar({ value: [today] });
+            //$("#txt_siteapplytime_e").val(today);
+            //$("#txt_siteapplytime_e").calendar({ value: [today] });
+            $("#txt_siteapplytime_s").calendar({});
+            $("#txt_siteapplytime_e").calendar({});
             
         }
 

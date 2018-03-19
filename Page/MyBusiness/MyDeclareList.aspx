@@ -764,18 +764,20 @@
             });
 
             //初始化时间控件
-            var before = new Date();
-            before.setDate(before.getDate() - 3);
-            var beforeday = before.Format("yyyy-MM-dd");
+            //var before = new Date();
+            //before.setDate(before.getDate() - 3);
+            //var beforeday = before.Format("yyyy-MM-dd");
 
-            var now = new Date();
-            var today = now.Format("yyyy-MM-dd");
+            //var now = new Date();
+            //var today = now.Format("yyyy-MM-dd");
 
-            $("#txt_reptime_s").val(beforeday);
-            $("#txt_reptime_s").calendar({ value: [beforeday] });
+            //$("#txt_reptime_s").val(beforeday);
+            //$("#txt_reptime_s").calendar({ value: [beforeday] });
 
-            $("#txt_reptime_e").val(today);
-            $("#txt_reptime_e").calendar({ value: [today] });
+            //$("#txt_reptime_e").val(today);
+            //$("#txt_reptime_e").calendar({ value: [today] });
+            $("#txt_reptime_s").calendar({});
+            $("#txt_reptime_e").calendar({});
 
         }
 

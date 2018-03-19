@@ -1314,18 +1314,20 @@
             });
 
             //初始化时间控件
-            var before = new Date();
-            before.setDate(before.getDate() - 3);
-            var beforeday = before.Format("yyyy-MM-dd");
+            //var before = new Date();
+            //before.setDate(before.getDate() - 3);
+            //var beforeday = before.Format("yyyy-MM-dd");
 
-            var now = new Date();
-            var today = now.Format("yyyy-MM-dd");
+            //var now = new Date();
+            //var today = now.Format("yyyy-MM-dd");
 
-            $("#txt_inspsiteapplytime_s").val(beforeday);
-            $("#txt_inspsiteapplytime_s").calendar({ value: [beforeday] });
+            //$("#txt_inspsiteapplytime_s").val(beforeday);
+            //$("#txt_inspsiteapplytime_s").calendar({ value: [beforeday] });
 
-            $("#txt_inspsiteapplytime_e").val(today);
-            $("#txt_inspsiteapplytime_e").calendar({ value: [today] });
+            //$("#txt_inspsiteapplytime_e").val(today);
+            //$("#txt_inspsiteapplytime_e").calendar({ value: [today] });
+            $("#txt_inspsiteapplytime_s").calendar({});
+            $("#txt_inspsiteapplytime_e").calendar({});
         }
 
         function getNowDate() {
