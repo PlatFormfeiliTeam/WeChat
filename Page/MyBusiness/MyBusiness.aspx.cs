@@ -132,14 +132,14 @@ namespace WeChat.Page.MyBusiness
                 DataSet ds = orderModel.getOrderDetail(code);
                 ds.Tables[0].Rows[0]["busitype"] = SwitchHelper.switchValue("busitype", ds.Tables[0].Rows[0]["busitype"].ToString2());
 
-                if (ds.Tables.Count > 1)
+                if (ds.Tables.Count > 1 && ds.Tables[1].Columns.Contains("modifyflag"))
                 {
                     foreach (DataRow dr in ds.Tables[1].Rows)
                     {
                         dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
                     }
                 }
-                if (ds.Tables.Count > 2)
+                if (ds.Tables.Count > 2 && ds.Tables[2].Columns.Contains("modifyflag"))
                 {
                     foreach (DataRow dr in ds.Tables[2].Rows)
                     {
@@ -305,9 +305,14 @@ namespace WeChat.Page.MyBusiness
             }
             return json;
         }
-       
 
-        
+
+        //微信接口js-sdk config
+        [WebMethod]
+        public static string getConf(string url)
+        {
+            return ModelWeChat.SignatureModel.getSignature(url);
+        }
 
 
 
