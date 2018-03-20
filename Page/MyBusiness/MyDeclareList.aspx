@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/css/SubscribeInfo.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />    
     <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
     <script type="text/javascript" src="/js/SubscribeInfo.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
-
+    <script type="text/javascript" src="/js/BusiInfoDetail.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
 
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
@@ -74,7 +74,6 @@
         .girdnamediv .modal-inner{
            padding:0px;
         }  
-
         /************************************************ 报关订阅*********************************/
         #pop_sub_decl
         {
@@ -142,7 +141,7 @@
                                 + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                     + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
                                         + '<div class="item-title col-50">运输工具</div>'
-                                        + '<div class="item-title col-20">删改单</div>'
+                                        + '<div class="item-title col-33">删改单</div>'
                                         + '<div class="item-title col-20">海关状态</div>'
                                     + '</div>'
                                 + '</li>'
@@ -652,14 +651,11 @@
                 });
             });
 
-            //订阅清单
-            //$("#Subscribe_decl_a").click(function () {
-            //    window.location.href = "NewSubscribeList_decl.aspx";
+            
+            ////打开订阅清单弹出框
+            //$(document).on('click', '.open-subinfo_decl', function () {
+            //    subinfoload_decl();
             //});
-            //打开订阅清单弹出框
-            $(document).on('click', '.open-subinfo_decl', function () {
-                subinfoload_decl();
-            });
 
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
@@ -818,6 +814,30 @@
             });
         }
        
+       
+        //打开详情弹出框
+        $(document).on('click', '.open-detail', function () {
+            var curcount = parseInt($("#span_curchose").text());
+            if (curcount != 1) {
+                $.toast("请选择一笔记录查看详情");
+                return;
+            }
+            var ordercode = "";
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    ordercode = $(this).children("ul")[0].id;
+                }
+            });
+            
+            if (ordercode != "") {
+                ordercode = ordercode.substring(6);
+                getBusiInfo_company(ordercode);
+            }
+            else {
+                $.toast("请选择需要一条记录");
+            }
+        });
+
     </script>
 </head>
 <body>
@@ -862,22 +882,7 @@
                     <font color="#929292">笔</font>
                 </div>                         
             </header>
-            <%--<header class="bar bar-nav">
-                <div class="search-input">                 
-                    <div class="row"> 
-                        <div class="col-85"><input type="search" id='txt_declcode' placeholder='请输入18位或后9位报关单号...'/></div>
-                        <div class="col-15"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-40"><input type="search" id='txt_startdate' placeholder='申报起始日期'/></div>
-                        <div class="col-5">~</div>
-                        <div class="col-40"><input type="search" id='txt_enddate' placeholder='申报结束日期'/></div>
-                        <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
-                    </div> 
-                </div>  
-                <input type="hidden" id='txt_inout_type'/><input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/>  <input type="hidden" id='txt_customsstatus'/>                
-                <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>                           
-            </header>--%>
+
 
             <%--工具栏 --%>
             <nav class="bar bar-tab">
@@ -893,9 +898,9 @@
                     <span class="icon icon-card"></span>
                     <span class="tab-label">报关订阅</span>
                 </a>
-                <a class="tab-item open-subinfo_decl" href="#" id="Subscribe_decl_a"> 
+                <a class="tab-item open-detail" href="#" > 
                     <span class="icon icon-menu"></span>
-                    <span class="tab-label">订阅清单</span>
+                    <span class="tab-label">业务详情</span>
                 </a>
             </nav>
 
@@ -950,11 +955,29 @@
         </div>
     </div>
 
-    <!--popup 订阅清单弹出页-->
-        <div class="popup pop-subscribeinfo">
-            <div class="content" id="subscribeinfo" style="bottom: 3rem;">
+     <!--popup 详情弹出页-->
+    <div class="popup popup-detail">
+            <div class="content" style="bottom: 60px;">
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">报关信息</a>
+                    <a href="#tab2" class="tab-link button">报检信息</a>
+                    <a href="#tab3" class="tab-link button">物流信息</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div class="content-block " id="pop_tab_decl"></div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <div class="content-block" id="pop_tab_insp"></div>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <div class="content-block" id="pop_tab_logistics"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div style="bottom: 1.5rem; position: fixed; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+            <div style="bottom: 2rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
         </div>
 
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   

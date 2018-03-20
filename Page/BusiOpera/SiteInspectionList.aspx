@@ -16,7 +16,7 @@
 
     <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />    
     <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
-
+    <script type="text/javascript" src="/js/BusiInfoDetail.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
              margin:.2rem 0;
@@ -88,7 +88,6 @@
             right: 0px;
             z-index:300;
         }
-        
     </style>
 
     <script type="text/javascript">
@@ -1380,6 +1379,30 @@
         });
 
 
+        //打开详情弹出框
+        $(document).on('click', '.open-detail', function () {
+            var curcount = parseInt($("#span_curchose").text());
+            if (curcount != 1) {
+                $.toast("请选择一笔记录查看详情");
+                return;
+            }
+            var ordercode = "";
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    ordercode = $(this)[0].id;
+                }
+            });
+
+            if (ordercode != "") {
+                ordercode = ordercode.substring(6);
+                getBusiInfo_customer(ordercode);
+            }
+            else {
+                $.toast("请选择需要一条记录");
+            }
+        });
+
+
     </script>
 </head>
 <body>
@@ -1438,11 +1461,10 @@
                     <%--<span class="icon icon-friends"></span>
                     <span class="tab-label">现场报检</span>
                 </a>--%>
-                <a class="tab-item external" href="#" id="Detail_a">
+                <%--<a class="tab-item external" href="#" id="Detail_a">
                     <span class="icon icon-message"></span>
                     <span class="tab-label">报检详细</span>
-                    <%--<span class="badge">2</span>--%>
-                </a>
+                </a>--%>
                 <%--<a class="tab-item external" href="#" id="Pass_a">
                     <span class="icon icon-cart"></span>
                     <span class="tab-label">报检放行</span>
@@ -1454,7 +1476,11 @@
                 <a class="tab-item external" href="#" id="Picture_a">
                     <span class="icon icon-picture"></span>
                     <span class="tab-label">查验图片<input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' /></span>
-                </a>                
+                </a>  
+                <a class="tab-item open-detail" href="#"> 
+                    <span class="icon icon-menu"></span>
+                    <span class="tab-label">业务详情</span>
+                </a>              
             </nav>
 
            <%--body --%>
@@ -1470,6 +1496,32 @@
             
         </div>
     </div>  
+
+    <!--popup 详情弹出页-->
+    <div class="popup popup-detail">
+            <div class="content" style="bottom: 60px;">
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">报关信息</a>
+                    <a href="#tab2" class="tab-link button">报检信息</a>
+                    <a href="#tab3" class="tab-link button">物流信息</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div class="content-block " id="pop_tab_decl"></div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <div class="content-block" id="pop_tab_insp"></div>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <div class="content-block" id="pop_tab_logistics"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="bottom: 2rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+        </div>
+
 
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
     <%--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>

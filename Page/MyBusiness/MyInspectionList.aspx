@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />    
     <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
-
+    <script type="text/javascript" src="/js/BusiInfoDetail.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
              margin:.2rem 0;
@@ -40,6 +40,7 @@
         #div_list .list-block .item-inner{
             height:1.3rem;
             min-height:1.3rem;
+            PADDING-RIGHT: 0;
         }
         .picker-items-col.picker-items-col-center{
              width: 100%;
@@ -327,7 +328,7 @@
                                                   '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[i]["INSPECTIONCODE"] == null ? "" : obj[i]["INSPECTIONCODE"]) + '</div>'
                                                     + '<div class="item-title col-33">' + getname("BUSITYPE", obj[i]["BUSITYPE"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + (obj[i]["TRADEWAYNAME"] == null ? "" : obj[i]["TRADEWAYNAME"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + (obj[i]["TRADEWAYNAME"] == null ? "" : obj[i]["TRADEWAYNAME"]) + '</div>'
                                                 + '</div>'
                                            + '</li>'
                                     + '</ul>'
@@ -340,7 +341,7 @@
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[i]["BUSIUNITNAME"] == null ? "" : obj[i]["BUSIUNITNAME"]) + '</div>'
                                                     + '<div class="item-title col-33">' + (obj[i]["CONTRACTNO"] == null ? "" : obj[i]["CONTRACTNO"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -353,7 +354,7 @@
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[i]["APPROVALCODE"] == null ? "" : obj[i]["APPROVALCODE"]) + '</div>'
                                                     + '<div class="item-title col-33">' + (obj[i]["GOODSNUM"] == null ? "" : obj[i]["GOODSNUM"]) + '/' + (obj[i]["GOODSGW"] == null ? "" : obj[i]["GOODSGW"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -366,7 +367,7 @@
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[i]["CLEARANCECODE"] == null ? "" : obj[i]["CLEARANCECODE"]) + '</div>'
                                                     + '<div class="item-title col-33">' + (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + (obj[i]["INSPSTATUS"] == null ? "" : obj[i]["INSPSTATUS"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + (obj[i]["INSPSTATUS"] == null ? "" : obj[i]["INSPSTATUS"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -544,28 +545,28 @@
                                              + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["INSPECTIONCODE"] == null ? "" : obj[i]["INSPECTIONCODE"]) + '</div>'
                                                 + '<div class="item-title col-33">' + getname("BUSITYPE", obj[i]["BUSITYPE"]) + '</div>'
-                                                + '<div class="item-title col-20">' + (obj[i]["TRADEWAYNAME"] == null ? "" : obj[i]["TRADEWAYNAME"]) + '</div>'
+                                                + '<div class="item-title col-33">' + (obj[i]["TRADEWAYNAME"] == null ? "" : obj[i]["TRADEWAYNAME"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["BUSIUNITNAME"] == null ? "" : obj[i]["BUSIUNITNAME"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["CONTRACTNO"] == null ? "" : obj[i]["CONTRACTNO"]) + '</div>'
-                                                + '<div class="item-title col-20">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
+                                                + '<div class="item-title col-33">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["APPROVALCODE"] == null ? "" : obj[i]["APPROVALCODE"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["GOODSNUM"] == null ? "" : obj[i]["GOODSNUM"]) + '/' + (obj[i]["GOODSGW"] == null ? "" : obj[i]["GOODSGW"]) + '</div>'
-                                                + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
+                                                + '<div class="item-title col-33">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["CLEARANCECODE"] == null ? "" : obj[i]["CLEARANCECODE"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) + '</div>'
-                                                + '<div class="item-title col-20">' + (obj[i]["INSPSTATUS"] == null ? "" : obj[i]["INSPSTATUS"]) + '</div>'
+                                                + '<div class="item-title col-33">' + (obj[i]["INSPSTATUS"] == null ? "" : obj[i]["INSPSTATUS"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                     + '</ul>'
@@ -688,6 +689,32 @@
                 }
             });
         }
+
+
+        //打开详情弹出框
+        $(document).on('click', '.open-detail', function () {
+            var curcount = parseInt($("#span_curchose").text());
+            if (curcount != 1) {
+                $.toast("请选择一笔记录查看详情");
+                return;
+            }
+            var ordercode = "";
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    ordercode = $(this).children("ul")[0].id;
+                }
+            });
+
+            if (ordercode != "") {
+                ordercode = ordercode.substring(6);
+                getBusiInfo_company(ordercode);
+            }
+            else {
+                $.toast("请选择需要一条记录");
+            }
+        });
+
+
     </script>
 
 </head>
@@ -743,6 +770,10 @@
                     <span class="icon icon-message"></span>
                     <span class="tab-label">文件调阅<input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' /></span>
                 </a>
+                <a class="tab-item open-detail" href="#" > 
+                    <span class="icon icon-menu"></span>
+                    <span class="tab-label">业务详情</span>
+                </a>
             </nav>
 
            <%--body --%>
@@ -761,6 +792,30 @@
     </div>  
 
 
+    <!--popup 详情弹出页-->
+    <div class="popup popup-detail">
+            <div class="content" style="bottom: 60px;">
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">报关信息</a>
+                    <a href="#tab2" class="tab-link button">报检信息</a>
+                    <a href="#tab3" class="tab-link button">物流信息</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div class="content-block " id="pop_tab_decl"></div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <div class="content-block" id="pop_tab_insp"></div>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <div class="content-block" id="pop_tab_logistics"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="bottom: 2rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+        </div>
 
 
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   

@@ -55,7 +55,7 @@ namespace WeChat.ModelBusi
                 where += " and ort.receiverunitcode='" + customercode + "'";
 
                 string tempsql = @"select li.CODE,li.ORDERCODE,li.INSPECTIONCODE,li.TRADEWAY,(select NAME from cusdoc.BASE_TRADEWAY bt WHERE enabled=1 and bt.code=li.TRADEWAY) as TRADEWAYNAME
-                                    ,li.rependtime REPTIME,li.APPROVALCODE,li.MODIFYFLAG,li.CLEARANCECODE,li.INSPSTATUS
+                                    ,to_char(li.rependtime,'yyyy-mm-dd') REPTIME,li.APPROVALCODE,li.MODIFYFLAG,li.CLEARANCECODE,li.INSPSTATUS
                                     ,ort.BUSITYPE,ort.BUSIUNITCODE,ort.BUSIUNITNAME,ort.CONTRACTNO,ort.GOODSNUM,ort.GOODSGW,ort.CUSNO,ort.SUBMITTIME
                             from list_inspection li
                                 left join list_order ort on li.ordercode = ort.code 
@@ -127,7 +127,7 @@ namespace WeChat.ModelBusi
                 }
 
                 string tempsql = @"select li.CODE,li.ORDERCODE,li.INSPECTIONCODE,li.TRADEWAY,(select NAME from cusdoc.BASE_TRADEWAY bt WHERE enabled=1 and bt.code=li.TRADEWAY) as TRADEWAYNAME
-                                    ,li.rependtime REPTIME,li.APPROVALCODE,li.MODIFYFLAG,li.CLEARANCECODE,li.INSPSTATUS
+                                    ,to_char(li.rependtime,'yyyy-mm-dd') REPTIME,li.APPROVALCODE,li.MODIFYFLAG,li.CLEARANCECODE,li.INSPSTATUS
                                     ,ort.BUSITYPE,ort.BUSIUNITCODE,ort.BUSIUNITNAME,ort.CONTRACTNO,ort.GOODSNUM,ort.GOODSGW,ort.CUSNO,ort.SUBMITTIME
                             from list_inspection li
                                 left join list_order ort on li.ordercode = ort.code 

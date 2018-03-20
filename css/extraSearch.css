@@ -368,3 +368,31 @@
         .moredivsubdecl .modal-inner .list-block:first-child label .item-inner{
            margin-left:.2rem;padding-right:2px;
         }
+
+        /****************************************业务详情弹出页样式******************************************/
+        .row {
+            font-size: small;
+            overflow: hidden;
+            margin-left: -2%;
+        }
+        .content-block {
+            margin: 0rem 0;
+            padding: 0.2rem;
+            color: #6d6d72;
+        }
+        .popup .list-block {
+            margin: 0.1rem 0 0 0;
+            background-color: white;
+        }
+        .popup .row {
+            margin-top: 0.2rem;
+        }
+        .button {
+            border-radius: 0;
+            background-color: gray;
+            color: white;
+            border: 0;
+            vertical-align: middle;
+            padding-top: 0.1rem;
+            text-align: center;
+        }

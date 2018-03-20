@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/css/SubscribeInfo.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />    
     <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
     <script type="text/javascript" src="/js/SubscribeInfo.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
+    <script type="text/javascript" src="/js/BusiInfoDetail.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
 
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
@@ -121,7 +122,6 @@
             right: 0px;
             z-index:300;
         }
-
     </style>
 
     <script type="text/javascript">
@@ -709,10 +709,7 @@
                 });
             });
 
-            //订阅清单
-            //$("#Subscribe_decl_a").click(function () {
-            //    window.location.href = "/Page/MyBusiness/NewSubscribeList_decl.aspx";
-            //});
+           
             //打开订阅清单弹出框
             $(document).on('click', '.open-subinfo_decl', function () {
                 subinfoload_decl();
@@ -907,7 +904,31 @@
                 }
             });
         }
-               
+           
+        //打开详情弹出框
+        $(document).on('click', '.open-detail', function () {
+            var curcount = parseInt($("#span_curchose").text());
+            if (curcount != 1) {
+                $.toast("请选择一笔记录查看详情");
+                return;
+            }
+            var ordercode = "";
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    ordercode = $(this).children("ul")[0].id;
+                }
+            });
+
+            if (ordercode != "") {
+                ordercode = ordercode.substring(6);
+                getBusiInfo_customer(ordercode);
+            }
+            else {
+                $.toast("请选择需要一条记录");
+            }
+        });
+
+
     </script>
 </head>
 <body>
@@ -988,9 +1009,9 @@
                     <span class="icon icon-card"></span>
                     <span class="tab-label">报关订阅</span>
                 </a>
-                <a class="tab-item open-subinfo_decl" href="#" id="Subscribe_decl_a"> 
+                <a class="tab-item open-detail" href="#"> 
                     <span class="icon icon-menu"></span>
-                    <span class="tab-label">订阅清单</span>
+                    <span class="tab-label">业务详情</span>
                 </a>
             </nav>
 
@@ -1052,6 +1073,30 @@
             <div style="bottom: 1.5rem; position: fixed; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
         </div>
 
+     <!--popup 详情弹出页-->
+    <div class="popup popup-detail">
+            <div class="content" style="bottom: 60px;">
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">报关信息</a>
+                    <a href="#tab2" class="tab-link button">报检信息</a>
+                    <a href="#tab3" class="tab-link button">物流信息</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div class="content-block " id="pop_tab_decl"></div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <div class="content-block" id="pop_tab_insp"></div>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <div class="content-block" id="pop_tab_logistics"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="bottom: 2rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+        </div>
 
     
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
