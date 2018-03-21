@@ -15,9 +15,9 @@
         $(function () {
             var params = GetRequest();
             var dd = params["code"];
-            //if (params["code"] != "") getBusiInfo_company(params["code"]);
-            //else $.popup('.popup-detail');
-            getBusiInfo_company("18022800240");
+            if (params["code"] != "") getBusiInfo_company(params["code"]);
+            else $.popup('.popup-detail');
+            //getBusiInfo_company("18020800393");
         });
 
         function GetRequest() {
