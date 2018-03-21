@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MyInspectionList.aspx.cs" Inherits="WeChat.Page.BusiOpera.MyInspectionList" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MyInspectionList.aspx.cs" Inherits="WeChat.Page.MyBusiness.MyInspectionList" %>
 
 <!DOCTYPE html>
 

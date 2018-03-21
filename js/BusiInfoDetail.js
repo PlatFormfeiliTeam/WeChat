@@ -165,7 +165,7 @@ function getBusiInfo_customer(ordercode)
                             '">';
                         declstr += '<div class="row">';
                         declstr += '<div class="col-40">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
-                        declstr += '<div class="col-20">' +
+                        declstr += '<div class="col-35">' +
                             declTable[i]["GOODSNUM"] +
                             '/' +
                             declTable[i]["GOODSGW"] +
@@ -174,7 +174,7 @@ function getBusiInfo_customer(ordercode)
                         declstr += '</div>';
                         declstr += '<div class="row">';
                         declstr += '<div class="col-40">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
-                        declstr += '<div class="col-20">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
+                        declstr += '<div class="col-35">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
                         declstr += '<div class="col-20">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
                         declstr += '</div>';
                         declstr += '</div>';
@@ -527,7 +527,7 @@ function getBusiInfo_company(ordercode) {
                             '">';
                         declstr += '<div class="row">';
                         declstr += '<div class="col-40">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
-                        declstr += '<div class="col-40">' +
+                        declstr += '<div class="col-35">' +
                             declTable[i]["GOODSNUM"] +
                             '/' +
                             declTable[i]["GOODSGW"] +
@@ -536,7 +536,7 @@ function getBusiInfo_company(ordercode) {
                         declstr += '</div>';
                         declstr += '<div class="row">';
                         declstr += '<div class="col-40">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
-                        declstr += '<div class="col-40">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
+                        declstr += '<div class="col-35">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
                         declstr += '<div class="col-20">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
                         declstr += '</div>';
                         declstr += '</div>';
@@ -621,7 +621,7 @@ function getBusiInfo_company(ordercode) {
                         inspstr += '</div>';
                         inspstr += '<div class="row">';
                         inspstr += '<div class="col-40">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
-                        inspstr += '<div class="col-40">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
+                        inspstr += '<div class="col-20">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
                         inspstr += '<div class="col-20">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
                         inspstr += '</div>';
                         inspstr += '</div>';

@@ -10,6 +10,6 @@
 namespace WeChat.Page.MyBusiness {
     
     
-    public partial class MyInspectionList {
+    public partial class SubscribeDetail {
     }
 }

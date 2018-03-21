@@ -55,7 +55,7 @@ namespace WeChat.ModelWeChat
                     string url = "";
                     if(sub.SubsType=="业务状态"||sub.SubsType=="物流状态")
                     {
-                        url = @"http://gwy.jishiks.com/Page/BusiSubsDetail.aspx?code=" + sub.OrderCode;
+                        url = @"http://gwy.jishiks.com/Page/MyBusiness/SubscribeDetail.aspx?code=" + sub.OrderCode;
                     }
                     else
                     {

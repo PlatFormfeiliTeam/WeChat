@@ -15,7 +15,7 @@ using WeChat.Entity;
 using WeChat.ModelBusi;
 using WeChat.ModelWeChat;
 
-namespace WeChat.Page.BusiOpera
+namespace WeChat.Page.MyBusiness
 {
     public partial class MyInspectionList : System.Web.UI.Page
     {

@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace WeChat.Page.BusiOpera {
+namespace WeChat.Page.MyBusiness {
     
     
     public partial class MyDeclareList {

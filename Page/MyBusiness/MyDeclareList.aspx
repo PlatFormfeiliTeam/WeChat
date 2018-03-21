@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MyDeclareList.aspx.cs" Inherits="WeChat.Page.BusiOpera.MyDeclareList" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MyDeclareList.aspx.cs" Inherits="WeChat.Page.MyBusiness.MyDeclareList" %>
 <%@ Import Namespace="System.Configuration" %>
 
 <!DOCTYPE html>
