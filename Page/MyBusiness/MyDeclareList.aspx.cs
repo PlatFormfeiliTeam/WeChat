@@ -79,13 +79,18 @@ namespace WeChat.Page.BusiOpera
                 hsCode = "";
             if (user.IsCustomer != 1)//如果不是委托单位角色，不能查出其对应委托单位的订单
                 customerCode = "";
-            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
-            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-
             DataSet ds = Declare.getDeclareInfo_my(reptime_s, reptime_e, declcode, customsstatus, getcode("modifyflag", modifyflag), busitype, ischeck
                 , ischeck, busiunit, ordercode, cusno, tradeway, contractno, blno
                 , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
                 , start, itemsPerLoad, customerCode, hsCode);
+
+            //DataSet ds = Declare.getDeclareInfo_my(reptime_s, reptime_e, declcode, customsstatus, getcode("modifyflag", modifyflag), busitype, ischeck
+            //    , ischeck, busiunit, ordercode, cusno, tradeway, contractno, blno
+            //    , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
+            //    , start, itemsPerLoad, "RBDZKJKSYXGS", "3223640003");
+
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             var json = "[{\"data\":" + JsonConvert.SerializeObject(ds.Tables[0], iso) + ",\"sum\":" + ds.Tables[1].Rows[0][0] + "}]";
             return json;
         }

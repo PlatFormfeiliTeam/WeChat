@@ -79,16 +79,21 @@ namespace WeChat.Page.BusiOpera
             {
                 return "[]";
             }
-            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
-            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             DataSet ds = Declare.getDeclareInfo(reptime_s, reptime_e, declcode, customsstatus, getcode("modifyflag", modifyflag), busitype, ischeck
                 , ispass, busiunit, ordercode, cusno, tradeway, contractno, blno
                 , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
-                , start, itemsPerLoad, user.CustomerCode);//
+                , start, itemsPerLoad, user.CustomerCode);
+
+            //DataSet ds = Declare.getDeclareInfo(reptime_s, reptime_e, declcode, customsstatus, getcode("modifyflag", modifyflag), busitype, ischeck
+            //    , ispass, busiunit, ordercode, cusno, tradeway, contractno, blno
+            //    , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
+            //    , start, itemsPerLoad, "KSJSBGYXGS");
+
+            IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
+            iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             var json = "[{\"data\":" + JsonConvert.SerializeObject(ds.Tables[0], iso) + ",\"sum\":" + ds.Tables[1].Rows[0][0] + "}]";
 
             LogHelper.Write("后台查询结束时间");
-            LogHelper.Write("当前登录人：" + user.GwyUserCode);
             LogHelper.Write("返回json：");
             LogHelper.Write(json);
 
