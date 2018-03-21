@@ -34,7 +34,7 @@
            "sub_button":[
            {	
                "type":"view",
-               "name":"现场报关",
+               "name":"报关业务",
                "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteDeclareList.aspx"
             },
 			{	
@@ -44,13 +44,18 @@
             },
 			{	
                "type":"view",
-               "name":"现场报检",
+               "name":"报检业务",
                "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteInspectionList.aspx"
             },
 			{	
                "type":"view",
                "name":"报检单查询",
                "url":"http://gwy.jishiks.com/Page/BusiOpera/InspectionList.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"订阅清单",
+               "url":"http://gwy.jishiks.com/Page/SubscribeList.aspx"
             }]
        },
       {
@@ -71,6 +76,11 @@
                "type":"view",
                "name":"我的报检单",
                "url":"http://gwy.jishiks.com/Page/MyBusiness/MyInspectionList.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"订阅清单",
+               "url":"http://gwy.jishiks.com/Page/SubscribeList.aspx"
             },
 			{
 				"type":"view",

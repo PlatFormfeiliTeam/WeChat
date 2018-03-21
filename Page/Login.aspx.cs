@@ -70,6 +70,9 @@ namespace WeChat.Page
                     case "MyInspectionList":
                         transferurl = "http://gwy.jishiks.com/Page/MyBusiness/MyInspectionList.aspx";
                         break;
+                    case "SubscribeList":
+                        transferurl = "http://gwy.jishiks.com/Page/SubscribeList.aspx";
+                        break;
 
                     
                 }

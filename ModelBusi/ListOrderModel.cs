@@ -127,11 +127,13 @@ namespace WeChat.ModelBusi
             {
                 DataSet ds = new DataSet();
                 //业务信息
-                string sql = @"select lo.code,lo.totalno,lo.divideno,lo.entrusttype,lo.busitype,lo.submittime,lo.submitusername,lo.moendtime,lo.moendname,lo.coendtime,lo.coendname,
+                string sql = @"select lo.busiunitname,lo.busitype,sr.name as busitypename,lo.divideno,lo.goodsnum,lo.goodsgw,lo.cusno,lo.contractno,
+                                    lo.code,lo.totalno,lo.entrusttype,lo.busitype,lo.submittime,lo.submitusername,lo.moendtime,lo.moendname,lo.coendtime,lo.coendname,
                                     lo.preendtime,lo.preendname,lo.rependtime,lo.rependname,lo.siteapplytime,lo.siteapplyusername,lo.sitepasstime,lo.sitepassusername,
                                     lo.inspmoendtime,lo.inspmoendname,lo.inspcoendtime,lo.inspcoendname,lo.insppreendtime,lo.insppreendname,lo.insprependtime,lo.insprependname,
                                     lo.inspsiteapplytime,lo.inspsiteapplyusername,lo.inspsitepasstime,lo.inspsitepassusername,lo.auditflagtime,lo.auditflagname,lo.fumigationtime,
-                                    lo.fumigationname,lo.declchecktime,lo.inspchecktime from list_order lo where lo.code='" + code + "'";
+                                    lo.fumigationname,lo.declchecktime,lo.inspchecktime from list_order lo
+                                    left join cusdoc.sys_busitype sr on sr.enabled=1 and sr.code=lo.busitype where lo.code='" + code + "'";
                 DataTable dt1 = db.QuerySignle(sql);
                 dt1.TableName = "OrderTable";
                 ds.Tables.Add(dt1);

@@ -303,23 +303,7 @@
 
             });
 
-            //物流状态——按钮切换
-            $(document).on('click',
-                '.iconfont',
-                function () {
-                    $("#choudan").hide();
-                    $("#zhuanguan").hide();
-                    $("#baojian").hide();
-                    $("#yunshu").hide();
-                    $("#icon_choudan").parent().css('color', '#6D6D72');
-                    $("#icon_zhuanguan").parent().css('color', '#6D6D72');
-                    $("#icon_baojian").parent().css('color', '#6D6D72');
-                    $("#icon_yunshu").parent().css('color', '#6D6D72');
-                    $(this).parent().css('color', '#0894EC');
-                    var id = $(this).attr("id");
-                    id = id.substring(5);
-                    $("#" + id).show();
-                });
+            
 
             //无限滚动 注册'infinite'事件处理函数
             $(document).on('infinite', "#page-infinite-scroll-bottom", function () {
@@ -867,7 +851,7 @@
                     </div>
                 </div>
             </div>
-            <div style="bottom: 2rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+            <div style="bottom: 1.5rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
         </div>
         <!--popup 报关订阅弹出页-->
         <div class="popup popup-subscribe" id="popup-subscribe-decl">

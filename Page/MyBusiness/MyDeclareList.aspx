@@ -977,7 +977,7 @@
                     </div>
                 </div>
             </div>
-            <div style="bottom: 2rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+            <div style="bottom: 1.5rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
         </div>
 
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   

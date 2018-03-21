@@ -30,6 +30,45 @@ function getBusiInfo_customer(ordercode)
             var logisticsTable = obj.LogisticsTable;
             if (orderTable != null && orderTable.length > 0) {
                 var declstr = '<div class="content-padded grid-demo" >' +
+
+                    '<div class="row">' +
+                    '<div class="col-20">经营单位</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["BUSIUNITNAME"] == null ? "" : orderTable[0]["BUSIUNITNAME"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">业务类型</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["BUSITYPENAME"] == null ? "" : orderTable[0]["BUSITYPENAME"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">企业编号</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["CUSNO"] == null ? "" : orderTable[0]["CUSNO"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">分单号</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["DIVIDENO"] == null ? "" : orderTable[0]["DIVIDENO"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">合同号</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["CONTRACTNO"] == null ? "" : orderTable[0]["CONTRACTNO"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">件数毛重</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["GOODSNUM"] == null ? "" : orderTable[0]["GOODSNUM"]) + '/' + (orderTable[0]["GOODSGW"] == null ? "" : orderTable[0]["GOODSGW"]) +
+                    '</div>' +
+                    '</div>' +
+
+
                     '<div class="row">' +
                     '<div class="col-20">委托时间</div>' +
                     '<div class="col-60">' +
@@ -126,7 +165,7 @@ function getBusiInfo_customer(ordercode)
                             '">';
                         declstr += '<div class="row">';
                         declstr += '<div class="col-40">' + (declTable[i]["DECLARATIONCODE"] == null ? "" : declTable[i]["DECLARATIONCODE"]) + '</div>';
-                        declstr += '<div class="col-40">' +
+                        declstr += '<div class="col-20">' +
                             declTable[i]["GOODSNUM"] +
                             '/' +
                             declTable[i]["GOODSGW"] +
@@ -135,7 +174,7 @@ function getBusiInfo_customer(ordercode)
                         declstr += '</div>';
                         declstr += '<div class="row">';
                         declstr += '<div class="col-40">' + (declTable[i]["TRANSNAME"] == null ? "" : declTable[i]["TRANSNAME"]) + '</div>';
-                        declstr += '<div class="col-40">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
+                        declstr += '<div class="col-20">' + (declTable[i]["TRADENAME"] == null ? "" : declTable[i]["TRADENAME"]) + '</div>';
                         declstr += '<div class="col-20">' + (declTable[i]["CUSTOMSSTATUS"] == null ? "" : declTable[i]["CUSTOMSSTATUS"]) + '</div>';
                         declstr += '</div>';
                         declstr += '</div>';
@@ -247,7 +286,7 @@ function getBusiInfo_customer(ordercode)
                         inspstr += '</div>';
                         inspstr += '<div class="row">';
                         inspstr += '<div class="col-40">' + (inspTable[i]["CLEARANCECODE"] == null ? "" : inspTable[i]["CLEARANCECODE"]) + '</div>';
-                        inspstr += '<div class="col-40">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
+                        inspstr += '<div class="col-20">' + (inspTable[i]["MODIFYFLAG"] == null ? "" : inspTable[i]["MODIFYFLAG"]) + '</div>';
                         inspstr += '<div class="col-20">' + (inspTable[i]["INSPSTATUS"] == null ? "" : inspTable[i]["INSPSTATUS"]) + '</div>';
                         inspstr += '</div>';
                         inspstr += '</div>';
@@ -271,7 +310,8 @@ function getBusiInfo_customer(ordercode)
                     '<div style="width:100%;background-color:#DBDBDB;line-height:0.2rem;">&nbsp;</div>';
                 logstr += '<div id="logistics" style="background-color:white;">';
                 logstr += '<div class="row">' +
-                    '<div class="col-60">时间</div>' +
+                    '<div class="col-20">操作人</div>' +
+                    '<div class="col-50">时间</div>' +
                     '<div class="col-35">状态值</div>' +
                     '</div>'
                 var choudan = '<div id="choudan">';
@@ -281,10 +321,10 @@ function getBusiInfo_customer(ordercode)
                 for (var i = 0; i < logisticsTable.length; i++) {
                     if (logisticsTable[i]["OPERATE_TYPE"] == "抽单状态") {
                         choudan += '<div class="row">' +
-                            '<div class="col-25">' +
+                            '<div class="col-20">' +
                             (logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
                             '</div>' +
-                            '<div class="col-60">' +
+                            '<div class="col-50">' +
                             (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
                             '</div>' +
                             '<div class="col-35">' +
@@ -294,10 +334,10 @@ function getBusiInfo_customer(ordercode)
                     } else if (logisticsTable[i]["OPERATE_TYPE"] == "报关申报状态" ||
                         logisticsTable[i]["OPERATE_TYPE"] == "转关申报状态") {
                         zhuanguan += '<div class="row">' +
-                            '<div class="col-25">' +
+                            '<div class="col-20">' +
                             (logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
                             '</div>' +
-                            '<div class="col-60">' +
+                            '<div class="col-50">' +
                             (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
                             '</div>' +
                             '<div class="col-35">' +
@@ -306,10 +346,10 @@ function getBusiInfo_customer(ordercode)
                             '</div>';
                     } else if (logisticsTable[i]["OPERATE_TYPE"] == "商检状态") {
                         baojian += '<div class="row">' +
-                            '<div class="col-25">' +
+                            '<div class="col-20">' +
                             (logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
                             '</div>' +
-                            '<div class="col-60">' +
+                            '<div class="col-50">' +
                             (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
                             '</div>' +
                             '<div class="col-35">' +
@@ -318,10 +358,10 @@ function getBusiInfo_customer(ordercode)
                             '</div>';
                     } else if (logisticsTable[i]["OPERATE_TYPE"] == "运输状态") {
                         yunshu += '<div class="row">' +
-                            '<div class="col-25">' +
+                            '<div class="col-20">' +
                             (logisticsTable[i]["OPERATER"] == null ? "" : logisticsTable[i]["OPERATER"]) +
                             '</div>' +
-                            '<div class="col-60">' +
+                            '<div class="col-50">' +
                             (logisticsTable[i]["OPERATE_DATE"] == null ? "" : logisticsTable[i]["OPERATE_DATE"]) +
                             '</div>' +
                             '<div class="col-35">' +
@@ -380,6 +420,44 @@ function getBusiInfo_company(ordercode) {
             var logisticsTable = obj.LogisticsTable;
             if (orderTable != null && orderTable.length > 0) {
                 var declstr = '<div class="content-padded grid-demo" >' +
+
+                    '<div class="row">' +
+                    '<div class="col-20">经营单位</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["BUSIUNITNAME"] == null ? "" : orderTable[0]["BUSIUNITNAME"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">业务类型</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["BUSITYPENAME"] == null ? "" : orderTable[0]["BUSITYPENAME"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">企业编号</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["CUSNO"] == null ? "" : orderTable[0]["CUSNO"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">分单号</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["DIVIDENO"] == null ? "" : orderTable[0]["DIVIDENO"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">合同号</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["CONTRACTNO"] == null ? "" : orderTable[0]["CONTRACTNO"]) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-20">件数毛重</div>' +
+                    '<div class="col-80">' +
+                    (orderTable[0]["GOODSNUM"] == null ? "" : orderTable[0]["GOODSNUM"]) + '/' + (orderTable[0]["GOODSGW"] == null ? "" : orderTable[0]["GOODSGW"]) +
+                    '</div>' +
+                    '</div>' +
+
                     '<div class="row">' +
                     '<div class="col-20">委托时间</div>' +
                     '<div class="col-60">' +
@@ -631,3 +709,22 @@ function getBusiInfo_company(ordercode) {
     $.hidePreloader();
     $.popup('.popup-detail');
 }
+
+
+//物流状态——按钮切换
+$(document).on('click',
+    '.iconfont',
+    function () {
+        $("#choudan").hide();
+        $("#zhuanguan").hide();
+        $("#baojian").hide();
+        $("#yunshu").hide();
+        $("#icon_choudan").parent().css('color', '#6D6D72');
+        $("#icon_zhuanguan").parent().css('color', '#6D6D72');
+        $("#icon_baojian").parent().css('color', '#6D6D72');
+        $("#icon_yunshu").parent().css('color', '#6D6D72');
+        $(this).parent().css('color', '#0894EC');
+        var id = $(this).attr("id");
+        id = id.substring(5);
+        $("#" + id).show();
+    });
