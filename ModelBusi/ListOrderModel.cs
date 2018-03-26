@@ -127,7 +127,7 @@ namespace WeChat.ModelBusi
             {
                 DataSet ds = new DataSet();
                 //业务信息
-                string sql = @"select lo.busiunitname,lo.busitype,sr.name as busitypename,lo.divideno,lo.goodsnum,lo.goodsgw,lo.cusno,lo.contractno,
+                string sql = @"select lo.busiunitname,lo.busitype,sr.name as busitypename,lo.divideno,lo.goodsnum,lo.goodsgw,lo.cusno,lo.contractno,lo.declcheckname,lo.inspcheckname,
                                     lo.code,lo.totalno,lo.entrusttype,lo.busitype,lo.submittime,lo.submitusername,lo.moendtime,lo.moendname,lo.coendtime,lo.coendname,
                                     lo.preendtime,lo.preendname,lo.rependtime,lo.rependname,lo.siteapplytime,lo.siteapplyusername,lo.sitepasstime,lo.sitepassusername,
                                     lo.inspmoendtime,lo.inspmoendname,lo.inspcoendtime,lo.inspcoendname,lo.insppreendtime,lo.insppreendname,lo.insprependtime,lo.insprependname,

@@ -129,7 +129,7 @@ function getBusiInfo_customer(ordercode)
                     (orderTable[0]["DECLCHECKTIME"] == null ? "" : orderTable[0]["DECLCHECKTIME"]) +
                     '</div>' +
                     '<div class="col-20">' +
-                    (orderTable[0]["SUBMITUSERNAME"] == null ? "" : orderTable[0]["SUBMITUSERNAME"]) +
+                    (orderTable[0]["DECLCHECKNAME"] == null ? "" : orderTable[0]["DECLCHECKNAME"]) +
                     '</div>' +
                     '</div>' +
                     '<div class="row">' +
@@ -247,7 +247,7 @@ function getBusiInfo_customer(ordercode)
                     (orderTable[0]["INSPCHECKTIME"] == null ? "" : orderTable[0]["INSPCHECKTIME"]) +
                     '</div>' +
                     '<div class="col-20">' +
-                    (orderTable[0]["INSPSUBMITUSERNAME"] == null ? "" : orderTable[0]["INSPSUBMITUSERNAME"]) +
+                    (orderTable[0]["INSPCHECKNAME"] == null ? "" : orderTable[0]["INSPCHECKNAME"]) +
                     '</div>' +
                     '</div>' +
                     '<div class="row">' +
