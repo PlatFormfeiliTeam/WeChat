@@ -12,3 +12,15 @@ bin/WeChat.pdb
 Log/
 TempFile/
 Properties/Publishprofiles/
+
+<<<<<<< HEAD
+*.svn-base
+.svn/entries
+*.db
+.svn/format
+=======
+.svn/entries
+*.svn-base
+.svn/format
+*.db
+>>>>>>> origin/master
