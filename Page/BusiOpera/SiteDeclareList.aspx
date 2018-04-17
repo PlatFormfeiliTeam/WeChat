@@ -14,7 +14,11 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
-
+    <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />    
+    <link rel="stylesheet" href="/css/SubscribeInfo.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />
+    <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
+    <script type="text/javascript" src="/js/SubscribeInfo.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
+    <script type="text/javascript" src="/js/BusiInfoDetail.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
              margin:.2rem 0;
@@ -23,7 +27,10 @@
             top:0;
         }
         #page-infinite-scroll-bottom .bar-nav~.content{
-            top: 5rem;
+            top: 6.2rem;
+        }
+        #page-infinite-scroll-bottom .search-input input{
+            border-radius:0;font-size:13px;
         }
         #div_list .list-block{
             font-size:13px;
@@ -44,43 +51,39 @@
         {
            width: 100%;
         }
-        /************************************************ 更多查询*********************************/
-        .morediv{
-            width: 98%;
-            left: 1%;
-            right: 1%;
-            margin-left: 0px;
-        }        
-        .morediv .modal-inner{
-            height:8.5rem;
+         /************************************************ *********************************/
+         .sitediv .modal-inner{
+             padding:0;
+         }
+        .sitediv .modal-title{
+            text-align:right;
+        }
+        .sitediv .modal-title+.modal-text{
+            margin-top:0;
         }
 
-        /* 更多查询 第一个ul 样式*/
-        .morediv .modal-inner .list-block:first-child ul:first-child li{
-          float:left; width:25%;
+        .picdiv .modal-inner{
+             padding:0;
+         }
+        .picdiv .modal-title{
+            text-align:right;
         }
-        .morediv .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
-            width:.8rem;height:.8rem;
+        .picdiv .modal-title+.modal-text{
+            margin-top:0;
         }
-        .morediv .modal-inner .list-block:first-child .item-text{
-            height:1.1rem;font-size:.62rem;
-        }
-        .morediv .modal-inner .list-block:first-child label{
-          padding-left:0px;
-        }
-        .morediv .modal-inner .list-block:first-child label .item-inner{
-           margin-left:.2rem;padding-right:2px;
-        }
-        /************************************************ 查验标志*********************************/
-        .checkdiv{
+        /************************************************ 查询列表名称*********************************/
+        .girdnamediv {
             width: 98%;
             left: 1%;
             right: 1%;
             margin-left: 0px;
-        }  
-        .checkdiv .modal-inner{
-            height:15rem;
+            text-align: left;
+            top: 3.2rem;
         } 
+        .girdnamediv .modal-inner{
+           padding:0px;
+        }  
+
          /************************************************ 报关订阅*********************************/
         #popup-subscribe-log_con
         {
@@ -118,29 +121,138 @@
             font-size: .8rem;
         }
 
+        .float-button {
+            position: fixed;
+            bottom: 120px;
+            right: 0px;
+            z-index:300;
+        }
     </style>
 
     <script type="text/javascript">
-        var userid = "763", username = "昆山吉时报关有限公司", openid = "ohNOmwZOt0tNr9WN7s1i7dHqOQnU";
+        var v_userid = "", v_username = "";// var v_userid = "763", v_username = "昆山吉时报关有限公司";
 
         $(function () {
+            //---------------------------------------------------------------------------------------------------------------获取当前登录人及姓名
+            $.ajax({
+                type: "post", //要用post方式                 
+                url: "SiteDeclareList.aspx/getcuruser",//方法所在页面和方法名
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: "{}",
+                cache: false,
+                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                success: function (data) {
+                    var obj = eval("(" + data.d + ")");
+                    if (obj.length == 1) {
+                        v_userid = obj[0]["USERID"]; v_username = obj[0]["USERNAME"];
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                    //alert(XMLHttpRequest.status);
+                    //alert(XMLHttpRequest.readyState);
+                    //alert(textStatus);
+                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                }
+            });
+            //---------------------------------------------------------------------------------------------------------------列表名称
+            function showGridName() {
+                var strname = '<div class="list-block" style="margin:0;font-size:small;">'
+                            + '<ul>'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
+                                        + '<div class="item-title col-40">收发货人</div>'
+                                        + '<div class="item-title col-25">业务类型</div>'
+                                        + '<div class="item-title col-33">订单编号</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
+                                        + '<div class="item-title col-40">总分单号</div>'
+                                        + '<div class="item-title col-25">申报方式</div>'
+                                        + '<div class="item-title col-33">企业编号</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
+                                        + '<div class="item-title col-40">现场报关</div>'
+                                        + '<div class="item-title col-25">件数/毛重</div>'
+                                        + '<div class="item-title col-33">合同号</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
+                                        + '<div class="item-title col-40">查验维护</div>'
+                                        + '<div class="item-title col-25">查验/稽核</div>'
+                                        + '<div class="item-title col-33">两单关联</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.1rem;height:1.1rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.1rem;height:1.1rem;">'//border:2px solid #0894EC;
+                                        + '<div class="item-title col-40">现场放行</div>'
+                                        + '<div class="item-title col-25">查验图片</div>'
+                                        + '<div class="item-title col-33">多单关联</div>'
+                                    + '</div>'
+                                + '</li>'
+                            + '</ul>'
+                        + '</div>';
+                $.modal({
+                    //title: '<b>更多查询</b>',
+                    text: strname,
+                    //buttons: [{ text: '取消', bold: true, onClick: function () { } }],
+                    extraClass: 'girdnamediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $(document).on('click', '.girdnamediv', function () {
+                    $.closeModal(".girdnamediv");
+                });
+
+            }
+
             initsearch_condition();
+            initSerach_SiteDeclare();
 
             var loading = false;
             var itemsPerLoad = 10;// 每次加载添加多少条目                
             var maxItems = 100;// 最多可加载的条目
-            var lastIndex = 0;//$('.list-block').length;//.list-container li       
+            var lastIndex = 0;//$('.list-block').length;//.list-container li     
+            
+            $("#btn_gridname_m").click(function () {
+                showGridName();
+            });
 
-            $(document).on('click', '.open-preloader-title', function () {
+            $("#btn_search_m").click(function () {
                 select();
             });
+            $("#btn_reset_m").click(function () {
+                $("#txt_siteapplytime_s").val(""); $("#txt_siteapplytime_e").val("");
+                $("#txt_siteapplytime_s").calendar({}); $("#txt_siteapplytime_e").calendar({});//否则之前选的那天  不能再次选中
+
+                $("#txt_declcode").val(""); $("#txt_customareacode").val("");
+                $("#picker_is_pass").picker("setValue", ["全部"]); $("#picker_ischeck").picker("setValue", ["全部"]);
+
+                $("#txt_busitype").val("");
+                $("#txt_modifyflag").val("");
+                $("#txt_auditflag").val("");
+
+                $("#txt_busiunit").val(""); 
+                $("#txt_ordercode").val(""); 
+                $("#txt_cusno").val("");
+                $("#txt_divideno").val(""); 
+                $("#txt_contractno").val(""); 
+                $("#txt_submittime_s").val(""); 
+                $("#txt_submittime_e").val(""); 
+                $("#txt_sitepasstime_s").val(""); 
+                $("#txt_sitepasstime_e").val(""); 
+            });
+
 
             function select() {
                 $.showPreloader('加载中...');
                 setTimeout(function () {
                     $.closeModal();
                     //首次查询需要置为初始值
-                    $('#div_list').html("");
+                    $('#div_list').html(""); $("#span_curchose").text(0);
                     loading = false; itemsPerLoad = 10; lastIndex = 0;
                     var scroller = $('.native-scroll');
 
@@ -202,15 +314,163 @@
                 });
             });
 
+            //$("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
+            //    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+            //        $(this).children("ul").css('background-color', '#fff');
+            //    } else {
+            //        $("#div_list .list-block ul").css('background-color', '#fff');
+            //        $(this).children("ul").css('background-color', '#C1DDF1');
+            //    }
+            //});
+
             $("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
+                var curcount = parseInt($("#span_curchose").text());
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                     $(this).children("ul").css('background-color', '#fff');
+                    curcount = curcount - 1;
                 } else {
-                    $("#div_list .list-block ul").css('background-color', '#fff');
                     $(this).children("ul").css('background-color', '#C1DDF1');
+                    curcount++;
                 }
+                $("#span_curchose").text(curcount);
             });
 
+            //现场报关放行
+            $("#Siteapply_Pass_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount <= 0) {
+                    $.toast("请选择需要报关放行的记录");
+                    return;
+                }
+
+                var arr_divid = new Array();
+                $("#div_list .list-block").each(function () {
+                    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                        arr_divid.push($(this)[0].id.substring(6));////order_
+                    }
+                });
+                var arr_divids = JSON.stringify(arr_divid);//将数组转为JSON字符串
+
+                $.modal({
+                    title: '<i id="sitecancel" class="iconfont" style="font-size:1.3rem;">&#xea4f;</i>',
+                    text: '<span style="font-weight:800;">现场报关放行</span>' +
+                            '<div class="content-block row" style="margin:0;padding:.75rem;">' +
+                                '<div class="col-50"><a href="#" id="siteapply" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">现场报关</a></div>' +
+                                '<div class="col-50"><a href="#" id="sitepass" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">现场放行</a></div>' +
+                            '</div>',
+                    //title: '现场报关放行',
+                    //text: '<div class="content-block row" style="margin:1rem 0;padding:0;">' +
+                    //            '<div class="col-20"><a href="#" id="sitecancel" class="button" style="padding:0 0;background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                    //            '<div class="col-40"><a href="#" id="siteapply" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">现场报关</a></div>' +
+                    //            '<div class="col-40"><a href="#" id="sitepass" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">现场放行</a></div>' +
+                    //        '</div>',
+                    extraClass: 'sitediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $("#sitecancel").click(function () {
+                    $.closeModal(".sitediv");
+                });
+
+                $("#siteapply").click(function () {
+                    $.closeModal(".sitediv");
+
+                    $.confirm('请确认是否需要<font color=blue>现场报关</font>?',
+                        function () {//OK事件
+                            $.ajax({
+                                type: "post", //要用post方式                 
+                                url: "SiteDeclareList.aspx/Siteapplyall",//方法所在页面和方法名
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: "{'ordercode':'" + arr_divids + "'}",
+                                cache: false,
+                                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                                success: function (data) {
+                                    var obj = eval("(" + data.d + ")");
+
+                                    var count_s = 0, count_e = 0, count_r = 0;
+                                    for (var i = 0; i < obj.length; i++) {
+                                        if (obj[i]["ISEXISTS"] == "Y") { count_r++; }
+                                        else {
+                                            if (obj[i]["FLAG"] == "S") {
+                                                count_s++;
+                                                $("#div_list #order_" + obj[i]["ORDERCODE"]).children("ul").children().eq(2).children("div").children().eq(0).text(obj[i]["CURTIME"]);//更新现场报关时间
+                                            }
+                                            if (obj[i]["FLAG"] == "E") { count_e++; }
+                                        }
+                                    }
+
+                                    var msg = "";//"当前选中" + arr_divid.length + "笔";
+                                    if (count_s > 0) { msg = msg + ",成功" + count_s + "笔"; }
+                                    if (count_e > 0) { msg = msg + ",失败" + count_e + "笔"; }
+                                    if (count_r > 0) { msg = msg + ",已存在" + count_r + "笔"; }
+
+                                    if (msg == "") { msg = "系统异常，请重新登录！"; }
+                                    else { msg = msg.substr(1);}
+                                    $.toast(msg);
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                                    //alert(XMLHttpRequest.status);
+                                    //alert(XMLHttpRequest.readyState);
+                                    //alert(textStatus);
+                                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                                }
+                            });
+                        },
+                        function () { }//cancel事件
+                      );
+                });
+
+                $("#sitepass").click(function () {
+                    $.closeModal(".sitediv");
+
+                    $.confirm('请确认是否需要<font color=blue>现场放行</font>?',
+                        function () {//OK事件
+                            $.ajax({
+                                type: "post", //要用post方式                 
+                                url: "SiteDeclareList.aspx/Passall",//方法所在页面和方法名
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: "{'ordercode':'" + arr_divids + "'}",
+                                cache: false,
+                                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                                success: function (data) {
+                                    var obj = eval("(" + data.d + ")");
+
+                                    var count_s = 0, count_e = 0, count_r = 0;
+                                    for (var i = 0; i < obj.length; i++) {
+                                        if (obj[i]["ISEXISTS"] == "Y") { count_r++; }
+                                        else {
+                                            if (obj[i]["FLAG"] == "S") {
+                                                count_s++;
+                                                $("#div_list #order_" + obj[i]["ORDERCODE"]).children("ul").children().eq(4).children("div").children().eq(0).text(obj[i]["CURTIME"]);//更新现场放行时间
+                                            }
+                                            if (obj[i]["FLAG"] == "E") { count_e++; }
+                                        }
+                                    }
+
+                                    var msg = "";//"当前选中" + arr_divid.length + "笔";
+                                    if (count_s > 0) { msg = msg + ",成功" + count_s + "笔"; }
+                                    if (count_e > 0) { msg = msg + ",失败" + count_e + "笔"; }
+                                    if (count_r > 0) { msg = msg + ",已存在" + count_r + "笔"; }
+
+                                    if (msg == "") { msg = "系统异常，请重新登录！"; }
+                                    else { msg = msg.substr(1); }
+                                    $.toast(msg);
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                                    //alert(XMLHttpRequest.status);
+                                    //alert(XMLHttpRequest.readyState);
+                                    //alert(textStatus);
+                                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
+                                }
+                            });
+                        },
+                        function () { }//cancel事件
+                      );
+                });
+            });
+
+            /*
             //现场报关
             $("#Siteapply_a").click(function () {
                 var divid = "";//order_
@@ -259,10 +519,16 @@
                 function () { }//cancel事件
               );
 
-            });
+            });*/
 
             //报关单详细
             $("#Detail_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔报关详细记录");
+                    return;
+                }
+
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
@@ -270,10 +536,10 @@
                         //alert($(this).children("ul").children().eq(4).children("div").children().eq(0).text());
                     }
                 });
-                if (divid == "") {
-                    $.toast("请选择需要查看的记录");
-                    return;
-                }
+                //if (divid == "") {
+                //    $.toast("请选择需要查看的记录");
+                //    return;
+                //}
 
                 var strconHTML = "";
 
@@ -332,9 +598,16 @@
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-title col-25">查验维护</div>'
+                                                    + '<div class="item-title col-25">报关查验</div>'
                                                     + '<div class="item-title col-50">' + (jsonorder[0]["DECLCHECKTIME"] == null ? "" : jsonorder[0]["DECLCHECKTIME"]) + '</div>'
                                                     + '<div class="item-title col-25">' + (jsonorder[0]["DECLCHECKNAME"] == null ? "" : jsonorder[0]["DECLCHECKNAME"]) + '</div>'
+                                                + '</div>'
+                                            + '</li>'
+                                            + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                                + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
+                                                    + '<div class="item-title col-25">报关稽核</div>'
+                                                    + '<div class="item-title col-50">' + (jsonorder[0]["AUDITFLAGTIME"] == null ? "" : jsonorder[0]["AUDITFLAGTIME"]) + '</div>'
+                                                    + '<div class="item-title col-25">' + (jsonorder[0]["AUDITFLAGNAME"] == null ? "" : jsonorder[0]["AUDITFLAGNAME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
@@ -418,13 +691,15 @@
                 var popupHTML = '<div class="popup">' +
                                  '<div class="content">' +//data-type='native'                                                                               
                                         strconHTML +
-                                        '<div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
+                                        //'<div class="content-block"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
+                                        '<div class="content-block"><a href="#" class="close-popup button button-fill" style="background-color: #3d4145;border-radius:0;color:white;border:0;">返回</a></div>' +
                                  '</div>' +
                              '</div>';
                 $.popup(popupHTML);
 
             });
 
+            /*
             //报关单放行
             $("#Pass_a").click(function () {
                 var divid = "";//order_
@@ -474,9 +749,16 @@
                   );
 
             });
+            */
 
             //查验标志
             $("#Check_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔查验标志记录");
+                    return;
+                }
+
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
@@ -484,15 +766,21 @@
                         //alert($(this).children("ul").children().eq(2).children("div").children().eq(0).text());
                     }
                 });
-                if (divid == "") {
-                    $.toast("请选择需要查验标志的记录");
-                    return;
-                }
-               
+                //if (divid == "") {
+                //    $.toast("请选择需要查验标志的记录");
+                //    return;
+                //}
+
                 var strconHTML = "";
-                strconHTML = '<font class="title"><b>报关查验维护</b></font>';
+                strconHTML = '<font class="title"><b>报关查验稽核维护</b></font>';
 
                 strconHTML += '<div class="list-block" style="margin:0; margin-top:2rem;margin-buttom:2rem;margin-left:4%;margin-right:4%;line-height:1.5rem;font-size:.7rem">' +
+                                    '<div class="row"> ' +
+                                           //'<div class="col-50"><a href="#" class="close-popup button button-fill button-danger">返回</div>' +
+                                           //'<div class="col-50"><a href="#" id="check_audit_save" class="button button-fill">保存</a></div>' +
+                                            '<div class="col-50"><a href="#" class="close-popup button button-fill"  style="background-color: gray;border-radius:0;color:white;border:0;">返回</div>' +
+                                           '<div class="col-50" style="margin-left:0rem;"><a href="#" id="check_audit_save" class="button button-fill"  style="background-color: #3d4145;border-radius:0;color:white;border:0;">保存</a></div>' +
+                                    '</div>' +
                                     '<div class="row"> ' +
                                         '<div class="col-33">订单编号：</div>' +
                                         '<div class="col-66">' + divid.substring(6) + '</div>' +
@@ -501,17 +789,22 @@
                                         '<div class="col-33">企业编号：</div>' +
                                         '<div class="col-66">' + $("#div_list #" + divid).children("ul").children().eq(1).children("div").children().eq(2).text() + '</div>' +
                                     '</div> ' +
+                                    '<hr style="height:1px;border:none;border-top:1px dashed black;"/>' +
                                     '<div class="row"> ' +
-                                        '<div class="col-33">查验维护时间：</div>' +
+                                        '<div class="col-33">查验时间：</div>' +
                                         '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declchecktime" readonly /></div>' +
                                     '</div> ' +
                                         '<div class="row"> ' +
-                                        '<div class="col-33">查验维护人员：<input type="hidden" id="txt_declcheckid" readonly /></div>' +
+                                        '<div class="col-33">查验人员：<input type="hidden" id="txt_declcheckid" readonly /></div>' +
                                         '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declcheckname" readonly /></div>' +
+                                    '</div> ' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">查验备注：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_declcheckremark" readonly /></div>' +//:#ffffff
                                     '</div> ' +
                                 '</div>';
                 strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
-                                 '<ul>' +
+                                 '<ul style="background:#e8e8e8;">' +
                                    '<li>' +
                                        '<div class="row" style="height:2rem"> ' +
                                            '<div class="col-50" style="margin-top:.5rem;">箱号</div>' +
@@ -535,7 +828,7 @@
 
                         for (var i = 0; i < obj.length; i++) {
                             strconHTML += '<div class="list-block" style="margin:0;font-size:.7rem;margin-left:4%;margin-right:4%;">' +
-                                              '<ul>' +
+                                              '<ul style="background:#e8e8e8;">' +
                                                 '<li>' +
                                                     '<div class="row"> ' +
                                                        '<div class="col-50" style="margin-top:.5rem;">' + (obj[i]["CONTAINERNO"] == null ? "" : obj[i]["CONTAINERNO"]) + '</div>' +
@@ -561,66 +854,142 @@
                     }
                 });
 
-                var strconButton = '<div class="content-block">' +
+                var strconHTML2 = '<div class="list-block" style="margin:0; margin-top:2rem;margin-buttom:2rem;margin-left:4%;margin-right:4%;line-height:1.5rem;font-size:.7rem">' +
+                                    '<hr style="height:1px;border:none;border-top:1px dashed black;"/>' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">稽核时间：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_auditflagtime" readonly /></div>' +
+                                    '</div> ' +
                                         '<div class="row"> ' +
-                                            '<div class="col-33"><a href="#" id="checkcancel" class="button button-fill button-warning">撤销标志</a></div>' +
-                                            '<div class="col-33"><a href="#" id="checksave" class="button button-fill">查验标志</a></div>' +
-                                            '<div class="col-33"><a href="#" class="close-popup button button-fill button-danger">返回</a></div>' +
-                                        '</div>' +
-                                    '</div>';
+                                        '<div class="col-33">稽核人员：<input type="hidden" id="txt_auditflagid" readonly /></div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_auditflagname" readonly /></div>' +
+                                    '</div> ' +
+                                    '<div class="row"> ' +
+                                        '<div class="col-33">稽核内容：</div>' +
+                                        '<div class="col-66"><input type="text" style="background:#c7c7cc;height:1.2rem;font-size:.7rem" id="txt_auditcontent" readonly /></div>' +//:#ffffff
+                                    '</div> ' +
+                                '</div>';
 
-                var popupHTML = '<div class="popup">' +
+                
+                //var ButtonHTML = '<div class="content-block">' +
+                //                        '<div class="row"> ' +
+                //                            '<div class="col-50"><a href="#" class="close-popup button button-fill button-danger">返回</div>' +
+                //                            '<div class="col-50"><a href="#" id="check_audit_save" class="button button-fill">保存</a></div>' +
+                //                        '</div>' +
+                //                    '</div>';
+                var popupHTML = '<div class="popup" style="background:#e8e8e8;">' +
                                  '<div class="content">' +//data-type='native'                                                                               
                                         strconHTML +
-                                        strconButton +
+                                        strconHTML2 +
+                                        //ButtonHTML +
                                  '</div>' +
                              '</div>';
 
                 $.popup(popupHTML);
-                
-                var nd = new Date();
-                var y = nd.getFullYear();
-                var m = nd.getMonth() + 1;
-                var d = nd.getDate();
-                var h = nd.getHours();
-                var mi = nd.getMinutes();
 
-                if (m <= 9) m = "0" + m;
-                if (d <= 9) d = "0" + d;
-                if (h <= 9) h = "0" + h;
-                if (mi <= 9) mi = "0" + mi;
-                
-                //$("#txt_declchecktime").datetimePicker({ value: [y, m, d, h, mi] });//此行不用 ，用下一行代码，因为是只读，不允许操作
-                $("#txt_declchecktime").val(y + "" + m + "" + d + " " + h + ":" + mi);//初始化日期时间
+                $.ajax({
+                    type: "post", //要用post方式                 
+                    url: "SiteDeclareList.aspx/loadcheckdata",//方法所在页面和方法名
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: "{'ordercode':'" + divid.substring(6) + "'}",
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        var obj = eval("(" + data.d + ")");//将字符串转为json
 
-                $("#txt_declcheckid").val("763");//当前登录人id
-                $("#txt_declcheckname").val("昆山吉时报关有限公司");//当前登录人name
+                        if (obj.length > 0) {
+                            $("#txt_declchecktime").val(obj[0]["DECLCHECKTIME"] == null ? "" : obj[0]["DECLCHECKTIME"]);//初始化日期时间
+                            $("#txt_declcheckid").val(obj[0]["DECLCHECKID"] == null ? "" : obj[0]["DECLCHECKID"]);//当前登录人id
+                            $("#txt_declcheckname").val(obj[0]["DECLCHECKNAME"] == null ? "" : obj[0]["DECLCHECKNAME"]);//当前登录人name
+                            $("#txt_declcheckremark").val(obj[0]["DECLCHECKREMARK"] == null ? "" : obj[0]["DECLCHECKREMARK"]);//查验备注赋值
 
-                $("#checkcancel").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
+                            if ($("#txt_declchecktime").val() != "") {
+                                $("#txt_declcheckremark").removeAttr('readonly'); $("#txt_declcheckremark").css('background','#ffffff');
+                            }
 
-                    if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() == getname("ISCHECK", 0)) {
-                        $.toast("还未查验，无需撤销");
-                        return;
+                            $("#txt_auditflagtime").val(obj[0]["AUDITFLAGTIME"] == null ? "" : obj[0]["AUDITFLAGTIME"]);//初始化日期时间
+                            $("#txt_auditflagid").val(obj[0]["AUDITFLAGID"] == null ? "" : obj[0]["AUDITFLAGID"]);//当前登录人id
+                            $("#txt_auditflagname").val(obj[0]["AUDITFLAGNAME"] == null ? "" : obj[0]["AUDITFLAGNAME"]);//当前登录人name
+                            $("#txt_auditcontent").val(obj[0]["AUDITCONTENT"] == null ? "" : obj[0]["AUDITCONTENT"]);//稽核内容赋值
+
+                            if ($("#txt_auditflagtime").val() != "") {
+                                $("#txt_auditcontent").removeAttr('readonly'); $("#txt_auditcontent").css('background', '#ffffff');
+                            }
+                        }
+
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                        //alert(XMLHttpRequest.status);
+                        //alert(XMLHttpRequest.readyState);
+                        //alert(textStatus);
+                        alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
                     }
+                });
 
-                    $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
+                $("#txt_declchecktime").click(function () {
+                    if ($("#txt_declchecktime").val() == "") {
+                        $("#txt_declchecktime").val(getNowDate());//当前时间
+                        $("#txt_declcheckid").val(v_userid);//当前登录人id
+                        $("#txt_declcheckname").val(v_username);//当前登录人name
+                        $("#txt_declcheckremark").removeAttr('readonly'); $("#txt_declcheckremark").css('background', '#ffffff');
+                    } else {
+                        $.confirm('请确认是否需要<font color=blue>撤销查验</font>?',
+                        function () {//OK事件
+                            $("#txt_declchecktime").val("");
+                            $("#txt_declcheckid").val("");
+                            $("#txt_declcheckname").val("");
+                            $("#txt_declcheckremark").val("");
+                            $("#txt_declcheckremark").prop('readonly', 'readonly'); $("#txt_declcheckremark").css('background', '#c7c7cc');
+                        });
+                    }                    
+                });
+
+                $("#txt_auditflagtime").click(function () {
+                    if ($("#txt_auditflagtime").val() == "") {
+                        $("#txt_auditflagtime").val(getNowDate());
+                        $("#txt_auditflagid").val(v_userid);//当前登录人id
+                        $("#txt_auditflagname").val(v_username);//当前登录人name
+                        $("#txt_auditcontent").removeAttr('readonly'); $("#txt_auditcontent").css('background', '#ffffff');
+                    } else {
+                        $.confirm('请确认是否需要<font color=blue>撤销稽核</font>?',
+                        function () {//OK事件
+                            $("#txt_auditflagtime").val("");
+                            $("#txt_auditflagid").val("");
+                            $("#txt_auditflagname").val("");
+                            $("#txt_auditcontent").val("");
+                            $("#txt_auditcontent").prop('readonly', 'readonly'); $("#txt_auditcontent").css('background', '#c7c7cc');
+                        });
+                    }
+                });
+
+                $("#check_audit_save").click(function () {
+                    $.confirm('请确认是否<font color=blue>保存</font>?',
                          function () {//OK事件
                              $.ajax({
                                  type: "post", //要用post方式                 
-                                 url: "SiteDeclareList.aspx/checkcancel",//方法所在页面和方法名
+                                 url: "SiteDeclareList.aspx/check_audit_save",//方法所在页面和方法名
                                  contentType: "application/json; charset=utf-8",
                                  dataType: "json",
-                                 data: "{'ordercode':'" + divid.substring(6) + "'}",
+                                 data: "{'ordercode':'" + divid.substring(6)
+                                     + "','checktime':'" + $("#txt_declchecktime").val() + "','checkname':'" + $("#txt_declcheckname").val()
+                                     + "','checkid':'" + $("#txt_declcheckid").val() + "','checkremark':'" + $("#txt_declcheckremark").val()
+                                     + "','auditflagtime':'" + $("#txt_auditflagtime").val() + "','auditflagname':'" + $("#txt_auditflagname").val()
+                                     + "','auditflagid':'" + $("#txt_auditflagid").val() + "','auditcontent':'" + $("#txt_auditcontent").val()
+                                     + "'}",
                                  cache: false,
                                  async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                                  success: function (data) {
-                                     if (data.d == "sucess") {
-                                         $.toast("撤销成功");
-                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text("");//更新查验时间
-                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("ISCHECK", 0));
-                                         $("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(1).text(getname("CHECKPIC", 0));
+                                     var obj = eval("(" + data.d + ")");
+                                     if (obj.length == 1) {
+                                         $.toast("保存成功");
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(obj[0]["DECLCHECKTIME"]);//更新查验时间
+                                         $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname2("ISCHECK", obj[0]["ISCHECK"], obj[0]["AUDITFLAG"]));                                         
+                                         $("#div_list #" + divid).children("ul").children().eq(4).children("div").children().eq(1).text(getname("CHECKPIC", obj[0]["CHECKPIC"]));
+
+                                         //obj[0]["AUDITFLAGTIME"]//更新稽核时间
                                      } else {
-                                         $.toast("撤销失败");
+                                         $.toast("保存失败");
                                      }
                                  },
                                  error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
@@ -630,71 +999,59 @@
                                      alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
                                  }
                              });
-                         },
-                         function () { }//cancel事件
-                       );
+                         });
                 });
-
-                $("#checksave").click(function () {//初始化注册事件，必须是在HTML生成之后才能注册，否则无效
-                    $.confirm('请确认是否需要<font color=blue>查验</font>?',
-                        function () {//OK事件
-                            $.ajax({
-                                type: "post", //要用post方式                 
-                                url: "SiteDeclareList.aspx/checksave",//方法所在页面和方法名
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                data: "{'ordercode':'" + divid.substring(6) + "','checktime':'" + $("#txt_declchecktime").val()
-                                    + "','checkname':'" + $("#txt_declcheckname").val() + "','checkid':'" + $("#txt_declcheckid").val() + "'}",
-                                cache: false,
-                                async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
-                                success: function (data) {
-                                    if (data.d != "") {
-                                        $.toast("查验成功");
-                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(0).text(data.d);//更新查验时间
-                                        $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text(getname("ISCHECK", 1));
-                                    } else {
-                                        $.toast("查验失败");
-                                    }
-                                },
-                                error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
-                                    //alert(XMLHttpRequest.status);
-                                    //alert(XMLHttpRequest.readyState);
-                                    //alert(textStatus);
-                                    alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
-                                }
-                            });
-                        },
-                        function () { }//cancel事件
-                      );
-                });
-
             });
 
             //查验图片
             $("#Picture_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔查验图片记录");
+                    return;
+                }
+
                 var divid = "";//order_
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         divid = $(this)[0].id;
                     }
                 }); 
-                if (divid == "") {
-                    $.toast("请选择需要查验图片的记录");
+                //if (divid == "") {
+                //    $.toast("请选择需要查验图片的记录");
+                //    return;
+                //}
+
+                var concheck = $("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text();
+
+                if (concheck != getname2("ISCHECK", 1, 0) && concheck != getname2("ISCHECK", 1, 1)) {
+                    $.toast("无查验标志，不能使用查验图片功能");
                     return;
                 }
 
-                if ($("#div_list #" + divid).children("ul").children().eq(3).children("div").children().eq(1).text() != getname("ISCHECK", 1)) {
-                    $.toast("无查验标志，不能使用查验图片功能");
-                    return;
-                }                
 
                 $.modal({
-                    title: '查验图片',
-                    text: '<div class="content-block row">' +
-                                '<div class="col-50"><a href="#" id="picfileupload" class="button button-fill">上传</a></div>' +
-                                '<div class="col-50"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
+                    title: '<i id="picfilecancel" class="iconfont" style="font-size:1.3rem;">&#xea4f;</i>',
+                    text: '<span style="font-weight:800;">查验图片</span>' +
+                            '<div class="content-block row" style="margin:0;padding:.75rem;">' +
+                                '<div class="col-50"><a href="#" id="picfileupload" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">上传</a></div>' +
+                                '<div class="col-50"><a href="#" id="picfileconsult" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">调阅</a></div>' +
                             '</div>',
+                    //title: '查验图片',
+                    //text: '<div class="content-block row" style="margin:1rem 0;">' +
+                    //            //'<div class="col-33"><a href="#" id="picfilecancel" class="button button-fill">返回</div>' +
+                    //            //'<div class="col-33"><a href="#" id="picfileupload" class="button button-fill">上传</a></div>' +
+                    //            //'<div class="col-33"><a href="#" id="picfileconsult" class="button button-fill">调阅</a></div>' +
+
+                    //            '<div class="col-33"><a href="#" id="picfilecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                    //            '<div class="col-33"><a href="#" id="picfileupload" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">上传</a></div>' +
+                    //            '<div class="col-33"><a href="#" id="picfileconsult" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">调阅</a></div>' +
+                    //        '</div>',
                     extraClass: 'picdiv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $("#picfilecancel").click(function () {
+                    $.closeModal(".picdiv");
                 });
 
                 $("#picfileupload").click(function () {
@@ -791,6 +1148,12 @@
             });
 
             $("#Subs_log_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔订阅记录");
+                    return;
+                }
+
                 var divid = "";//order_
                 var cusno = "";
                 $("#div_list .list-block").each(function () {
@@ -799,10 +1162,10 @@
                         cusno = $(this).children("ul").children().eq(1).children("div").children().eq(2).text();
                     }
                 });
-                if (divid == "") {
-                    $.toast("请选择需要订阅的记录");
-                    return;
-                }
+                //if (divid == "") {
+                //    $.toast("请选择需要订阅的记录");
+                //    return;
+                //}
                 $.popup("#popup-subscribe-log");
 
                 $(document).on('open', '#popup-subscribe-log', function () {
@@ -850,7 +1213,7 @@
                     url: '/Page/MyBusiness/MyBusiness.aspx/SubscribeStatus',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'type':'" + type + "','status':'" + status + "','cusno':'" + cusno + "','declarationcode':'','userid':'" + userid + "','username':'" + username + "','openid':'" + openid + "'}",
+                    data: "{'type':'" + type + "','status':'" + status + "','cusno':'" + cusno + "','declarationcode':'','ordercode':'" + ordercode + "'}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
@@ -860,6 +1223,37 @@
 
             });
 
+            
+            //打开订阅详情弹出框
+            $(document).on('click', '.open-subinfo_busi', function () {
+
+                subinfoload_busi();
+
+            });
+
+            //条码扫描
+            $("#btn_barcode").click(function () {
+                wx.ready(function () {
+                    wx.scanQRCode({
+                        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                        scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                        success: function (res) {
+                            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                            var serial = result.split(",");
+                            var serialNumber = serial[serial.length - 1];
+                            $("#txt_declcode").val(serialNumber);
+                        }
+                    });
+
+                });
+                //初始化jsapi接口 状态
+                wx.error(function (res) {
+                    alert("调用微信jsapi返回的状态:" + res.errMsg);
+                });
+            });
+
+
+
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
             function loaddata(itemsPerLoad, lastIndex) {
@@ -868,16 +1262,25 @@
                     url: "SiteDeclareList.aspx/BindList",//方法所在页面和方法名
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'inout_type':'" + $("#picker_inout_type").val() + "','issiterep':'" + $("#picker_is_siterep").val() + "','busitype':'" + $("#picker_busitype").val()
-                        + "','ispass':'" + $("#picker_is_pass").val() + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
-                        + "','radiotype':'" + $("#txt_radio_type_hidden").val() + "','morecon':'" + $("#txt_morecon_hidden").val() 
+                    data: "{'siteapplytime_s':'" + $("#txt_siteapplytime_s").val() + "','siteapplytime_e':'" + $("#txt_siteapplytime_e").val() + "','declcode':'" + $("#txt_declcode").val()
+                        + "','customareacode':'" + $("#txt_customareacode").val() + "','ispass':'" + $("#picker_is_pass").val() + "','ischeck':'" + $("#picker_ischeck").val()
+                        + "','busitype':\"" + $("#txt_busitype").val() + "\",'modifyflag':'" + $("#txt_modifyflag").val() + "','auditflag':'" + $("#txt_auditflag").val()
+                        + "','busiunit':'" + $("#txt_busiunit").val() + "','ordercode':'" + $("#txt_ordercode").val() + "','cusno':'" + $("#txt_cusno").val()
+                        + "','divideno':'" + $("#txt_divideno").val() + "','contractno':'" + $("#txt_contractno").val() + "','submittime_s':'" + $("#txt_submittime_s").val()
+                        + "','submittime_e':'" + $("#txt_submittime_e").val() + "','sitepasstime_s':'" + $("#txt_sitepasstime_s").val() + "','sitepasstime_e':'" + $("#txt_sitepasstime_e").val()
                         + "','start':" + lastIndex + ",'itemsPerLoad':" + itemsPerLoad + "}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
-                        var obj = eval("(" + data.d + ")");//将字符串转为json
+                        if (data.d == "") {
+                            $("#span_sum").text("0");
+                            $('#div_list').append("");
+                            return;
+                        }
 
-                        
+                        var objdata = eval("(" + data.d + ")");//将字符串转为json                        
+                        var obj = objdata[0]["data"];
+                        $("#span_sum").text(objdata[0]["sum"]); 
 
                         var tb = "";
                         var blno_busi = "";//分提单号
@@ -936,7 +1339,7 @@
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-40">' + (obj[i]["DECLCHECKTIME"] == null ? "" : obj[i]["DECLCHECKTIME"]) + '</div>'
-                                                + '<div class="item-title col-25">' + getname("ISCHECK", obj[i]["ISCHECK"]) + '</div>'
+                                                + '<div class="item-title col-25">' + getname2("ISCHECK", obj[i]["ISCHECK"], obj[i]["AUDITFLAG"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["ASSOCIATENO"] == null ? "" : obj[i]["ASSOCIATENO"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
@@ -982,13 +1385,6 @@
                     case "51": str = "特殊进口"; break;
                 }
             }
-            if (key == "ISCHECK") {
-                switch (value) {
-                    case 0: str = ""; break;//未查验
-                    case 1: str = "查验"; break;//已查验
-                    default: str = ""; break;//未查验
-                }
-            }
             if (key == "CHECKPIC") {
                 switch (value) {
                     case 0: str = ""; break;//无查验图
@@ -1006,47 +1402,33 @@
             }
             return str;
         }
+
+        function getname2(key, value, value2) {
+            var restr = ""; var str = ""; var str2 = "";
+            if (key == "ISCHECK") {
+
+                switch (value) {
+                    case 0: str = ""; break;//未查验
+                    case 1: str = "查验"; break;//已查验
+                    default: str = ""; break;//未查验
+                }
+
+                switch (value2) {
+                    case 0: str2 = ""; break;//未稽核
+                    case 1: str2 = "稽核"; break;//已稽核
+                    default: str2 = ""; break;//未稽核
+                }
+
+                if (str == "" && str2 == "") { restr = ""; }
+                if (str == "" && str2 != "") { restr = "/" + str2; }
+                if (str != "" && str2 == "") { restr = str; }
+                if (str != "" && str2 != "") { restr = str + "/" + str2; }
+
+            }
+            return restr;
+        }
         
         function initsearch_condition() {
-            $("#picker_inout_type").picker({
-                toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择进出口</h1>\
-                      </header>',
-                cols: [
-                  {
-                      textAlign: 'center',
-                      values: ['全部', '进口', '出口']
-                  }
-                ]
-            });
-
-            $("#picker_is_siterep").picker({
-                toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择现场报关</h1>\
-                      </header>',
-                cols: [
-                  {
-                      textAlign: 'center',
-                      values: ['全部', '仅现场']
-                  }
-                ]
-            });
-
-            $("#picker_busitype").picker({
-                toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择业务类型</h1>\
-                      </header>',
-                cols: [
-                  {
-                      textAlign: 'center',
-                      values: ['全部', '空运', '海运', '陆运', '国内', '特殊区域']
-                  }
-                ]
-            });
-
             $("#picker_is_pass").picker({
                 toolbarTemplate: '<header class="bar bar-nav">\
                       <button class="button button-link pull-right close-picker">确定</button>\
@@ -1060,101 +1442,87 @@
                 ]
             });
 
-            $("#txt_startdate").calendar({});
-            $("#txt_enddate").calendar({});
+            $("#picker_ischeck").picker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择查验情况</h1>\
+                      </header>',
+                cols: [
+                  {
+                      textAlign: 'center',
+                      values: ['全部', '查验', '未查验']
+                  }
+                ]
+            });
 
-            $(document).on('click', '.open-tabs-modal', function () {
-                $.modal({
-                    title: '更多查询',
-                    text: '<div class="list-block" style="margin:0;">' +
-                              '<ul>' +
-                                '<li>' +
-                                    '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="报关单号" checked>' +
-                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                        '<div class="item-inner">' +
-                                            '<div class="item-text">报关单号</div>' +
-                                        '</div>' +
-                                    '</label>' +
-                                '</li>' +
-                                '<li>' +
-                                    '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="收发货人">' +
-                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                        '<div class="item-inner">' +
-                                            '<div class="item-text">收发货人</div>' +
-                                        '</div>' +
-                                    '</label>' +
-                                '</li>' +
-                                '<li>' +
-                                    '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="客户编号">' +
-                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                        '<div class="item-inner">' +
-                                            '<div class="item-text">客户编号</div>' +
-                                        '</div>' +
-                                    '</label>' +
-                                '</li>' +
-                                '<li>' +
-                                    '<label class="label-checkbox item-content">' +
-                                        '<input type="radio" name="radio_type" value="业务编号">' +
-                                        '<div class="item-media"><i class="icon icon-form-checkbox"></i></div>' +
-                                        '<div class="item-inner">' +
-                                            '<div class="item-text">业务编号</div>' +
-                                        '</div>' +
-                                    '</label>' +
-                                '</li>' +
-                            '</ul>' +
-                        '</div>' +
-                        '<div class="list-block" style="margin:0;">' +
-                            '<input type="text" style="background:#fff;height:1.5rem;font-size:.62rem" id="txt_morecon" value="' + $("#txt_morecon_hidden").val() + '" />' +
-                            '<p id="p_morecon" style="font-size:.62rem;text-align:left;">注意：请输入报关单后9位或18位报关号</p>' +
-                        '</div>',
-                    buttons: [
-                     {
-                         text: '确认', bold: true,
-                         onClick: function () {
-                             $("#txt_radio_type_hidden").val($("input[name='radio_type']:checked").val());//单选类别
-                             $("#txt_morecon_hidden").val($("#txt_morecon").val());//文本框值
-                             //select();//暂时不要用，默认点查询按钮才查询
-                         }
-                     },
-                     {
-                         text: '取消', bold: true,
-                         onClick: function () { }
-                     },
-                     {
-                         text: '重置', bold: true,
-                         onClick: function () {
-                             $("#picker_inout_type").picker("setValue", ["全部"]); $("#picker_is_siterep").picker("setValue", ["仅现场"]);
-                             $("#picker_busitype").picker("setValue", ["全部"]); $("#picker_is_pass").picker("setValue", ["未放行"]);
-                             $("#txt_startdate").val(""); $("#txt_enddate").val("");
-                             $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
+            //初始化时间控件
+            //var before = new Date();
+            //before.setDate(before.getDate() - 3);
+            //var beforeday = before.Format("yyyy-MM-dd");
 
-                             //$("input[name='radio_type']").prop('checked', false); $("#txt_morecon").val("");//因每次窗口都是新开的，可以不用置空，置空隐藏值即可
-                             $("#txt_radio_type_hidden").val(""); $("#txt_morecon_hidden").val("");
-                         }
-                     }
-                    ],
-                    extraClass: 'morediv'//避免直接设置.modal的样式，从而影响其他toast的提示
-                });
-                
-                $('input[name="radio_type"]').change(function (e) {
-                    var radio_type_checked = $("input[name='radio_type']:checked").val();
-                    if (radio_type_checked == "报关单号") { $("#p_morecon").text("注意：请输入报关单后9位或18位报关号"); }
-                    if (radio_type_checked == "收发货人") { $("#p_morecon").text("注意：请输入4位以上连续名称"); }
-                    if (radio_type_checked == "客户编号") { $("#p_morecon").text("注意：请输入后5位以上的号码"); }
-                    if (radio_type_checked == "业务编号") { $("#p_morecon").text("注意：请输入后5位以上的编号"); }
-                });
+            //var now = new Date();
+            //var today = now.Format("yyyy-MM-dd");
 
-                //radio 初始化上次 点击 确认后 选中的值（文本框的默认值上面直接绑定在value上了）
-                if ($("#txt_radio_type_hidden").val() != "") {
-                    $('input[name="radio_type"][value="' + $("#txt_radio_type_hidden").val() + '"]').prop("checked", true);
-                    $('input[name="radio_type"]').trigger('change');//触发change事件
+            //$("#txt_siteapplytime_s").val(beforeday);
+            //$("#txt_siteapplytime_s").calendar({ value: [beforeday] });
+
+            //$("#txt_siteapplytime_e").val(today);
+            //$("#txt_siteapplytime_e").calendar({ value: [today] });
+            $("#txt_siteapplytime_s").calendar({});
+            $("#txt_siteapplytime_e").calendar({});
+            
+        }
+
+        function getNowDate() {
+            var nd = new Date();
+            var y = nd.getFullYear();
+            var m = nd.getMonth() + 1;
+            var d = nd.getDate();
+            var h = nd.getHours();
+            var mi = nd.getMinutes();
+
+            if (m <= 9) m = "0" + m;
+            if (d <= 9) d = "0" + d;
+            if (h <= 9) h = "0" + h;
+            if (mi <= 9) mi = "0" + mi;
+
+            return y + "" + m + "" + d + " " + h + ":" + mi;
+        }
+
+        //清除选中
+        function clearSelect() {
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    $(this).children("ul").css('background-color', '#fff');
+                    $("#span_curchose").text(0);
                 }
-
             });
         }
+
+      
+        //打开详情弹出框
+        $(document).on('click', '.open-detail', function () {
+            var curcount = parseInt($("#span_curchose").text());
+            if (curcount != 1) {
+                $.toast("请选择一笔记录查看详情");
+                return;
+            }
+            var ordercode = "";
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    ordercode = $(this)[0].id;
+                }
+            });
+
+            if (ordercode != "") {
+                ordercode = ordercode.substring(6);
+                getBusiInfo_customer(ordercode);
+            }
+            else {
+                $.toast("请选择需要一条记录");
+            }
+        });
+
 
     </script>
 
@@ -1163,43 +1531,65 @@
     <div class="page-group">
         <div id="page-infinite-scroll-bottom" class="page page-current">
             <%--search --%>
-            <header class="bar bar-nav" style="height:5rem;"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
+            <header class="bar bar-nav" style="height:5.5rem;"> <%--style="height:5rem;"--%><%--暂时不用，就是查询背景色第二行--%>
                 <div class="search-input">                    
                     <div class="row"> 
-                        <div class="col-25"><input type="search" id='picker_inout_type' placeholder='进出口'/></div> <%--value="全部"--%>
-                        <div class="col-25"><input type="search" id='picker_is_siterep' placeholder='现场报关'/></div><%--value="仅现场"--%>
-                        <div class="col-25"><input type="search" id='picker_busitype' placeholder='业务类型'/></div> <%--value="全部"--%>
-                        <div class="col-25"><input type="search" id='picker_is_pass' placeholder='放行情况'/></div> <%--value="未放行"--%>
+                        <div class="col-33" style="width:25%;font-size:13px;margin-top:.8rem;">现场报关日期:</div>
+                        <div class="col-33" style="width:26%;margin-left:0;"><input type="search" id='txt_siteapplytime_s'/></div>
+                        <div class="col-33" style="width:26%;margin-left:0;"><input type="search" id='txt_siteapplytime_e'/></div>
+                        <div class="col-10" style="width:10%;margin-left:0;margin-top:.2rem;">
+                            <input id="btn_more_m" type="button" value="..." class="open-tabs-modal" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;"  />
+                        </div>
+                        <div class="col-15" style="width:5%;margin-left:2%;"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
                     </div>
                     <div class="row">
-                        <div class="col-40"><input type="search" id='txt_startdate' placeholder='委托起始日期'/></div>
-                        <div class="col-5">~</div>
-                        <div class="col-40"><input type="search" id='txt_enddate' placeholder='委托结束日期'/></div>
-                        <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
-                    </div>                    
+                        <div class="col-50" style="width:46%;"><input type="search" id='txt_declcode' placeholder='报关单号'/></div>
+                        <div class="col-20" style="width:19%;margin-left:0;"><input type="search" id='txt_customareacode' placeholder='申报关区'/></div>
+                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_is_pass' placeholder='放行'/></div>
+                        <div class="col-15" style="width:15%;margin-left:0;"><input type="search" id='picker_ischeck' placeholder='查验'/></div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-25" style="width:21%;"><input id="btn_gridname_m" type="button" value="列名" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-60" style="width:54%;margin-left:0;"><input id="btn_search_m" type="button" value="查询" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-25" style="width:21%;margin-left:0;"><input id="btn_reset_m" type="button" value="重置" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                    </div> 
+                    <input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/><input type="hidden" id='txt_auditflag'/>
+                    <input type="hidden" id='txt_busiunit'/>
+                    <input type="hidden" id='txt_ordercode'/> <input type="hidden" id='txt_cusno'/>  
+                    <input type="hidden" id='txt_divideno'/> <input type="hidden" id='txt_contractno'/>
+                    <input type="hidden" id='txt_submittime_s'/><input type="hidden" id='txt_submittime_e'/>
+                    <input type="hidden" id='txt_sitepasstime_s'/><input type="hidden" id='txt_sitepasstime_e'/>                   
                 </div>  
-                <input type="hidden" id='txt_radio_type_hidden'/><input type="hidden" id='txt_morecon_hidden'/>              
-                <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>   
+                <div id="div_tbar" style="font-size:13px;margin:.2rem 0;">
+                    <font color="#929292">共计</font>
+                    <span id="span_sum">0</span>
+                    <font color="#929292">笔,当前选中</font>
+                    <span id="span_curchose">0</span>
+                    <font color="#929292">笔</font>
+                </div>  
             </header>
 
             <%--工具栏 --%>
             <nav class="bar bar-tab">
-                <a class="tab-item external" href="#" id="Siteapply_a"><%--active--%>
+                <%--<a class="tab-item external" href="#" id="Siteapply_a">active
                     <span class="icon icon-friends"></span>
                     <span class="tab-label">现场报关</span>
-                </a>
-                <a class="tab-item external" href="#" id="Detail_a">
-                    <span class="icon icon-message"></span>
-                    <span class="tab-label">报关详细</span>
-                    <%--<span class="badge">2</span>--%>
-                </a>
-                <a class="tab-item external" href="#" id="Pass_a">
-                    <span class="icon icon-cart"></span>
+                </a>--%>
+                <a class="tab-item external" href="#" id="Siteapply_Pass_a">
+                    <span class="icon icon-friends"></span>
                     <span class="tab-label">报关放行</span>
                 </a>
+                <%--<a class="tab-item external" href="#" id="Detail_a">
+                    <span class="icon icon-message"></span>
+                    <span class="tab-label">报关详细</span>
+                </a>--%>
+               <%-- <a class="tab-item external" href="#" id="Pass_a">
+                    <span class="icon icon-cart"></span>
+                    <span class="tab-label">报关放行</span>
+                </a>--%>
                 <a class="tab-item external" href="#" id="Check_a">
                     <span class="icon icon-check"></span>
-                    <span class="tab-label">查验标志</span>
+                    <span class="tab-label">查验稽核</span>
                 </a>
                 <a class="tab-item external" href="#" id="Picture_a">
                     <span class="icon icon-picture"></span>
@@ -1208,6 +1598,10 @@
                 <a class="tab-item external" href="#" id="Subs_log_a">
                     <span class="icon icon-card"></span>
                     <span class="tab-label">消息订阅</span>
+                </a>
+                <a class="tab-item open-detail" href="#"> 
+                    <span class="icon icon-menu"></span>
+                    <span class="tab-label">业务详情</span>
                 </a>
             </nav>
 
@@ -1219,6 +1613,7 @@
                 <div class="infinite-scroll-preloader">
                   <div class="preloader"></div>
                 </div>
+                <div class="float-button" onclick="clearSelect()"><img src="../../image/clearbtn.png" /></div>
             </div>
             
         </div>
@@ -1282,11 +1677,43 @@
                 </div>
             </div>
             <div class="content-block row">
-                <div class="col-50"><a href="#" class="button button-fill" id="Pop_Subscribe_log">确  认</a></div>
-                <div class="col-50"><a href="#" class="close-popup button button-fill">返  回</a></div>
+                <div class="col-50"><a href="#" class="close-popup button button-fill" style="background-color: gray;border-radius:0;color:white;border:0;">返  回</a></div>
+                <div class="col-50"><a href="#" class="button button-fill" id="Pop_Subscribe_log" style="background-color: #3d4145;border-radius:0;color:white;border:0;">确  认</a></div>
             </div>
         </div>
     </div>   
+
+    <!--popup 订阅详情弹出页-->
+    <div class="popup pop-subscribeinfo">
+        <div class="content" id="subscribeinfo" style="bottom: 3rem;">
+        </div>
+        <div style="bottom: 1.5rem; position: fixed; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+    </div>
+
+     <!--popup 详情弹出页-->
+    <div class="popup popup-detail">
+            <div class="content" style="bottom: 60px;">
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">报关信息</a>
+                    <a href="#tab2" class="tab-link button">报检信息</a>
+                    <a href="#tab3" class="tab-link button">物流信息</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div class="content-block " id="pop_tab_decl"></div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <div class="content-block" id="pop_tab_insp"></div>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <div class="content-block" id="pop_tab_logistics"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="bottom: 1.5rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+        </div>
 
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
     <%--<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
@@ -1318,7 +1745,7 @@
             timestamp: conf.timestamp,
             nonceStr: conf.noncestr,
             signature: conf.signature,
-            jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage']
+            jsApiList: ['chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'scanQRCode']
         });
 
     </script>

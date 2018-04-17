@@ -78,24 +78,22 @@ namespace WeChat.ModelWeChat
                     if (req.EventKey.Equals("V1001_GOOD", StringComparison.OrdinalIgnoreCase))//click_one
                     {
                         //ReGetOpenId();
-                    }
-
-                    else if (req.EventKey.Equals("VIEW", StringComparison.OrdinalIgnoreCase))
-                    {
-                        responseContent = string.Format(ReplyType.Message_News_Main,
-                            req.FromUserName,
-                            req.ToUserName,
-                            DateTime.Now.Ticks,
-                            "3",
-                             string.Format(ReplyType.Message_News_Item, "我要寄件", "少时诵诗书所所所所所所",
-                             "http://www.soso.com/orderPlace.jpg",
-                             "http://www.soso.com/") +
-                             string.Format(ReplyType.Message_News_Item, "订单管理", "",
-                             "http://www.soso.com/orderManage.jpg",
-                             "http://www.soso.com/") +
-                             string.Format(ReplyType.Message_News_Item, "则是测试", "",
-                             "http://www.soso.com/orderManage.jpg",
-                             "http://www.soso.com/"));
+                        if(UserModel.DeleteUser(req.FromUserName))
+                        {
+                            responseContent = string.Format(ReplyType.Message_Text,
+                                req.FromUserName,
+                                req.ToUserName,
+                                DateTime.Now.Ticks,
+                                "解绑成功");
+                        }
+                        else
+                        {
+                            responseContent = string.Format(ReplyType.Message_Text,
+                                req.FromUserName,
+                                req.ToUserName,
+                                DateTime.Now.Ticks,
+                                "账号未绑定");
+                        }
                     }
                 }
                 else if (req.Event.Equals("subscribe", StringComparison.OrdinalIgnoreCase))
@@ -103,23 +101,59 @@ namespace WeChat.ModelWeChat
                     WebNoticeModel wnm = new WebNoticeModel();
                     List<WebNoticeEn> list = wnm.getTwoNotice();
                     string news = "";
+                    int count = 3;
                     foreach(WebNoticeEn w in list)
                     {
                         news += string.Format(ReplyType.Message_News_Item, w.TypeName + "：" + w.Title, w.Title, "", "http://223.68.174.213:8012/Home/IndexNoticeDetail?fekx4+uqU5g=");
+                    }
+                    if (!string.IsNullOrEmpty(req.EventKey))
+                    {
+                        count++;
+                        if(login(req.EventKey, req.FromUserName, ""))
+                        {
+                            news += string.Format(ReplyType.Message_News_Item, "账号绑定成功", "", "", "");
+                        }
+                        else
+                        {
+                            news += string.Format(ReplyType.Message_News_Item, "该账号已绑定，请先解绑", "", "", "");
+                        }
                     }
                     responseContent = string.Format(ReplyType.Message_News_Main,
                              req.FromUserName,
                              req.ToUserName,
                              DateTime.Now.Ticks,
-                             "3",
+                             count,
                               string.Format(ReplyType.Message_News_Item, "欢迎关注<关务云>公众账号", "关于我们",
                               "http://1w838262n7.imwork.net/image/banner_feiliks.png",
                               "") + news);
-                    LogHelper.Write("subscribe:" + responseContent);
+                    LogHelper.Write("subscribe_EventKey:" + req.EventKey);
+                    
+                }
+                else if (req.Event.Equals("SCAN", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!string.IsNullOrEmpty(req.EventKey))
+                    {
+                        if (login(req.EventKey, req.FromUserName, ""))
+                        {
+                            responseContent = string.Format(ReplyType.Message_Text,
+                             req.FromUserName,
+                             req.ToUserName,
+                             DateTime.Now.Ticks,
+                             "账号绑定成功");
+                        }
+                        else
+                        {
+                            responseContent = string.Format(ReplyType.Message_Text,
+                             req.FromUserName,
+                             req.ToUserName,
+                             DateTime.Now.Ticks,
+                             "该账号已绑定，请先解绑");
+                        }
+                    }
                 }
                 else if (req.Event.Equals("unsubscribe", StringComparison.OrdinalIgnoreCase))
                 {
-
+                    UserModel.DeleteUser(req.FromUserName);
                 }
             }
             return responseContent;
@@ -147,9 +181,48 @@ namespace WeChat.ModelWeChat
             return responseContent;
         }
 
-      
+        /// <summary>
+        /// 账号绑定
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="openid"></param>
+        /// <param name="nickname"></param>
+        private static bool login(string userid, string openid,string nickname)
+        {
+            try
+            {
+                userid = userid.Replace("QRSCENE_", "").Replace("qrscene_", "");
+                WGUserEn user = UserModel.LoginById(userid);
+                if (user != null)//登录成功
+                {
+                    user.WCOpenID = openid;
+                    user.WCNickName = getUserInfo(openid);
+                    if (!UserModel.UserExsit(user.GwyUserCode, user.WCOpenID, user.WCNickName))//账号未绑定
+                    {
+                        UserModel.SaveUser(user);//绑定账号
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch( Exception  ex)
+            {
+                LogHelper.Write("扫码异常:" + ex.Message);
+                return false;
+            }
+        }
 
-       
+        private static string getUserInfo(string openid)
+        {
+            var url = @"https://api.weixin.qq.com/cgi-bin/user/info?access_token={0}&openid={1}&lang=zh_CN";
+            url = string.Format(url, TokenModel.AccessToken, openid);
+            string getJson = MyHttpHelper.HttpGet(url);
+            WUserEn ac = JsonHelper.DeserializeJsonToObject<WUserEn>(getJson);
+            if (ac != null)
+                return ac.NickName;
+            else
+                return "";
+        }
 
     }
 }

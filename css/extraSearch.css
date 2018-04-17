@@ -1,0 +1,419 @@
+﻿.morediv .row{
+            font-size:small;
+            margin-top:.1rem;
+        }
+        .morediv .row .col-25
+        {
+            text-align: left;
+        }
+        .morediv .button
+        {
+            border-radius:0;
+            background-color:gray;
+            color:white;
+            border:0;
+            vertical-align:middle;
+            padding-top: 0.1rem;
+        }
+        .morediv .labtitle 
+        {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .morediv .labcontent
+        {
+            cursor:pointer;
+        }
+        .morediv .labhover
+        {
+            color:blue;
+        }
+        .morediv input{
+            width:100%; border-radius:0;
+        }
+
+        .morediv{
+            width: 94%;
+            left: 3%;
+            margin-left: 0px;
+            top: 13rem; position:fixed;
+        }        
+        .morediv .modal-inner{
+            height:15.5rem;border-radius:0;
+        }
+
+        /* 更多查询 第一个ul 样式*/
+        .morediv .modal-inner .list-block:first-child ul:first-child li{
+          float:left; width:25%;
+        }
+        .morediv .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
+            width:.8rem;height:.8rem;
+        }
+        .morediv .modal-inner .list-block:first-child .item-text{
+            height:1.1rem;font-size:.62rem;
+        }
+        .morediv .modal-inner .list-block:first-child label{
+          padding-left:0px;
+        }
+        .morediv .modal-inner .list-block:first-child label .item-inner{
+           margin-left:.2rem;padding-right:2px;
+        }
+
+/**********************************************************************************************************************************************************/
+.moredivsitedecl .row{
+            font-size:small;
+            margin-top:.1rem;
+        }
+        .moredivsitedecl .row .col-25
+        {
+            text-align: left;
+        }
+        .moredivsitedecl .button
+        {
+            border-radius:0;
+            background-color:gray;
+            color:white;
+            border:0;
+            vertical-align:middle;
+            padding-top: 0.1rem;
+        }
+        .moredivsitedecl .labtitle 
+        {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .moredivsitedecl .labcontent
+        {
+            cursor:pointer;
+        }
+        .moredivsitedecl .labhover
+        {
+            color:blue;
+        }
+        .moredivsitedecl input{
+            width:100%; border-radius:0;
+        }
+
+        .moredivsitedecl{
+            width: 94%;
+            left: 3%;
+            margin-left: 0px;
+            top: 12.3rem; position:fixed;
+        }        
+        .moredivsitedecl .modal-inner{
+            height:14.5rem;border-radius:0;
+        }
+
+        /* 更多查询 第一个ul 样式*/
+        .moredivsitedecl .modal-inner .list-block:first-child ul:first-child li{
+          float:left; width:25%;
+        }
+        .moredivsitedecl .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
+            width:.8rem;height:.8rem;
+        }
+        .moredivsitedecl .modal-inner .list-block:first-child .item-text{
+            height:1.1rem;font-size:.62rem;
+        }
+        .moredivsitedecl .modal-inner .list-block:first-child label{
+          padding-left:0px;
+        }
+        .moredivsitedecl .modal-inner .list-block:first-child label .item-inner{
+           margin-left:.2rem;padding-right:2px;
+        }
+
+/**********************************************************************************************************************************************************/
+.moredivsiteinsp .row{
+            font-size:small;
+            margin-top:.1rem;
+        }
+        .moredivsiteinsp .row .col-25
+        {
+            text-align: left;
+        }
+        .moredivsiteinsp .button
+        {
+            border-radius:0;
+            background-color:gray;
+            color:white;
+            border:0;
+            vertical-align:middle;
+            padding-top: 0.1rem;
+        }
+        .moredivsiteinsp .labtitle 
+        {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .moredivsiteinsp .labcontent
+        {
+            cursor:pointer;
+        }
+        .moredivsiteinsp .labhover
+        {
+            color:blue;
+        }
+        .moredivsiteinsp input{
+            width:100%; border-radius:0;
+        }
+
+        .moredivsiteinsp{
+            width: 94%;
+            left: 3%;
+            margin-left: 0px;
+            top: 12.3rem; position:fixed;
+        }        
+        .moredivsiteinsp .modal-inner{
+            height:17rem;border-radius:0;
+        }
+
+        /* 更多查询 第一个ul 样式*/
+        .moredivsiteinsp .modal-inner .list-block:first-child ul:first-child li{
+          float:left; width:25%;
+        }
+        .moredivsiteinsp .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
+            width:.8rem;height:.8rem;
+        }
+        .moredivsiteinsp .modal-inner .list-block:first-child .item-text{
+            height:1.1rem;font-size:.62rem;
+        }
+        .moredivsiteinsp .modal-inner .list-block:first-child label{
+          padding-left:0px;
+        }
+        .moredivsiteinsp .modal-inner .list-block:first-child label .item-inner{
+           margin-left:.2rem;padding-right:2px;
+        }
+
+/**********************************************************************************************************************************************************/
+        .moredivinsp .row{
+            font-size:small;
+            margin-top:.1rem;
+        }
+        .moredivinsp .row .col-25
+        {
+            text-align: left;
+        }
+        .moredivinsp .button
+        {
+            border-radius:0;
+            background-color:gray;
+            color:white;
+            border:0;
+            vertical-align:middle;
+            padding-top: 0.1rem;
+        }
+        .moredivinsp .labtitle 
+        {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .moredivinsp .labcontent
+        {
+            cursor:pointer;
+        }
+        .moredivinsp .labhover
+        {
+            color:blue;
+        }
+        .moredivinsp input{
+            width:100%; border-radius:0;
+        }
+
+        .moredivinsp{
+            width: 94%;
+            left: 3%;
+            margin-left: 0px;
+            top: 13.9rem; position:fixed;
+        }        
+        .moredivinsp .modal-inner{
+            height:17rem;border-radius:0;
+        }
+
+        /* 更多查询 第一个ul 样式*/
+        .moredivinsp .modal-inner .list-block:first-child ul:first-child li{
+          float:left; width:25%;
+        }
+        .moredivinsp .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
+            width:.8rem;height:.8rem;
+        }
+        .moredivinsp .modal-inner .list-block:first-child .item-text{
+            height:1.1rem;font-size:.62rem;
+        }
+        .moredivinsp .modal-inner .list-block:first-child label{
+          padding-left:0px;
+        }
+        .moredivinsp .modal-inner .list-block:first-child label .item-inner{
+           margin-left:.2rem;padding-right:2px;
+        }
+
+
+        /**********************************************************************************************************************************************************/
+.moredivmyorder .row{
+            font-size:small;
+            margin-top:.1rem;
+        }
+        .moredivmyorder .row .col-25
+        {
+            text-align: left;
+        }
+        .moredivmyorder .button
+        {
+            border-radius:0;
+            background-color:gray;
+            color:white;
+            border:0;
+            vertical-align:middle;
+            padding-top: 0.1rem;
+        }
+        .moredivmyorder .labtitle 
+        {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .moredivmyorder .labcontent
+        {
+            cursor:pointer;
+        }
+        .moredivmyorder .labhover
+        {
+            color:blue;
+        }
+        .moredivmyorder input{
+            width:100%; border-radius:0;
+        }
+
+        .moredivmyorder{
+            width: 94%;
+            left: 3%;
+            margin-left: 0px;
+            top: 10.3rem; position:fixed;
+        }        
+        .moredivmyorder .modal-inner{
+            height:12.5rem;border-radius:0;
+        }
+
+        /* 更多查询 第一个ul 样式*/
+        .moredivmyorder .modal-inner .list-block:first-child ul:first-child li{
+          float:left; width:25%;
+        }
+        .moredivmyorder .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
+            width:.8rem;height:.8rem;
+        }
+        .moredivmyorder .modal-inner .list-block:first-child .item-text{
+            height:1.1rem;font-size:.62rem;
+        }
+        .moredivmyorder .modal-inner .list-block:first-child label{
+          padding-left:0px;
+        }
+        .moredivmyorder .modal-inner .list-block:first-child label .item-inner{
+           margin-left:.2rem;padding-right:2px;
+        }
+        /**********************************************************************************************************************************************************/
+        .moredivsubdecl .row{
+            font-size:small;
+            margin-top:.1rem;
+        }
+        .moredivsubdecl .row .col-25
+        {
+            text-align: left;
+        }
+        .moredivsubdecl .button
+        {
+            border-radius:0;
+            background-color:gray;
+            color:white;
+            border:0;
+            vertical-align:middle;
+            padding-top: 0.1rem;
+        }
+        .moredivsubdecl .labtitle 
+        {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .moredivsubdecl .labcontent
+        {
+            cursor:pointer;
+        }
+        .moredivsubdecl .labhover
+        {
+            color:blue;
+        }
+        .moredivsubdecl input{
+            width:100%; border-radius:0;
+        }
+
+        .moredivsubdecl{
+            width: 94%;
+            left: 3%;
+            margin-left: 0px;
+            top: 10.2rem; position:fixed;
+        }        
+        .moredivsubdecl .modal-inner{
+            height:12rem;border-radius:0;
+        }
+
+        /* 更多查询 第一个ul 样式*/
+        .moredivsubdecl .modal-inner .list-block:first-child ul:first-child li{
+          float:left; width:25%;
+        }
+        .moredivsubdecl .modal-inner .list-block:first-child label.label-checkbox i.icon-form-checkbox{
+            width:.8rem;height:.8rem;
+        }
+        .moredivsubdecl .modal-inner .list-block:first-child .item-text{
+            height:1.1rem;font-size:.62rem;
+        }
+        .moredivsubdecl .modal-inner .list-block:first-child label{
+          padding-left:0px;
+        }
+        .moredivsubdecl .modal-inner .list-block:first-child label .item-inner{
+           margin-left:.2rem;padding-right:2px;
+        }
+
+        /****************************************业务详情弹出页样式******************************************/
+        .row {
+            font-size: small;
+            overflow: hidden;
+            margin-left: -2%;
+        }
+        .content-block {
+            margin: 0rem 0;
+            padding: 0.2rem;
+            color: #6d6d72;
+        }
+        .popup .list-block {
+            margin: 0.1rem 0 0 0;
+            background-color: white;
+        }
+        .popup .row {
+            margin-top: 0.2rem;
+        }
+        .button {
+            border-radius: 0;
+            background-color: gray;
+            color: white;
+            border: 0;
+            vertical-align: middle;
+            padding-top: 0.1rem;
+            text-align: center;
+        }
+        .popup-detail .col-20
+        {
+            width:20%;
+        }
+        .popup-detail .col-60
+        {
+            width:47.99999999%;
+        }
+        .popup-detail .col-50
+        {
+            width:37.99999999%;
+        }
+        .popup-detail .col-35
+        {
+            margin-left:4%;
+            width:31%;
+        }
+        .popup-detail .col-80
+        {
+            width:72%;
+        }

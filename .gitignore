@@ -3,6 +3,7 @@ Web.Debug.config
 Web.Debug.config
 Web.Release.config
 obj/Debug/
+obj/Release/
 WeChat.csproj
 WeChat.csproj.user
 bin/WeChat.dll
@@ -10,3 +11,4 @@ bin/WeChat.dll.config
 bin/WeChat.pdb
 Log/
 TempFile/
+Properties/Publishprofiles/

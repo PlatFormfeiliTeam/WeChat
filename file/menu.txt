@@ -6,56 +6,56 @@
 			{
 				"type":"view",
 				"name":"报关单查询",
-				"url":"http://www.haiguan.info/OnLineSearch/Gateway/Gatewaystate.aspx"
-			},
-			{
-				"type":"view",
-				"name":"通关单查询",
-				"url":"http://epassq.eciq.cn/"
+				"url":"http://www.customs.gov.cn/publish/portal0/tab9405/"
 			},
 			{
 				"type":"view",
 				"name":"空运货物查询",
-				"url":"http://query.customs.gov.cn/mnftq/MRoadTransportQuery.aspx"
+				"url":"http://air.wx.igenzong.com/trace/cn/search?tenantid=37F037B5A6384393837F671657DB4C41"
+			},
+			{
+				"type":"view",
+				"name":"港口货物查询",
+				"url":"http://ocean.wx.igenzong.com/trace/portcn/search?tenantid=37F037B5A6384393837F671657DB4C41"
 			},
 			 {
                "type":"view",
-               "name":"海运货物查询",
-               "url":"http://query.customs.gov.cn/mnftq/MRoadTransportQuery.aspx "
+               "name":"船公司货物查询",
+               "url":"http://ocean.wx.igenzong.com/trace/oceancn/search?tenantid=37F037B5A6384393837F671657DB4C41"
             },
 			{
 				"type":"view",
 				"name":"HS编码查询",
-				"url":"http://v.qq.com/"
+				"url":"http://gwy.jishiks.com/Page/FrequentSearch/HsCodeList.aspx"
 			}]
       },
-      {
+	   {
            "name":"业务操作",
            "sub_button":[
            {	
                "type":"view",
-               "name":"现场报关",
-               "url":"http://www.soso.com/"
+               "name":"报关业务",
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteDeclareList.aspx"
             },
 			{	
                "type":"view",
                "name":"报关单查询",
-               "url":"http://www.soso.com/"
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/DeclareList.aspx"
             },
 			{	
                "type":"view",
-               "name":"现场报检",
-               "url":"http://www.soso.com/"
+               "name":"报检业务",
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/SiteInspectionList.aspx"
             },
 			{	
                "type":"view",
                "name":"报检单查询",
-               "url":"http://www.soso.com/"
+               "url":"http://gwy.jishiks.com/Page/BusiOpera/InspectionList.aspx"
             },
-            {
-               "type":"click",
-               "name":"图文信息",
-               "key":"VIEW"
+			{	
+               "type":"view",
+               "name":"订阅清单",
+               "url":"http://gwy.jishiks.com/Page/SubscribeList.aspx"
             }]
        },
       {
@@ -64,23 +64,28 @@
            "sub_button":[
            {	
                "type":"view",
-               "name":"报关单调阅",
-               "url":"http://www.soso.com/"
+               "name":"我的订单",
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/MyBusiness.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"我的报关单",
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/MyDeclareList.aspx"
+            },
+			{	
+               "type":"view",
+               "name":"我的报检单",
+               "url":"http://gwy.jishiks.com/Page/MyBusiness/MyInspectionList.aspx"
             },
 			{	
                "type":"view",
                "name":"订阅清单",
-               "url":"http://www.soso.com/"
+               "url":"http://gwy.jishiks.com/Page/SubscribeList.aspx"
             },
-			{	
-               "type":"view",
-               "name":"详细界面",
-               "url":"http://www.soso.com/"
-            },
-            {
-               "type":"view",
-			   "name":"My业务",
-			   "url":"http://1w838262n7.imwork.net/page/tt.aspx"
-            }]
+			{
+				"type":"view",
+               "name":"账号解绑",
+               "url":"http://gwy.jishiks.com/Page/SignOut.aspx"
+			}]
        }]
  }

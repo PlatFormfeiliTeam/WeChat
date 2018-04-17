@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +9,10 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using WeChat.Common;
+using WeChat.Entity;
 using WeChat.ModelBusi;
+using WeChat.ModelWeChat;
 
 namespace WeChat.Page.BusiOpera
 {
@@ -16,7 +20,40 @@ namespace WeChat.Page.BusiOpera
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            //如果当前用户未登陆，先获取授权 
+            if (user == null)
+            {
+                WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+                if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
+                {//授权成功
+                    LogHelper.Write("第9步：" + userInfo.OpenID);
+                    WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
+                    if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
+                    {//账号未关联，跳转至登录界面
+                        LogHelper.Write("第10步：" + userInfo.OpenID);
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SiteDeclareList");
+                    }
+                    else if (wuser.IsReceiver != 1)
+                    {//不是接单单位，无此权限
+                        LogHelper.Write("第11步：" + userInfo.OpenID);
+                        System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
+                    }
+                    else
+                    {//不需登录，保存当前用户
+                        HttpContext.Current.Session["user"] = wuser;
+                    }
+                    LogHelper.Write("第12步：" + wuser.WCOpenID);
+                }
+                else
+                {//获取授权失败，也跳转至登录页面
+                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=SiteDeclareList");
+                }
+            }
+            else if (user.IsReceiver != 1)
+            {//不是接单单位，无此权限
+                System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
+            }
         }
 
         //微信接口js-sdk config
@@ -26,23 +63,89 @@ namespace WeChat.Page.BusiOpera
             return ModelWeChat.SignatureModel.getSignature(url);
         }
 
+        [WebMethod]
+        public static string getcuruser()
+        {
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+            return "[{\"USERID\":" + user.GwyUserID + ",\"USERCODE\":'" + user.GwyUserCode + "',\"USERNAME\":'" + user.GwyUserName + "',\"CUSTOMERCODE\":'" + user.CustomerCode + "'}]";
+        }
+
         //查询绑定
         [WebMethod]
-        public static string BindList(string inout_type, string issiterep, string busitype, string ispass, string startdate, string enddate
-            , string radiotype, string morecon, int start, int itemsPerLoad)
+        public static string BindList(string siteapplytime_s, string siteapplytime_e, string declcode, string customareacode, string ispass, string ischeck, string busitype
+            , string modifyflag, string auditflag, string busiunit, string ordercode, string cusno, string divideno, string contractno
+            , string submittime_s, string submittime_e, string sitepasstime_s, string sitepasstime_e
+            , int start, int itemsPerLoad)
         {
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+            DataSet ds = SiteDeclare.getSiteDeclareInfo(siteapplytime_s, siteapplytime_e, declcode, customareacode, ispass, ischeck, busitype
+                , getcode("modifyflag", modifyflag), auditflag, busiunit, ordercode, cusno, divideno, contractno
+                , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
+                , start, itemsPerLoad, user.CustomerCode);
+
+            //DataSet ds = SiteDeclare.getSiteDeclareInfo(siteapplytime_s, siteapplytime_e, declcode, customareacode, ispass, ischeck, busitype
+            //    , getcode("modifyflag", modifyflag), auditflag, busiunit, ordercode, cusno, divideno, contractno
+            //    , submittime_s, submittime_e, sitepasstime_s, sitepasstime_e
+            //    , start, itemsPerLoad, "KSJSBGYXGS");
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-            DataTable dt = SiteDeclare.getSiteDeclareInfo(inout_type, issiterep, busitype, ispass, startdate, enddate, radiotype, morecon, start, itemsPerLoad);
-            var json = JsonConvert.SerializeObject(dt, iso);
+            var json = "[{\"data\":" + JsonConvert.SerializeObject(ds.Tables[0], iso) + ",\"sum\":" + ds.Tables[1].Rows[0][0] + "}]";
             return json;
         }
 
-        //报关单交接
-        [WebMethod]
-        public static string Siteapply(string ordercode)
+        private static string getcode(string key, string value)
         {
-            return SiteDeclare.Siteapply(ordercode);
+            string code = "";
+            if (key == "modifyflag")
+            {
+                switch (value)
+                {
+                    case "正常": code = "0"; break;
+                    case "删单": code = "1"; break;
+                    case "改单": code = "2"; break;
+                    case "改单完成": code = "3"; break;
+                    default: code = ""; break;
+                }
+            }
+            return code;
+        }
+
+        ////报关单交接
+        //[WebMethod]
+        //public static string Siteapply(string ordercode)
+        //{
+        //    return SiteDeclare.Siteapply(ordercode);
+        //}
+
+        //现场报关
+        [WebMethod]
+        public static string Siteapplyall(string ordercode)
+        {
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+
+            string msg = "";
+            JArray ja = JArray.Parse(ordercode);
+            for (int i = 0; i < ja.Count; i++)
+            {
+                msg = msg + SiteDeclare.Siteapplyall(ja[i].ToString(), user);
+                if (i != ja.Count - 1)
+                {
+                    msg = msg + ",";
+                }
+            }
+            return "[" + msg + "]";
         }
 
         //报关单详细
@@ -58,11 +161,34 @@ namespace WeChat.Page.BusiOpera
             return "[{\"json_order\":" + json_order + ",\"json_decl\":" + json_decl + "}]";
         }
 
-        //报关单放行
+        ////报关单放行
+        //[WebMethod]
+        //public static string Pass(string ordercode)
+        //{
+        //    return SiteDeclare.Pass(ordercode);
+        //}
+
+        //现场放行
         [WebMethod]
-        public static string Pass(string ordercode)
+        public static string Passall(string ordercode)
         {
-            return SiteDeclare.Pass(ordercode);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+            {
+                return "[]";
+            }
+
+            string msg = "";
+            JArray ja = JArray.Parse(ordercode);
+            for (int i = 0; i < ja.Count; i++)
+            {
+                msg = msg + SiteDeclare.Passall(ja[i].ToString(), user);
+                if (i != ja.Count - 1)
+                {
+                    msg = msg + ",";
+                }
+            }
+            return "[" + msg + "]";
         }
 
         //查验标志 绑定集装箱数据
@@ -89,17 +215,20 @@ namespace WeChat.Page.BusiOpera
         }
 
         [WebMethod]
-        public static string checksave(string ordercode, string checktime, string checkname, string checkid)
+        public static string loadcheckdata(string ordercode)
         {
-            return SiteDeclare.checksave(ordercode, checktime, checkname, checkid);
+            DataTable dt = SiteDeclare.getloadcheckdata(ordercode);
+            var json = JsonConvert.SerializeObject(dt);
+            return json;
         }
 
         [WebMethod]
-        public static string checkcancel(string ordercode)
+        public static string check_audit_save(string ordercode, string checktime, string checkname, string checkid, string checkremark
+            , string auditflagtime, string auditflagname, string auditflagid, string auditcontent)
         {
-            return SiteDeclare.checkcancel(ordercode);
+            return SiteDeclare.check_audit_save(ordercode, checktime, checkname, checkid, checkremark
+                , auditflagtime, auditflagname, auditflagid, auditcontent);
         }
-
 
         //查验图片
         [WebMethod]

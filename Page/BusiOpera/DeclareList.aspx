@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/??sm.min.css,sm-extend.min.css">
     <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 
+    <link rel="stylesheet" href="/css/extraSearch.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />
+    <link rel="stylesheet" href="/css/SubscribeInfo.css?t=<%=ConfigurationManager.AppSettings["Version"]%>" />    
+    <script type="text/javascript" src="/js/extraSearch.js?t=<%=ConfigurationManager.AppSettings["Version"]%>" ></script>
+    <script type="text/javascript" src="/js/SubscribeInfo.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
+    <script type="text/javascript" src="/js/BusiInfoDetail.js?t=<%=ConfigurationManager.AppSettings["Version"]%>"></script>
+
     <style>
         #page-infinite-scroll-bottom .bar input[type=search]{
              margin:.2rem 0;
@@ -22,7 +28,10 @@
             top:0;
         }
         #page-infinite-scroll-bottom .bar-nav ~ .content {
-            top: 5rem;
+            top: 6.2rem;
+        }
+        #page-infinite-scroll-bottom .search-input input{
+            border-radius:0;font-size:13px;
         }
         #div_list .list-block{
             font-size:13px;
@@ -35,6 +44,7 @@
         #div_list .list-block .item-inner{
             height:1.3rem;
             min-height:1.3rem;
+            PADDING-RIGHT: 0;
         }
         .picker-items-col.picker-items-col-center{
              width: 100%;
@@ -43,13 +53,32 @@
         {
            width: 100%;
         }
-        /************************************************ 更多查询*********************************/
-        .morediv{
+        /*************************************************************************************/
+        .actions-modal-group{
+            margin:0;
+        }
+         /************************************************ *********************************/
+        .filediv .modal-inner{
+             padding:0;
+         }
+        .filediv .modal-title{
+            text-align:right;
+        }
+        .filediv .modal-title+.modal-text{
+            margin-top:0;
+        }
+         /************************************************ 查询列表名称*********************************/
+        .girdnamediv {
             width: 98%;
             left: 1%;
             right: 1%;
             margin-left: 0px;
-        }    
+            text-align: left;
+            top: 3.1rem;
+        } 
+        .girdnamediv .modal-inner{
+           padding:0px;
+        }  
 
         /************************************************ 报关订阅*********************************/
         #pop_sub_decl
@@ -87,136 +116,66 @@
             border-radius: .15rem;
             font-size: .8rem;
         }
-
+        .float-button {
+            position: fixed;
+            bottom: 120px;
+            right: 0px;
+            z-index:300;
+        }
     </style>
 
     <script type="text/javascript">
-        var userid = "763", username = "昆山吉时报关有限公司", openid = "ohNOmwZOt0tNr9WN7s1i7dHqOQnU";
-
         $(function () {
-            //----------------------------------------------------------------------------------------------------------------查询条件
-            $("#txt_startdate").calendar({});
-            $("#txt_enddate").calendar({});          
-            $(document).on('click', '.open-tabs-modal', function () {
+            //---------------------------------------------------------------------------------------------------------------列表名称
+            function showGridName() {
+                var strname = '<div class="list-block" style="margin:0;font-size:small;">'
+                            + '<ul>'
+                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
+                                        + '<div class="item-title col-50">报关单号</div>'
+                                        + '<div class="item-title col-33">业务类型</div>'
+                                        + '<div class="item-title col-20">监管方式</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
+                                        + '<div class="item-title col-50">收发货人</div>'
+                                        + '<div class="item-title col-33">合同号</div>'
+                                        + '<div class="item-title col-20">申报日期</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border-top:2px solid #0894EC;border-left:2px solid #0894EC;border-right:2px solid #0894EC;
+                                        + '<div class="item-title col-50">运输工具</div>'
+                                        + '<div class="item-title col-33">删改单</div>'
+                                        + '<div class="item-title col-20">海关状态</div>'
+                                    + '</div>'
+                                + '</li>'
+                                + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
+                                    + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'//border:2px solid #0894EC;
+                                        + '<div class="item-title col-50">提运单号</div>'
+                                        + '<div class="item-title col-33">企业编号</div>'
+                                        + '<div class="item-title col-20"></div>'
+                                    + '</div>'
+                                + '</li>'
+                            + '</ul>'
+                        + '</div>';
                 $.modal({
-                    title: '<b>更多查询</b>',
-                    text: '<div class="list-block" style="margin:0;">' +
-                              '<ul>' +
-                                '<li>' +
-                                  '<div class="item-content">' +
-                                    '<div class="item-inner">' +
-                                      //'<div class="item-title label">进出口</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择进出口类型" id="picker_inout_type" value="' + $("#txt_inout_type").val() + '" readonly/></div>' +
-                                    '</div>' +
-                                  '</div>' +
-                                '</li>' +
-                                '<li>' +
-                                  '<div class="item-content">' +
-                                    '<div class="item-inner">' +
-                                      //'<div class="item-title label">业务类型</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择业务类型" id="picker_busitype" value="' + $("#txt_busitype").val() + '" readonly/></div>' +
-                                    '</div>' +
-                                  '</div>' +
-                                '</li>' +
-                                '<li>' +
-                                  '<div class="item-content">' +
-                                    '<div class="item-inner">' +
-                                     // '<div class="item-title label">删改单</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择删改单" id="picker_modifyflag" value="' + $("#txt_modifyflag").val() + '" readonly/></div>' +
-                                    '</div>' +
-                                  '</div>' +
-                                '</li>' +
-                                '<li>' +
-                                  '<div class="item-content">' +
-                                    '<div class="item-inner">' +
-                                     // '<div class="item-title label">海关状态</div>' +
-                                      '<div class="item-input"><input type="text" placeholder="选择海关状态" id="picker_customsstatus" value="' + $("#txt_customsstatus").val() + '" readonly/></div>' +
-                                    '</div>' +
-                                  '</div>' +
-                                '</li>' +
-                              '</ul>' +
-                            '</div>',
-                    buttons: [
-                     {
-                         text: '确认', bold: true,
-                         onClick: function () {
-                             $("#txt_inout_type").val($("#picker_inout_type").val());
-                             $("#txt_busitype").val($("#picker_busitype").val());
-                             $("#txt_modifyflag").val($("#picker_modifyflag").val());
-                             $("#txt_customsstatus").val($("#picker_customsstatus").val());
-                             //select();//暂时不要用，默认点查询按钮才查询
-                         }
-                     },
-                     {
-                         text: '取消', bold: true,
-                         onClick: function () { }
-                     },
-                     {
-                         text: '重置', bold: true,
-                         onClick: function () {
-                             $("#txt_declcode").val(""); $("#txt_startdate").val(""); $("#txt_enddate").val("");
-                             $("#txt_startdate").calendar({}); $("#txt_enddate").calendar({});//否则之前选的那天  不能再次选中
-
-                             $("#txt_inout_type").val(""); $("#picker_inout_type").val("")
-                             $("#txt_busitype").val(""); $("#picker_busitype").val("")
-                             $("#txt_modifyflag").val(""); $("#picker_modifyflag").val("");
-                             $("#txt_customsstatus").val(""); $("#picker_customsstatus").val("");
-                         }
-                     }
-                    ],
-                    extraClass: 'morediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                    //title: '<b>更多查询</b>',
+                    text: strname,
+                    //buttons: [{ text: '取消', bold: true, onClick: function () { } }],
+                    extraClass: 'girdnamediv'//避免直接设置.modal的样式，从而影响其他toast的提示
                 });
 
-                $("#picker_inout_type").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择进出口类型</h1>\
-                      </header>',
-                    cols: [
-                      {
-                          textAlign: 'center',
-                          values: ['全部', '进口', '出口']
-                      }
-                    ]
-                });
-                $("#picker_busitype").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择业务类型</h1>\
-                      </header>',
-                    cols: [
-                      {
-                          textAlign: 'center',
-                          values: ['全部', '空运业务', '海运业务', '陆运业务', '国内业务', '特殊区域']
-                      }
-                    ]
-                });
-                $("#picker_modifyflag").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择删改单</h1>\
-                      </header>',
-                    cols: [
-                      {
-                          textAlign: 'center',
-                          values: ['正常', '删单', '改单', '改单完成']
-                      }
-                    ]
-                });
-                $("#picker_customsstatus").picker({
-                    toolbarTemplate: '<header class="bar bar-nav">\
-                      <button class="button button-link pull-right close-picker">确定</button>\
-                      <h1 class="title">请选择海关状态</h1>\
-                      </header>',
-                    cols: [
-                      {
-                          textAlign: 'center',
-                          values: ['未结关', '已结关', '未放行', '已放行']
-                      }
-                    ]
+                $(document).on('click', '.girdnamediv', function () {
+                    $.closeModal(".girdnamediv");
                 });
 
-            });
+            }
+
+            //----------------------------------------------------------------------------------------------------------------查询条件
+            initsearch_condition();
+            initSerach_Declare();
 
             //---------------------------------------------------------------------------------------------------------------------
             var loading = false;
@@ -224,8 +183,35 @@
             var maxItems = 100;// 最多可加载的条目
             var lastIndex = 0;//$('.list-block').length;//.list-container li       
 
-            $(document).on('click', '.open-preloader-title', function () {
-                select();
+            $("#btn_gridname_m").click(function () {
+                showGridName();
+            });
+
+            $("#btn_search_m").click(function () {
+                select(); 
+            });
+
+            $("#btn_reset_m").click(function () {
+                $("#txt_reptime_s").val(""); $("#txt_reptime_e").val("");
+                $("#txt_reptime_s").calendar({}); $("#txt_reptime_e").calendar({});//否则之前选的那天  不能再次选中
+
+                $("#txt_declcode").val("");
+                $("#picker_CUSTOMSSTATUS").picker("setValue", ["全部"]); $("#picker_MODIFYFLAG").picker("setValue", ["全部"]);
+
+                $("#txt_busitype").val("");
+                $("#txt_ischeck").val("");
+                $("#txt_ispass").val("");
+
+                $("#txt_busiunit").val(""); 
+                $("#txt_ordercode").val("");
+                $("#txt_cusno").val("");
+                $("#txt_tradeway").val(""); 
+                $("#txt_contractno").val(""); 
+                $("#txt_blno").val(""); 
+                $("#txt_submittime_s").val("");
+                $("#txt_submittime_e").val(""); 
+                $("#txt_sitepasstime_s").val(""); 
+                $("#txt_sitepasstime_e").val(""); 
             });
 
             function select() {
@@ -233,7 +219,7 @@
                 setTimeout(function () {
                     $.closeModal();
                     //首次查询需要置为初始值
-                    $('#div_list').html("");
+                    $('#div_list').html(""); $("#span_curchose").text(0);
                     loading = false; itemsPerLoad = 10; lastIndex = 0;
                     var scroller = $('.native-scroll');
 
@@ -295,13 +281,25 @@
                 });
             });
 
+            //$("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
+            //    if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+            //        $(this).children("ul").css('background-color', '#fff');
+            //    } else {
+            //        $("#div_list .list-block ul").css('background-color', '#fff');
+            //        $(this).children("ul").css('background-color', '#C1DDF1');
+            //    }
+            //});
+
             $("#div_list").on('click', '.list-block', function (e) {// $("#div_list")也可以换成$(document)，是基于父容器的概念   
+                var curcount = parseInt($("#span_curchose").text());
                 if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                     $(this).children("ul").css('background-color', '#fff');
+                    curcount = curcount - 1;
                 } else {
-                    $("#div_list .list-block ul").css('background-color', '#fff');
                     $(this).children("ul").css('background-color', '#C1DDF1');
+                    curcount++;
                 }
+                $("#span_curchose").text(curcount);
             });
 
             //条码扫描
@@ -327,6 +325,12 @@
 
             //删改单维护
             $("#ModifyEdit_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔删改单记录");
+                    return;
+                }
+
                 var predelcode = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
@@ -334,10 +338,10 @@
                         //alert($(this).children("ul").children().eq(2).children("div").children().eq(2).text());
                     }
                 });
-                if (predelcode == "") {
-                    $.toast("请选择需要维护的记录");
-                    return;
-                }
+                //if (predelcode == "") {
+                //    $.toast("请选择需要维护的记录");
+                //    return;
+                //}
 
                 var buttons1 = [
                     {
@@ -373,16 +377,22 @@
 
             //关联报关单查询
             $("#Ass_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔关联报关单记录");
+                    return;
+                }
+
                 var predelcode = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         predelcode = $(this)[0].id;
                     }
                 });
-                if (predelcode == "") {
-                    $.toast("请选择需要关联的记录");
-                    return;
-                }
+                //if (predelcode == "") {
+                //    $.toast("请选择需要关联的记录");
+                //    return;
+                //}
 
                 var busitypename_con = $("#div_list #" + predelcode).children("ul").children().eq(0).children("div").children().eq(1).text();
                 if (busitypename_con != "国内出口" && busitypename_con != "国内进口") {
@@ -453,7 +463,7 @@
                                                   '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["DECLARATIONCODE"] == null ? "" : obj[0]["DECLARATIONCODE"]) + '</div>'
                                                     + '<div class="item-title col-33">' + getname("BUSITYPE", obj[0]["BUSITYPE"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + (obj[0]["TRADEMETHOD"] == null ? "" : obj[0]["TRADEMETHOD"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + (obj[0]["TRADEMETHOD"] == null ? "" : obj[0]["TRADEMETHOD"]) + '</div>'
                                                 + '</div>'
                                            + '</li>'
                                     + '</ul>'
@@ -466,7 +476,7 @@
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["CONSIGNEESHIPPERNAME"] == null ? "" : obj[0]["CONSIGNEESHIPPERNAME"]) + '</div>'
                                                     + '<div class="item-title col-33">' + (obj[0]["CONTRACTNO"] == null ? "" : obj[0]["CONTRACTNO"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + (obj[0]["REPTIME"] == null ? "" : obj[0]["REPTIME"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -478,8 +488,8 @@
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
                                                     + '<div class="item-title col-50">' + (obj[0]["TRANSNAME"] == null ? "" : obj[0]["TRANSNAME"]) + '</div>'
-                                                    + '<div class="item-title col-33">' + (obj[0]["GOODSNUM"] == null ? "" : obj[0]["GOODSNUM"]) + '/' + (obj[0]["GOODSGW"] == null ? "" : obj[0]["GOODSGW"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + getname("MODIFYFLAG", obj[0]["MODIFYFLAG"]) + '</div>'
+                                                    + '<div class="item-title col-33">' + (obj[0]["CUSTOMSSTATUS"] == null ? "" : obj[0]["CUSTOMSSTATUS"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -490,9 +500,8 @@
                                         + '<ul>'
                                             + '<li class="item-content" style="min-height:1.3rem;height:1.3rem;">'
                                                 + '<div class="item-inner row" style="min-height:1.3rem;height:1.3rem;">'
-                                                    + '<div class="item-title col-50">' + (obj[0]["BLNO"] == null ? "" : obj[0]["BLNO"]) + '</div>'
+                                                    + '<div class="item-title col-60">' + (obj[0]["BLNO"] == null ? "" : obj[0]["BLNO"]) + '</div>'
                                                     + '<div class="item-title col-33">' + (obj[0]["CUSNO"] == null ? "" : obj[0]["CUSNO"]) + '</div>'
-                                                    + '<div class="item-title col-20">' + (obj[0]["CUSTOMSSTATUS"] == null ? "" : obj[0]["CUSTOMSSTATUS"]) + '</div>'
                                                 + '</div>'
                                             + '</li>'
                                     + '</ul>'
@@ -519,59 +528,129 @@
 
             });
 
-            //报关单调阅
+            //文件调阅
             $("#FileConsult_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔文件调阅记录");
+                    return;
+                }
+
                 var predelcode = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
                         predelcode = $(this)[0].id;
                     }
                 });
-                if (predelcode == "") {
-                    $.toast("请选择需要调阅的记录");
-                    return;
-                }
+                //if (predelcode == "") {
+                //    $.toast("请选择需要调阅的记录");
+                //    return;
+                //}
 
-                $.ajax({
-                    type: "post", //要用post方式                 
-                    url: "DeclareList.aspx/FileConsult",//方法所在页面和方法名
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    data: "{'predelcode':'" + predelcode + "'}",
-                    cache: false,
-                    async: false,
-                    success: function (data) {
-                        if (data.d == "") {
-                            $.toast("报关单文件不存在");
-                            return;
+                $.modal({
+                    title: '<i id="filecancel" class="iconfont" style="font-size:1.3rem;">&#xea4f;</i>',
+                    text: '<span style="font-weight:800;">文件调阅</span>' +
+                            '<div class="content-block row" style="margin:0;padding:.75rem;">' +
+                                '<div class="col-50"><a href="#" id="filedecl" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">报关文件</a></div>' +
+                                '<div class="col-50"><a href="#" id="filecheck" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">查验文件</a></div>' +
+                            '</div>',
+                    //title: '文件调阅',
+                    //text: '<div class="content-block row" style="margin:1rem 0;">' +
+                    //            '<div class="col-25"><a href="#" id="filecancel" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">返回</div>' +
+                    //            '<div class="col-40" style="margin-left:0;"><a href="#" id="filedecl" class="button" style="background-color: #3d4145;color:white;border-radius:0;border:0;vertical-align:middle;">报关文件</a></div>' +
+                    //            '<div class="col-40" style="margin-left:0;"><a href="#" id="filecheck" class="button" style="background-color: gray;color:white;border-radius:0;border:0;vertical-align:middle;">查验文件</a></div>' +
+                    //        '</div>',
+                    extraClass: 'filediv'//避免直接设置.modal的样式，从而影响其他toast的提示
+                });
+
+                $("#filecancel").click(function () {
+                    $.closeModal(".filediv");
+                });
+
+                $("#filedecl").click(function () {
+                    $.closeModal(".filediv");
+
+                    $.ajax({
+                        type: "post", //要用post方式                 
+                        url: "DeclareList.aspx/FileConsult",//方法所在页面和方法名
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: "{'predelcode':'" + predelcode + "'}",
+                        cache: false,
+                        async: false,
+                        success: function (data) {
+                            if (data.d == "") {
+                                $.toast("报关单文件不存在");
+                                return;
+                            }
+
+                            var picstr = data.d;
+                            var picarr = picstr.split(',');
+
+                            var imgs = "[";
+                            for (var i = 0; i < picarr.length; i++) {
+                                if (picarr[i] != "") { imgs += "'/TempFile/tempPic/" + picarr[i] + "',"; }
+                            }
+                            imgs += "]";
+
+                            var myPhotoBrowserStandalone = $.photoBrowser({
+                                photos: eval(imgs)
+                            });
+                            myPhotoBrowserStandalone.open();
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
+                            //alert(XMLHttpRequest.status);
+                            //alert(XMLHttpRequest.readyState);
+                            //alert(textStatus);
+                            alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
                         }
+                    });
 
-                        var picstr = data.d;
-                        var picarr = picstr.split(',');
+                });
 
-                        var imgs = "[";
-                        for (var i = 0; i < picarr.length; i++) {
-                            if (picarr[i] != "") { imgs += "'/TempFile/tempPic/" + picarr[i] + "',"; }
+                $("#filecheck").click(function () {
+                    $.closeModal(".filediv");
+
+                    $.ajax({
+                        type: "post", //要用post方式                 
+                        url: "DeclareList.aspx/picfileconsult",//方法所在页面和方法名
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: "{'predelcode':'" + predelcode + "'}",
+                        cache: false,
+                        async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
+                        success: function (data) {
+                            var obj = eval("(" + data.d + ")");//将字符串转为json
+
+                            if (obj.length <= 0) {
+                                $.toast("没有查验图片");
+                                return;
+                            }
+
+                            var imgs = "[";
+                            for (var i = 0; i < obj.length; i++) {
+                                imgs += "'" + $("#hd_AdminUrl").val() + "file/" + obj[i]["FILENAME"] + "',";
+                            }
+                            imgs += "]";
+
+                            var myPhotoBrowserStandalone = $.photoBrowser({
+                                photos: eval(imgs)
+                            });
+                            myPhotoBrowserStandalone.open();
                         }
-                        imgs += "]";
-
-                        var myPhotoBrowserStandalone = $.photoBrowser({
-                            photos: eval(imgs)
-                        });
-                        myPhotoBrowserStandalone.open();
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {//请求失败处理函数
-                        //alert(XMLHttpRequest.status);
-                        //alert(XMLHttpRequest.readyState);
-                        //alert(textStatus);
-                        alert('error...状态文本值：' + textStatus + " 异常信息：" + errorThrown);
-                    }
+                    });
                 });
 
             });
 
             //报关订阅
             $("#Subs_decl_a").click(function () {
+                var curcount = parseInt($("#span_curchose").text());
+                if (curcount != 1) {
+                    $.toast("请选择一笔报关订阅记录");
+                    return;
+                }
+
                 var predeclcode = ""; var div_ordercode = ""; var declcode = ""; var cusno = "";
                 $("#div_list .list-block").each(function () {
                     if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
@@ -582,10 +661,10 @@
                         cusno = $(this).children("ul").children().eq(3).children("div").children().eq(1).text();
                     }
                 });
-                if (predeclcode == "") {
-                    $.toast("请选择需要订阅的记录");
-                    return;
-                }
+                //if (predeclcode == "") {
+                //    $.toast("请选择需要订阅的记录");
+                //    return;
+                //}
                 $.popup("#popup-subscribe-decl");
 
                 $(document).on('open', '#popup-subscribe-decl', function () {
@@ -621,8 +700,7 @@
                     url: '/Page/MyBusiness/MyBusiness.aspx/SubscribeStatus',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'type':'报关状态','status':'" + status + "','cusno':'" + cusno + "','declarationcode':'" + declcode +
-                        "','userid':'" + userid + "','username':'" + username + "','openid':'" + openid + "'}",
+                    data: "{'type':'报关状态','status':'" + status + "','cusno':'" + cusno + "','declarationcode':'" + declcode + "','ordercode':'" + ordercode + "'}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
@@ -631,22 +709,39 @@
                 });
             });
 
+           
+            //打开订阅清单弹出框
+            $(document).on('click', '.open-subinfo_decl', function () {
+                subinfoload_decl();
+            });
+            
+
             $.init();
             //----------------------------------------------------------------------------------------------------------------------------------------
-            function loaddata(itemsPerLoad, lastIndex) {                
+            function loaddata(itemsPerLoad, lastIndex) {
                 $.ajax({
                     type: "post", //要用post方式                 
                     url: "DeclareList.aspx/BindList",//方法所在页面和方法名
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: "{'declcode':'" + $("#txt_declcode").val() + "','startdate':'" + $("#txt_startdate").val() + "','enddate':'" + $("#txt_enddate").val()
-                        + "','inouttype':'" + $("#txt_inout_type").val() + "','busitype':'" + $("#txt_busitype").val() + "','modifyflag':'" + $("#txt_modifyflag").val()
-                        + "','customsstatus':'" + $("#txt_customsstatus").val()
+                    data: "{'reptime_s':'" + $("#txt_reptime_s").val() + "','reptime_e':'" + $("#txt_reptime_e").val() + "','declcode':'" + $("#txt_declcode").val() 
+                        + "','customsstatus':'" + $("#picker_CUSTOMSSTATUS").val() + "','modifyflag':'" + $("#picker_MODIFYFLAG").val() + "','busitype':\"" + $("#txt_busitype").val()
+                        + "\",'ischeck':'" + $("#txt_ischeck").val() + "','ispass':'" + $("#txt_ispass").val() + "','busiunit':'" + $("#txt_busiunit").val()
+                        + "','ordercode':'" + $("#txt_ordercode").val() + "','cusno':'" + $("#txt_cusno").val() + "','tradeway':'" + $("#txt_tradeway").val()
+                        + "','contractno':'" + $("#txt_contractno").val() + "','blno':'" + $("#txt_blno").val() + "','submittime_s':'" + $("#txt_submittime_s").val()
+                        + "','submittime_e':'" + $("#txt_submittime_e").val() + "','sitepasstime_s':'" + $("#txt_sitepasstime_s").val() + "','sitepasstime_e':'" + $("#txt_sitepasstime_e").val()
                         + "','start':" + lastIndex + ",'itemsPerLoad':" + itemsPerLoad + "}",
                     cache: false,
                     async: false,//默认是true，异步；false为同步，此方法执行完在执行下面代码
                     success: function (data) {
-                        var obj = eval("(" + data.d + ")");//将字符串转为json
+                        if (data.d == "") {
+                            $("#span_sum").text("0");
+                            $('#div_list').append("");
+                            return;
+                        }
+                        var objdata = eval("(" + data.d + ")");//将字符串转为json                        
+                        var obj = objdata[0]["data"];
+                        $("#span_sum").text(objdata[0]["sum"]); 
 
                         var tb = ""; 
                         for (var i = 0; i < obj.length; i++) {
@@ -656,28 +751,27 @@
                                              + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["DECLARATIONCODE"] == null ? "" : obj[i]["DECLARATIONCODE"]) + '</div>'
                                                 + '<div class="item-title col-33">' + getname("BUSITYPE", obj[i]["BUSITYPE"]) + '</div>'
-                                                + '<div class="item-title col-20">' + (obj[i]["TRADEMETHOD"] == null ? "" : obj[i]["TRADEMETHOD"]) + '</div>'
+                                                + '<div class="item-title col-33">' + (obj[i]["TRADEMETHOD"] == null ? "" : obj[i]["TRADEMETHOD"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["CONSIGNEESHIPPERNAME"] == null ? "" : obj[i]["CONSIGNEESHIPPERNAME"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["CONTRACTNO"] == null ? "" : obj[i]["CONTRACTNO"]) + '</div>'
-                                                + '<div class="item-title col-20">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
+                                                + '<div class="item-title col-33">' + (obj[i]["REPTIME"] == null ? "" : obj[i]["REPTIME"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
                                                 + '<div class="item-title col-50">' + (obj[i]["TRANSNAME"] == null ? "" : obj[i]["TRANSNAME"]) + '</div>'
-                                                + '<div class="item-title col-33">' + (obj[i]["GOODSNUM"] == null ? "" : obj[i]["GOODSNUM"]) + '/' + (obj[i]["GOODSGW"] == null ? "" : obj[i]["GOODSGW"]) + '</div>'
-                                                + '<div class="item-title col-20">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
+                                                + '<div class="item-title col-33">' + getname("MODIFYFLAG", obj[i]["MODIFYFLAG"]) + '</div>'
+                                                + '<div class="item-title col-33">' + (obj[i]["CUSTOMSSTATUS"] == null ? "" : obj[i]["CUSTOMSSTATUS"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                         + '<li class="item-content">'
                                             + '<div class="item-inner row">'
-                                                + '<div class="item-title col-50">' + (obj[i]["BLNO"] == null ? "" : obj[i]["BLNO"]) + '</div>'
+                                                + '<div class="item-title col-60">' + (obj[i]["BLNO"] == null ? "" : obj[i]["BLNO"]) + '</div>'
                                                 + '<div class="item-title col-33">' + (obj[i]["CUSNO"] == null ? "" : obj[i]["CUSNO"]) + '</div>'
-                                                + '<div class="item-title col-20">' + (obj[i]["CUSTOMSSTATUS"] == null ? "" : obj[i]["CUSTOMSSTATUS"]) + '</div>'
                                             + '</div>'
                                         + '</li>'
                                     + '</ul>'
@@ -698,6 +792,48 @@
             }
 
         });
+        function initsearch_condition() {
+            $("#picker_CUSTOMSSTATUS").picker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择海关状态</h1>\
+                      </header>',
+                cols: [
+                  {
+                      textAlign: 'center',
+                      values: ['全部', '未结关', '已结关']
+                  }
+                ]
+            });
+            $("#picker_MODIFYFLAG").picker({
+                toolbarTemplate: '<header class="bar bar-nav">\
+                      <button class="button button-link pull-right close-picker">确定</button>\
+                      <h1 class="title">请选择删改单</h1>\
+                      </header>',
+                cols: [
+                  {
+                      textAlign: 'center',
+                      values: ['全部', '正常', '删单', '改单', '改单完成']
+                  }
+                ]
+            });
+
+            //初始化时间控件
+            //var before = new Date();
+            //before.setDate(before.getDate() - 3);
+            //var beforeday = before.Format("yyyy-MM-dd");
+
+            //var now = new Date();
+            //var today = now.Format("yyyy-MM-dd");
+
+            //$("#txt_reptime_s").val(beforeday);
+            //$("#txt_reptime_s").calendar({ value: [beforeday] });
+
+            //$("#txt_reptime_e").val(today);
+            //$("#txt_reptime_e").calendar({ value: [today] });
+            $("#txt_reptime_s").calendar({});
+            $("#txt_reptime_e").calendar({});
+        }
 
         function getname(key, value) {
             var str = "";
@@ -758,7 +894,41 @@
                 function () { }//cancel事件
               );
         }
-               
+
+        //清除选中
+        function clearSelect() {
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    $(this).children("ul").css('background-color', '#fff');
+                    $("#span_curchose").text(0);
+                }
+            });
+        }
+           
+        //打开详情弹出框
+        $(document).on('click', '.open-detail', function () {
+            var curcount = parseInt($("#span_curchose").text());
+            if (curcount != 1) {
+                $.toast("请选择一笔记录查看详情");
+                return;
+            }
+            var ordercode = "";
+            $("#div_list .list-block").each(function () {
+                if ($(this).children("ul").css('background-color') == "rgb(193, 221, 241)") {
+                    ordercode = $(this).children("ul")[0].id;
+                }
+            });
+
+            if (ordercode != "") {
+                ordercode = ordercode.substring(6);
+                getBusiInfo_customer(ordercode);
+            }
+            else {
+                $.toast("请选择需要一条记录");
+            }
+        });
+
+
     </script>
 </head>
 <body>
@@ -767,7 +937,44 @@
         <div id="page-infinite-scroll-bottom" class="page page-current">
             <%--search --%>
             <header class="bar bar-nav">
-                <div class="search-input">                    
+                <div class="search-input">                 
+                    <div class="row"> 
+                        <div class="col-25" style="width:25%;font-size:13px;margin-top:.8rem;">报关日期始/末:</div>
+                        <div class="col-33" style="width:30%;margin-left:0;"><input type="search" id='txt_reptime_s'/></div>
+                        <div class="col-33" style="width:30%;margin-left:0;"><input type="search" id='txt_reptime_e'/></div>
+                        <div class="col-10" style="width:10%;margin-left:0;margin-top:.2rem;">
+                            <input id="btn_more_m" type="button" value="..." class="open-tabs-modal" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;"  />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-50" style="width:46%;"><input type="search" id='txt_declcode' placeholder='报关单号'/></div>
+                        <div class="col-25" style="width:21%;margin-left:0;"><input type="search" id='picker_CUSTOMSSTATUS' placeholder='海关状态'/></div>
+                        <div class="col-25" style="width:21%;margin-left:0;"><input type="search" id='picker_MODIFYFLAG' placeholder='删改单'/></div>
+                        <div class="col-15" style="width:5%;margin-left:0;"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
+                    </div> 
+                    <div class="row">
+                        <div class="col-25" style="width:21%;"><input id="btn_gridname_m" type="button" value="列名" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-60" style="width:54%;margin-left:0;"><input id="btn_search_m" type="button" value="查询" style="background-color:#3D4145;color:#ffffff;border-radius:0;border:0;" /></div>
+                        <div class="col-25" style="width:21%;margin-left:0;"><input id="btn_reset_m" type="button" value="重置" style="background-color:#808080;color:#ffffff;border-radius:0;border:0;" /></div>
+                    </div> 
+                    <input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_ischeck'/><input type="hidden" id='txt_ispass'/>
+                    <input type="hidden" id='txt_busiunit'/>
+                    <input type="hidden" id='txt_ordercode'/> <input type="hidden" id='txt_cusno'/>  
+                    <input type="hidden" id='txt_tradeway'/> <input type="hidden" id='txt_contractno'/>  
+                    <input type="hidden" id='txt_blno'/>
+                    <input type="hidden" id='txt_submittime_s'/><input type="hidden" id='txt_submittime_e'/>
+                    <input type="hidden" id='txt_sitepasstime_s'/><input type="hidden" id='txt_sitepasstime_e'/>
+                </div>   
+                <div id="div_tbar" style="font-size:13px;margin:.2rem 0;">
+                    <font color="#929292">共计</font>
+                    <span id="span_sum">0</span>
+                    <font color="#929292">笔,当前选中</font>
+                    <span id="span_curchose">0</span>
+                    <font color="#929292">笔</font>
+                </div>                         
+            </header>
+            <%--<header class="bar bar-nav">
+                <div class="search-input">                 
                     <div class="row"> 
                         <div class="col-85"><input type="search" id='txt_declcode' placeholder='请输入18位或后9位报关单号...'/></div>
                         <div class="col-15"><a href="#" id="btn_barcode"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe608;</i></a></div>
@@ -777,17 +984,17 @@
                         <div class="col-5">~</div>
                         <div class="col-40"><input type="search" id='txt_enddate' placeholder='申报结束日期'/></div>
                         <div class="col-15"><a href="#" class="open-tabs-modal"><i class="iconfont" style="font-size:1.3rem;color:gray;">&#xe6ca;</i></a></div>
-                    </div>                    
+                    </div> 
                 </div>  
                 <input type="hidden" id='txt_inout_type'/><input type="hidden" id='txt_busitype'/><input type="hidden" id='txt_modifyflag'/>  <input type="hidden" id='txt_customsstatus'/>                
-                <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>   
-            </header>
+                <a href="#" id="search_a" class="open-preloader-title button button-fill">查询</a>                           
+            </header>--%>
 
             <%--工具栏 --%>
             <nav class="bar bar-tab">
                 <a class="tab-item external" href="#" id="Ass_a"><%--active--%>
                     <span class="icon icon-menu"></span>
-                    <span class="tab-label">关联报关单信息</span>
+                    <span class="tab-label">关联报关单</span>
                 </a>
                 <a class="tab-item external" href="#" id="ModifyEdit_a">
                     <span class="icon icon-edit"></span>
@@ -796,22 +1003,27 @@
                 </a>
                 <a class="tab-item external" href="#" id="FileConsult_a">
                     <span class="icon icon-message"></span>
-                    <span class="tab-label">报关单调阅</span>
+                    <span class="tab-label">文件调阅<input type="hidden" id="hd_AdminUrl" value='<%= System.Configuration.ConfigurationManager.AppSettings["AdminUrl"] %>' /></span>
                 </a>
                 <a class="tab-item external" href="#" id="Subs_decl_a">
                     <span class="icon icon-card"></span>
                     <span class="tab-label">报关订阅</span>
                 </a>
+                <a class="tab-item open-detail" href="#"> 
+                    <span class="icon icon-menu"></span>
+                    <span class="tab-label">业务详情</span>
+                </a>
             </nav>
 
            <%--body --%>
-            <div class="content infinite-scroll native-scroll" data-distance="100">
+            <div class="content infinite-scroll native-scroll" data-distance="100">                
                 <div id="div_list"></div>
 
                 <!-- 加载提示符 -->
                 <div class="infinite-scroll-preloader">
                   <div class="preloader"></div>
                 </div>
+                <div class="float-button" onclick="clearSelect()"><img src="../../image/clearbtn.png" /></div>
             </div>
 
             
@@ -848,12 +1060,45 @@
                 </div>
             </div>
             <div class="content-block row">
-                <div class="col-50"><a href="#" class="button button-fill" id="Pop_Subscribe">确  认</a></div>
-                <div class="col-50"><a href="#" class="close-popup button button-fill">返  回</a></div>
+                <div class="col-50"><a href="#" class="close-popup button button-fill" style="background-color: gray;border-radius:0;color:white;border:0;">返  回</a></div>
+                <div class="col-50"><a href="#" class="button button-fill" id="Pop_Subscribe" style="background-color: #3d4145;border-radius:0;color:white;border:0;">确  认</a></div>
             </div>
         </div>
     </div>
 
+    <!--popup 订阅清单弹出页-->
+        <div class="popup pop-subscribeinfo">
+            <div class="content" id="subscribeinfo" style="bottom: 3rem;">
+            </div>
+            <div style="bottom: 1.5rem; position: fixed; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+        </div>
+
+     <!--popup 详情弹出页-->
+    <div class="popup popup-detail">
+            <div class="content" style="bottom: 60px;">
+                <div class="buttons-tab">
+                    <a href="#tab1" class="tab-link active button">报关信息</a>
+                    <a href="#tab2" class="tab-link button">报检信息</a>
+                    <a href="#tab3" class="tab-link button">物流信息</a>
+                </div>
+                <div class="content-block">
+                    <div class="tabs">
+                        <div id="tab1" class="tab active">
+                            <div class="content-block " id="pop_tab_decl"></div>
+                        </div>
+                        <div id="tab2" class="tab">
+                            <div class="content-block" id="pop_tab_insp"></div>
+                        </div>
+                        <div id="tab3" class="tab">
+                            <div class="content-block" id="pop_tab_logistics"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="bottom: 1.5rem; position: absolute; width: 80%; margin-left: 10%"><a href="#" class="close-popup button">返&nbsp;&nbsp;&nbsp;&nbsp;回</a></div>
+        </div>
+
+    
     <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>   
    <%-- <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>--%>
     <script src="/js/sm-extend.min.js"></script>

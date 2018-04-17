@@ -68,6 +68,11 @@ namespace WeChat.ModelWeChat
         {
             string url = string.Format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={0}&secret={1}", appId, appSecret);
             string result = WeChatHelper.GetData(url);
+            if(result.Contains("40164"))
+            {
+                LogHelper.Write("TokenModel_GetAccessToken出错：" + result);
+                return null;
+            }
 
             XmlDocument doc = JsonHelper.ParseJson(result, "root");
             XmlNode root = doc.SelectSingleNode("root");

@@ -11,6 +11,8 @@
       <xs:element name="_x003C_ASSOCIATEPEDECLNO_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_ASSOCIATEREGION_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_ASSOCIATETRADEWAY_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_AUDITCONTENT_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_AUDITFLAG_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_BELONGCUSTOMS_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_BONUS_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_BUSIKIND_x003E_k__BackingField" nillable="true" type="xs:string" />
@@ -19,10 +21,12 @@
       <xs:element name="_x003C_BUSIUNITNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_BUSIUNITNUM_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_CHECKNUMS_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_CHECKPIC_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_CKFINISHTIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
       <xs:element name="_x003C_CKID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_CKNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_CLEARANCENO_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_CLEARREMARK_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_CLEARUNITNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_CLEARUNIT_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_COCHECKID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
@@ -39,6 +43,9 @@
       <xs:element name="_x003C_COSTARTID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_COSTARTNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_COSTARTTIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
+      <xs:element name="_x003C_COSTECPFLAG_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_COSTFLAG_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_COSTSTATUS_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_CREATETIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
       <xs:element name="_x003C_CREATEUSERID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_CREATEUSERNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
@@ -53,6 +60,9 @@
       <xs:element name="_x003C_CUSTOMERCODE_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_CUSTOMERNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_DECLCARNO_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_DECLCHECKID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_DECLCHECKNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_DECLCHECKTIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
       <xs:element name="_x003C_DECLPDF_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_DECLSTATUS_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_DECLWAY_x003E_k__BackingField" nillable="true" type="xs:string" />
@@ -73,13 +83,22 @@
       <xs:element name="_x003C_FILESTATUS_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_FILGHTNO_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_FIRSTLADINGBILLNO_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_FUMIGATIONID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_FUMIGATIONNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_FUMIGATIONTIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
       <xs:element name="_x003C_GOODSGW_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_GOODSNUM_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_GOODSNW_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_GOODSTYPEID_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_ID_x003E_k__BackingField" type="xs:int" />
       <xs:element name="_x003C_IETYPE_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_INSPCHECKID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_INSPCHECKNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_INSPCHECKNUMS_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_INSPCHECKPIC_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_INSPCHECKREMARK_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_INSPCHECKTIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
+      <xs:element name="_x003C_INSPCHECK_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_INSPCOENDID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_INSPCOENDNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_INSPCOENDTIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
@@ -133,6 +152,7 @@
       <xs:element name="_x003C_INSPUNITNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_INVALIDREASON_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_ISCHECK_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_ISFUMIGATION_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_ISINVALID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_ISNEEDCLEARANCE_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_ISPAUSE_x003E_k__BackingField" nillable="true" type="xs:decimal" />
@@ -173,6 +193,8 @@
       <xs:element name="_x003C_PRICEIMPACT_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_PRINTSTATUS_x003E_k__BackingField" type="xs:decimal" />
       <xs:element name="_x003C_PRODUCTNUM_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_RECEIVERUNITCODE_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_RECEIVERUNITNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_RECEIVETIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
       <xs:element name="_x003C_RECEIVEUSERID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_RECEIVEUSERNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
@@ -227,6 +249,7 @@
       <xs:element name="_x003C_AEUNITCODE_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_ASSOCIATEDECLNO_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_ASSOCIATEPEDECLNO_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_AUTOCHANNEL_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_BLNO_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_BUSITYPE_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_BUSIUNITCODE_x003E_k__BackingField" nillable="true" type="xs:string" />
@@ -266,6 +289,9 @@
       <xs:element name="_x003C_DECLREMARK_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_DECLTYPE_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_DECLWAY_x003E_k__BackingField" nillable="true" type="xs:string" />
+      <xs:element name="_x003C_DELORDERTIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
+      <xs:element name="_x003C_DELORDERUSERID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_DELORDERUSERNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_EXEMPTIONCODE_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_FGCODE_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_FGUNITCODE_x003E_k__BackingField" nillable="true" type="xs:string" />
@@ -293,6 +319,9 @@
       <xs:element name="_x003C_MOCURRENTID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_MOCURRENTNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_MODIFYFLAG_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_MODORDERTIME_x003E_k__BackingField" nillable="true" type="xs:dateTime" />
+      <xs:element name="_x003C_MODORDERUSERID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
+      <xs:element name="_x003C_MODORDERUSERNAME_x003E_k__BackingField" nillable="true" type="xs:string" />
       <xs:element name="_x003C_MOEDIT_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_MOENDID_x003E_k__BackingField" nillable="true" type="xs:decimal" />
       <xs:element name="_x003C_MOENDNAME_x003E_k__BackingField" nillable="true" type="xs:string" />

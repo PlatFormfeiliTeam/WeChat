@@ -19,9 +19,9 @@ namespace WeChat.Entity
         /// </summary>
         public string OrderCode { get; set; }
         /// <summary>
-        /// 预制单号
+        /// 报关单号
         /// </summary>
-        public string DeclCode { get; set; }
+        public string DeclarationCode { get; set; }
         /// <summary>
         /// 企业编号
         /// </summary>
@@ -70,6 +70,38 @@ namespace WeChat.Entity
         /// 状态值
         /// </summary>
         public int StatusValue { get; set; }
+        /// <summary>
+        /// 经营单位
+        /// </summary>
+        public string BusiUnitName { get; set; }
+        /// <summary>
+        /// 合同号
+        /// </summary>
+        public string Contractno { get; set; }
+        /// <summary>
+        /// 一程提单
+        /// </summary>
+        public string FirstLadingBillno { get; set; }
+        /// <summary>
+        /// 二程提单
+        /// </summary>
+        public string SecondLadingBillno { get; set; }
+        /// <summary>
+        /// 陆运提单
+        /// </summary>
+        public string LandLadingno { get; set; }
+        /// <summary>
+        /// 总单号
+        /// </summary>
+        public string Totalno { get; set; }
+        /// <summary>
+        /// 分单号
+        /// </summary>
+        public string Divideno { get;set;}
+        /// <summary>
+        /// 业务类型
+        /// </summary>
+        public string BusiType { get; set; }
         
     }
 }

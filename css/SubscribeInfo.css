@@ -1,0 +1,37 @@
+﻿.pop-subscribeinfo .list-block {
+            margin: 0.2rem 0 0 0;
+        }
+.pop-subscribeinfo .list-block .item-content {
+                min-height: 1.2rem;
+            }
+.pop-subscribeinfo .list-block .item-inner {
+                padding-right: 0.25rem;
+                padding-top: 0.1rem;
+                padding-bottom: 0.1rem;
+                min-height: 1.2rem;
+                font-size: small;
+            }
+.pop-subscribeinfo .list-block .my-title {
+                width: 40%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: center;
+            }
+
+.pop-subscribeinfo .list-block .my-after {
+                width: 30%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: center;
+            }
+.pop-subscribeinfo .button {
+            border-radius: 0;
+            background-color: gray;
+            color: white;
+            border: 0;
+            vertical-align: middle;
+            padding-top: 0.1rem;
+            text-align: center;
+        }

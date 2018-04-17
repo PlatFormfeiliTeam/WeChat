@@ -13,7 +13,9 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using WeChat.Common;
+using WeChat.Entity;
 using WeChat.ModelBusi;
+using WeChat.ModelWeChat;
 
 namespace WeChat.Page.MyBusiness
 {
@@ -21,10 +23,39 @@ namespace WeChat.Page.MyBusiness
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string action = Request["action"];
-            string data = Request["data"];
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            //如果当前用户未登陆，先获取授权
+            if (user == null)
+            {
+                WUserEn userInfo = PageShowQuan.GetShouQuanMessage();
+                if (userInfo != null && !string.IsNullOrEmpty(userInfo.OpenID))
+                {//授权成功
+                    WGUserEn wuser = UserModel.getWeChatUser(userInfo.OpenID);
+                    if (wuser == null || string.IsNullOrEmpty(wuser.GwyUserName))
+                    {//账号未关联，跳转至登录界面
+                        System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+                    }
+                    else if (wuser.IsCustomer != 1 && wuser.IsCompany != 1)
+                    {//不是企业或委托单位，无此权限
+                        System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
+                    }
+                    else
+                    {//不需登录，保存当前用户
+                        HttpContext.Current.Session["user"] = wuser;
+                    }
+                }
+                else
+                {//获取授权失败，也跳转至登录页面
+                    System.Web.HttpContext.Current.Response.Redirect(@"../Login.aspx?openid=" + userInfo.OpenID + "&nickname=" + userInfo.NickName + "&transferurl=MyBusiness");
+                }
+            }
+            else if (user.IsCustomer != 1 && user.IsCompany != 1)
+            {//不是接单单位，无此权限
+                System.Web.HttpContext.Current.Response.Redirect(@"../WarnPage.aspx");
+            }
             
         }
+       
         /// <summary>
         /// 获取业务信息
         /// </summary>
@@ -41,11 +72,26 @@ namespace WeChat.Page.MyBusiness
         /// <param name="lastindex"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string QueryData(string declstatus,string inspstatus,string inout,string busitype,string customs,string sitedeclare,string logisticsstatus,
-            string starttime, string endtime, int itemsperload, int lastindex)
+        public static string QueryData(string submittimestart, string submittimeend, string declarationcode, string customarea, string ispass, string ischeck, string busitype,
+            string modifyflag, string auditflag, string busiunit, string ordercode, string cusno, string divideno, string contractno, string passtimestart, string passtimeend,
+            int itemsperload, int lastindex)
         {
+            string sum = "0";
             ListOrderModel orderModel = new ListOrderModel();
-            DataTable dt = orderModel.getOrder(declstatus, inspstatus, inout, busitype, customs, sitedeclare, logisticsstatus, starttime, endtime, itemsperload, lastindex);
+            WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
+            if (user == null || string.IsNullOrEmpty(user.CustomerCode))
+                return "";
+            string customerCode = user.CustomerCode;
+            string hsCode = user.HSCode;
+            if (user.IsCompany != 1)//如果不是企业角色，不能查出其对应经营单位的订单
+                hsCode = "";
+            if (user.IsCustomer != 1)//如果不是委托单位角色，不能查出其对应委托单位的订单
+                customerCode = "";
+            DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, busiunit, ordercode,
+                cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, customerCode, hsCode, out sum);
+
+            //DataTable dt = orderModel.getOrder(submittimestart, submittimeend, declarationcode, customarea, ispass, ischeck, busitype, modifyflag, auditflag, busiunit, ordercode,
+            //   cusno, divideno, contractno, passtimestart, passtimeend, itemsperload, lastindex, "RBDZKJKSYXGS", "3223640003", out sum);
             IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式 
             try
             {
@@ -53,20 +99,21 @@ namespace WeChat.Page.MyBusiness
                 {
                     dr["ischeck"] = dr["ischeck"].ToString2() == "1" ? "海关查验" : "";
                     dr["checkpic"] = dr["checkpic"].ToString2() == "1" ? "含查验图片" : "";
-                    dr["inspcheck"] = dr["inspcheck"].ToString2() == "1" ? "国检查验" : "";
+                    dr["inspischeck"] = dr["inspischeck"].ToString2() == "1" ? "国检查验" : "";
                     dr["lawflag"] = dr["lawflag"].ToString2() == "1" ? "含法检" : "";
                     dr["declstatus"] = SwitchHelper.switchValue("declstatus", dr["declstatus"].ToString2());
                     dr["inspstatus"] = SwitchHelper.switchValue("inspstatus", dr["inspstatus"].ToString2());
                     if (string.IsNullOrEmpty(dr["divideno"].ToString2())) dr["divideno"] = "";
                     if (string.IsNullOrEmpty(dr["logisticsstatus"].ToString2())) dr["logisticsstatus"] = "";
                     if (string.IsNullOrEmpty(dr["contractno"].ToString2())) dr["contractno"] = "";
+                    dr["sum"] = sum;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 LogHelper.Write("MyBusiness_QueryData:" + e.Message);
             }
-           
+
             iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
             string json = JsonConvert.SerializeObject(dt, iso);
             return json;
@@ -84,17 +131,21 @@ namespace WeChat.Page.MyBusiness
                 ListOrderModel orderModel = new ListOrderModel();
                 DataSet ds = orderModel.getOrderDetail(code);
                 ds.Tables[0].Rows[0]["busitype"] = SwitchHelper.switchValue("busitype", ds.Tables[0].Rows[0]["busitype"].ToString2());
-                
-                //ds.Tables[2].Rows[0]["modifyflag"] = SwitchHelper.switchValue("modifyflag", ds.Tables[2].Rows[0]["modifyflag"].ToString2());
-                
+
+                if (ds.Tables.Count > 1 && ds.Tables[1].Columns.Contains("modifyflag"))
+                {
                     foreach (DataRow dr in ds.Tables[1].Rows)
                     {
                         dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
                     }
-                foreach (DataRow dr in ds.Tables[2].Rows)
+                }
+                if (ds.Tables.Count > 2 && ds.Tables[2].Columns.Contains("modifyflag"))
                 {
-                    dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
-                }               
+                    foreach (DataRow dr in ds.Tables[2].Rows)
+                    {
+                        dr["modifyflag"] = SwitchHelper.switchValue("modifyflag", dr["modifyflag"].ToString2());
+                    }
+                }
                 IsoDateTimeConverter iso = new IsoDateTimeConverter();//序列化JSON对象时,日期的处理格式
                 iso.DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
                 string json = JsonConvert.SerializeObject(ds, iso);
@@ -114,7 +165,7 @@ namespace WeChat.Page.MyBusiness
         /// <param name="orderCode"></param>
         /// <returns></returns>
         [WebMethod]
-        public static string SubscribeStatus(string type, string status, string cusno, string declarationcode, string userid, string username, string openid)
+        public static string SubscribeStatus(string type, string status, string cusno, string declarationcode, string ordercode)
         {
             try
             {
@@ -129,6 +180,10 @@ namespace WeChat.Page.MyBusiness
                 //判断是否订阅的信息是否已经触发
                 if (type == "报关状态")
                 {
+                    if (string.IsNullOrEmpty(declarationcode) || declarationcode == "null")
+                    {
+                        return "订阅失败，报关单号不能为空";
+                    }
                     DataTable dt = SubscribeModel.getDeclstatus(declarationcode);
                     for (int i = 0; i < st.Length; i++)
                     {
@@ -141,7 +196,11 @@ namespace WeChat.Page.MyBusiness
                 }
                 else if(type=="物流状态")
                 {
-                    DataTable dt = SubscribeModel.getLogisticsstatus(cusno);
+                    if (string.IsNullOrEmpty(ordercode) || ordercode == "null")
+                    {
+                        return "订阅失败，订单编号不能为空";
+                    }
+                    DataTable dt = SubscribeModel.getLogisticsstatus(ordercode);
                     for (int i = 0; i < st.Length; i++)
                     {
                         if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= SwitchHelper.switchValue(type, dt.Rows[0][0].ToString2()).ToInt32())
@@ -153,7 +212,11 @@ namespace WeChat.Page.MyBusiness
                 }
                 else if (type == "业务状态")
                 {
-                    DataTable dt = SubscribeModel.getOrderstatus(cusno);
+                    if (string.IsNullOrEmpty(ordercode) || ordercode == "null")
+                    {
+                        return "订阅失败，订单编号不能为空";
+                    }
+                    DataTable dt = SubscribeModel.getOrderstatus(ordercode);
                     for (int i = 0; i < st.Length; i++)
                     {
                         if (dt.Rows.Count > 0 && SwitchHelper.switchValue(type, st[i]).ToInt32() <= dt.Rows[0][0].ToString2().ToInt32())
@@ -163,34 +226,23 @@ namespace WeChat.Page.MyBusiness
                     }
                     codetype = "1";
                 }
-                //订阅
-                //if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
-                //    return "订阅成功";
-                //else
-                //    return "订阅失败：系统异常";
+                WGUserEn user = (WGUserEn)HttpContext.Current.Session["user"];
                 //防止重复订阅
                 for (int i = 0; i < st.Length; i++)
                 {
-                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type,declarationcode);
+                    DataTable getTriggerStatus = SubscribeModel.GetTriggerstatus(cusno, st[i], type, declarationcode, user.GwyUserID, ordercode);
                     if (getTriggerStatus.Rows.Count > 0)
                     {
                         orderData.Add(st[i]);
                         //return st[i] + "已订阅请勿重复订阅";
                     }
-                    //else if (SubscribeModel.insertSubscribe(type, st, ordercode, declcode, userid, username, openid, codetype))
-                    //{
-                    //    return "订阅成功";
-                    //}
-                    //else
-                    //{
-                    //    return "订阅失败：系统异常";
-                    //}
+                    
                 }
                 if (orderData.Count == 0)
                 {
                     try
                     {
-                        SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, userid, username, openid, codetype);
+                        SubscribeModel.insertSubscribe(type, st, cusno, declarationcode, user.GwyUserID, user.GwyUserName, user.WCOpenID, codetype, ordercode);
                         return "订阅成功";
                     }
                     catch (Exception e)
@@ -253,9 +305,14 @@ namespace WeChat.Page.MyBusiness
             }
             return json;
         }
-       
 
-        
+
+        //微信接口js-sdk config
+        [WebMethod]
+        public static string getConf(string url)
+        {
+            return ModelWeChat.SignatureModel.getSignature(url);
+        }
 
 
 

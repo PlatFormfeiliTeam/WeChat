@@ -9,11 +9,17 @@ namespace WeChat.Common
 {
     public class LogHelper
     {
+        static string path = System.Web.HttpContext.Current.Server.MapPath(".") + @"\Log\";
         public static void Write(string str)
         {
             try
             {
-                FileStream fs = new FileStream(@"E:\gwyWeb\WeChat\Log\log.txt", FileMode.Append);
+                string fileName = DateTime.Now.ToShortDateString().Replace("/", "") + ".txt";
+                if (!File.Exists(path + fileName))
+                {
+                    File.Create(path + fileName);
+                }
+                FileStream fs = new FileStream(path + fileName, FileMode.Append);
                 StreamWriter sw = new StreamWriter(fs);
                 //开始写入
                 sw.WriteLine(str + "-----" + DateTime.Now.ToString() + "\r\n");

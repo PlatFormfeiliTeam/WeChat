@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Reflection;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace WeChat.Common
 {
@@ -103,6 +104,19 @@ namespace WeChat.Common
         {
             return JsonConvert.DeserializeXmlNode(json, rootName);
         }
+
+        public static string XmlSerialize<T>(T obj)
+        {
+            using (StringWriter sw = new StringWriter())
+            {
+                Type t = obj.GetType();
+                XmlSerializer serializer = new XmlSerializer(obj.GetType());
+                serializer.Serialize(sw, obj);
+                sw.Close();
+                return sw.ToString();
+            }
+        }
+
         /// <summary>
         /// xml转为实体(如果xml没有entity节点，是否报错——待测试)
         /// </summary>

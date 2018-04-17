@@ -416,4 +416,20 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="FinanceExceptionOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="orderCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="modifyUser" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="modifyFiled" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FinanceExceptionOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="FinanceExceptionOrderResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
