@@ -10,16 +10,3 @@ bin/WeChat.dll.config
 bin/WeChat.pdb
 Log/
 TempFile/
-.svn/entries
-
-<<<<<<< HEAD
-*.svn-base
-.svn/entries
-*.db
-.svn/format
-=======
-.svn/entries
-*.svn-base
-.svn/format
-*.db
->>>>>>> origin/master
