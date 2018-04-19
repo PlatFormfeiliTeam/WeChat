@@ -1437,7 +1437,7 @@
                 cols: [
                   {
                       textAlign: 'center',
-                      values: ['全部', '未放行', '已放行']
+                      values: ['全部', '放行', '未放行']
                   }
                 ]
             });

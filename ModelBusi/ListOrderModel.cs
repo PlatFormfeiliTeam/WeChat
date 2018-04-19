@@ -175,10 +175,10 @@ where ll.totalno='{0}' and ll.divideno='{1}' order by ll.operate_type,ll.operate
                                 to_char(lo.ischeck) as ischeck,to_char(lo.checkpic) as checkpic,to_char(lo.declstatus) as declstatus,to_char(lo.inspstatus) as inspstatus,
                                 to_char(lo.lawflag) as lawflag,to_char(lo.inspischeck) as inspischeck,lo.logisticsstatus,lo.logisticsname,lo.customareacode,
                                 sb.name as busitypename,sr.name as repwayname
-                                from list_order lo left join list_declaration ld on lo.code=ld.ordercode 
+                                from list_order lo 
                                 left join cusdoc.sys_busitype sb on lo.busitype=sb.code 
                                 left join cusdoc.sys_repway sr on lo.repwayid=sr.code
-                                where lo.isinvalid=0 and ld.isinvalid=0 and lo.code='{0}'";
+                                where lo.isinvalid=0 and lo.code='{0}'";
                 return db.QuerySignle(string.Format(sql, code));
             }
         }
