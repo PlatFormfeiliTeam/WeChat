@@ -65,7 +65,7 @@ namespace WeChat.ModelBusi
                                     ,to_char(ort.sitepasstime,'yyyyMMdd HH24:mi') sitepasstime,ort.checkpic,ort.correspondno 
                                     ,ort.checkremark declcheckremark,ort.auditflag,ort.auditcontent 
                                 from list_order ort
-                                where ort.entrusttype in('01','03') and ort.isinvalid=0" + where
+                                where ort.isinvalid=0" + where
                                     //+ @"and exists (select 1 from list_declaration det where det.isinvalid=0" + where_dec + ")";
                                     + @"and ort.code in (select ordercode from list_declaration det where det.isinvalid=0" + where_dec + ")";
 
